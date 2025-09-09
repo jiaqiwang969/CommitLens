@@ -1,0 +1,11 @@
+' Template theme
+@startuml
+skinparam dpi 180
+skinparam monochrome false
+skinparam shadowing false
+skinparam defaultFontName Noto Sans CJK SC
+skinparam ArrowColor #555555
+skinparam RectangleBorderColor #777777
+skinparam RectangleBackgroundColor #F8F8F8
+@enduml
+

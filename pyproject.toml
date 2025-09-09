@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sboxgen"
+version = "0.1.0"
+description = "Generate reproducible Git sboxes (three worktrees + evidence + metadata)"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "Sboxgen Team", email = "devnull@example.com"}]
+license = {text = "Proprietary"}
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: Other/Proprietary License",
+  "Operating System :: OS Independent",
+]
+
+[project.scripts]
+sboxgen = "sboxgen.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sboxgen*"]

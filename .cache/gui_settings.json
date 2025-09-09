@@ -1,0 +1,11 @@
+{
+  "repo": "https://github.com/Formlabs/foxtrot.git",
+  "branch": "master",
+  "limit": 10,
+  "style": "timeline",
+  "mirror": ".cache/mirrors/foxtrot.git",
+  "timeline_root": "/Users/jqwang/Desktop/sboxgen-head-ac98b1e-1/.sboxes_timeline",
+  "artifacts_root": ".artifacts",
+  "timeout": 6000,
+  "runs": 3
+}

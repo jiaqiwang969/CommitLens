@@ -1,0 +1,26 @@
+@startuml
+title 架构变化（示例）
+skinparam dpi 180
+skinparam shadowing false
+skinparam ArrowColor #555555
+skinparam RectangleBorderColor #777777
+skinparam RectangleBackgroundColor #F8F8F8
+
+' NOTE: 必须体现 before/after、模块边界、依赖与数据路径；
+'       用 <<added>>/<<removed>>/<<changed>> 标注关键变化；
+'       建议突出 STEP 解析 → 三角化 → 渲染 的链路与受影响模块。
+
+rectangle "before" {
+  component [lib.rs] as A
+}
+
+rectangle "after" {
+  component [lib.rs] <<changed>> as B
+}
+
+A ..> B : 修改/重构
+legend right
+|= 标记 |= 含义 |
+| <<changed>> | after 修改 |
+endlegend
+@enduml

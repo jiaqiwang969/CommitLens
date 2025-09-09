@@ -1,0 +1,18 @@
+@startuml
+title 算法流程（示例）
+skinparam dpi 180
+skinparam shadowing false
+
+' NOTE: 必须展示入口、关键分支/循环、边界条件处理（退化/数值鲁棒性）、
+'       终止条件与复杂度影响；若相关，标注 orient2d/incircle 等谓词的调用点。
+
+start
+:步骤 1;
+:步骤 2;
+if (条件?) then (是)
+  :分支A;
+else (否)
+  :分支B;
+endif
+stop
+@enduml

@@ -1,0 +1,17 @@
+README.md
+pyproject.toml
+src/sboxgen/__init__.py
+src/sboxgen/cli.py
+src/sboxgen/codex_runner.py
+src/sboxgen/gitio.py
+src/sboxgen/latex_fix.py
+src/sboxgen/runner.py
+src/sboxgen/sbox.py
+src/sboxgen/templates.py
+src/sboxgen/utils.py
+src/sboxgen/verify.py
+src/sboxgen.egg-info/PKG-INFO
+src/sboxgen.egg-info/SOURCES.txt
+src/sboxgen.egg-info/dependency_links.txt
+src/sboxgen.egg-info/entry_points.txt
+src/sboxgen.egg-info/top_level.txt

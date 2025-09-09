@@ -1,0 +1,34 @@
+@startuml
+!include ./plantuml-theme.puml
+
+skinparam activity<<added>> BackgroundColor #E6FFED
+skinparam activity<<removed>> BackgroundColor #FFECEC
+skinparam activity<<changed>> BackgroundColor #FFF5D6
+
+title 算法流程（示例）
+
+' NOTE: 必须展示入口、关键分支/循环、边界条件处理（退化/数值鲁棒性）、
+'       终止条件与复杂度影响；若相关，标注 orient2d/incircle 等谓词的调用点。
+
+partition "before" {
+  start
+  :步骤 A1;
+  :步骤 A2;
+  stop
+}
+
+partition "after" {
+  start
+  :步骤 B1 <<changed>>;
+  :步骤 B2 <<added>>;
+  stop
+}
+
+legend right
+|= 标记 |= 含义 |
+| <<added>> | 新增步骤 |
+| <<changed>> | 修改步骤 |
+| <<removed>> | 移除步骤 |
+endlegend
+
+@enduml

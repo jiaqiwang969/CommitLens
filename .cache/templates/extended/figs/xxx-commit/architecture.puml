@@ -1,0 +1,32 @@
+@startuml
+!include ./plantuml-theme.puml
+
+skinparam component<<added>> BackgroundColor #E6FFED
+skinparam component<<removed>> BackgroundColor #FFECEC
+skinparam component<<changed>> BackgroundColor #FFF5D6
+
+title 架构对比（示例）
+
+' NOTE: 必须体现 before/after、模块边界、依赖与数据路径；
+'       用 <<added>>/<<removed>>/<<changed>> 标注关键变化；
+'       建议突出 STEP 解析 → 三角化 → 渲染 的链路与受影响模块。
+
+rectangle "before" {
+  component [lib.rs] as A
+}
+
+rectangle "after" {
+  component [lib.rs] <<changed>> as B
+  ' component [predicates.rs] <<added>> as C
+}
+
+A ..[dotted].. B : 修改/重构
+
+legend right
+|= 标记 |= 含义 |
+| <<added>> | 新增 |
+| <<removed>> | 移除 |
+| <<changed>> | 修改 |
+endlegend
+
+@enduml

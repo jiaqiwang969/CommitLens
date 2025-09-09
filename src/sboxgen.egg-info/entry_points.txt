@@ -1,0 +1,2 @@
+[console_scripts]
+sboxgen = sboxgen.cli:main

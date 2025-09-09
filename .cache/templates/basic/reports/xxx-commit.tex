@@ -1,0 +1,74 @@
+% Template fragment (basic, timeline-ready)
+\section{提交考古：{curr.short}}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：{title}
+  \item 作者：{curr.author}
+  \item 日期：{curr.datetime}
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+% 建议：从 HEAD.diff 的开头几行（包含 diffstat）手动摘取 1–3 行，帮助读者把握范围。
+\begin{verbatim}
+HEAD:   <diffstat-from-HEAD.diff>
+HEAD-1: <diffstat-from-HEAD-1.diff>
+HEAD-2: <diffstat-from-HEAD-2.diff>
+\end{verbatim}
+
+\subsection*{差异解读（证据）}
+% 结合 HEAD.diff / HEAD-1.diff / HEAD-2.diff，分点说明改了什么、为何而改、影响何在
+\begin{itemize}
+  \item 改了什么：<文件:行段>，<接口/结构/算法> 的关键变化。
+  \item 为什么改：<性能/正确性/维护性> 的权衡与动机。
+  \item 影响何在：对 <调用路径/构建/边界条件> 的影响与潜在风险。
+  \item 如何验证：最小验证步骤（构建/测试/样例/基准）。
+\end{itemize}
+
+\subsection*{演进脉络}
+% 从 head-2 → head-1 → head 的动机与取舍（若有）
+\begin{itemize}
+  \item head-2 → head-1：<要点/取舍>。
+  \item head-1 → head：<要点/取舍>。
+\end{itemize}
+
+\subsection*{证据摘录（文件+行区间）}
+% 精选 2–3 处证据，直指接口/数据结构/算法/边界
+\begin{itemize}
+  \item <path/to/file.rs:Lxx-Lyy>：<要点说明>。
+  \item <path/to/other.rs:Laa-Lbb>：<要点说明>。
+\end{itemize}
+
+\subsection*{基础知识补充（计算几何）}
+% 打开《计算几何教材.md》按关键词（orient2d/incircle/pseudo-angle/CDT 等）阅读，不超过 200 字
+\noindent <阅读路径与结论：不超过 200 字，引用相关 HEAD*.diff 证据>
+
+\subsection*{图示与说明（必选）}
+% 必须提供两张图：架构图 + 算法流程图，并分别给出 3–5 句说明。
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.4\linewidth]{<NNN>-<{curr.short}>/architecture.pdf}
+  \caption{架构变化（before/after、模块与依赖、数据路径、变化标注）}
+\end{figure}
+
+\noindent 架构图说明：
+\begin{itemize}
+  \item 变化范围：<受影响模块/边界>；
+  \item 依赖与数据路径：<关键依赖/STEP→三角化→渲染链路>；
+  \item 证据：引用 <HEAD*.diff> 中的 <文件:行段>；
+  \item 风险：<兼容性/耦合度/部署影响>。
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.4\linewidth]{<NNN>-<{curr.short}>/algorithm_flow.pdf}
+  \caption{算法流程（入口、关键分支/循环、边界处理、终止/复杂度）}
+\end{figure}
+
+\noindent 算法流程说明：
+\begin{itemize}
+  \item 入口与阶段：<主流程/子过程>；
+  \item 分支与边界：<退化/数值鲁棒性处理、orient2d/incircle 调用点>；
+  \item 复杂度与终止：<复杂度变化/终止条件>；
+  \item 证据：对应 <HEAD*.diff> 的关键片段。
+\end{itemize}

@@ -1,0 +1,8 @@
+.cache/codex_api_key
+.env
+.env.local
+.artifacts
+.sboxes_timeline
+.cache/codex_api_key
+temp
+*.pyc

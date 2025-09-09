@@ -118,17 +118,10 @@ def run_puml_batch(
 
     try:
         print(f"::progress::puml total {total}", flush=True)
-        print(f"::progress::puml max_parallel {int(max_parallel)}", flush=True)
-        # GUI 参数读取：在 Codex 与参数页显示并发上限
-        print(f"::param::puml max_parallel {int(max_parallel)}", flush=True)
         print(f"[puml] 链条总提交数={chain_total} 本次任务(含puml)={total}", flush=True)
         if total > 2:
             workers = min(max(1, int(max_parallel)), total)
             print(f"::progress::puml parallel {workers}", flush=True)
-        try:
-            print(f"[puml] 并发上限(max_parallel)={int(max_parallel)}", flush=True)
-        except Exception:
-            pass
     except Exception:
         pass
 

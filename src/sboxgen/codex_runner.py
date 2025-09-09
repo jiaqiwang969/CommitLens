@@ -263,9 +263,6 @@ def run_batch(
     # Emit progress and summary (actual parallel and task list)
     try:
         print(f"::progress::codex total {total}", flush=True)
-        print(f"::progress::codex max_parallel {int(max_parallel)}", flush=True)
-        # GUI 参数读取：在 Codex 与参数页显示并发上限
-        print(f"::param::codex max_parallel {int(max_parallel)}", flush=True)
         print(f"[codex] 链条总提交数={chain_total} 本次任务={total}", flush=True)
         actual_workers = 1
         if total > 2:
@@ -273,7 +270,6 @@ def run_batch(
             print(f"::progress::codex parallel {actual_workers}", flush=True)
         # Human-readable confirmation lines for GUI logs
         names = ", ".join(d.name for d in dirs)
-        print(f"[codex] 并发上限(max_parallel)={int(max_parallel)}", flush=True)
         print(f"[codex] 本次实际并发={actual_workers} 总任务={total}", flush=True)
         print(f"[codex] 待处理: {names}", flush=True)
     except Exception:

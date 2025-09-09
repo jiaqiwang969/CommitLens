@@ -370,25 +370,6 @@ def build_parser() -> argparse.ArgumentParser:
         )
     pcp.set_defaults(func=_codex_puml)
 
-    # codex params: print defaults for GUI to consume (::param:: markers)
-    pparams = sc.add_parser("params", help="print codex/puml default parameters for GUI")
-    def _codex_params(_: argparse.Namespace) -> int:
-        try:
-            # Introspect defaults from runner functions to avoid drift
-            import inspect
-            from .codex_runner import run_batch as _rb
-            from .puml_fix import run_puml_batch as _rp
-            rb_def = inspect.signature(_rb).parameters["max_parallel"].default
-            rp_def = inspect.signature(_rp).parameters["max_parallel"].default
-        except Exception:
-            # Fallback to current known defaults
-            rb_def = 100
-            rp_def = 100
-        print(f"::param::codex max_parallel {int(rb_def)}")
-        print(f"::param::puml max_parallel {int(rp_def)}")
-        return 0
-    pparams.set_defaults(func=_codex_params)
-
     # latex fix: run codex to fix xelatex build issues in collected artifacts
     pf = sp.add_parser("fixbug", help="use codex to fix xelatex compile errors under artifacts and generate PDF")
     pf.add_argument("--artifacts", default=".artifacts", help="artifacts root directory (where main.tex lives)")

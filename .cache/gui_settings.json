@@ -7,5 +7,6 @@
   "timeline_root": "/Users/jqwang/Desktop/sboxgen-head-ac98b1e-1/.sboxes_timeline",
   "artifacts_root": ".artifacts",
   "timeout": 6000,
-  "runs": 3
+  "runs": 3,
+  "max_parallel": 100
 }

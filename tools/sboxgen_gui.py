@@ -52,6 +52,7 @@ class SboxgenGUI:
         self.artifacts_root_var = tk.StringVar(value=str(Path(".artifacts")))
         self.timeout_var = tk.IntVar(value=6000)
         self.runs_var = tk.IntVar(value=3)
+        self.max_parallel_var = tk.IntVar(value=100)
         self.api_key_var = tk.StringVar(value="")
         self.show_key_var = tk.BooleanVar(value=False)
 
@@ -251,8 +252,10 @@ class SboxgenGUI:
 
         actions = ttk.Frame(tab_run)
         actions.grid(row=1, column=0, sticky="ew", pady=(8, 4))
+        ttk.Label(actions, text="最大并发数:").pack(side=tk.LEFT)
+        ttk.Spinbox(actions, from_=1, to=512, textvariable=self.max_parallel_var, width=6).pack(side=tk.LEFT, padx=(6, 12))
         ttk.Button(actions, text="一键执行全部", command=self._run_all_threaded).pack(side=tk.LEFT)
-        ttk.Button(actions, text="取消当前", command=self._cancel_current).pack(side=tk.LEFT, padx=(8, 0))
+        ttk.Button(actions, text="取消当前执行", command=self._cancel_current).pack(side=tk.LEFT, padx=(8, 0))
         ttk.Button(actions, text="清空日志", command=self._clear_log).pack(side=tk.LEFT, padx=(8, 0))
         ttk.Button(actions, text="清空历史并备份", command=self._backup_current_history_threaded).pack(side=tk.LEFT, padx=(8, 0))
 
@@ -286,6 +289,7 @@ class SboxgenGUI:
                 self.artifacts_root_var.set(data.get("artifacts_root", self.artifacts_root_var.get()))
                 self.timeout_var.set(int(data.get("timeout", self.timeout_var.get())))
                 self.runs_var.set(int(data.get("runs", self.runs_var.get())))
+                self.max_parallel_var.set(int(data.get("max_parallel", self.max_parallel_var.get())))
         except Exception:
             pass
 
@@ -310,6 +314,7 @@ class SboxgenGUI:
                 "artifacts_root": self.artifacts_root_var.get(),
                 "timeout": int(self.timeout_var.get()),
                 "runs": int(self.runs_var.get()),
+                "max_parallel": int(self.max_parallel_var.get()),
             }
             self.settings_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         except Exception:
@@ -540,13 +545,15 @@ class SboxgenGUI:
             cmd = self._python_cmd("verify", "--root", out_root, "--strict")
         elif key == "codex":
             cmd = self._python_cmd(
-                "codex", "batch", "--root", out_root, "--limit", str(limit), "--timeout", str(timeout)
+                "codex", "batch", "--root", out_root, "--limit", str(limit),
+                "--timeout", str(timeout), "--max-parallel", str(int(self.max_parallel_var.get() or 0) or 1)
             )
         elif key == "run":
             # Step 5: first run codex puml across commits, then collect artifacts
             # 5.1 codex puml
             cmd = self._python_cmd(
-                "codex", "puml", "--root", out_root, "--limit", str(limit), "--timeout", str(timeout)
+                "codex", "puml", "--root", out_root, "--limit", str(limit),
+                "--timeout", str(timeout), "--max-parallel", str(int(self.max_parallel_var.get() or 0) or 1)
             )
             rc = self._popen_stream(cmd)
             if rc != 0:

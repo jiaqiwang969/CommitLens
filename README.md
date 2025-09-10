@@ -1,5 +1,16 @@
 CommitLens · 基于 Codex 的一站式提交报告生成器（timeline sboxes + Codex + PUML + LaTeX）
 
+**快速预览生成效果（PDF）**：查看示例输出 → [Example.pdf](./Example.pdf)
+
+界面预览：
+
+![sboxgen GUI 预览](./界面.png)
+
+设置面板（参数与风格）：
+
+![sboxgen GUI 设置](./界面-设置.png)
+
+
 概述
 - 一句话：以提交为单位，驱动 Codex 批量执行、PUML 修复与 LaTeX 组版，从 commit → Codex → PUML → LaTeX → PDF 全链路自动化。
 - 风格：timeline（每个提交包含 head/head-1/head-2 的检出与相邻 diff），内置 README 学习提示与《计算几何教材.md》，并附参考模板。
@@ -124,14 +135,9 @@ Codex 密钥
 - 当前实现聚焦 timeline 产物、模板与执行编排，不包含任何与业务强绑定的后处理；可按 README 的学习提示进行自定义解读与报告生成。
 
 图形界面（可选）
-- 界面预览：
-
-  ![sboxgen GUI 预览](./界面.png)
-
+- 界面预览：见文首“界面预览”两图
 - 使用提示：一键执行全部或逐步执行；每步提供状态与滚动日志。
-- 设置面板（参数与风格）：
-
-  ![sboxgen GUI 设置](./界面-设置.png)
+- 设置面板（参数与风格）：见文首“界面预览”第二图
 
 - 说明：在“基本设置/Codex 与参数/README 模板/执行与日志”页签中配置参数与模板；各字段与下方“可配置项”对应，保存后用于“一键执行全部”。
 - 位置：`tools/sboxgen_gui.py`

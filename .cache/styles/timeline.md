@@ -74,13 +74,8 @@ TeX 片段模板示例
 图示生成指南
 - 环境：本机 macOS 已安装 PlantUML/Graphviz，可直接导出。
 - 路径：`figs/{seq_str}-{short}/architecture.puml` 与 `algorithm_flow.puml`。
-- 导出：
-  1) 先生成 SVG：`plantuml -tsvg -o . figs/{seq_str}-{short}/*.puml`
-  2) 再将 SVG 转为 PDF：
-     - 若有 librsvg：`for s in figs/{seq_str}-{short}/*.svg; do rsvg-convert -f pdf -o "${s%.svg}.pdf" "$s"; done`
-     - 否则（macOS）：`for s in figs/{seq_str}-{short}/*.svg; do sips -s format pdf "$s" --out "${s%.svg}.pdf"; done`
-- 引用：将导出的 PDF 放入上述目录后，按 TeX 模板引用。
 - 参考模板：见本目录下 `template/basic` 与 `template/extended`。
 
 提示：可以将本 README 作为“提示词”，连同本目录的 `HEAD*.diff` 提交给报告生成工具，自动生成初稿；再结合需求进行精炼与校对。
+
 

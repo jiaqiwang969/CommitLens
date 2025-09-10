@@ -45,8 +45,11 @@ tail -f .artifacts/codex_fix_output.txt
 ```
 
 断点续跑与强制重跑
-- 第 4/5 步会自动跳过已成功（status 为 `0/OK/SUCCESS`）的项，仅重试失败/超时/缺失状态的目录。
-- 需要强制重跑：删除对应的 `status` 文件即可（保持输出文件可用于排查）。
+- 第 4/5 步默认自动跳过已成功（status 为 `0/OK/SUCCESS`）的项，仅重试失败/超时/缺失状态的目录。
+- 需要强制重跑：优先使用 CLI 的 `--force` 参数（更安全、可控）；等价方式是手工删除对应目录的 `status` 文件（保留 `output` 以追踪历史）。
+  - 第 4 步：`commitlens codex batch --root ... --force`（删除 `codex_status.txt`、`codex_error.txt`，保留 `codex_output.txt`）
+  - 第 5 步：`commitlens codex puml --root ... --force`（删除 `codex_puml_status.txt`、`codex_puml_error.txt`，保留 `codex_puml_output.txt`）
+  - 第 6 步：`commitlens fixbug ... --runs N --force`（每次运行前删除 `codex_fix_status.txt`、`codex_fix_error.txt`，保留并追加写入 `codex_fix_output.txt`）
 
 编码鲁棒性
 - 所有子进程输出以 `UTF-8 + errors=replace` 解码，保证实时日志不会因个别非 UTF‑8 字节中断（会显示为替代符）。
@@ -64,10 +67,11 @@ tail -f .artifacts/codex_fix_output.txt
   - `commitlens template copy --name extended --to .sboxes_timeline/003-xxxxxxx --overwrite`
   - `commitlens template copy-all --name basic --root .sboxes_timeline --overwrite`
 - 批量执行与收集（可选）：
-  - `commitlens run --root .sboxes_timeline --collect-root .artifacts --collect-figs`
+ - `commitlens run --root .sboxes_timeline --collect-root .artifacts --collect-figs`
 - Codex 执行（单个/批量）：
   - `commitlens codex one --dir .sboxes_timeline/001-xxxxxxx --timeout 600`
-  - `commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 600`
+  - `commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 600 [--runs N] [--force]`
+  - `commitlens codex puml --root .sboxes_timeline --limit 10 --timeout 600 [--runs N] [--force]`
 
 Codex 密钥
 - 获取顺序：命令行 `--api-key` > 环境变量 `CODEX_API_KEY` > 文件 `.cache/codex_api_key`（已在 .gitignore 中忽略）。
@@ -111,19 +115,40 @@ Codex 密钥
    commitlens verify --root .sboxes_timeline --strict
    ```
 
-4) 批量运行 Codex 生成解读  
+4) 批量运行 Codex 生成解读（默认断点续跑；可用 --runs N 重复执行；如需强制重跑加 --force）  
    ```bash
    commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 6000
+   # 连续执行 3 次（逐次断点续跑）：
+   commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 6000 --runs 3
+   # 强制重跑（删除 status+error，保留 output）：
+   commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 6000 --force
    ```
 
-5) 收集并提取 LaTeX 报告与图示  
+5) PUML 修复 + 收集（默认断点续跑；可用 --runs N 重复执行；如需强制重跑加 --force）  
    ```bash
+   # 先修复 PUML（仅对包含 figs/**/algorithm_flow.puml 的目录）
+   commitlens codex puml --root .sboxes_timeline --timeout 6000
+   # 连续执行 2 次（逐次断点续跑）：
+   commitlens codex puml --root .sboxes_timeline --timeout 6000 --runs 2
+   # 强制重跑 PUML：
+   commitlens codex puml --root .sboxes_timeline --timeout 6000 --force
+   # 再收集图示与报告片段
    commitlens run --root .sboxes_timeline --collect-root .artifacts --collect-figs
    ```
 
-6) 修复 xelatex 编译错误并生成最终 PDF（使用 Codex）  
+6) 并行修复 xelatex（每个提交单独 main-<NNN>-<short>.tex，并行 Codex 修复）  
+   ```bash
+   # 为 artifacts/reports 中的每个 <NNN>-<short>.tex 生成 main-<NNN>-<short>.tex，并行修复：
+   commitlens fixbugs --artifacts .artifacts --runs 3 --timeout 6000 --max-parallel 32
+   # 强制模式（每个分片运行前删除 codex_fix_status_<stem>.txt / codex_fix_error_<stem>.txt）：
+   commitlens fixbugs --artifacts .artifacts --runs 3 --timeout 6000 --max-parallel 32 --force
+   ```
+
+7) 修复 xelatex 编译错误并生成最终 PDF（单主文档 main.tex；运行 N 次，保留 output 续写；可选 --force 每次清理 status/error）  
    ```bash
    commitlens fixbug --artifacts .artifacts --tex main.tex --runs 3 --timeout 6000
+   # 强制模式（每次运行前删除 codex_fix_status.txt / codex_fix_error.txt）：
+   commitlens fixbug --artifacts .artifacts --tex main.tex --runs 3 --timeout 6000 --force
    ```
    - 等价于通过 Codex 执行：`codex exec --skip-git-repo-check --sandbox workspace-write "请进入到.artifacts，然后执行xelatex main.tex命令，帮我修复输出tex编译错误，最终生成完整的pdf文档，需反复执行3次，确认最终没有bug，可容许有warning"`
    - 默认参数：`--artifacts .artifacts`，`--tex main.tex`，`--runs 3`；支持 `--api-key`、`--dry-run`、`--timeout`、`--no-save`。
@@ -141,7 +166,7 @@ Codex 密钥
 
 - 说明：在“基本设置/Codex 与参数/README 模板/执行与日志”页签中配置参数与模板；各字段与下方“可配置项”对应，保存后用于“一键执行全部”。
 - 位置：`tools/sboxgen_gui.py`
-- 作用：提供与“103-gpt4o-扫描”相似的可视化界面，一键按本 README 的 6 步执行：mirror → gen → verify → codex batch → run 收集 → fixbug；并支持“风格（模板）”管理。
+- 作用：提供与“103-gpt4o-扫描”相似的可视化界面，一键按新版 7 步执行：mirror → gen → verify → codex batch → collect-tex → tex-fix → collect+fixbug；并支持“风格（模板）”管理。
 - 启动：`python tools/sboxgen_gui.py`
 - 可配置项：
   - `Git 仓库 URL`：如 `https://github.com/Formlabs/foxtrot.git`
@@ -150,6 +175,7 @@ Codex 密钥
   - `风格 (模板)`：默认 `timeline`，可在“基本设置”中选择或导入 `.md` 模板；根据风格自动选择输出目录 `.sboxes_<style>`；生成结构固定采用 timeline
   - `镜像路径 mirror`：默认根据仓库推断 `.cache/mirrors/<name>.git`
   - `时间线根目录 out`：默认 `.sboxes_timeline`
+  - `TEX 时间线根目录 (收集输出)`：默认 `.sboxes_timeline_tex`
   - `产物目录 artifacts`：默认 `.artifacts`
   - `超时 timeout`：如 `6000`
   - `LaTeX runs`：如 `3`
@@ -159,7 +185,8 @@ Codex 密钥
 可编辑 Prompt 与 README（GUI）
 - Codex 提示词：在“Codex 与参数”页可直接编辑两类提示词并保存（支持占位符）：
   - 运行提示词：支持 `{dir}`；也可用环境变量/文件覆盖：`SBOXGEN_CODEX_PROMPT` / `SBOXGEN_CODEX_PROMPT_FILE`
-  - LaTeX 修复提示词：支持 `{dir}`、`{tex}`、`{runs}`；支持 `SBOXGEN_CODEX_LATEX_PROMPT` / `SBOXGEN_CODEX_LATEX_PROMPT_FILE`
+  - PUML + LaTeX 并行修复提示词（用于 tex-fix）：支持 `{dir}`、`{tex}`、`{runs}`；支持 `SBOXGEN_CODEX_TEX_FIX_PROMPT` / `SBOXGEN_CODEX_TEX_FIX_PROMPT_FILE`
+  - LaTeX 修复提示词（用于最终 fixbug）：支持 `{dir}`、`{tex}`、`{runs}`；支持 `SBOXGEN_CODEX_LATEX_PROMPT` / `SBOXGEN_CODEX_LATEX_PROMPT_FILE`（GUI 同时会填充 `SBOXGEN_CODEX_LATEX_SHARDS_PROMPT` 以兼容实现）
 - README 模板（风格=模板）：
   - 在“README 模板”页编辑当前风格的模板；默认风格为 `timeline`，打开即有默认内容
   - 在“基本设置”可刷新/导入 `.md` 模板并选择风格；导入后保存至 `.cache/styles/<style>.md`

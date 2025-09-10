@@ -299,6 +299,7 @@ def run_batch(
     timeout_sec: Optional[int] = None,
     api_key: Optional[str] = None,
     max_parallel: int = 100,
+    force: bool = False,
 ) -> int:
     root = root.resolve()
     all_dirs = [d for d in sorted(root.iterdir()) if d.is_dir()]
@@ -339,6 +340,19 @@ def run_batch(
     dirs = list(all_dirs)
     if limit:
         dirs = dirs[:limit]
+
+    # If forcing rerun: delete previous status+error to disable skip
+    if force and (not dry_run):
+        for d in dirs:
+            try:
+                err_f = d / "codex_error.txt"
+                st_f = d / "codex_status.txt"
+                if err_f.exists():
+                    err_f.unlink()
+                if st_f.exists():
+                    st_f.unlink()
+            except Exception:
+                pass
 
     # Resume behavior: skip directories with successful status
     skipped_ok: list[Path] = []

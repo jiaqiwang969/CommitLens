@@ -134,6 +134,7 @@ def run_puml_batch(
     timeout_sec: Optional[int] = None,
     api_key: Optional[str] = None,
     max_parallel: int = 100,
+    force: bool = False,
 ) -> int:
     root = root.resolve()
     commit_dirs = [d for d in sorted(root.iterdir()) if d.is_dir()]
@@ -146,6 +147,32 @@ def run_puml_batch(
     for d in commit_dirs:
         if _find_algorithm_flow_puml(d):
             targets.append(d)
+
+    # If forcing rerun: delete previous puml status+error (keep output) in figs dirs
+    if force and (not dry_run):
+        for d in targets:
+            p = _find_algorithm_flow_puml(d)
+            if not p:
+                continue
+            figs_dir = p.parent
+            try:
+                (figs_dir / "codex_puml_error.txt").unlink(missing_ok=True)  # Python 3.8? Use try/except
+            except Exception:
+                try:
+                    f = figs_dir / "codex_puml_error.txt"
+                    if f.exists():
+                        f.unlink()
+                except Exception:
+                    pass
+            try:
+                (figs_dir / "codex_puml_status.txt").unlink(missing_ok=True)
+            except Exception:
+                try:
+                    f = figs_dir / "codex_puml_status.txt"
+                    if f.exists():
+                        f.unlink()
+                except Exception:
+                    pass
 
     # Resume behavior: skip ones already successfully fixed
     skipped_ok: list[Path] = []

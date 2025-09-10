@@ -1,0 +1,3 @@
+请进入到{dir}，然后执行 xelatex {tex}，帮我修复输出 tex 编译错误（直接在对应的reports/子tex），一直循环执行直到最终没有错误为止，可容许有 warning。修复的重点为input的tex子文件，可以不用管figs和main主文件的比如字体和布局等等的错误。仅仅解决input的tex子文件的latex相关的编译错误即可。不用对话，直接快速修复即可。
+
+

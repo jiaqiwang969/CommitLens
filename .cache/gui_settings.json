@@ -8,5 +8,11 @@
   "artifacts_root": ".artifacts",
   "timeout": 6000,
   "runs": 3,
+  "fix_runs": 3,
+  "fix_force": true,
+  "codex_force": false,
+  "puml_force": false,
+  "codex_runs": 1,
+  "puml_runs": 1,
   "max_parallel": 200
 }

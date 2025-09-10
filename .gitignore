@@ -3,6 +3,7 @@
 .env.local
 .artifacts
 .sboxes_timeline
+.sboxes_timeline_tex
 .cache/codex_api_key
 temp
 *.pyc

@@ -1,0 +1,21 @@
+请进入到‘{dir}’，优先完成图形修复与导出，然后进行 LaTeX 编译：
+一、PlantUML 修复与导出：
+1) 在 figs 子目录中查找 *.puml（若存在）；
+2) 执行：plantuml -tsvg *.puml 生成 SVG；
+3) 若出现如 ‘Error line N in file ...’ 的错误，请打开并修复（语法、引号、未闭合括号、缺少 @startuml/@enduml 等）；
+4) 修复后再次编译确保无错误；
+5) 将 SVG 转成 PDF：优先 rsvg-convert：rsvg-convert -f pdf -o *.pdf *.svg；
+   无 rsvg-convert 时可用 macOS 的 sips：sips -s format pdf algorithm_flow.svg --out algorithm_flow.pdf；
+
+二、LaTeX 编译与修复：
+0）确认正常引用插入pdf图片；
+1) 使用 xelatex -no-pdf -interaction=nonstopmode  -halt-on-error -file-line-error {tex}执行编译；
+2) 循环执行 {runs} 次或直到无错误为止（可容许 warning）；
+3) 若因图片缺失/错误导致编译失败，请回到上一步修复 PUML 并正确导出 SVG/PDF；
+
+输出要求：最终生成无错误的 PDF，必要时重复交替修复。
+注意：仅关心reports下面的tex，而main-xx-commit下的风格或者字体等错误或者warning一律忽略。
+
+提示：本次执行可能中断，请回顾已完成工作后继续。
+
+

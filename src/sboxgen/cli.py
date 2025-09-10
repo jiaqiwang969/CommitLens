@@ -19,6 +19,8 @@ from .runner import run_over_commits
 from .codex_runner import run_one as codex_run_one, run_batch as codex_run_batch
 from .puml_fix import run_puml_batch
 from .latex_fix import run_latex_fix
+from .tex_collect import collect_timeline_to_tex
+from .tex_fix import run_tex_fix_batch
 import os
 
 
@@ -288,6 +290,52 @@ def build_parser() -> argparse.ArgumentParser:
         return 0
     pr.set_defaults(func=_run)
 
+    # collect-tex: build .sboxes_timeline_tex with per-commit figs+reports and main-*-commit.tex
+    pct = sp.add_parser("collect-tex", help="from .sboxes_timeline create .sboxes_timeline_tex (per-commit figs+reports+main-*-commit.tex)")
+    pct.add_argument("--from-root", default=".sboxes_timeline", help="source timeline root")
+    pct.add_argument("--to-root", default=".sboxes_timeline_tex", help="destination root for tex-only timeline")
+    pct.add_argument("--overwrite", action="store_true", help="overwrite existing destination commit directories")
+    pct.add_argument("--quiet", action="store_true", help="less verbose output")
+    def _collect_tex(args: argparse.Namespace) -> int:
+        src = Path(args.from_root).resolve()
+        dst = Path(args.to_root).resolve()
+        return collect_timeline_to_tex(src, dst, overwrite=args.overwrite, quiet=args.quiet)
+    pct.set_defaults(func=_collect_tex)
+
+    # tex-fix: inside .sboxes_timeline_tex/<commit>/ run codex to repair PUML+LaTeX in parallel
+    ptx = sp.add_parser("tex-fix", help="run combined PUML+LaTeX Codex fixes under .sboxes_timeline_tex in parallel")
+    ptx.add_argument("--root", default=".sboxes_timeline_tex", help="root of per-commit tex timeline")
+    ptx.add_argument("--limit", type=int, default=0, help="limit number of commit directories")
+    ptx.add_argument("--runs", type=int, default=3, help="latex passes hint in prompt")
+    ptx.add_argument("--dry-run", action="store_true", help="print codex commands without executing")
+    ptx.add_argument("--no-save", action="store_true", help="do not save outputs to files")
+    ptx.add_argument("--timeout", type=int, default=0, help="timeout seconds per commit")
+    ptx.add_argument("--max-parallel", type=int, default=100, help="max parallel workers")
+    ptx.add_argument("--force", action="store_true", help="force rerun: delete previous status+error (keep output)")
+    ptx.add_argument("--api-key", help="override CODEX_API_KEY for this run; default reads env or .cache/codex_api_key")
+    def _tex_fix(args: argparse.Namespace) -> int:
+        key = args.api_key or os.environ.get("CODEX_API_KEY")
+        if not key:
+            p = Path(".cache/codex_api_key")
+            if p.exists():
+                try:
+                    key = p.read_text(encoding="utf-8").strip()
+                except Exception:
+                    key = None
+        root = Path(args.root).resolve()
+        return run_tex_fix_batch(
+            root=root,
+            limit=int(args.limit or 0),
+            runs=int(args.runs or 1),
+            dry_run=args.dry_run,
+            save_output=(not args.no_save),
+            timeout_sec=(args.timeout or None),
+            api_key=key,
+            max_parallel=args.max_parallel,
+            force=args.force,
+        )
+    ptx.set_defaults(func=_tex_fix)
+
     # codex exec helpers
     pc = sp.add_parser("codex", help="invoke codex exec for one or many commit directories")
     sc = pc.add_subparsers(dest="ccmd", required=True)
@@ -324,7 +372,9 @@ def build_parser() -> argparse.ArgumentParser:
     pcb.add_argument("--no-save", action="store_true", help="do not save outputs to files")
     pcb.add_argument("--timeout", type=int, default=0, help="timeout seconds per commit")
     pcb.add_argument("--max-parallel", type=int, default=100, help="max parallel workers (default 100)")
+    pcb.add_argument("--runs", type=int, default=1, help="repeat step 4 this many times (default 1)")
     pcb.add_argument("--api-key", help="override CODEX_API_KEY for this run; default reads env or .cache/codex_api_key")
+    pcb.add_argument("--force", action="store_true", help="force rerun: delete previous status+error (keep output) so even successful ones rerun")
     def _codex_batch(args: argparse.Namespace) -> int:
         key = args.api_key or os.environ.get("CODEX_API_KEY")
         if not key:
@@ -334,15 +384,24 @@ def build_parser() -> argparse.ArgumentParser:
                     key = p.read_text(encoding="utf-8").strip()
                 except Exception:
                     key = None
-        return codex_run_batch(
-            Path(args.root),
-            limit=args.limit,
-            dry_run=args.dry_run,
-            save_output=(not args.no_save),
-            timeout_sec=(args.timeout or None),
-            api_key=key,
-            max_parallel=args.max_parallel,
-        )
+        attempts = max(1, int(args.runs or 1))
+        last_code = 0
+        for i in range(1, attempts + 1):
+            try:
+                print(f"[codex] attempt {i}/{attempts}")
+            except Exception:
+                pass
+            last_code = codex_run_batch(
+                Path(args.root),
+                limit=args.limit,
+                dry_run=args.dry_run,
+                save_output=(not args.no_save),
+                timeout_sec=(args.timeout or None),
+                api_key=key,
+                max_parallel=args.max_parallel,
+                force=args.force,
+            )
+        return last_code
     pcb.set_defaults(func=_codex_batch)
 
     pcp = sc.add_parser("puml", help="use codex to compile and fix PlantUML in figs/*/algorithm_flow.puml across commits")
@@ -352,7 +411,9 @@ def build_parser() -> argparse.ArgumentParser:
     pcp.add_argument("--no-save", action="store_true", help="do not save outputs to files")
     pcp.add_argument("--timeout", type=int, default=0, help="timeout seconds per commit")
     pcp.add_argument("--max-parallel", type=int, default=100, help="max parallel workers (default 100)")
+    pcp.add_argument("--runs", type=int, default=1, help="repeat step 5 this many times (default 1)")
     pcp.add_argument("--api-key", help="override CODEX_API_KEY for this run; default reads env or .cache/codex_api_key")
+    pcp.add_argument("--force", action="store_true", help="force rerun PUML: delete previous status+error in figs/* (keep output)")
     def _codex_puml(args: argparse.Namespace) -> int:
         key = args.api_key or os.environ.get("CODEX_API_KEY")
         if not key:
@@ -362,26 +423,36 @@ def build_parser() -> argparse.ArgumentParser:
                     key = p.read_text(encoding="utf-8").strip()
                 except Exception:
                     key = None
-        return run_puml_batch(
-            Path(args.root),
-            limit=args.limit,
-            dry_run=args.dry_run,
-            save_output=(not args.no_save),
-            timeout_sec=(args.timeout or None),
-            api_key=key,
-            max_parallel=args.max_parallel,
-        )
+        attempts = max(1, int(args.runs or 1))
+        last_code = 0
+        for i in range(1, attempts + 1):
+            try:
+                print(f"[puml] attempt {i}/{attempts}")
+            except Exception:
+                pass
+            last_code = run_puml_batch(
+                Path(args.root),
+                limit=args.limit,
+                dry_run=args.dry_run,
+                save_output=(not args.no_save),
+                timeout_sec=(args.timeout or None),
+                api_key=key,
+                max_parallel=args.max_parallel,
+                force=args.force,
+            )
+        return last_code
     pcp.set_defaults(func=_codex_puml)
 
     # latex fix: run codex to fix xelatex build issues in collected artifacts
     pf = sp.add_parser("fixbug", help="use codex to fix xelatex compile errors under artifacts and generate PDF")
     pf.add_argument("--artifacts", default=".artifacts", help="artifacts root directory (where main.tex lives)")
     pf.add_argument("--tex", default="main.tex", help="tex file name inside artifacts root")
-    pf.add_argument("--runs", type=int, default=3, help="times to run xelatex to stabilize references")
+    pf.add_argument("--runs", type=int, default=3, help="repeat step 6 this many times (each run streams to the same output file)")
     pf.add_argument("--dry-run", action="store_true", help="print codex command without executing")
     pf.add_argument("--no-save", action="store_true", help="do not save codex outputs to files")
     pf.add_argument("--timeout", type=int, default=0, help="timeout seconds")
     pf.add_argument("--api-key", help="override CODEX_API_KEY for this run; default reads env or .cache/codex_api_key")
+    pf.add_argument("--force", action="store_true", help="delete previous status+error to force rerun (do not delete output)")
     def _fixbug(args: argparse.Namespace) -> int:
         # Resolve API key precedence: arg > env > .cache/codex_api_key
         key = args.api_key or os.environ.get("CODEX_API_KEY")
@@ -396,16 +467,78 @@ def build_parser() -> argparse.ArgumentParser:
         if not artifacts.exists() or not artifacts.is_dir():
             print(f"artifacts not found: {artifacts}", file=sys.stderr)
             return 2
-        return run_latex_fix(
+
+        # New semantics: repeat step 6 'runs' times. Before each run, preserve output, reset status/error.
+        attempts = max(1, int(args.runs or 1))
+        last_code = 0
+        for i in range(1, attempts + 1):
+            if not args.dry_run and args.force:
+                try:
+                    out_path = artifacts / "codex_fix_output.txt"
+                    err_path = artifacts / "codex_fix_error.txt"
+                    status_path = artifacts / "codex_fix_status.txt"
+                    # Ensure parent exists; keep output; remove status+error to trigger fresh run status
+                    artifacts.mkdir(parents=True, exist_ok=True)
+                    if err_path.exists():
+                        err_path.unlink()
+                    if status_path.exists():
+                        status_path.unlink()
+                except Exception:
+                    pass
+            try:
+                print(f"[fixbug] attempt {i}/{attempts}")
+            except Exception:
+                pass
+            # For each attempt, we can set runs=1 for the prompt to avoid compounding inner loops
+            code = run_latex_fix(
+                artifacts_dir=artifacts,
+                tex_name=args.tex,
+                runs=1,
+                dry_run=args.dry_run,
+                save_output=(not args.no_save),
+                timeout_sec=(args.timeout or None),
+                api_key=key,
+            )
+            last_code = code
+        return last_code
+    pf.set_defaults(func=_fixbug)
+
+    # latex fix (per-commit shards): run many xelatex tasks in parallel across collected reports
+    pfb = sp.add_parser("fixbugs", help="parallel Codex runs to fix xelatex errors per commit (main-<NNN-short>.tex)")
+    pfb.add_argument("--artifacts", default=".artifacts", help="artifacts root directory")
+    pfb.add_argument("--runs", type=int, default=3, help="passes of xelatex per shard (prompt hint)")
+    pfb.add_argument("--dry-run", action="store_true", help="print codex commands without executing")
+    pfb.add_argument("--no-save", action="store_true", help="do not save outputs to files")
+    pfb.add_argument("--timeout", type=int, default=0, help="timeout seconds per shard")
+    pfb.add_argument("--max-parallel", type=int, default=100, help="max parallel workers (default 100)")
+    pfb.add_argument("--force", action="store_true", help="force rerun: delete previous shard status+error (keep output)")
+    pfb.add_argument("--api-key", help="override CODEX_API_KEY for this run; default reads env or .cache/codex_api_key")
+    def _fixbugs(args: argparse.Namespace) -> int:
+        # Resolve API key precedence: arg > env > .cache/codex_api_key
+        key = args.api_key or os.environ.get("CODEX_API_KEY")
+        if not key:
+            p = Path(".cache/codex_api_key")
+            if p.exists():
+                try:
+                    key = p.read_text(encoding="utf-8").strip()
+                except Exception:
+                    key = None
+        artifacts = Path(args.artifacts).resolve()
+        if not artifacts.exists() or not artifacts.is_dir():
+            print(f"artifacts not found: {artifacts}", file=sys.stderr)
+            return 2
+        from .latex_fix import run_latex_fix_shards_batch
+        return run_latex_fix_shards_batch(
             artifacts_dir=artifacts,
-            tex_name=args.tex,
-            runs=args.runs,
+            runs=int(args.runs or 1),
             dry_run=args.dry_run,
             save_output=(not args.no_save),
             timeout_sec=(args.timeout or None),
             api_key=key,
+            max_parallel=args.max_parallel,
+            force=args.force,
         )
-    pf.set_defaults(func=_fixbug)
+    pfb.set_defaults(func=_fixbugs)
 
     return ap
 

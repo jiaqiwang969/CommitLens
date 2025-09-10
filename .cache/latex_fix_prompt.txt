@@ -1,4 +1,5 @@
-请进入到{dir}，然后执行xelatex {tex}命令，帮我修复输出tex编译错误，一直循环，直到最终没有错误为止，可容许有warning。
+请进入到{dir}，首先，使用 xelatex -no-pdf -interaction=nonstopmode  -halt-on-error -file-line-error {tex}执行编译，汇总错误并修复；待修复所有错误后，然后执行xelatex {tex}命令，输出pdf，可容许有warning。
+
 
 
 

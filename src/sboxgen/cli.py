@@ -21,6 +21,7 @@ from .puml_fix import run_puml_batch
 from .latex_fix import run_latex_fix
 from .tex_collect import collect_timeline_to_tex
 from .tex_fix import run_tex_fix_batch
+from .overwrite import overwrite_from_artifacts
 import os
 
 
@@ -335,6 +336,25 @@ def build_parser() -> argparse.ArgumentParser:
             force=args.force,
         )
     ptx.set_defaults(func=_tex_fix)
+
+    # overwrite: copy artifacts back into sboxes timeline (reports + figs)
+    pov = sp.add_parser("overwrite", help="overwrite .artifacts into .sboxes_timeline (reports and figs)")
+    pov.add_argument("--artifacts", default=".artifacts", help="artifacts root directory (source)")
+    pov.add_argument("--root", default=".sboxes_timeline", help="sboxes timeline root (destination)")
+    pov.add_argument("--no-reports", action="store_true", help="do not overwrite reports")
+    pov.add_argument("--no-figs", action="store_true", help="do not overwrite figs")
+    pov.add_argument("--quiet", action="store_true", help="less verbose output")
+    def _overwrite(args: argparse.Namespace) -> int:
+        artifacts = Path(args.artifacts).resolve()
+        root = Path(args.root).resolve()
+        return overwrite_from_artifacts(
+            artifacts_dir=artifacts,
+            dest_root=root,
+            overwrite_reports=(not args.no_reports),
+            overwrite_figs=(not args.no_figs),
+            quiet=args.quiet,
+        )
+    pov.set_defaults(func=_overwrite)
 
     # codex exec helpers
     pc = sp.add_parser("codex", help="invoke codex exec for one or many commit directories")

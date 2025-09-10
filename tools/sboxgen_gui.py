@@ -61,6 +61,8 @@ class SboxgenGUI:
         self.puml_runs_var = tk.IntVar(value=1)
         self.api_key_var = tk.StringVar(value="")
         self.show_key_var = tk.BooleanVar(value=False)
+        self.overwrite_reports_var = tk.BooleanVar(value=True)
+        self.overwrite_figs_var = tk.BooleanVar(value=True)
 
         # 输出目录衍生/覆盖跟踪
         self._out_overridden = False
@@ -78,6 +80,7 @@ class SboxgenGUI:
             {"key": "collect_tex", "label": "5) 收集为 .sboxes_timeline_tex", "status": tk.StringVar(value="pending")},
             {"key": "texfix", "label": "6) 并行 PUML+LaTeX 修复（按提交）", "status": tk.StringVar(value="pending")},
             {"key": "fixbug", "label": "7) 汇总并生成 PDF", "status": tk.StringVar(value="pending")},
+            {"key": "overwrite", "label": "8) 回写 artifacts → sboxes", "status": tk.StringVar(value="pending")},
         ]
 
         self._build_ui()
@@ -273,6 +276,12 @@ class SboxgenGUI:
                 ttk.Label(cell, text="运行次数:").pack(side=tk.LEFT)
                 ttk.Spinbox(cell, from_=1, to=10, textvariable=self.fix_runs_var, width=6).pack(side=tk.LEFT, padx=(4, 12))
                 ttk.Checkbutton(cell, text="强制重跑（删 error/status）", variable=self.fix_force_var).pack(side=tk.LEFT)
+            elif s["key"] == "overwrite":
+                # Options for overwrite step: choose which kinds to copy back
+                cell = ttk.Frame(steps_frame)
+                cell.grid(row=row, column=2, sticky="w")
+                ttk.Checkbutton(cell, text="覆盖报告(reports)", variable=self.overwrite_reports_var).pack(side=tk.LEFT)
+                ttk.Checkbutton(cell, text="覆盖图示(figs)", variable=self.overwrite_figs_var).pack(side=tk.LEFT, padx=(12, 0))
             btn = ttk.Button(steps_frame, text="运行", command=lambda k=s["key"]: self._run_step_threaded(k))
             # Place the run button in the rightmost column
             btn.grid(row=row, column=3, sticky="e")
@@ -655,6 +664,16 @@ class SboxgenGUI:
             ]
             if self.fix_force_var.get():
                 args.append("--force")
+            cmd = self._python_cmd(*args)
+        elif key == "overwrite":
+            # Step 8: overwrite artifacts back into sboxes timeline
+            args = [
+                "overwrite", "--artifacts", artifacts, "--root", out_root
+            ]
+            if not self.overwrite_reports_var.get():
+                args.append("--no-reports")
+            if not self.overwrite_figs_var.get():
+                args.append("--no-figs")
             cmd = self._python_cmd(*args)
         else:
             self._append_log(f"未知步骤: {key}")

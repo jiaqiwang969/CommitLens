@@ -153,6 +153,19 @@ Codex 密钥
    - 等价于通过 Codex 执行：`codex exec --skip-git-repo-check --sandbox workspace-write "请进入到.artifacts，然后执行xelatex main.tex命令，帮我修复输出tex编译错误，最终生成完整的pdf文档，需反复执行3次，确认最终没有bug，可容许有warning"`
    - 默认参数：`--artifacts .artifacts`，`--tex main.tex`，`--runs 3`；支持 `--api-key`、`--dry-run`、`--timeout`、`--no-save`。
 
+8) 回写 .artifacts 到 .sboxes_timeline（覆盖 reports 与 figs）  
+   ```bash
+   # 将 .artifacts 下的 reports/*.tex 与 figs/<NNN-short>/ 写回到对应的时间线提交目录
+   commitlens overwrite --artifacts .artifacts --root .sboxes_timeline
+   # 仅覆盖报告或仅覆盖图示：
+   commitlens overwrite --artifacts .artifacts --root .sboxes_timeline --no-figs
+   commitlens overwrite --artifacts .artifacts --root .sboxes_timeline --no-reports
+   ```
+   - 行为：
+     - reports：`.artifacts/reports/<name>.tex` -> `.sboxes_timeline/<commit>/reports/<name>.tex`
+     - figs：`.artifacts/figs/<commit>/...` 替换 `.sboxes_timeline/<commit>/figs/<commit>/...`
+     - `<commit>` 默认按目录名精确匹配；若为 `NNN-commit.tex` 也会按数字前缀匹配对应提交目录。
+
 先决条件
 - Python 3.9+；git；（可选）PlantUML/Graphviz；（可选）librsvg 或 macOS sips；（可选）Codex CLI 与 API key。
 

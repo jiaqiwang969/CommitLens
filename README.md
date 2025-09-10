@@ -161,3 +161,4 @@ Codex 密钥
   - 亦可通过环境变量覆盖：
     - 文本：`SBOXGEN_SBOX_README_TEMPLATE`
     - 文件：`SBOXGEN_SBOX_README_TEMPLATE_FILE`
+# CommitLens

@@ -1,7 +1,8 @@
 请进入到‘{dir}’，检查并编译 PlantUML：
-1) 运行：plantuml -tsvg algorithm_flow.puml 生成 SVG；
-2) 若出现如 ‘Error line N in file ...’ 的错误，请打开并修复 algorithm_flow.puml 中的问题（语法、引号、未闭合括号、缺少 @startuml/@enduml 等）；
+1) 运行：plantuml -tsvg *.puml 目录下的所有puml文件，生成 SVG；
+2) 若出现如 ‘Error line N in file ...’ 的错误，请打开并修复 *.puml 中的问题（语法、引号、未闭合括号、缺少 @startuml/@enduml 等）；
 3) 修复后再次编译确保无错误；
-4) 将生成的 SVG 使用 rsvg-convert 转成 PDF：rsvg-convert -f pdf -o algorithm_flow.pdf algorithm_flow.svg；
+4) 将生成的 SVG 使用 rsvg-convert 转成 PDF：rsvg-convert -f pdf -o *.pdf *.svg；
 5) 最终请确认 algorithm_flow.svg 与 algorithm_flow.pdf 均已正确生成。
+
 

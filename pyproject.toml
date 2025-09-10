@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sboxgen"
+name = "commitlens"
 version = "0.1.0"
-description = "Generate reproducible Git sboxes (three worktrees + evidence + metadata)"
+description = "CommitLens · Codex-powered, one-stop commit report generator (timeline sboxes + Codex + PUML + LaTeX)"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [{name = "Sboxgen Team", email = "devnull@example.com"}]
@@ -17,6 +17,7 @@ classifiers = [
 ]
 
 [project.scripts]
+commitlens = "sboxgen.cli:main"
 sboxgen = "sboxgen.cli:main"
 
 [tool.setuptools]

@@ -5,7 +5,7 @@ from typing import Optional
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from .codex_runner import run_codex_exec
+from .codex_runner import run_codex_exec, run_codex_exec_streaming
 
 
 def _find_algorithm_flow_puml(commit_dir: Path) -> Optional[Path]:
@@ -48,7 +48,8 @@ def build_puml_fix_prompt(figs_dir: Path) -> str:
         f"3) 修复后再次编译确保无错误；\n"
         f"4) 将生成的 SVG 使用 rsvg-convert 转成 PDF：rsvg-convert -f pdf -o algorithm_flow.pdf algorithm_flow.svg；\n"
         f"   如本机无 rsvg-convert，可采用 macOS 的 sips 作为兜底：sips -s format pdf algorithm_flow.svg --out algorithm_flow.pdf；\n"
-        f"5) 最终请确认 algorithm_flow.svg 与 algorithm_flow.pdf 均已生成。\n"
+        f"5) 最终请确认 algorithm_flow.svg 与 algorithm_flow.pdf 均已生成。\n\n"
+        f"提示：当前执行可能由于某些原因中断，请继续回顾一下已经完成的工作，然后继续完成上述任务。\n"
     )
 
 
@@ -65,30 +66,64 @@ def run_puml_one(commit_dir: Path, dry_run: bool = False, save_output: bool = Tr
         print(f"DRY-RUN codex exec --skip-git-repo-check --sandbox workspace-write \"{safe}\"")
         return 0
 
-    code, out, err = run_codex_exec(prompt, cwd=figs_dir, timeout_sec=timeout_sec, api_key=api_key)
-    # Post-check: ensure expected outputs exist
-    try:
-        svg_ok = (figs_dir / "algorithm_flow.svg").exists()
-        pdf_ok = (figs_dir / "algorithm_flow.pdf").exists()
-        if code == 0 and not (svg_ok and pdf_ok):
-            code = 1
-            missing = []
-            if not svg_ok:
-                missing.append("algorithm_flow.svg")
-            if not pdf_ok:
-                missing.append("algorithm_flow.pdf")
-            err = (err or "") + f"\nmissing outputs: {', '.join(missing)}"
-    except Exception:
-        pass
     if save_output:
-        (figs_dir / "codex_puml_output.txt").write_text(out or "", encoding="utf-8")
-        (figs_dir / "codex_puml_error.txt").write_text(err or "", encoding="utf-8")
-        (figs_dir / "codex_puml_status.txt").write_text(str(code), encoding="utf-8")
+        # Stream outputs to files; pre-create placeholders for UI discovery
+        out_path = figs_dir / "codex_puml_output.txt"
+        err_path = figs_dir / "codex_puml_error.txt"
+        status_path = figs_dir / "codex_puml_status.txt"
+        try:
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            err_path.parent.mkdir(parents=True, exist_ok=True)
+            status_path.parent.mkdir(parents=True, exist_ok=True)
+            if not out_path.exists():
+                out_path.write_text("", encoding="utf-8")
+            if not err_path.exists():
+                err_path.write_text("", encoding="utf-8")
+            if not status_path.exists():
+                status_path.write_text("queued", encoding="utf-8")
+        except Exception:
+            pass
+
+        code, out, err = run_codex_exec_streaming(
+            prompt,
+            cwd=figs_dir,
+            timeout_sec=timeout_sec,
+            api_key=api_key,
+            out_path=out_path,
+            err_path=err_path,
+            status_path=status_path,
+        )
+
+        # Post-check: ensure expected outputs exist; if missing, mark as failure and update status/err
+        try:
+            svg_ok = (figs_dir / "algorithm_flow.svg").exists()
+            pdf_ok = (figs_dir / "algorithm_flow.pdf").exists()
+            if code == 0 and not (svg_ok and pdf_ok):
+                code = 1
+                missing = []
+                if not svg_ok:
+                    missing.append("algorithm_flow.svg")
+                if not pdf_ok:
+                    missing.append("algorithm_flow.pdf")
+                # Append missing info into error log and update status
+                try:
+                    with err_path.open("a", encoding="utf-8") as fh:
+                        fh.write(f"\nmissing outputs: {', '.join(missing)}\n")
+                except Exception:
+                    pass
+                try:
+                    status_path.write_text(str(code), encoding="utf-8")
+                except Exception:
+                    pass
+        except Exception:
+            pass
+        return code
     else:
+        code, out, err = run_codex_exec(prompt, cwd=figs_dir, timeout_sec=timeout_sec, api_key=api_key)
         print(out or "")
         if err:
             print(err)
-    return code
+        return code
 
 
 def run_puml_batch(
@@ -112,8 +147,43 @@ def run_puml_batch(
         if _find_algorithm_flow_puml(d):
             targets.append(d)
 
+    # Resume behavior: skip ones already successfully fixed
+    skipped_ok: list[Path] = []
+    to_run: list[Path] = []
+    for d in targets:
+        figs_dir = _find_algorithm_flow_puml(d)
+        if figs_dir is None:
+            to_run.append(d)
+            continue
+        figs_dir = figs_dir.parent
+        status_file = figs_dir / "codex_puml_status.txt"
+        ok = False
+        if status_file.exists():
+            try:
+                s = status_file.read_text(encoding="utf-8").strip()
+                if s:
+                    try:
+                        ok = int(s) == 0
+                    except Exception:
+                        ok = s.upper() in ("OK", "SUCCESS")
+            except Exception:
+                ok = False
+        if ok:
+            skipped_ok.append(d)
+        else:
+            to_run.append(d)
+
+    targets = to_run
+
     total = len(targets)
     if total == 0:
+        try:
+            if skipped_ok:
+                skipped_names = ", ".join(d.name for d in skipped_ok)
+                print(f"[puml] 已跳过已成功的目录: {skipped_names}", flush=True)
+            print("[puml] 无需处理，所有任务均已完成或无待处理项", flush=True)
+        except Exception:
+            pass
         return 0
 
     try:
@@ -122,8 +192,34 @@ def run_puml_batch(
         if total > 2:
             workers = min(max(1, int(max_parallel)), total)
             print(f"::progress::puml parallel {workers}", flush=True)
+        if skipped_ok:
+            skipped_names = ", ".join(d.name for d in skipped_ok)
+            print(f"[puml] 已跳过已成功的目录: {skipped_names}", flush=True)
     except Exception:
         pass
+
+    # Pre-create queued files for to-run targets so UI can see them immediately
+    if save_output and (not dry_run):
+        for d in targets:
+            puml = _find_algorithm_flow_puml(d)
+            if not puml:
+                continue
+            figs_dir = puml.parent
+            try:
+                out_path = figs_dir / "codex_puml_output.txt"
+                err_path = figs_dir / "codex_puml_error.txt"
+                status_path = figs_dir / "codex_puml_status.txt"
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                err_path.parent.mkdir(parents=True, exist_ok=True)
+                status_path.parent.mkdir(parents=True, exist_ok=True)
+                if not out_path.exists():
+                    out_path.write_text("", encoding="utf-8")
+                if not err_path.exists():
+                    err_path.write_text("", encoding="utf-8")
+                if not status_path.exists():
+                    status_path.write_text("queued", encoding="utf-8")
+            except Exception:
+                pass
 
     # If small, run sequentially
     if total <= 2:

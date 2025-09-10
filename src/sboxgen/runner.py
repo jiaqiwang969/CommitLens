@@ -115,7 +115,7 @@ def _write_main_tex(collect_root: Path, only_files: list[str] | None = None, qui
         "\\sloppy",
         "\\emergencystretch=1em",
         "",
-        "\\title{Foxtrot 提交演进报告（sboxgen run 汇总）}",
+        "\\title{Foxtrot 提交演进报告（CommitLens 汇总）}",
         "\\author{}",
         "\\date{\\today}",
         "",
@@ -232,13 +232,13 @@ def run_over_commits(
             if figs_dir.exists():
                 out_dir = collect_root / "figs" / name
                 ensure_dir(out_dir)
-                # Copy artifacts recursively (pdf/svg/puml), preserving relative subdirectories
+                # Copy artifacts recursively (pdf/svg/puml/txt), preserving relative subdirectories
                 copied = 0
                 for f in figs_dir.rglob("*"):
                     if not f.is_file():
                         continue
                     ext = f.suffix.lower()
-                    if ext not in (".pdf", ".svg", ".puml"):
+                    if ext not in (".pdf", ".svg", ".puml", ".txt"):
                         continue
                     rel = f.relative_to(figs_dir)
                     # Flatten a leading commit-name directory (e.g., <commit>/<files> -> <files>)
@@ -250,7 +250,7 @@ def run_over_commits(
                     if _copy_if_exists(f, dst):
                         copied += 1
                 if not quiet:
-                    print(f"[{name}] collected figs -> {out_dir} ({copied} files: pdf/svg/puml; flattened)")
+                    print(f"[{name}] collected figs -> {out_dir} ({copied} files: pdf/svg/puml/txt; flattened)")
                 # Remove redundant nested commit folder if present (e.g., <out_dir>/<commit>/...)
                 nested = out_dir / name
                 try:

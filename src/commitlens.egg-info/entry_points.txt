@@ -1,0 +1,3 @@
+[console_scripts]
+commitlens = sboxgen.cli:main
+sboxgen = sboxgen.cli:main

@@ -18,10 +18,13 @@ class RunError(RuntimeError):
 
 def run(cmd: Iterable[str] | str, cwd: Optional[Path] = None, check: bool = True, env: Optional[dict] = None) -> Tuple[int, str, str]:
     shell = isinstance(cmd, str)
+    # Force UTF-8 with replacement to avoid UnicodeDecodeError when tools emit non-UTF-8 bytes
     proc = subprocess.Popen(
         cmd if shell else list(cmd),
         cwd=str(cwd) if cwd else None,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         shell=shell,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

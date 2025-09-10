@@ -1,3 +1,15 @@
+Metadata-Version: 2.4
+Name: commitlens
+Version: 0.1.0
+Summary: CommitLens · Codex-powered, one-stop commit report generator (timeline sboxes + Codex + PUML + LaTeX)
+Author-email: Sboxgen Team <devnull@example.com>
+License: Proprietary
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
 CommitLens · 基于 Codex 的一站式提交报告生成器（timeline sboxes + Codex + PUML + LaTeX）
 
 概述

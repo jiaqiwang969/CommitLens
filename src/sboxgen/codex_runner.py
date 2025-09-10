@@ -44,7 +44,8 @@ def build_prompt(commit_dir: Path) -> str:
         f"1) 切换到该目录后阅读 README.md；\n"
         f"2) 按 README 中的‘产出目标’完成对应操作（可创建/修改本目录下的 reports/figs 等文件）；\n"
         f"3) 完成后将本次产出在标准输出简要列出（例如生成的 fragment.tex、图表等）；\n"
-        f"4) 遇到依赖缺失可做最小替代（如仅生成占位文件并标注 TODO）。\n"
+        f"4) 遇到依赖缺失可做最小替代（如仅生成占位文件并标注 TODO）。\n\n"
+        f"提示：当前执行可能由于某些原因中断，请继续回顾一下已经完成的工作，然后继续按照 README.md 的要求完成任务。\n"
     )
 
 
@@ -68,6 +69,8 @@ def run_codex_exec(prompt: str, cwd: Optional[Path] = None, timeout_sec: Optiona
             cmd,
             cwd=str(cwd) if cwd else None,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             env=env,
@@ -90,6 +93,39 @@ def run_codex_exec(prompt: str, cwd: Optional[Path] = None, timeout_sec: Optiona
         if isinstance(err, bytes):
             err = err.decode('utf-8', errors='replace')
         return 124, out, err
+
+
+def _has_error_markers_tail(out: str, tail_lines: int = 10) -> tuple[bool, list[str]]:
+    """Heuristically detect failure by scanning ONLY the last N lines of stdout.
+
+    This avoids false positives from earlier log content. Returns (has_error, markers).
+    """
+    try:
+        lines = out.splitlines()
+        tail = "\n".join(lines[-tail_lines:]) if lines else ""
+    except Exception:
+        tail = out
+    hay = tail.lower()
+    markers = [
+        "error:",
+        "stream error",
+        "error sending request",
+        "timed out",
+        "timeout",
+        "deadline exceeded",
+        "connection reset",
+        "broken pipe",
+        "temporary failure in name resolution",
+        "service unavailable",
+        "bad gateway",
+        "too many requests",
+        "rate limit",
+        "invalid api key",
+        "unauthenticated",
+        "certificate verify failed",
+    ]
+    hit = [m for m in markers if m in hay]
+    return (len(hit) > 0, hit)
 
 
 def run_codex_exec_streaming(
@@ -145,6 +181,8 @@ def run_codex_exec_streaming(
         cmd,
         cwd=str(cwd) if cwd else None,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         bufsize=1,  # line-buffered in text mode
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -230,9 +268,23 @@ def run_one(commit_dir: Path, dry_run: bool = False, save_output: bool = True, t
             err_path=err_path,
             status_path=status_path,
         )
+        # If exit code is 0 but we detect error markers in logs, override to failure
+        has_err, hits = _has_error_markers_tail(out)
+        if code == 0 and has_err:
+            code = 1
+            try:
+                with err_path.open("a", encoding="utf-8") as fh:
+                    fh.write("\n[post-check] detected error markers: " + ", ".join(hits) + "\n")
+                status_path.write_text(str(code), encoding="utf-8")
+            except Exception:
+                pass
     else:
         # No file saving: run and print to terminal after completion
         code, out, err = run_codex_exec(prompt, cwd=commit_dir, timeout_sec=timeout_sec, api_key=api_key)
+        if code == 0:
+            has_err, _hits = _has_error_markers_tail(out)
+            if has_err:
+                code = 1
         print(out)
         if err:
             print(err)
@@ -250,13 +302,66 @@ def run_batch(
 ) -> int:
     root = root.resolve()
     all_dirs = [d for d in sorted(root.iterdir()) if d.is_dir()]
+
+    # Helper to detect successful runs via codex_status.txt
+    def _is_success(d: Path) -> bool:
+        p = d / "codex_status.txt"
+        if not p.exists():
+            return False
+        try:
+            s = p.read_text(encoding="utf-8").strip()
+        except Exception:
+            return False
+        if not s:
+            return False
+        sl = s.lower()
+        if sl.startswith("running") or sl.startswith("queued"):
+            # Stale/in-progress marker: treat as not successful
+            return False
+        try:
+            ok = int(s) == 0
+        except Exception:
+            # Be tolerant of non-numeric success markers
+            us = s.upper()
+            ok = us in ("OK", "SUCCESS")
+        if ok:
+            # Additional safeguard: scan ONLY the last 10 lines of codex_output.txt
+            try:
+                out_path = d / "codex_output.txt"
+                out_text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
+                has_err, _hits = _has_error_markers_tail(out_text, tail_lines=10)
+                if has_err:
+                    return False
+            except Exception:
+                pass
+        return ok
+
     dirs = list(all_dirs)
     if limit:
         dirs = dirs[:limit]
 
+    # Resume behavior: skip directories with successful status
+    skipped_ok: list[Path] = []
+    to_run: list[Path] = []
+    for d in dirs:
+        if _is_success(d):
+            skipped_ok.append(d)
+        else:
+            to_run.append(d)
+
+    dirs = to_run
+
     total = len(dirs)
     chain_total = len(all_dirs)
     if total == 0:
+        # Nothing to run; if some were skipped as OK, emit a friendly note
+        try:
+            if skipped_ok:
+                skipped_names = ", ".join(d.name for d in skipped_ok)
+                print(f"[codex] 已跳过已成功的目录: {skipped_names}", flush=True)
+            print("[codex] 无需处理，所有任务均已完成或无待处理项", flush=True)
+        except Exception:
+            pass
         return 0
 
     # progress: total equals number of commit dirs to process
@@ -264,6 +369,9 @@ def run_batch(
     try:
         print(f"::progress::codex total {total}", flush=True)
         print(f"[codex] 链条总提交数={chain_total} 本次任务={total}", flush=True)
+        if skipped_ok:
+            skipped_names = ", ".join(d.name for d in skipped_ok)
+            print(f"[codex] 已跳过已成功的目录: {skipped_names}", flush=True)
         actual_workers = 1
         if total > 2:
             actual_workers = min(max(1, int(max_parallel)), total)
@@ -274,6 +382,26 @@ def run_batch(
         print(f"[codex] 待处理: {names}", flush=True)
     except Exception:
         pass
+
+    # Pre-create report files so UI/file watchers can discover them before execution starts
+    if save_output and (not dry_run):
+        for d in dirs:
+            try:
+                out_path = d / "codex_output.txt"
+                err_path = d / "codex_error.txt"
+                status_path = d / "codex_status.txt"
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                err_path.parent.mkdir(parents=True, exist_ok=True)
+                status_path.parent.mkdir(parents=True, exist_ok=True)
+                if not out_path.exists():
+                    out_path.write_text("", encoding="utf-8")
+                if not err_path.exists():
+                    err_path.write_text("", encoding="utf-8")
+                if not status_path.exists():
+                    status_path.write_text("queued", encoding="utf-8")
+            except Exception:
+                # best effort
+                pass
 
     if total <= 2:
         worst = 0

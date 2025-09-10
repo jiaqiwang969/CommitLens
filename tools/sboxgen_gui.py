@@ -31,7 +31,7 @@ def _default_mirror_from_repo(repo: str) -> str:
 class SboxgenGUI:
     def __init__(self, master: tk.Tk):
         self.root = master
-        self.root.title("sboxgen 时间线流水 GUI")
+        self.root.title("CommitLens · 基于 Codex 的一站式提交报告生成器")
         self.root.geometry("980x820")
         self.root.minsize(820, 624)
 
@@ -492,6 +492,8 @@ class SboxgenGUI:
                 cwd=str(cwd) if cwd else None,
                 env=self._build_env(),
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 bufsize=1,
                 universal_newlines=True,
                 preexec_fn=preexec,

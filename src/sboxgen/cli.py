@@ -58,62 +58,25 @@ def cmd_gen(args: argparse.Namespace) -> int:
         return 2
     limit = args.limit or len(commits)
 
-    if args.style == "legacy":
-        tip_sha = commits[-1].sha
-        prev = None
-        for i, curr in enumerate(commits[:limit], start=1):
-            sbox = out_root / f"{i:03d}-{curr.short}"
-            if sbox.exists() and not args.overwrite:
-                if not args.quiet:
-                    print(f"skip existing {sbox}")
-                prev = curr
-                continue
-            path = generate_one_sbox_legacy(out_root, mirror, i, tip_sha, prev, curr, branch)
+    # Unified generation: folder结构不区分风格，始终使用统一 head/head-1/head-2 目录
+    # args.style 仅用于影响 README 模板选择
+    prev2 = None  # commit at i-2
+    prev1 = None  # commit at i-1
+    seq = 1
+    for curr in commits[:limit]:
+        sbox = out_root / f"{seq:03d}-{curr.short}"
+        if sbox.exists() and not args.overwrite:
             if not args.quiet:
-                print(f"OK {path}")
-            prev = curr
-    elif args.style == "head":
-        # head style: take last N commits (most recent first)
-        tail = commits[-limit:]
-        seq = 1
-        for idx in range(len(tail) - 1, -1, -1):
-            # Iterate most recent first
-            curr = tail[idx]
-            prev = tail[idx - 1] if idx - 1 >= 0 else None
-            prev_prev = tail[idx - 2] if idx - 2 >= 0 else None
-            sbox = out_root / f"{seq:03d}-{curr.short}"
-            if sbox.exists() and not args.overwrite:
-                if not args.quiet:
-                    print(f"skip existing {sbox}")
-                seq += 1
-                continue
-            path = generate_one_sbox_headstyle(out_root, mirror, seq, prev_prev, prev, curr)
-            if not args.quiet:
-                print(f"OK {path}")
-            seq += 1
-    else:  # timeline
-        # Generate for first-parent history oldest→newest; per commit include head/head-1/head-2 folders and diffs
-        prev2 = None  # commit at i-2
-        prev1 = None  # commit at i-1
-        seq = 1
-        for curr in commits[:limit]:
-            sbox = out_root / f"{seq:03d}-{curr.short}"
-            if sbox.exists() and not args.overwrite:
-                if not args.quiet:
-                    print(f"skip existing {sbox}")
-                prev2, prev1 = prev1, curr
-                seq += 1
-                continue
-            prev3 = None
-            # prev3 = commit at i-3 is the previous of prev2; we don't have it unless we track history
-            # We can reconstruct from commits list using index lookup; simpler approach: carry a rolling window
-            # Keep a ring of last three commits
-            # For current code flow, prev2 is i-2 and we don't have prev3; that's fine: we will write show(prev2) when prev3 is None
-            path = generate_one_sbox_timeline(out_root, mirror, seq, curr, prev1, prev2, prev3)
-            if not args.quiet:
-                print(f"OK {path}")
+                print(f"skip existing {sbox}")
             prev2, prev1 = prev1, curr
             seq += 1
+            continue
+        prev3 = None
+        path = generate_one_sbox_timeline(out_root, mirror, seq, curr, prev1, prev2, prev3, style=args.style)
+        if not args.quiet:
+            print(f"OK {path}")
+        prev2, prev1 = prev1, curr
+        seq += 1
     return 0
 
 
@@ -208,14 +171,14 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--format", choices=["table", "json"], default="table")
     p.set_defaults(func=cmd_list)
 
-    p = sp.add_parser("gen", help="generate sboxes for a branch (style: legacy|head|timeline)")
+    p = sp.add_parser("gen", help="generate sboxes for a branch (folder layout unified; --style only affects README)")
     p.add_argument("--mirror", required=True, help="Path to a local bare mirror")
     p.add_argument("--branch", default="master", help="Branch to traverse")
     p.add_argument("--out", default=".sboxes", help="Output root directory")
     p.add_argument("--limit", type=int, default=0, help="limit number of commits")
     p.add_argument("--overwrite", action="store_true", help="overwrite existing sboxes")
     p.add_argument("--quiet", action="store_true", help="less verbose output")
-    p.add_argument("--style", choices=["legacy", "head", "timeline"], default="timeline", help="output style")
+    p.add_argument("--style", type=str, default="timeline", help="style name for README template (e.g., 'timeline', 'head', '学习补充'); looks up .cache/styles/<name>.md or styles/<name>.md")
     p.set_defaults(func=cmd_gen)
 
     p = sp.add_parser("verify", help="verify generated sboxes structure and metadata")
@@ -237,13 +200,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     ptc = st.add_parser("copy", help="copy a template into a commit directory")
     ptc.add_argument("--name", required=True, help="template name")
-    ptc.add_argument("--to", required=True, help="destination commit directory (e.g., .sboxes_timeline/001-xxxxxxx)")
+    ptc.add_argument("--to", required=True, help="destination commit directory (e.g., .sboxes/001-xxxxxxx)")
     ptc.add_argument("--overwrite", action="store_true", help="overwrite existing files if present")
     ptc.set_defaults(func=cmd_template_copy)
 
     ptca = st.add_parser("copy-all", help="copy a template into all commit directories under a root")
     ptca.add_argument("--name", required=True, help="template name")
-    ptca.add_argument("--root", required=True, help="sboxes root directory (e.g., .sboxes_timeline)")
+    ptca.add_argument("--root", required=True, help="sboxes root directory (e.g., .sboxes)")
     ptca.add_argument("--overwrite", action="store_true", help="overwrite existing files if present")
     def _copy_all(args: argparse.Namespace) -> int:
         root = Path(args.root).resolve()
@@ -262,7 +225,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     # run over commits
     pr = sp.add_parser("run", help="apply template, execute scripts, and collect artifacts across commit dirs")
-    pr.add_argument("--root", default=".sboxes_timeline", help="sboxes root directory")
+    pr.add_argument("--root", default=".sboxes", help="sboxes root directory")
     pr.add_argument("--template-name", help="template to apply to each dir (optional)")
     pr.add_argument("--apply-template", action="store_true", help="apply template before running")
     pr.add_argument("--overwrite-template", action="store_true", help="overwrite template files when applying")
@@ -291,10 +254,10 @@ def build_parser() -> argparse.ArgumentParser:
         return 0
     pr.set_defaults(func=_run)
 
-    # collect-tex: build .sboxes_timeline_tex with per-commit figs+reports and main-*-commit.tex
-    pct = sp.add_parser("collect-tex", help="from .sboxes_timeline create .sboxes_timeline_tex (per-commit figs+reports+main-*-commit.tex)")
-    pct.add_argument("--from-root", default=".sboxes_timeline", help="source timeline root")
-    pct.add_argument("--to-root", default=".sboxes_timeline_tex", help="destination root for tex-only timeline")
+    # collect-tex: build .sboxes_tex with per-commit figs+reports and main-*-commit.tex
+    pct = sp.add_parser("collect-tex", help="from .sboxes create .sboxes_tex (per-commit figs+reports+main-*-commit.tex)")
+    pct.add_argument("--from-root", default=".sboxes", help="source timeline root (.sboxes)")
+    pct.add_argument("--to-root", default=".sboxes_tex", help="destination root for tex-only timeline (.sboxes_tex)")
     pct.add_argument("--overwrite", action="store_true", help="overwrite existing destination commit directories")
     pct.add_argument("--quiet", action="store_true", help="less verbose output")
     def _collect_tex(args: argparse.Namespace) -> int:
@@ -303,9 +266,9 @@ def build_parser() -> argparse.ArgumentParser:
         return collect_timeline_to_tex(src, dst, overwrite=args.overwrite, quiet=args.quiet)
     pct.set_defaults(func=_collect_tex)
 
-    # tex-fix: inside .sboxes_timeline_tex/<commit>/ run codex to repair PUML+LaTeX in parallel
-    ptx = sp.add_parser("tex-fix", help="run combined PUML+LaTeX Codex fixes under .sboxes_timeline_tex in parallel")
-    ptx.add_argument("--root", default=".sboxes_timeline_tex", help="root of per-commit tex timeline")
+    # tex-fix: inside .sboxes_tex/<commit>/ run codex to repair PUML+LaTeX in parallel
+    ptx = sp.add_parser("tex-fix", help="run combined PUML+LaTeX Codex fixes under .sboxes_tex in parallel")
+    ptx.add_argument("--root", default=".sboxes_tex", help="root of per-commit tex timeline (.sboxes_tex)")
     ptx.add_argument("--limit", type=int, default=0, help="limit number of commit directories")
     ptx.add_argument("--runs", type=int, default=3, help="latex passes hint in prompt")
     ptx.add_argument("--dry-run", action="store_true", help="print codex commands without executing")
@@ -337,10 +300,10 @@ def build_parser() -> argparse.ArgumentParser:
         )
     ptx.set_defaults(func=_tex_fix)
 
-    # overwrite: copy artifacts back into sboxes timeline (reports + figs)
-    pov = sp.add_parser("overwrite", help="overwrite .artifacts into .sboxes_timeline (reports and figs)")
+    # overwrite: copy artifacts back into sboxes (reports + figs)
+    pov = sp.add_parser("overwrite", help="overwrite .artifacts into .sboxes (reports and figs)")
     pov.add_argument("--artifacts", default=".artifacts", help="artifacts root directory (source)")
-    pov.add_argument("--root", default=".sboxes_timeline", help="sboxes timeline root (destination)")
+    pov.add_argument("--root", default=".sboxes", help="sboxes root (destination)")
     pov.add_argument("--no-reports", action="store_true", help="do not overwrite reports")
     pov.add_argument("--no-figs", action="store_true", help="do not overwrite figs")
     pov.add_argument("--quiet", action="store_true", help="less verbose output")
@@ -361,7 +324,7 @@ def build_parser() -> argparse.ArgumentParser:
     sc = pc.add_subparsers(dest="ccmd", required=True)
 
     pco = sc.add_parser("one", help="run codex exec for a single commit directory")
-    pco.add_argument("--dir", required=True, help="commit directory path (e.g., .sboxes_timeline/001-xxxxxxx)")
+    pco.add_argument("--dir", required=True, help="commit directory path (e.g., .sboxes/001-xxxxxxx)")
     pco.add_argument("--dry-run", action="store_true", help="print command without executing")
     pco.add_argument("--no-save", action="store_true", help="do not save outputs to files")
     pco.add_argument("--timeout", type=int, default=0, help="timeout seconds")
@@ -386,7 +349,7 @@ def build_parser() -> argparse.ArgumentParser:
     pco.set_defaults(func=_codex_one)
 
     pcb = sc.add_parser("batch", help="run codex exec for all commit directories under a root")
-    pcb.add_argument("--root", required=True, help="sboxes root directory (e.g., .sboxes_timeline)")
+    pcb.add_argument("--root", required=True, help="sboxes root directory (e.g., .sboxes)")
     pcb.add_argument("--limit", type=int, default=0, help="limit number of commit directories")
     pcb.add_argument("--dry-run", action="store_true", help="print commands without executing")
     pcb.add_argument("--no-save", action="store_true", help="do not save outputs to files")
@@ -425,7 +388,7 @@ def build_parser() -> argparse.ArgumentParser:
     pcb.set_defaults(func=_codex_batch)
 
     pcp = sc.add_parser("puml", help="use codex to compile and fix PlantUML in figs/*/algorithm_flow.puml across commits")
-    pcp.add_argument("--root", required=True, help="sboxes root directory (e.g., .sboxes_timeline)")
+    pcp.add_argument("--root", required=True, help="sboxes root directory (e.g., .sboxes)")
     pcp.add_argument("--limit", type=int, default=0, help="limit number of commit directories")
     pcp.add_argument("--dry-run", action="store_true", help="print commands without executing")
     pcp.add_argument("--no-save", action="store_true", help="do not save outputs to files")

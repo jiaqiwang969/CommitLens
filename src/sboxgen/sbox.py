@@ -8,6 +8,8 @@ from typing import Optional
 
 from .gitio import Commit
 from .utils import ensure_dir, run, default_env
+from .utils import RunError
+import time as _time
 from .templates import TEMPLATES_ROOT
 import shutil as _sh
 
@@ -20,6 +22,7 @@ def _write_readme_prompt(
     dst: Path,
     curr: Commit,
     prev: Optional[Commit],
+    style: str = "timeline",
 ) -> None:
     title = curr.title or "<subject>"
     prev_sha = prev.sha if prev else None
@@ -72,7 +75,43 @@ def _write_readme_prompt(
             return
         except Exception:
             pass
-    # 3) implicit local file default
+    # 3) style-based file default under .cache/styles or project ./styles
+    try:
+        style_raw = (style or "timeline").strip()
+        style_name = style_raw.lower()
+        candidates: list[str] = []
+        if style_raw:
+            candidates.append(style_raw)
+        if style_name and style_name not in candidates:
+            candidates.append(style_name)
+        for base in (Path('.cache/styles'), Path('styles')):
+            for name in candidates:
+                fp = base / f"{name}.md"
+                if not fp.exists():
+                    continue
+                try:
+                    tmpl = fp.read_text(encoding="utf-8")
+                    mapping = {
+                        "seq": seq_str,
+                        "seq_str": seq_str,
+                        "short": curr.short,
+                        "sha": curr.sha,
+                        "title": title,
+                        "author": curr.author,
+                        "datetime": curr.datetime,
+                        "prev_sha": prev_sha or "",
+                        "prev_short": (prev_sha[:7] if prev_sha else ""),
+                    }
+                    for k, v in mapping.items():
+                        tmpl = tmpl.replace("{" + k + "}", str(v))
+                    (dst / "README.md").write_text(tmpl, encoding="utf-8")
+                    return
+                except Exception:
+                    continue
+    except Exception:
+        pass
+
+    # 4) implicit local file default
     try:
         local_fp = Path.cwd() / ".cache/sbox_readme_template.md"
         if local_fp.exists():
@@ -95,7 +134,15 @@ def _write_readme_prompt(
     except Exception:
         pass
 
-    body = f"""# 提交考古说明（Timeline 风格）
+    # Built-in fallback by style name (only affects text; folder layout remains the same)
+    style_name = (style or "timeline").strip().lower()
+    title_style = {
+        "timeline": "Timeline 风格",
+        "head": "Head 风格",
+        "legacy": "Legacy 风格",
+    }.get(style_name, style_name or "Timeline 风格")
+
+    body = fr"""# 提交考古说明（{title_style}）
 
 本目录面向“某一次提交”的解读素材，采用 timeline 视角：聚焦当前提交（head）及其最多两个前置提交（head-1、head-2），以相邻提交对的 diff 作为主要证据。
 
@@ -108,7 +155,7 @@ def _write_readme_prompt(
 项目背景（Foxtrot 简介）
 - Foxtrot 是一个面向 STEP（ISO 10303-21）文件、覆盖从标准解析到三角化再到渲染全链路、支持本地 GUI 与 WebAssembly 的快速查看器/演示项目，使用 Rust 语言实现。
 
-目录与证据
+目录与证据（统一目录结构）
 - 子目录：
   - `head/`：当前提交快照（HEAD）
   - `head-1/`：上一个提交（HEAD~1），若存在
@@ -193,7 +240,33 @@ def checkout_tree(mirror_dir: Path, worktree: Path, sha: str, index_file: Option
     if index_file is None:
         index_file = worktree.parent / f".git-index-{worktree.name}"
     env["GIT_INDEX_FILE"] = str(index_file)
-    run(["git", "checkout", "-f", sha], env=env)
+    # Proactively clean a stale lock if it exists (from prior interrupted runs)
+    lock = Path(str(index_file) + ".lock")
+    try:
+        if lock.exists():
+            lock.unlink()
+    except Exception:
+        pass
+    try:
+        run(["git", "checkout", "-f", sha], env=env)
+    except RunError as e:
+        msg = (e.err or e.out or "").lower()
+        # Retry once if the failure looks like a leftover index lock issue
+        if (".lock" in msg) or ("unable to create" in msg and "lock" in msg) or ("file exists" in msg and "lock" in msg):
+            try:
+                if lock.exists():
+                    lock.unlink()
+            except Exception:
+                pass
+            # brief pause to avoid immediate re-race
+            try:
+                _time.sleep(0.05)
+            except Exception:
+                pass
+            # second attempt (let exceptions propagate on failure)
+            run(["git", "checkout", "-f", sha], env=env)
+        else:
+            raise
 
 
 def write_evidence(mirror_dir: Path, worktree: Path, prev_sha: Optional[str], curr_sha: str, out_path: Path) -> None:
@@ -304,8 +377,8 @@ def generate_one_sbox_headstyle(
             _, out, _ = run(["git", "diff", "--stat", "--patch", prev_prev.sha, prev.sha], env=env)
             _write_text(sbox / "HEAD-1.diff", out)
 
-    # README prompt
-    _write_readme_prompt(sbox, curr, prev)
+    # README prompt (explicit head style)
+    _write_readme_prompt(sbox, curr, prev, style="head")
     return sbox
 
 
@@ -317,6 +390,7 @@ def generate_one_sbox_timeline(
     prev1: Optional[Commit],
     prev2: Optional[Commit],
     prev3: Optional[Commit],
+    style: str = "timeline",
 ) -> Path:
     """Generate structured folder per commit:
 
@@ -325,7 +399,7 @@ def generate_one_sbox_timeline(
       - HEAD.diff   = diff(prev1..curr) or show(curr) if no prev1
       - HEAD-1.diff = diff(prev2..prev1) or show(prev1) if no prev2 but prev1 exists
       - HEAD-2.diff = diff(prev3..prev2) or show(prev2) if no prev3 but prev2 exists
-    - README.md: prompt-style instruction for report generation
+    - README.md: prompt-style instruction for report generation (content depends on 'style')
     """
     name = f"{seq:03d}-{curr.short}"
     sbox = root / name
@@ -377,7 +451,7 @@ def generate_one_sbox_timeline(
             _write_text(sbox / "HEAD-2.diff", out)
 
     # README prompt
-    _write_readme_prompt(sbox, curr, prev1)
+    _write_readme_prompt(sbox, curr, prev1, style=style)
 
     # Copy textbook and templates (reference only)
     try:

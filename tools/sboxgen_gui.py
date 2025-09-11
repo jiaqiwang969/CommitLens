@@ -48,8 +48,8 @@ class SboxgenGUI:
         self.limit_var = tk.IntVar(value=10)
         self.style_var = tk.StringVar(value="timeline")
         self.mirror_var = tk.StringVar(value=_default_mirror_from_repo(self.repo_var.get()))
-        self.timeline_root_var = tk.StringVar(value=str(Path(".sboxes_timeline")))
-        self.timeline_tex_root_var = tk.StringVar(value=str(Path(".sboxes_timeline_tex")))
+        self.sboxes_root_var = tk.StringVar(value=str(Path(".sboxes")))
+        self.sboxes_tex_var = tk.StringVar(value=str(Path(".sboxes_tex")))
         self.artifacts_root_var = tk.StringVar(value=str(Path(".artifacts")))
         self.timeout_var = tk.IntVar(value=6000)
         self.fix_runs_var = tk.IntVar(value=3)
@@ -67,9 +67,9 @@ class SboxgenGUI:
         # 输出目录衍生/覆盖跟踪
         self._out_overridden = False
         try:
-            self._last_derived_out = str((Path(f".sboxes_{self.style_var.get()}")).resolve())
+            self._last_derived_out = str((Path(".sboxes")).resolve())
         except Exception:
-            self._last_derived_out = str(Path(".sboxes_timeline").resolve())
+            self._last_derived_out = str(Path(".sboxes").resolve())
 
         # step status: pending → running → ok/fail
         self.steps = [
@@ -77,7 +77,7 @@ class SboxgenGUI:
             {"key": "gen", "label": "2) 生成时间线 gen", "status": tk.StringVar(value="pending")},
             {"key": "verify", "label": "3) 校验生成 verify", "status": tk.StringVar(value="pending")},
             {"key": "codex", "label": "4) 批量 Codex 执行", "status": tk.StringVar(value="pending")},
-            {"key": "collect_tex", "label": "5) 收集为 .sboxes_timeline_tex", "status": tk.StringVar(value="pending")},
+            {"key": "collect_tex", "label": "5) 收集为 .sboxes_tex", "status": tk.StringVar(value="pending")},
             {"key": "texfix", "label": "6) 并行 PUML+LaTeX 修复（按提交）", "status": tk.StringVar(value="pending")},
             {"key": "fixbug", "label": "7) 汇总并生成 PDF", "status": tk.StringVar(value="pending")},
             {"key": "overwrite", "label": "8) 回写 artifacts → sboxes", "status": tk.StringVar(value="pending")},
@@ -149,13 +149,13 @@ class SboxgenGUI:
         ttk.Button(tab_basic, text="浏览", command=self._browse_mirror).grid(row=3, column=2, pady=6)
 
         ttk.Label(tab_basic, text="时间线根目录 out:").grid(row=4, column=0, sticky="w", pady=6)
-        e_out = ttk.Entry(tab_basic, textvariable=self.timeline_root_var)
+        e_out = ttk.Entry(tab_basic, textvariable=self.sboxes_root_var)
         e_out.grid(row=4, column=1, sticky="ew", padx=(8, 8), pady=6)
         ttk.Button(tab_basic, text="浏览", command=self._browse_out).grid(row=4, column=2, pady=6)
         e_out.bind('<KeyRelease>', lambda e: setattr(self, '_out_overridden', True))
 
         ttk.Label(tab_basic, text="TEX 时间线根目录 (收集输出):").grid(row=5, column=0, sticky="w", pady=6)
-        e_out_tex = ttk.Entry(tab_basic, textvariable=self.timeline_tex_root_var)
+        e_out_tex = ttk.Entry(tab_basic, textvariable=self.sboxes_tex_var)
         e_out_tex.grid(row=5, column=1, sticky="ew", padx=(8, 8), pady=6)
         ttk.Button(tab_basic, text="浏览", command=self._browse_out_tex).grid(row=5, column=2, pady=6)
 
@@ -337,8 +337,8 @@ class SboxgenGUI:
                 self.limit_var.set(int(data.get("limit", self.limit_var.get())))
                 self.style_var.set(data.get("style", self.style_var.get()))
                 self.mirror_var.set(data.get("mirror", self.mirror_var.get()))
-                self.timeline_root_var.set(data.get("timeline_root", self.timeline_root_var.get()))
-                self.timeline_tex_root_var.set(data.get("timeline_tex_root", self.timeline_tex_root_var.get()))
+                self.sboxes_root_var.set(data.get("sboxes_root", self.sboxes_root_var.get()))
+                self.sboxes_tex_var.set(data.get("sboxes_tex", self.sboxes_tex_var.get()))
                 self.artifacts_root_var.set(data.get("artifacts_root", self.artifacts_root_var.get()))
                 self.timeout_var.set(int(data.get("timeout", self.timeout_var.get())))
                 # Back-compat: read both 'fix_runs' and legacy 'runs'
@@ -369,8 +369,8 @@ class SboxgenGUI:
                 "limit": int(self.limit_var.get()),
                 "style": self.style_var.get(),
                 "mirror": self.mirror_var.get(),
-                "timeline_root": self.timeline_root_var.get(),
-                "timeline_tex_root": self.timeline_tex_root_var.get(),
+                "sboxes_root": self.sboxes_root_var.get(),
+                "sboxes_tex": self.sboxes_tex_var.get(),
                 "artifacts_root": self.artifacts_root_var.get(),
                 "timeout": int(self.timeout_var.get()),
                 # Write both for back-compat
@@ -405,7 +405,7 @@ class SboxgenGUI:
     def _browse_out(self):
         path = filedialog.askdirectory(title="选择时间线根目录")
         if path:
-            self.timeline_root_var.set(path)
+            self.sboxes_root_var.set(path)
             # optional: could rescan dirs if needed for template derivation
             self._out_overridden = True
             try:
@@ -416,7 +416,7 @@ class SboxgenGUI:
     def _browse_out_tex(self):
         path = filedialog.askdirectory(title="选择 TEX 时间线根目录")
         if path:
-            self.timeline_tex_root_var.set(path)
+            self.sboxes_tex_var.set(path)
 
     def _browse_artifacts(self):
         path = filedialog.askdirectory(title="选择产物目录")
@@ -599,8 +599,8 @@ class SboxgenGUI:
         limit = int(self.limit_var.get())
         style = self.style_var.get().strip()
         mirror = self.mirror_var.get().strip()
-        out_root = self.timeline_root_var.get().strip()
-        out_tex_root = self.timeline_tex_root_var.get().strip()
+        out_root = self.sboxes_root_var.get().strip()
+        out_tex_root = self.sboxes_tex_var.get().strip()
         artifacts = self.artifacts_root_var.get().strip()
         timeout = int(self.timeout_var.get())
         runs = int(self.fix_runs_var.get())
@@ -615,9 +615,9 @@ class SboxgenGUI:
             )
         elif key == "gen":
             cmd = self._python_cmd(
-                # 生成结构固定 timeline；风格仅决定 README 模板与输出目录
+                # 结构固定（统一 head/head-1/head-2），风格仅用于 README 模板
                 "gen", "--mirror", mirror, "--branch", branch, "--out", out_root,
-                "--limit", str(limit), "--overwrite", "--style", "timeline"
+                "--limit", str(limit), "--overwrite", "--style", self.style_var.get().strip()
             )
         elif key == "verify":
             cmd = self._python_cmd("verify", "--root", out_root, "--strict")
@@ -638,7 +638,7 @@ class SboxgenGUI:
                 args.append("--overwrite")
             cmd = self._python_cmd(*args)
         elif key == "texfix":
-            # Step 6: parallel PUML+LaTeX fix inside .sboxes_timeline_tex
+            # Step 6: parallel PUML+LaTeX fix inside .sboxes_tex
             args = [
                 "tex-fix", "--root", out_tex_root, "--limit", str(limit),
                 "--timeout", str(timeout), "--max-parallel", str(int(self.max_parallel_var.get() or 0) or 1),
@@ -648,7 +648,7 @@ class SboxgenGUI:
                 args.append("--force")
             cmd = self._python_cmd(*args)
         elif key == "fixbug":
-            # Step 7: collect from .sboxes_timeline_tex into .artifacts, then fix main.tex
+            # Step 7: collect from .sboxes_tex into .artifacts, then fix main.tex
             # 7.1 collect reports+figs into artifacts
             cmd = self._python_cmd(
                 "run", "--root", out_tex_root, "--collect-root", artifacts, "--collect-figs", "--no-exec"
@@ -730,12 +730,12 @@ class SboxgenGUI:
                 return
         try:
             artifacts = Path(self.artifacts_root_var.get()).resolve()
-            timeline = Path(self.timeline_root_var.get()).resolve()
+            timeline = Path(self.sboxes_root_var.get()).resolve()
             to_backup = [p for p in [artifacts, timeline] if p.exists()]
 
             if not to_backup:
-                self._append_log("未发现可备份的目录（.artifacts 或 .sboxes_timeline）。")
-                messagebox.showinfo("无可备份内容", "未发现 .artifacts 或 .sboxes_timeline。")
+                self._append_log("未发现可备份的目录（.artifacts 或 .sboxes）。")
+                messagebox.showinfo("无可备份内容", "未发现 .artifacts 或 .sboxes。")
                 return
 
             target_root = Path("temp").resolve()
@@ -841,15 +841,15 @@ class SboxgenGUI:
 
     def _apply_style_to_out_path(self):
         try:
-            new_default = str((Path(f".sboxes_{self._sanitize_style_name(self.style_var.get())}")).resolve())
+            new_default = str((Path(".sboxes")).resolve())
         except Exception:
-            new_default = str(Path(".sboxes_timeline").resolve())
-        cur = str(Path(self.timeline_root_var.get()).resolve()) if self.timeline_root_var.get() else ""
+            new_default = str(Path(".sboxes").resolve())
+        cur = str(Path(self.sboxes_root_var.get()).resolve()) if self.sboxes_root_var.get() else ""
         # Update if user hasn't overridden or if current equals last derived
         if not self._out_overridden or cur == self._last_derived_out or cur == "":
             try:
                 # set without marking overridden
-                self.timeline_root_var.set(str(Path(new_default)))
+                self.sboxes_root_var.set(str(Path(new_default)))
                 self._last_derived_out = new_default
                 self._out_overridden = False
             except Exception:
@@ -931,7 +931,7 @@ class SboxgenGUI:
     # ---------------- README template helpers ----------------
     def _scan_commit_dirs(self) -> list[Path]:
         try:
-            root = Path(self.timeline_root_var.get()).resolve()
+            root = Path(self.sboxes_root_var.get()).resolve()
             if root.exists() and root.is_dir():
                 return [d for d in sorted(root.iterdir()) if d.is_dir()]
         except Exception:

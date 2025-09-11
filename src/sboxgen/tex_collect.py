@@ -110,7 +110,7 @@ def _write_main_commit_tex(dest_commit_dir: Path, commit_name: str, report_name:
 
 
 def collect_timeline_to_tex(src_root: Path, dest_root: Path, overwrite: bool = False, quiet: bool = False) -> int:
-    """Create .sboxes_timeline_tex from .sboxes_timeline with per-commit minimal contents.
+    """Create .sboxes_tex from .sboxes with per-commit minimal contents.
 
     For each commit under src_root, create dest_root/<commit>/ that keeps only:
     - reports/ (all files and subdirectories)
@@ -173,5 +173,5 @@ def collect_timeline_to_tex(src_root: Path, dest_root: Path, overwrite: bool = F
             print(f"[{name}] wrote {main_tex.name}")
 
     if not quiet:
-        print(f"OK collected timeline tex -> {dest_root}")
+        print(f"OK collected tex -> {dest_root}")
     return 0

@@ -18,9 +18,9 @@ CommitLens · 基于 Codex 的一站式提交报告生成器（timeline sboxes +
 
 流式输出与状态机制（强烈建议配合 tail 实时查看）
 - 批量 Codex（第 4 步）：每个提交目录写入三份文件（先创建为 queued，执行中实时追加，结束写入退出码）
-  - `.sboxes_timeline/<NNN>-<short>/codex_output.txt`
-  - `.sboxes_timeline/<NNN>-<short>/codex_error.txt`
-  - `.sboxes_timeline/<NNN>-<short>/codex_status.txt`（`queued → running → 0/124/非0`）
+  - `.sboxes/<NNN>-<short>/codex_output.txt`
+  - `.sboxes/<NNN>-<short>/codex_error.txt`
+  - `.sboxes/<NNN>-<short>/codex_status.txt`（`queued → running → 0/124/非0`）
 - PUML 修复（第 5 步）：写入到每个图示目录 `figs/<NNN>-<short>/` 下
   - `codex_puml_output.txt`、`codex_puml_error.txt`、`codex_puml_status.txt`
 - LaTeX 修复（第 6 步）：写入到产物根目录 `.artifacts/`
@@ -29,16 +29,16 @@ CommitLens · 基于 Codex 的一站式提交报告生成器（timeline sboxes +
 快速查看示例
 ```bash
 # 追踪某个提交在第 4 步的实时输出：
-tail -f .sboxes_timeline/004-xxxxxxx/codex_output.txt
+tail -f .sboxes/004-xxxxxxx/codex_output.txt
 
 # 统计第 4 步尚在排队/执行中的数量：
-rg -n "^(queued|running)$" -S .sboxes_timeline/*/codex_status.txt | wc -l
+rg -n "^(queued|running)$" -S .sboxes/*/codex_status.txt | wc -l
 
 # 列出第 4 步非 0 退出码（失败/超时=124）：
-rg -n "^(?!0$).+" -S .sboxes_timeline/*/codex_status.txt
+rg -n "^(?!0$).+" -S .sboxes/*/codex_status.txt
 
 # 追踪第 5 步（PUML）实时输出：
-tail -f .sboxes_timeline/004-xxxxxxx/figs/004-xxxxxxx/codex_puml_output.txt
+tail -f .sboxes/004-xxxxxxx/figs/004-xxxxxxx/codex_puml_output.txt
 
 # 追踪第 6 步（LaTeX）实时输出：
 tail -f .artifacts/codex_fix_output.txt
@@ -59,19 +59,19 @@ tail -f .artifacts/codex_fix_output.txt
   - `commitlens mirror --repo <URL|PATH> --dest .cache/mirrors/repo.git`
   - `commitlens list --mirror .cache/mirrors/repo.git --branch master --limit 5`
 - 生成时间线（timeline）：
-  - `commitlens gen --mirror .cache/mirrors/repo.git --branch master --out .sboxes_timeline --limit 10 --overwrite --style timeline`
+  - `commitlens gen --mirror .cache/mirrors/repo.git --branch master --out .sboxes --limit 10 --overwrite --style timeline`
 - 校验结果：
-  - `commitlens verify --root .sboxes_timeline --strict`
+  - `commitlens verify --root .sboxes --strict`
 - 模板管理：
   - `commitlens template list`
-  - `commitlens template copy --name extended --to .sboxes_timeline/003-xxxxxxx --overwrite`
-  - `commitlens template copy-all --name basic --root .sboxes_timeline --overwrite`
+  - `commitlens template copy --name extended --to .sboxes/003-xxxxxxx --overwrite`
+  - `commitlens template copy-all --name basic --root .sboxes --overwrite`
 - 批量执行与收集（可选）：
- - `commitlens run --root .sboxes_timeline --collect-root .artifacts --collect-figs`
+ - `commitlens run --root .sboxes --collect-root .artifacts --collect-figs`
 - Codex 执行（单个/批量）：
-  - `commitlens codex one --dir .sboxes_timeline/001-xxxxxxx --timeout 600`
-  - `commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 600 [--runs N] [--force]`
-  - `commitlens codex puml --root .sboxes_timeline --limit 10 --timeout 600 [--runs N] [--force]`
+  - `commitlens codex one --dir .sboxes/001-xxxxxxx --timeout 600`
+  - `commitlens codex batch --root .sboxes --limit 10 --timeout 600 [--runs N] [--force]`
+  - `commitlens codex puml --root .sboxes --limit 10 --timeout 600 [--runs N] [--force]`
 
 Codex 密钥
 - 获取顺序：命令行 `--api-key` > 环境变量 `CODEX_API_KEY` > 文件 `.cache/codex_api_key`（已在 .gitignore 中忽略）。
@@ -107,33 +107,33 @@ Codex 密钥
 
 2) 生成时间线目录  
    ```bash
-   commitlens gen --mirror .cache/mirrors/foxtrot.git --branch master --out .sboxes_timeline --limit 10 --overwrite --style timeline
+   commitlens gen --mirror .cache/mirrors/foxtrot.git --branch master --out .sboxes --limit 10 --overwrite --style timeline
    ```
 
 3) 校验生成结果  
    ```bash
-   commitlens verify --root .sboxes_timeline --strict
+   commitlens verify --root .sboxes --strict
    ```
 
 4) 批量运行 Codex 生成解读（默认断点续跑；可用 --runs N 重复执行；如需强制重跑加 --force）  
    ```bash
-   commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 6000
+   commitlens codex batch --root .sboxes --limit 10 --timeout 6000
    # 连续执行 3 次（逐次断点续跑）：
-   commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 6000 --runs 3
+   commitlens codex batch --root .sboxes --limit 10 --timeout 6000 --runs 3
    # 强制重跑（删除 status+error，保留 output）：
-   commitlens codex batch --root .sboxes_timeline --limit 10 --timeout 6000 --force
+   commitlens codex batch --root .sboxes --limit 10 --timeout 6000 --force
    ```
 
 5) PUML 修复 + 收集（默认断点续跑；可用 --runs N 重复执行；如需强制重跑加 --force）  
    ```bash
    # 先修复 PUML（仅对包含 figs/**/algorithm_flow.puml 的目录）
-   commitlens codex puml --root .sboxes_timeline --timeout 6000
+   commitlens codex puml --root .sboxes --timeout 6000
    # 连续执行 2 次（逐次断点续跑）：
-   commitlens codex puml --root .sboxes_timeline --timeout 6000 --runs 2
+   commitlens codex puml --root .sboxes --timeout 6000 --runs 2
    # 强制重跑 PUML：
-   commitlens codex puml --root .sboxes_timeline --timeout 6000 --force
+   commitlens codex puml --root .sboxes --timeout 6000 --force
    # 再收集图示与报告片段
-   commitlens run --root .sboxes_timeline --collect-root .artifacts --collect-figs
+   commitlens run --root .sboxes --collect-root .artifacts --collect-figs
    ```
 
 6) 并行修复 xelatex（每个提交单独 main-<NNN>-<short>.tex，并行 Codex 修复）  
@@ -153,17 +153,17 @@ Codex 密钥
    - 等价于通过 Codex 执行：`codex exec --skip-git-repo-check --sandbox workspace-write "请进入到.artifacts，然后执行xelatex main.tex命令，帮我修复输出tex编译错误，最终生成完整的pdf文档，需反复执行3次，确认最终没有bug，可容许有warning"`
    - 默认参数：`--artifacts .artifacts`，`--tex main.tex`，`--runs 3`；支持 `--api-key`、`--dry-run`、`--timeout`、`--no-save`。
 
-8) 回写 .artifacts 到 .sboxes_timeline（覆盖 reports 与 figs）  
+8) 回写 .artifacts 到 .sboxes（覆盖 reports 与 figs）  
    ```bash
    # 将 .artifacts 下的 reports/*.tex 与 figs/<NNN-short>/ 写回到对应的时间线提交目录
-   commitlens overwrite --artifacts .artifacts --root .sboxes_timeline
+   commitlens overwrite --artifacts .artifacts --root .sboxes
    # 仅覆盖报告或仅覆盖图示：
-   commitlens overwrite --artifacts .artifacts --root .sboxes_timeline --no-figs
-   commitlens overwrite --artifacts .artifacts --root .sboxes_timeline --no-reports
+   commitlens overwrite --artifacts .artifacts --root .sboxes --no-figs
+   commitlens overwrite --artifacts .artifacts --root .sboxes --no-reports
    ```
    - 行为：
-     - reports：`.artifacts/reports/<name>.tex` -> `.sboxes_timeline/<commit>/reports/<name>.tex`
-     - figs：`.artifacts/figs/<commit>/...` 替换 `.sboxes_timeline/<commit>/figs/<commit>/...`
+    - reports：`.artifacts/reports/<name>.tex` -> `.sboxes/<commit>/reports/<name>.tex`
+    - figs：`.artifacts/figs/<commit>/...` 替换 `.sboxes/<commit>/figs/<commit>/...`
      - `<commit>` 默认按目录名精确匹配；若为 `NNN-commit.tex` 也会按数字前缀匹配对应提交目录。
 
 先决条件
@@ -187,8 +187,8 @@ Codex 密钥
   - `提交数 limit`：如 `10`
   - `风格 (模板)`：默认 `timeline`，可在“基本设置”中选择或导入 `.md` 模板；根据风格自动选择输出目录 `.sboxes_<style>`；生成结构固定采用 timeline
   - `镜像路径 mirror`：默认根据仓库推断 `.cache/mirrors/<name>.git`
-  - `时间线根目录 out`：默认 `.sboxes_timeline`
-  - `TEX 时间线根目录 (收集输出)`：默认 `.sboxes_timeline_tex`
+  - `时间线根目录 out`：默认 `.sboxes`
+  - `TEX 时间线根目录 (收集输出)`：默认 `.sboxes_tex`
   - `产物目录 artifacts`：默认 `.artifacts`
   - `超时 timeout`：如 `6000`
   - `LaTeX runs`：如 `3`

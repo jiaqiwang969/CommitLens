@@ -427,6 +427,33 @@ def run_batch(
                 print("::progress::codex tick", flush=True)
             except Exception:
                 pass
+        # If we did not complete successfully, summarize remaining work for next step
+        if worst != 0:
+            pending: list[str] = []
+            failed: list[str] = []
+            for d in dirs:
+                try:
+                    s_path = d / "codex_status.txt"
+                    s = s_path.read_text(encoding="utf-8").strip() if s_path.exists() else ""
+                except Exception:
+                    s = ""
+                sl = s.lower()
+                if (not s) or sl.startswith("queued") or sl.startswith("running"):
+                    pending.append(d.name)
+                else:
+                    try:
+                        ok = int(s) == 0
+                    except Exception:
+                        ok = s.upper() in ("OK", "SUCCESS")
+                    if not ok:
+                        failed.append(d.name)
+            try:
+                if pending:
+                    print(f"[codex] 被打断，尚有待处理: {', '.join(pending)}", flush=True)
+                if failed:
+                    print(f"[codex] 失败目录: {', '.join(failed)}", flush=True)
+            except Exception:
+                pass
         return worst
 
     max_workers = min(max(1, int(max_parallel)), total)
@@ -455,4 +482,31 @@ def run_batch(
                 print("::progress::codex tick", flush=True)
             except Exception:
                 pass
+    # After parallel run, if failed, summarize remaining work
+    if worst != 0:
+        pending: list[str] = []
+        failed: list[str] = []
+        for d in dirs:
+            try:
+                s_path = d / "codex_status.txt"
+                s = s_path.read_text(encoding="utf-8").strip() if s_path.exists() else ""
+            except Exception:
+                s = ""
+            sl = s.lower()
+            if (not s) or sl.startswith("queued") or sl.startswith("running"):
+                pending.append(d.name)
+            else:
+                try:
+                    ok = int(s) == 0
+                except Exception:
+                    ok = s.upper() in ("OK", "SUCCESS")
+                if not ok:
+                    failed.append(d.name)
+        try:
+            if pending:
+                print(f"[codex] 被打断，尚有待处理: {', '.join(pending)}", flush=True)
+            if failed:
+                print(f"[codex] 失败目录: {', '.join(failed)}", flush=True)
+        except Exception:
+            pass
     return worst

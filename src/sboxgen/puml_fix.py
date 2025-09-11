@@ -259,6 +259,35 @@ def run_puml_batch(
                 print("::progress::puml tick", flush=True)
             except Exception:
                 pass
+        # Failure summary for sequential path
+        if worst != 0:
+            pending: list[str] = []
+            failed: list[str] = []
+            for d in targets:
+                p = _find_algorithm_flow_puml(d)
+                figs_dir = p.parent if p else (d / "figs")
+                try:
+                    s_path = figs_dir / "codex_puml_status.txt"
+                    s = s_path.read_text(encoding="utf-8").strip() if s_path.exists() else ""
+                except Exception:
+                    s = ""
+                sl = s.lower()
+                if (not s) or sl.startswith("queued") or sl.startswith("running"):
+                    pending.append(d.name)
+                else:
+                    try:
+                        ok = int(s) == 0
+                    except Exception:
+                        ok = s.upper() in ("OK", "SUCCESS")
+                    if not ok:
+                        failed.append(d.name)
+            try:
+                if pending:
+                    print(f"[puml] 被打断，尚有待处理: {', '.join(pending)}", flush=True)
+                if failed:
+                    print(f"[puml] 失败目录: {', '.join(failed)}", flush=True)
+            except Exception:
+                pass
         return worst
 
     worst = 0
@@ -275,4 +304,33 @@ def run_puml_batch(
                 print("::progress::puml tick", flush=True)
             except Exception:
                 pass
+    # Failure summary for parallel path
+    if worst != 0:
+        pending: list[str] = []
+        failed: list[str] = []
+        for d in targets:
+            p = _find_algorithm_flow_puml(d)
+            figs_dir = p.parent if p else (d / "figs")
+            try:
+                s_path = figs_dir / "codex_puml_status.txt"
+                s = s_path.read_text(encoding="utf-8").strip() if s_path.exists() else ""
+            except Exception:
+                s = ""
+            sl = s.lower()
+            if (not s) or sl.startswith("queued") or sl.startswith("running"):
+                pending.append(d.name)
+            else:
+                try:
+                    ok = int(s) == 0
+                except Exception:
+                    ok = s.upper() in ("OK", "SUCCESS")
+                if not ok:
+                    failed.append(d.name)
+        try:
+            if pending:
+                print(f"[puml] 被打断，尚有待处理: {', '.join(pending)}", flush=True)
+            if failed:
+                print(f"[puml] 失败目录: {', '.join(failed)}", flush=True)
+        except Exception:
+            pass
     return worst

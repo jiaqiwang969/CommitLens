@@ -248,6 +248,32 @@ def run_tex_fix_batch(
                 print(f"::progress::texfix tick {d.name} exit={code}", flush=True)
             except Exception:
                 pass
+        # Failure summary for sequential path
+        if worst != 0:
+            pending: list[str] = []
+            failed: list[str] = []
+            for d in to_run:
+                try:
+                    s = (d / "codex_status.txt").read_text(encoding="utf-8").strip()
+                except Exception:
+                    s = ""
+                sl = s.lower()
+                if (not s) or sl.startswith("queued") or sl.startswith("running"):
+                    pending.append(d.name)
+                else:
+                    try:
+                        ok = int(s) == 0
+                    except Exception:
+                        ok = s.upper() in ("OK", "SUCCESS")
+                    if not ok:
+                        failed.append(d.name)
+            try:
+                if pending:
+                    print(f"[texfix] 被打断，尚有待处理: {', '.join(pending)}", flush=True)
+                if failed:
+                    print(f"[texfix] 失败目录: {', '.join(failed)}", flush=True)
+            except Exception:
+                pass
         return worst
 
     workers = min(max(1, int(max_parallel)), total)
@@ -263,4 +289,30 @@ def run_tex_fix_batch(
                 print(f"::progress::texfix tick {d.name} exit={code}", flush=True)
             except Exception:
                 pass
+    # Failure summary for parallel path
+    if worst != 0:
+        pending: list[str] = []
+        failed: list[str] = []
+        for d in to_run:
+            try:
+                s = (d / "codex_status.txt").read_text(encoding="utf-8").strip()
+            except Exception:
+                s = ""
+            sl = s.lower()
+            if (not s) or sl.startswith("queued") or sl.startswith("running"):
+                pending.append(d.name)
+            else:
+                try:
+                    ok = int(s) == 0
+                except Exception:
+                    ok = s.upper() in ("OK", "SUCCESS")
+                if not ok:
+                    failed.append(d.name)
+        try:
+            if pending:
+                print(f"[texfix] 被打断，尚有待处理: {', '.join(pending)}", flush=True)
+            if failed:
+                print(f"[texfix] 失败目录: {', '.join(failed)}", flush=True)
+        except Exception:
+            pass
     return worst

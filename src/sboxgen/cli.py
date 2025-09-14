@@ -6,7 +6,14 @@ import sys
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from .gitio import ensure_mirror, list_commits
+from .gitio import (
+    ensure_mirror,
+    list_commits,
+    count_commits_fast,
+    ensure_mirror_branch,
+    list_local_branches,
+    update_all_branches,
+)
 from .sbox import (
     generate_one_sbox_legacy,
     generate_one_sbox_headstyle,
@@ -170,6 +177,54 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--limit", type=int, default=0, help="limit number of commits")
     p.add_argument("--format", choices=["table", "json"], default="table")
     p.set_defaults(func=cmd_list)
+
+    p = sp.add_parser("count", help="count commits on a branch (first-parent) from a mirror")
+    p.add_argument("--mirror", required=True, help="Path to a local bare mirror")
+    p.add_argument("--branch", default="master", help="Branch to count")
+    p.add_argument("--format", choices=["text", "json"], default="text")
+    p.add_argument("--fetch", action="store_true", help="fetch only the specified branch before counting (faster than fetching all)")
+    p.add_argument("--repo", help="Repo URL (required if --fetch and mirror has no origin)")
+    def _count(args: argparse.Namespace) -> int:
+        mirror = Path(args.mirror).resolve()
+        if args.fetch:
+            if not args.repo and not (mirror / "HEAD").exists():
+                print("--repo is required for --fetch when mirror does not exist", file=sys.stderr)
+                return 2
+            repo = args.repo or ""
+            try:
+                ensure_mirror_branch(repo, mirror, args.branch)
+            except Exception as e:
+                print(f"fetch failed: {e}", file=sys.stderr)
+                return 3
+        count, br = count_commits_fast(mirror, args.branch)
+        if args.format == "json":
+            print(json.dumps({"branch": br, "count": count}, ensure_ascii=False))
+        else:
+            print(f"{count} {br}")
+        return 0
+    p.set_defaults(func=_count)
+
+    p = sp.add_parser("branches", help="list branches present in mirror (optionally update all first)")
+    p.add_argument("--mirror", required=True, help="Path to a local bare mirror")
+    p.add_argument("--update", action="store_true", help="update all branches (remote update --prune) before listing")
+    p.add_argument("--repo", help="Repo URL (optional; sets origin when updating)")
+    p.add_argument("--format", choices=["text", "json"], default="text")
+    def _branches(args: argparse.Namespace) -> int:
+        mirror = Path(args.mirror).resolve()
+        if args.update:
+            try:
+                update_all_branches(mirror, repo_url=args.repo)
+            except Exception as e:
+                print(f"update failed: {e}", file=sys.stderr)
+                return 3
+        names = list_local_branches(mirror)
+        if args.format == "json":
+            print(json.dumps({"branches": names}, ensure_ascii=False))
+        else:
+            for n in names:
+                print(n)
+        return 0
+    p.set_defaults(func=_branches)
 
     p = sp.add_parser("gen", help="generate sboxes for a branch (folder layout unified; --style only affects README)")
     p.add_argument("--mirror", required=True, help="Path to a local bare mirror")

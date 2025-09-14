@@ -8,6 +8,9 @@ import shlex
 import signal
 import threading
 import subprocess
+import shutil
+import pty
+import select
 from pathlib import Path
 from datetime import datetime
 
@@ -15,6 +18,34 @@ import tkinter as tk
 from tkinter import ttk, filedialog, scrolledtext, messagebox
 import queue
 from typing import Optional
+import platform as _plat
+
+# Ensure we can import sboxgen.* when running from repo root
+try:
+    _SRC_PATH = str(Path(__file__).resolve().parents[1] / "src")
+    if _SRC_PATH not in sys.path:
+        sys.path.insert(0, _SRC_PATH)
+except Exception:
+    pass
+
+# Lazy import; only used on macOS when embedding
+GhosttyEmbedder = None  # default
+try:
+    # Case 1: running as script from tools/ directory
+    from ghostty_embed import GhosttyEmbedder as _GE
+    GhosttyEmbedder = _GE  # type: ignore
+except Exception:
+    try:
+        # Case 2: running as package from repo root
+        from tools.ghostty_embed import GhosttyEmbedder as _GE
+        GhosttyEmbedder = _GE  # type: ignore
+    except Exception:
+        try:
+            # Case 3: namespace package or other
+            from .ghostty_embed import GhosttyEmbedder as _GE  # type: ignore
+            GhosttyEmbedder = _GE
+        except Exception:
+            GhosttyEmbedder = None  # type: ignore
 
 
 def _default_mirror_from_repo(repo: str) -> str:
@@ -63,6 +94,8 @@ class SboxgenGUI:
         self.show_key_var = tk.BooleanVar(value=False)
         self.overwrite_reports_var = tk.BooleanVar(value=True)
         self.overwrite_figs_var = tk.BooleanVar(value=True)
+        # UI: commit count display (for selected URL + branch)
+        self.commit_count_var = tk.StringVar(value="分支提交总数：—")
 
         # 输出目录衍生/覆盖跟踪
         self._out_overridden = False
@@ -117,10 +150,12 @@ class SboxgenGUI:
         tab_codex = ttk.Frame(nb, padding=12)
         tab_readme = ttk.Frame(nb, padding=12)
         tab_run = ttk.Frame(nb, padding=12)
+        tab_ghostty = ttk.Frame(nb, padding=12)
         nb.add(tab_basic, text="基本设置")
         nb.add(tab_codex, text="Codex 与参数")
         nb.add(tab_readme, text="README 模板")
         nb.add(tab_run, text="执行与日志")
+        nb.add(tab_ghostty, text="GhosttyAI")
 
         # --- basic tab ---
         for i in range(8):
@@ -130,39 +165,43 @@ class SboxgenGUI:
         ttk.Label(tab_basic, text="Git 仓库 URL:").grid(row=0, column=0, sticky="w", pady=6)
         e_repo = ttk.Entry(tab_basic, textvariable=self.repo_var)
         e_repo.grid(row=0, column=1, sticky="ew", padx=(8, 8), pady=6)
-        ttk.Button(tab_basic, text="推断镜像路径", command=self._autofill_mirror).grid(row=0, column=2, pady=6)
+        ttk.Button(tab_basic, text="推断并刷新分支", command=self._autofill_and_update_branches_threaded).grid(row=0, column=2, pady=6)
 
         ttk.Label(tab_basic, text="分支:").grid(row=1, column=0, sticky="w", pady=6)
-        ttk.Combobox(tab_basic, values=["master", "main"], textvariable=self.branch_var, state="readonly")\
-            .grid(row=1, column=1, sticky="w", padx=(8, 8), pady=6)
+        self.branch_combo = ttk.Combobox(tab_basic, values=["master", "main"], textvariable=self.branch_var, state="readonly")
+        self.branch_combo.grid(row=1, column=1, sticky="w", padx=(8, 8), pady=6)
 
-        ttk.Label(tab_basic, text="提交数 limit:").grid(row=1, column=2, sticky="e")
-        ttk.Spinbox(tab_basic, from_=1, to=200, textvariable=self.limit_var, width=8).grid(row=1, column=3, sticky="w", padx=(8, 0))
+        # commit count label (auto-updated on 推断镜像路径 / branch change)
+        ttk.Label(tab_basic, textvariable=self.commit_count_var, foreground="#555").grid(row=1, column=2, sticky="w", padx=(16, 0))
 
-        ttk.Label(tab_basic, text="风格 (模板):").grid(row=2, column=0, sticky="w", pady=6)
+        # move 提交数 limit to its own row
+        ttk.Label(tab_basic, text="提交数 limit:").grid(row=2, column=0, sticky="w", pady=6)
+        ttk.Spinbox(tab_basic, from_=1, to=200, textvariable=self.limit_var, width=8).grid(row=2, column=1, sticky="w", padx=(8, 0), pady=6)
+
+        ttk.Label(tab_basic, text="风格 (模板):").grid(row=3, column=0, sticky="w", pady=6)
         self.style_combo = ttk.Combobox(tab_basic, values=[], textvariable=self.style_var, state="readonly")
-        self.style_combo.grid(row=2, column=1, sticky="w", padx=(8, 8), pady=6)
+        self.style_combo.grid(row=3, column=1, sticky="w", padx=(8, 8), pady=6)
 
-        ttk.Label(tab_basic, text="镜像路径 mirror:").grid(row=3, column=0, sticky="w", pady=6)
+        ttk.Label(tab_basic, text="镜像路径 mirror:").grid(row=4, column=0, sticky="w", pady=6)
         e_mirror = ttk.Entry(tab_basic, textvariable=self.mirror_var)
-        e_mirror.grid(row=3, column=1, sticky="ew", padx=(8, 8), pady=6)
-        ttk.Button(tab_basic, text="浏览", command=self._browse_mirror).grid(row=3, column=2, pady=6)
+        e_mirror.grid(row=4, column=1, sticky="ew", padx=(8, 8), pady=6)
+        ttk.Button(tab_basic, text="浏览", command=self._browse_mirror).grid(row=4, column=2, pady=6)
 
-        ttk.Label(tab_basic, text="时间线根目录 out:").grid(row=4, column=0, sticky="w", pady=6)
+        ttk.Label(tab_basic, text="时间线根目录 out:").grid(row=5, column=0, sticky="w", pady=6)
         e_out = ttk.Entry(tab_basic, textvariable=self.sboxes_root_var)
-        e_out.grid(row=4, column=1, sticky="ew", padx=(8, 8), pady=6)
-        ttk.Button(tab_basic, text="浏览", command=self._browse_out).grid(row=4, column=2, pady=6)
+        e_out.grid(row=5, column=1, sticky="ew", padx=(8, 8), pady=6)
+        ttk.Button(tab_basic, text="浏览", command=self._browse_out).grid(row=5, column=2, pady=6)
         e_out.bind('<KeyRelease>', lambda e: setattr(self, '_out_overridden', True))
 
-        ttk.Label(tab_basic, text="TEX 时间线根目录 (收集输出):").grid(row=5, column=0, sticky="w", pady=6)
+        ttk.Label(tab_basic, text="TEX 时间线根目录 (收集输出):").grid(row=6, column=0, sticky="w", pady=6)
         e_out_tex = ttk.Entry(tab_basic, textvariable=self.sboxes_tex_var)
-        e_out_tex.grid(row=5, column=1, sticky="ew", padx=(8, 8), pady=6)
-        ttk.Button(tab_basic, text="浏览", command=self._browse_out_tex).grid(row=5, column=2, pady=6)
+        e_out_tex.grid(row=6, column=1, sticky="ew", padx=(8, 8), pady=6)
+        ttk.Button(tab_basic, text="浏览", command=self._browse_out_tex).grid(row=6, column=2, pady=6)
 
-        ttk.Label(tab_basic, text="产物目录 artifacts:").grid(row=6, column=0, sticky="w", pady=6)
+        ttk.Label(tab_basic, text="产物目录 artifacts:").grid(row=7, column=0, sticky="w", pady=6)
         e_art = ttk.Entry(tab_basic, textvariable=self.artifacts_root_var)
-        e_art.grid(row=6, column=1, sticky="ew", padx=(8, 8), pady=6)
-        ttk.Button(tab_basic, text="浏览", command=self._browse_artifacts).grid(row=6, column=2, pady=6)
+        e_art.grid(row=7, column=1, sticky="ew", padx=(8, 8), pady=6)
+        ttk.Button(tab_basic, text="浏览", command=self._browse_artifacts).grid(row=7, column=2, pady=6)
 
         # --- codex tab ---
         for i in range(8):
@@ -323,9 +362,74 @@ class SboxgenGUI:
         self.status_var = tk.StringVar(value="就绪")
         ttk.Label(status_bar, textvariable=self.status_var).pack(side=tk.LEFT)
 
+        # --- ghostty tab ---
+        # Layout: control row + built-in simple terminal (fallback)
+        tab_ghostty.rowconfigure(3, weight=1)
+        tab_ghostty.columnconfigure(0, weight=1)
+
+        embed_bar = ttk.LabelFrame(tab_ghostty, text="内嵌 Ghostty（实验 · 仅 macOS）", padding=10)
+        embed_bar.grid(row=0, column=0, sticky="ew")
+        ttk.Button(embed_bar, text="嵌入到下方区域", command=self._ghostty_embed_start).pack(side=tk.LEFT)
+        ttk.Button(embed_bar, text="释放/关闭", command=self._ghostty_embed_stop).pack(side=tk.LEFT, padx=(8, 0))
+        ttk.Button(embed_bar, text="构建指引", command=self._ghostty_embed_help).pack(side=tk.LEFT, padx=(8, 0))
+
+        # Container where libghostty renders
+        host = ttk.Frame(tab_ghostty)
+        host.grid(row=1, column=0, sticky="nsew", pady=(6, 6))
+        host.rowconfigure(0, weight=1)
+        host.columnconfigure(0, weight=1)
+        self.ghostty_embed_container = ttk.Frame(host)
+        self.ghostty_embed_container.grid(row=0, column=0, sticky="nsew")
+        self.ghostty_embed_container.config(width=640, height=380)
+        self.ghostty_embed_container.bind('<Configure>', self._on_ghostty_container_resize)
+        # Key input forwarding (best-effort text input only)
+        self.ghostty_embed_container.bind('<Key>', self._on_ghostty_embed_key)
+
+        ctrl = ttk.LabelFrame(tab_ghostty, text="Ghostty 启动与检测", padding=10)
+        ctrl.grid(row=2, column=0, sticky="ew")
+        ttk.Button(ctrl, text="启动 Ghostty（系统安装）", command=self._ghostty_launch_default).pack(side=tk.LEFT)
+        ttk.Button(ctrl, text="在仓库根启动", command=lambda: self._ghostty_launch_at(Path.cwd())).pack(side=tk.LEFT, padx=(8, 0))
+        ttk.Button(ctrl, text="在时间线根启动", command=lambda: self._ghostty_launch_at(Path(self.sboxes_root_var.get()))).pack(side=tk.LEFT, padx=(8, 0))
+        ttk.Button(ctrl, text="检测可用性", command=self._ghostty_check).pack(side=tk.LEFT, padx=(8, 0))
+
+        tip = ttk.Label(tab_ghostty, text="提示：内嵌 Ghostty 仅在 macOS + 已构建 libghostty.dylib 情况下可用；否则使用外部窗口或下方简易终端。", foreground="#555")
+        tip.grid(row=3, column=0, sticky="w", pady=(6, 6))
+
+        term_frame = ttk.LabelFrame(tab_ghostty, text="内置简易终端（非 Ghostty，仅作备用）", padding=8)
+        term_frame.grid(row=4, column=0, sticky="nsew")
+        term_frame.rowconfigure(0, weight=1)
+        term_frame.columnconfigure(0, weight=1)
+
+        self.ghostty_text = scrolledtext.ScrolledText(term_frame, height=16)
+        self.ghostty_text.grid(row=0, column=0, columnspan=4, sticky="nsew")
+
+        self.ghostty_input = ttk.Entry(term_frame)
+        self.ghostty_input.grid(row=1, column=0, sticky="ew", padx=(0, 8), pady=(8, 0))
+        term_frame.columnconfigure(0, weight=1)
+        ttk.Button(term_frame, text="启动 Shell", command=self._ghostty_simple_start).grid(row=1, column=1, sticky="w", pady=(8, 0))
+        ttk.Button(term_frame, text="发送", command=lambda: self._ghostty_simple_send(self.ghostty_input.get())).grid(row=1, column=2, sticky="w", padx=(8, 0), pady=(8, 0))
+        ttk.Button(term_frame, text="停止 Shell", command=self._ghostty_simple_stop).grid(row=1, column=3, sticky="w", padx=(8, 0), pady=(8, 0))
+        self.ghostty_input.bind('<Return>', lambda e: self._ghostty_simple_send(self.ghostty_input.get()))
+        # runtime state for simple terminal
+        self._ghostty_pty_master = None
+        self._ghostty_pty_pid = None
+        self._ghostty_reader = None
+        self._ghostty_alive = False
+
+        # Embedding state
+        self._ghostty_embedder = None
+
     def _bind_events(self):
         self.repo_var.trace_add("write", lambda *_: self._maybe_update_mirror())
         self.style_var.trace_add("write", lambda *_: self._on_style_change())
+        # Update commit count when branch changes (after mirror is inferred/fetched)
+        try:
+            self.branch_combo.bind('<<ComboboxSelected>>', lambda e: self._update_branch_commit_count_threaded())
+        except Exception:
+            pass
+        # Also refresh branch list when repo or mirror path changes (without updating remotes)
+        self.repo_var.trace_add("write", lambda *_: self._refresh_branches_threaded(update=False))
+        self.mirror_var.trace_add("write", lambda *_: self._refresh_branches_threaded(update=False))
 
     # ---------------- settings ----------------
     def _load_settings(self):
@@ -390,6 +494,129 @@ class SboxgenGUI:
     # ---------------- helpers ----------------
     def _autofill_mirror(self):
         self.mirror_var.set(_default_mirror_from_repo(self.repo_var.get()))
+        # After inferring mirror path, fetch commit count for selected URL+branch
+        try:
+            self._update_branch_commit_count_threaded()
+        except Exception:
+            pass
+        # Try populate branch list from local mirror (no fetch here)
+        try:
+            self._refresh_branches_threaded(update=False)
+        except Exception:
+            pass
+
+    def _autofill_and_update_branches_threaded(self):
+        # Set mirror path on main thread for UI consistency
+        self._autofill_mirror()
+        # Then update all branches in background
+        threading.Thread(target=self._autofill_and_update_branches, daemon=True).start()
+
+    def _autofill_and_update_branches(self):
+        repo = (self.repo_var.get() or "").strip()
+        mirror = Path(self.mirror_var.get() or _default_mirror_from_repo(repo)).resolve()
+        try:
+            from sboxgen.gitio import ensure_mirror, update_all_branches  # type: ignore
+        except Exception as e:
+            self._append_log(f"[分支] 导入模块失败：{e}")
+            return
+        try:
+            if (mirror / "HEAD").exists():
+                self._append_log("[分支] 正在更新全部分支（mirror fetch）…")
+                update_all_branches(mirror, repo_url=(repo or None))
+            else:
+                if not repo:
+                    self._append_log("[分支] 未配置 URL，无法创建 mirror。")
+                    return
+                self._append_log("[分支] 正在创建 mirror（包含全部分支）…")
+                ensure_mirror(repo, mirror)
+            # Refresh branch list (no further fetch) and update count for current selection
+            self._refresh_branches(update=False)
+            self._update_branch_commit_count_threaded()
+        except Exception as e:
+            self._append_log(f"[分支] 更新失败：{e}")
+
+    def _update_branch_commit_count_threaded(self):
+        # run in background to avoid blocking UI
+        self.commit_count_var.set("分支提交总数：统计中…")
+        threading.Thread(target=self._update_branch_commit_count, daemon=True).start()
+
+    def _update_branch_commit_count(self):
+        repo = (self.repo_var.get() or "").strip()
+        branch = (self.branch_var.get() or "master").strip()
+        if not repo:
+            self.ui_queue.put(("commit_count", "分支提交总数：未配置 URL"))
+            return
+        try:
+            from sboxgen.gitio import count_commits_fast  # type: ignore
+        except Exception as e:
+            self.ui_queue.put(("commit_count", "分支提交总数：统计失败（导入）"))
+            try:
+                self._append_log(f"[统计失败] 导入模块失败：{e}")
+            except Exception:
+                pass
+            return
+        # Only read from existing mirror to stay fast (no fetch)
+        mirror = Path(self.mirror_var.get() or _default_mirror_from_repo(repo)).resolve()
+        if not (mirror / "HEAD").exists():
+            self.ui_queue.put(("commit_count", "分支提交总数：未找到镜像（先执行第1步或指定已有镜像路径）"))
+            return
+        try:
+            total, resolved_branch = count_commits_fast(mirror, branch)
+            self.ui_queue.put(("commit_count", f"分支提交总数：{total}（{resolved_branch}）"))
+            self._append_log(f"[统计] {resolved_branch} 分支共有 {total} 个 commits（本地 mirror，仅 first-parent）")
+        except Exception as e:
+            self.ui_queue.put(("commit_count", "分支提交总数：统计失败"))
+            try:
+                self._append_log(f"[统计失败] 无法获取提交数：{e}")
+            except Exception:
+                pass
+
+    def _refresh_branches_threaded(self, update: bool = False):
+        threading.Thread(target=self._refresh_branches, args=(update,), daemon=True).start()
+
+    def _refresh_branches(self, update: bool = False):
+        repo = (self.repo_var.get() or "").strip()
+        mirror = Path(self.mirror_var.get() or _default_mirror_from_repo(repo)).resolve()
+        if not repo and not (mirror / "HEAD").exists():
+            return
+        try:
+            from sboxgen.gitio import list_local_branches, update_all_branches, ensure_mirror  # type: ignore
+        except Exception as e:
+            self._append_log(f"[分支刷新失败] 导入模块失败：{e}")
+            return
+        try:
+            if update:
+                if not (mirror / "HEAD").exists():
+                    # Create full mirror first if absent
+                    if repo:
+                        self._append_log("[分支] 正在 clone mirror（全部分支）…")
+                        ensure_mirror(repo, mirror)
+                # Update all branches (prune) using origin
+                self._append_log("[分支] 正在更新全部分支（remote update --prune）…")
+                update_all_branches(mirror, repo_url=(repo or None))
+            names = list_local_branches(mirror)
+            if not names:
+                self._append_log("[分支] 未发现任何分支（mirror 不存在或为空）。")
+                return
+            # Update combobox values in UI thread via queue
+            self.ui_queue.put(("branches", names))
+            # If current selection not in list, select a reasonable default
+            cur = self.branch_var.get().strip()
+            pick = None
+            if cur in names:
+                pick = cur
+            elif "master" in names:
+                pick = "master"
+            elif "main" in names:
+                pick = "main"
+            else:
+                pick = names[0]
+            if pick:
+                self.ui_queue.put(("branch_select", pick))
+                # Also refresh count for selected
+                self._update_branch_commit_count_threaded()
+        except Exception as e:
+            self._append_log(f"[分支刷新失败] {e}")
 
     def _maybe_update_mirror(self):
         # if mirror path is still the default for previous repo, update
@@ -713,10 +940,223 @@ class SboxgenGUI:
                     key, val = msg[1], msg[2]
                     step = next(s for s in self.steps if s["key"] == key)
                     step["status"].set(val)
+                elif kind == "commit_count":
+                    try:
+                        self.commit_count_var.set(msg[1])
+                    except Exception:
+                        pass
+                elif kind == "ghostty_out":
+                    # Append text to the simple terminal area
+                    try:
+                        self.ghostty_text.insert(tk.END, msg[1])
+                        self.ghostty_text.see(tk.END)
+                    except Exception:
+                        pass
+                elif kind == "branches":
+                    try:
+                        names = msg[1]
+                        self.branch_combo["values"] = names
+                    except Exception:
+                        pass
+                elif kind == "branch_select":
+                    try:
+                        self.branch_var.set(msg[1])
+                    except Exception:
+                        pass
         except queue.Empty:
             pass
 
         self.root.after(100, self._drain_queues)
+
+    # ---------------- Ghostty embedding (libghostty) ----------------
+    def _ghostty_embed_help(self):
+        msg = (
+            "构建步骤（macOS）：\n\n"
+            "1) 安装 Zig 0.14+（例如: brew install zig）。\n"
+            "2) 在仓库 ghostty/ 目录执行：\n"
+            "   优先（Metal）：\n"
+            "   zig build -Dapp-runtime=none -Doptimize=ReleaseSafe -Demit-shared-lib=true\n"
+            "   若 Metal 出现崩溃（常见于动态子类注册失败），请用 OpenGL 方案：\n"
+            "   zig build -Dapp-runtime=none -Drenderer=opengl -Doptimize=ReleaseSafe -Demit-shared-lib=true\n"
+            "   成功后将在 ghostty/zig-out/lib/ 生成 libghostty.dylib。\n"
+            "3) 若路径不同，可在环境变量 LIBGHOSTTY_PATH 指定 dylib 完整路径。\n\n"
+            "完成后，回到本页点击“嵌入到下方区域”。"
+        )
+        messagebox.showinfo("libghostty 构建指引", msg)
+
+    def _ghostty_embed_start(self):
+        if _plat.system() != 'Darwin':
+            messagebox.showwarning("不支持的平台", "内嵌 Ghostty 仅支持 macOS。")
+            return
+        if GhosttyEmbedder is None:
+            messagebox.showwarning("模块缺失", "未找到 tools/ghostty_embed.py 或依赖加载失败。")
+            return
+        try:
+            if self._ghostty_embedder is None:
+                self._ghostty_embedder = GhosttyEmbedder(self.root)
+            cont = self.ghostty_embed_container
+            try:
+                # Ensure the NSView is realized so winfo_id returns a real pointer
+                cont.update_idletasks()
+                self.root.update_idletasks()
+            except Exception:
+                pass
+            self._ghostty_embedder.embed_into_tk(cont, working_dir=self.sboxes_root_var.get() or os.getcwd())
+            try:
+                cont.focus_set()
+            except Exception:
+                pass
+            self._append_log("已在 GhosttyAI 标签内嵌入 Ghostty 视图（试验特性）")
+        except Exception as e:
+            messagebox.showerror("嵌入失败", str(e))
+
+    def _ghostty_embed_stop(self):
+        try:
+            if self._ghostty_embedder is not None:
+                self._ghostty_embedder.free()
+                self._append_log("已释放内嵌 Ghostty 资源")
+        except Exception:
+            pass
+
+    def _on_ghostty_container_resize(self, event):
+        try:
+            if self._ghostty_embedder is not None:
+                self._ghostty_embedder.update_size(event.width, event.height)
+                # Update scale if changed
+                scale = self._ghostty_embedder.suggest_scale(self.ghostty_embed_container)
+                self._ghostty_embedder.update_scale(scale)
+                # Reposition host NSView overlay (PyObjC path)
+                if hasattr(self._ghostty_embedder, '_place_nsview_over_tk'):
+                    self._ghostty_embedder._place_nsview_over_tk(self.ghostty_embed_container)
+        except Exception:
+            pass
+
+    def _on_ghostty_embed_key(self, event):
+        try:
+            if self._ghostty_embedder is not None and getattr(event, 'char', ''):
+                self._ghostty_embedder.send_text(event.char)
+        except Exception:
+            pass
+
+    # ---------------- Ghostty integration ----------------
+    def _ghostty_check(self):
+        try:
+            in_path = shutil.which("ghostty") is not None
+        except Exception:
+            in_path = False
+        app_paths = [
+            Path("/Applications/Ghostty.app"),
+            Path.home() / "Applications/Ghostty.app",
+        ]
+        app_found = any(p.exists() for p in app_paths)
+        msg = [
+            f"ghostty 命令: {'可用' if in_path else '不可用'}",
+            f"Ghostty.app: {'已安装' if app_found else '未发现'}",
+        ]
+        messagebox.showinfo("Ghostty 检测", "\n".join(msg))
+
+    def _ghostty_launch_default(self):
+        # Try to launch Ghostty as an external window (best-effort)
+        if shutil.which("ghostty"):
+            try:
+                subprocess.Popen(["ghostty"], start_new_session=True)
+                self._append_log("已尝试启动 ghostty (PATH)")
+                return
+            except Exception as e:
+                self._append_log(f"启动 ghostty 失败: {e}")
+        # macOS app
+        try:
+            subprocess.Popen(["open", "-a", "Ghostty"])
+            self._append_log("已尝试通过 macOS 打开 Ghostty.app")
+        except Exception as e:
+            messagebox.showerror("启动失败", f"无法启动 Ghostty: {e}")
+
+    def _ghostty_launch_at(self, path: Path):
+        try:
+            cwd = str(path.resolve())
+        except Exception:
+            cwd = str(path)
+        # Prefer CLI if present to set CWD for the launched process
+        if shutil.which("ghostty"):
+            try:
+                subprocess.Popen(["ghostty"], cwd=cwd, start_new_session=True)
+                self._append_log(f"已在 {cwd} 尝试启动 ghostty")
+                return
+            except Exception as e:
+                self._append_log(f"启动 ghostty 失败: {e}")
+        # Fall back to macOS app (cwd may not propagate to shell inside)
+        try:
+            subprocess.Popen(["open", "-a", "Ghostty"], cwd=cwd)
+            self._append_log(f"已尝试通过 macOS 在 {cwd} 打开 Ghostty.app")
+        except Exception as e:
+            messagebox.showerror("启动失败", f"无法启动 Ghostty: {e}")
+
+    # ---- Simple built-in terminal (PTY-based, non-Ghostty) ----
+    def _ghostty_simple_start(self):
+        if self._ghostty_alive:
+            return
+        shell = os.environ.get("SHELL") or "/bin/zsh"
+        try:
+            pid, master = pty.fork()
+            if pid == 0:
+                # Child: exec shell
+                try:
+                    os.execvp(shell, [shell, "-l"])
+                except Exception:
+                    os._exit(1)
+            else:
+                # Parent
+                self._ghostty_pty_master = master
+                self._ghostty_pty_pid = pid
+                self._ghostty_alive = True
+                self.ghostty_text.insert(tk.END, f"[启动 {shell} -l]\n")
+                self.ghostty_text.see(tk.END)
+                self._ghostty_reader = threading.Thread(target=self._ghostty_simple_reader, daemon=True)
+                self._ghostty_reader.start()
+        except Exception as e:
+            messagebox.showerror("启动失败", str(e))
+
+    def _ghostty_simple_reader(self):
+        try:
+            while self._ghostty_alive and self._ghostty_pty_master is not None:
+                r, _, _ = select.select([self._ghostty_pty_master], [], [], 0.2)
+                if not r:
+                    continue
+                try:
+                    data = os.read(self._ghostty_pty_master, 4096)
+                    if not data:
+                        break
+                    self.ui_queue.put(("ghostty_out", data.decode(errors="replace")))
+                except OSError:
+                    break
+        finally:
+            self._ghostty_alive = False
+            try:
+                if self._ghostty_pty_master is not None:
+                    os.close(self._ghostty_pty_master)
+            except Exception:
+                pass
+            self._ghostty_pty_master = None
+            self._ghostty_pty_pid = None
+
+    def _ghostty_simple_send(self, text: str):
+        if not self._ghostty_alive or self._ghostty_pty_master is None:
+            self._ghostty_simple_start()
+        try:
+            os.write(self._ghostty_pty_master, (text + "\n").encode())
+            self.ghostty_input.delete(0, tk.END)
+        except Exception as e:
+            messagebox.showerror("发送失败", str(e))
+
+    def _ghostty_simple_stop(self):
+        if not self._ghostty_alive:
+            return
+        try:
+            # Politely ask shell to exit
+            os.write(self._ghostty_pty_master, b"exit\n")
+        except Exception:
+            pass
+        self._ghostty_alive = False
 
     # ---------------- stats refresh (removed chain total feature) ----------------
 

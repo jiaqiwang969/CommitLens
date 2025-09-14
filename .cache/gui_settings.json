@@ -2,7 +2,7 @@
   "repo": "https://github.com/Formlabs/foxtrot.git",
   "branch": "master",
   "limit": 456,
-  "style": "学习补充",
+  "style": "timeline",
   "mirror": ".cache/mirrors/foxtrot.git",
   "sboxes_root": "/Users/jqwang/104-CommitLens/.sboxes",
   "sboxes_tex": ".sboxes_tex",

@@ -1,9 +1,10 @@
 .cache/codex_api_key
+.cache/mirrors
 .env
 .env.local
 .artifacts
 .sboxes
 .sboxes_tex
-.cache/codex_api_key
 temp
 *.pyc
+learnGitBranching

@@ -4,7 +4,7 @@
   "limit": 456,
   "style": "timeline",
   "mirror": ".cache/mirrors/foxtrot.git",
-  "sboxes_root": "/Users/jqwang/104-CommitLens/.sboxes",
+  "sboxes_root": "/Users/jqwang/104-CommitLens-codex/.sboxes",
   "sboxes_tex": ".sboxes_tex",
   "artifacts_root": ".artifacts",
   "timeout": 6000,

@@ -960,9 +960,11 @@ class SboxgenGUI:
             yscrollcommand=list_scrollbar.set,
             font=("Monaco", 10),
             selectmode=tk.SINGLE,
-            bg="#fafafa",
-            selectbackground="#007aff",
-            selectforeground="white"
+            bg="#ffffff",
+            fg="#000000",
+            selectbackground="#e3f2fd",
+            selectforeground="#0d47a1",
+            activestyle="none"
         )
         self.codex_message_listbox.pack(side="left", fill="both", expand=True)
         self.codex_message_listbox.bind('<<ListboxSelect>>', self._on_codex_message_select)

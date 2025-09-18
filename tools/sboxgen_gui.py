@@ -1030,7 +1030,7 @@ class SboxgenGUI:
         )
         if filename:
             self.codex_file_var.set(filename)
-            self.log(f"选择了文件: {filename}")
+            self._append_log(f"选择了文件: {filename}")
 
     def _load_codex_file(self):
         """加载并解析 codex_output.txt 文件"""
@@ -1052,10 +1052,10 @@ class SboxgenGUI:
             self.codex_status_label.config(text=f"状态: 已加载 {Path(filepath).name}")
             self.codex_last_position = len(content)
             self.codex_file_mtime = Path(filepath).stat().st_mtime
-            self.log(f"成功加载 Codex 输出文件: {len(self.codex_messages)} 条消息")
+            self._append_log(f"成功加载 Codex 输出文件: {len(self.codex_messages)} 条消息")
         except Exception as e:
             messagebox.showerror("错误", f"加载文件失败: {e}")
-            self.log(f"加载 Codex 文件失败: {e}")
+            self._append_log(f"加载 Codex 文件失败: {e}")
 
     def _parse_codex_content(self, content: str):
         """解析 Codex 输出内容为结构化消息"""
@@ -1292,7 +1292,7 @@ class SboxgenGUI:
         )
         self.codex_monitor_thread.start()
         self.codex_status_label.config(text=f"状态: 监控中 - {Path(filepath).name}")
-        self.log(f"开始监控 Codex 文件: {filepath}")
+        self._append_log(f"开始监控 Codex 文件: {filepath}")
 
     def _monitor_codex_file(self, filepath):
         """监控文件变化的线程函数"""
@@ -1350,7 +1350,7 @@ class SboxgenGUI:
         if self.codex_monitor_thread:
             self.codex_monitor_thread.join(timeout=2)
         self.codex_status_label.config(text="状态: 监控已停止")
-        self.log("停止监控 Codex 文件")
+        self._append_log("停止监控 Codex 文件")
 
     def _clear_codex_display(self):
         """清空显示"""
@@ -1361,7 +1361,7 @@ class SboxgenGUI:
         self.codex_last_position = 0
         self.codex_file_mtime = 0
         self.codex_status_label.config(text="状态: 已清空")
-        self.log("清空 Codex 显示")
+        self._append_log("清空 Codex 显示")
 
     # ---------------- ghostty operations ----------------
     def _ghostty_embed_help(self):

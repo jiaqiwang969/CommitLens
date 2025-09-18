@@ -150,12 +150,12 @@ class SboxgenGUI:
         tab_codex = ttk.Frame(nb, padding=12)
         tab_readme = ttk.Frame(nb, padding=12)
         tab_run = ttk.Frame(nb, padding=12)
-        tab_ghostty = ttk.Frame(nb, padding=12)
+        tab_codex_output = ttk.Frame(nb, padding=12)
         nb.add(tab_basic, text="基本设置")
         nb.add(tab_codex, text="Codex 与参数")
         nb.add(tab_readme, text="README 模板")
         nb.add(tab_run, text="执行与日志")
-        nb.add(tab_ghostty, text="GhosttyAI")
+        nb.add(tab_codex_output, text="Codex Output")
 
         # --- basic tab ---
         for i in range(8):
@@ -362,62 +362,8 @@ class SboxgenGUI:
         self.status_var = tk.StringVar(value="就绪")
         ttk.Label(status_bar, textvariable=self.status_var).pack(side=tk.LEFT)
 
-        # --- ghostty tab ---
-        # Layout: control row + built-in simple terminal (fallback)
-        tab_ghostty.rowconfigure(3, weight=1)
-        tab_ghostty.columnconfigure(0, weight=1)
-
-        embed_bar = ttk.LabelFrame(tab_ghostty, text="内嵌 Ghostty（实验 · 仅 macOS）", padding=10)
-        embed_bar.grid(row=0, column=0, sticky="ew")
-        ttk.Button(embed_bar, text="嵌入到下方区域", command=self._ghostty_embed_start).pack(side=tk.LEFT)
-        ttk.Button(embed_bar, text="释放/关闭", command=self._ghostty_embed_stop).pack(side=tk.LEFT, padx=(8, 0))
-        ttk.Button(embed_bar, text="构建指引", command=self._ghostty_embed_help).pack(side=tk.LEFT, padx=(8, 0))
-
-        # Container where libghostty renders
-        host = ttk.Frame(tab_ghostty)
-        host.grid(row=1, column=0, sticky="nsew", pady=(6, 6))
-        host.rowconfigure(0, weight=1)
-        host.columnconfigure(0, weight=1)
-        self.ghostty_embed_container = ttk.Frame(host)
-        self.ghostty_embed_container.grid(row=0, column=0, sticky="nsew")
-        self.ghostty_embed_container.config(width=640, height=380)
-        self.ghostty_embed_container.bind('<Configure>', self._on_ghostty_container_resize)
-        # Key input forwarding (best-effort text input only)
-        self.ghostty_embed_container.bind('<Key>', self._on_ghostty_embed_key)
-
-        ctrl = ttk.LabelFrame(tab_ghostty, text="Ghostty 启动与检测", padding=10)
-        ctrl.grid(row=2, column=0, sticky="ew")
-        ttk.Button(ctrl, text="启动 Ghostty（系统安装）", command=self._ghostty_launch_default).pack(side=tk.LEFT)
-        ttk.Button(ctrl, text="在仓库根启动", command=lambda: self._ghostty_launch_at(Path.cwd())).pack(side=tk.LEFT, padx=(8, 0))
-        ttk.Button(ctrl, text="在时间线根启动", command=lambda: self._ghostty_launch_at(Path(self.sboxes_root_var.get()))).pack(side=tk.LEFT, padx=(8, 0))
-        ttk.Button(ctrl, text="检测可用性", command=self._ghostty_check).pack(side=tk.LEFT, padx=(8, 0))
-
-        tip = ttk.Label(tab_ghostty, text="提示：内嵌 Ghostty 仅在 macOS + 已构建 libghostty.dylib 情况下可用；否则使用外部窗口或下方简易终端。", foreground="#555")
-        tip.grid(row=3, column=0, sticky="w", pady=(6, 6))
-
-        term_frame = ttk.LabelFrame(tab_ghostty, text="内置简易终端（非 Ghostty，仅作备用）", padding=8)
-        term_frame.grid(row=4, column=0, sticky="nsew")
-        term_frame.rowconfigure(0, weight=1)
-        term_frame.columnconfigure(0, weight=1)
-
-        self.ghostty_text = scrolledtext.ScrolledText(term_frame, height=16)
-        self.ghostty_text.grid(row=0, column=0, columnspan=4, sticky="nsew")
-
-        self.ghostty_input = ttk.Entry(term_frame)
-        self.ghostty_input.grid(row=1, column=0, sticky="ew", padx=(0, 8), pady=(8, 0))
-        term_frame.columnconfigure(0, weight=1)
-        ttk.Button(term_frame, text="启动 Shell", command=self._ghostty_simple_start).grid(row=1, column=1, sticky="w", pady=(8, 0))
-        ttk.Button(term_frame, text="发送", command=lambda: self._ghostty_simple_send(self.ghostty_input.get())).grid(row=1, column=2, sticky="w", padx=(8, 0), pady=(8, 0))
-        ttk.Button(term_frame, text="停止 Shell", command=self._ghostty_simple_stop).grid(row=1, column=3, sticky="w", padx=(8, 0), pady=(8, 0))
-        self.ghostty_input.bind('<Return>', lambda e: self._ghostty_simple_send(self.ghostty_input.get()))
-        # runtime state for simple terminal
-        self._ghostty_pty_master = None
-        self._ghostty_pty_pid = None
-        self._ghostty_reader = None
-        self._ghostty_alive = False
-
-        # Embedding state
-        self._ghostty_embedder = None
+        # --- codex output viewer tab ---
+        self._build_codex_output_tab(tab_codex_output)
 
     def _bind_events(self):
         self.repo_var.trace_add("write", lambda *_: self._maybe_update_mirror())
@@ -969,6 +915,455 @@ class SboxgenGUI:
         self.root.after(100, self._drain_queues)
 
     # ---------------- Ghostty embedding (libghostty) ----------------
+    # ---------------- Codex Output Viewer Methods ----------------
+    def _build_codex_output_tab(self, tab):
+        """构建 Codex Output 查看器标签页"""
+        tab.rowconfigure(1, weight=1)
+        tab.columnconfigure(0, weight=1)
+
+        # 顶部控制栏
+        control_frame = ttk.LabelFrame(tab, text="文件选择与监控", padding=10)
+        control_frame.grid(row=0, column=0, sticky="ew", pady=(0, 10))
+        control_frame.columnconfigure(1, weight=1)
+
+        ttk.Label(control_frame, text="文件路径:").grid(row=0, column=0, sticky="w", padx=(0, 10))
+
+        self.codex_file_var = tk.StringVar(value="")
+        self.codex_file_entry = ttk.Entry(control_frame, textvariable=self.codex_file_var)
+        self.codex_file_entry.grid(row=0, column=1, sticky="ew", padx=(0, 10))
+
+        ttk.Button(control_frame, text="浏览", command=self._browse_codex_file).grid(row=0, column=2, padx=(0, 5))
+        ttk.Button(control_frame, text="加载", command=self._load_codex_file).grid(row=0, column=3, padx=(0, 5))
+        ttk.Button(control_frame, text="开始监控", command=self._start_codex_monitoring).grid(row=0, column=4, padx=(0, 5))
+        ttk.Button(control_frame, text="停止监控", command=self._stop_codex_monitoring).grid(row=0, column=5, padx=(0, 5))
+        ttk.Button(control_frame, text="清空", command=self._clear_codex_display).grid(row=0, column=6)
+
+        # 主显示区域 - 使用 PanedWindow 分隔
+        paned = tk.PanedWindow(tab, orient=tk.HORIZONTAL, bg="#e0e0e0", sashwidth=4)
+        paned.grid(row=1, column=0, sticky="nsew", pady=(0, 10))
+
+        # 左侧：消息列表框架
+        left_frame = ttk.Frame(paned)
+        paned.add(left_frame, width=300, minsize=200)
+
+        ttk.Label(left_frame, text="消息列表", font=("Arial", 10, "bold")).pack(pady=(0, 5))
+
+        # 消息列表框和滚动条
+        list_frame = ttk.Frame(left_frame)
+        list_frame.pack(fill="both", expand=True)
+
+        list_scrollbar = ttk.Scrollbar(list_frame)
+        list_scrollbar.pack(side="right", fill="y")
+
+        self.codex_message_listbox = tk.Listbox(
+            list_frame,
+            yscrollcommand=list_scrollbar.set,
+            font=("Monaco", 10),
+            selectmode=tk.SINGLE,
+            bg="#fafafa",
+            selectbackground="#007aff",
+            selectforeground="white"
+        )
+        self.codex_message_listbox.pack(side="left", fill="both", expand=True)
+        self.codex_message_listbox.bind('<<ListboxSelect>>', self._on_codex_message_select)
+        list_scrollbar.config(command=self.codex_message_listbox.yview)
+
+        # 右侧：消息详情框架
+        right_frame = ttk.Frame(paned)
+        paned.add(right_frame, minsize=400)
+
+        ttk.Label(right_frame, text="消息详情", font=("Arial", 10, "bold")).pack(pady=(0, 5))
+
+        # 消息详情文本框
+        detail_frame = ttk.Frame(right_frame)
+        detail_frame.pack(fill="both", expand=True)
+
+        self.codex_detail_text = scrolledtext.ScrolledText(
+            detail_frame,
+            wrap=tk.WORD,
+            font=("Monaco", 11),
+            bg="#ffffff",
+            fg="#212529",
+            insertbackground="#212529",
+            padx=15,
+            pady=10,
+            relief="flat",
+            borderwidth=1
+        )
+        self.codex_detail_text.pack(fill="both", expand=True)
+
+        # 配置文本标签样式（类似 OpenAI 界面）
+        self.codex_detail_text.tag_config("metadata", foreground="#6c757d", font=("Monaco", 10, "italic"))
+        self.codex_detail_text.tag_config("user", foreground="#0066cc", font=("Monaco", 11, "bold"))
+        self.codex_detail_text.tag_config("thinking", foreground="#7c4dff", font=("Monaco", 11, "italic"))
+        self.codex_detail_text.tag_config("exec", foreground="#00695c", font=("Monaco", 10))
+        self.codex_detail_text.tag_config("output", background="#f8f9fa", font=("Monaco", 10))
+        self.codex_detail_text.tag_config("error", foreground="#d32f2f", font=("Monaco", 10, "bold"))
+        self.codex_detail_text.tag_config("timestamp", foreground="#757575", font=("Monaco", 9))
+        self.codex_detail_text.tag_config("codex", foreground="#ff6b35", font=("Monaco", 11, "bold"))
+        self.codex_detail_text.tag_config("tokens", foreground="#9e9e9e", font=("Monaco", 9, "italic"))
+
+        # 底部状态栏
+        status_frame = ttk.Frame(tab)
+        status_frame.grid(row=2, column=0, sticky="ew")
+        status_frame.columnconfigure(0, weight=1)
+
+        self.codex_status_label = ttk.Label(status_frame, text="状态: 未加载文件", foreground="#666")
+        self.codex_status_label.pack(side="left")
+
+        self.codex_line_count_label = ttk.Label(status_frame, text="消息数: 0", foreground="#666")
+        self.codex_line_count_label.pack(side="right", padx=(0, 10))
+
+        # 初始化变量
+        self.codex_messages = []  # 存储解析后的消息
+        self.codex_monitor_thread = None
+        self.codex_monitoring = False
+        self.codex_last_position = 0
+        self.codex_file_mtime = 0
+
+    def _browse_codex_file(self):
+        """浏览选择 codex_output.txt 文件"""
+        filename = filedialog.askopenfilename(
+            title="选择 codex_output.txt 文件",
+            filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
+            initialfile="codex_output.txt"
+        )
+        if filename:
+            self.codex_file_var.set(filename)
+            self.log(f"选择了文件: {filename}")
+
+    def _load_codex_file(self):
+        """加载并解析 codex_output.txt 文件"""
+        filepath = self.codex_file_var.get()
+        if not filepath:
+            messagebox.showwarning("警告", "请先选择文件")
+            return
+
+        if not Path(filepath).exists():
+            messagebox.showerror("错误", f"文件不存在: {filepath}")
+            return
+
+        try:
+            with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+
+            self._parse_codex_content(content)
+            self._update_codex_display()
+            self.codex_status_label.config(text=f"状态: 已加载 {Path(filepath).name}")
+            self.codex_last_position = len(content)
+            self.codex_file_mtime = Path(filepath).stat().st_mtime
+            self.log(f"成功加载 Codex 输出文件: {len(self.codex_messages)} 条消息")
+        except Exception as e:
+            messagebox.showerror("错误", f"加载文件失败: {e}")
+            self.log(f"加载 Codex 文件失败: {e}")
+
+    def _parse_codex_content(self, content: str):
+        """解析 Codex 输出内容为结构化消息"""
+        self.codex_messages = []
+        lines = content.split('\n')
+
+        current_message = None
+        current_content = []
+        in_thinking = False
+
+        for i, line in enumerate(lines):
+            # 检测时间戳行 [2025-09-18T05:06:39]
+            if line.startswith('[') and 'T' in line[:30] and ']' in line[:30]:
+                # 保存上一个消息
+                if current_message:
+                    current_message['content'] = '\n'.join(current_content).strip()
+                    if current_message['content'] or current_message['type'] == 'separator':
+                        self.codex_messages.append(current_message)
+                    current_content = []
+
+                # 解析新消息
+                try:
+                    timestamp_end = line.index(']', 1)
+                    timestamp = line[1:timestamp_end]
+                    rest = line[timestamp_end+1:].strip()
+
+                    # 判断消息类型
+                    if 'OpenAI Codex' in rest:
+                        current_message = {'type': 'header', 'timestamp': timestamp, 'title': 'Codex 初始化', 'content': rest}
+                    elif 'User instructions:' in rest:
+                        current_message = {'type': 'user', 'timestamp': timestamp, 'title': '用户指令'}
+                    elif rest == 'thinking':
+                        current_message = {'type': 'thinking', 'timestamp': timestamp, 'title': 'AI 思考'}
+                        in_thinking = True
+                    elif rest == 'codex':
+                        current_message = {'type': 'codex', 'timestamp': timestamp, 'title': 'Codex 输出'}
+                        in_thinking = False
+                    elif rest.startswith('exec '):
+                        command = rest[5:] if len(rest) > 5 else ''
+                        current_message = {'type': 'exec', 'timestamp': timestamp, 'title': '执行命令', 'command': command}
+                    elif 'succeeded' in rest:
+                        current_message = {'type': 'success', 'timestamp': timestamp, 'title': '执行成功', 'content': rest}
+                    elif 'failed' in rest or 'exited' in rest:
+                        current_message = {'type': 'error', 'timestamp': timestamp, 'title': '执行失败', 'content': rest}
+                    elif 'tokens used:' in rest:
+                        current_message = {'type': 'tokens', 'timestamp': timestamp, 'title': 'Token 使用', 'content': rest}
+                    else:
+                        current_message = {'type': 'info', 'timestamp': timestamp, 'title': '信息', 'content': rest}
+                except Exception:
+                    # 如果解析失败，作为普通内容处理
+                    if current_message:
+                        current_content.append(line)
+            elif line.startswith('--------'):
+                # 分隔线
+                if current_message:
+                    current_message['content'] = '\n'.join(current_content).strip()
+                    if current_message['content'] or current_message['type'] == 'separator':
+                        self.codex_messages.append(current_message)
+                    current_content = []
+                    current_message = None
+                # 添加分隔线作为特殊消息
+                self.codex_messages.append({'type': 'separator', 'timestamp': '', 'title': '---', 'content': ''})
+            elif current_message:
+                # 添加到当前消息内容
+                current_content.append(line)
+            elif not current_message and line.strip() and i < 20:
+                # 处理开头的元数据
+                if not self.codex_messages or self.codex_messages[-1]['type'] != 'metadata':
+                    self.codex_messages.append({
+                        'type': 'metadata',
+                        'timestamp': '',
+                        'title': '元数据',
+                        'content': line
+                    })
+                else:
+                    self.codex_messages[-1]['content'] += '\n' + line
+
+        # 保存最后一个消息
+        if current_message:
+            current_message['content'] = '\n'.join(current_content).strip()
+            if current_message['content'] or current_message['type'] == 'separator':
+                self.codex_messages.append(current_message)
+
+    def _update_codex_display(self):
+        """更新消息列表显示"""
+        self.codex_message_listbox.delete(0, tk.END)
+
+        for i, msg in enumerate(self.codex_messages):
+            # 格式化列表项显示
+            timestamp = msg['timestamp'][:8] if len(msg['timestamp']) > 8 else msg['timestamp']
+            title = msg['title']
+
+            # 根据类型添加图标
+            icon = ''
+            if msg['type'] == 'user':
+                icon = '👤'
+            elif msg['type'] == 'thinking':
+                icon = '🤔'
+            elif msg['type'] == 'exec':
+                icon = '⚡'
+            elif msg['type'] == 'success':
+                icon = '✅'
+            elif msg['type'] == 'error':
+                icon = '❌'
+            elif msg['type'] == 'codex':
+                icon = '🤖'
+            elif msg['type'] == 'tokens':
+                icon = '🎫'
+            elif msg['type'] == 'metadata':
+                icon = 'ℹ️'
+            elif msg['type'] == 'header':
+                icon = '📋'
+            elif msg['type'] == 'separator':
+                icon = '━'
+
+            # 组合显示文本
+            if timestamp:
+                display_text = f"{icon} [{timestamp}] {title}"
+            else:
+                display_text = f"{icon} {title}"
+
+            # 对于命令，显示部分命令内容
+            if msg['type'] == 'exec' and 'command' in msg:
+                cmd_preview = msg['command'][:40] + '...' if len(msg['command']) > 40 else msg['command']
+                display_text = f"{icon} [{timestamp}] {title}: {cmd_preview}"
+
+            self.codex_message_listbox.insert(tk.END, display_text)
+
+            # 根据类型设置颜色
+            if msg['type'] == 'error':
+                self.codex_message_listbox.itemconfig(i, {'fg': '#d32f2f'})
+            elif msg['type'] == 'success':
+                self.codex_message_listbox.itemconfig(i, {'fg': '#388e3c'})
+            elif msg['type'] == 'thinking':
+                self.codex_message_listbox.itemconfig(i, {'fg': '#7c4dff'})
+            elif msg['type'] == 'exec':
+                self.codex_message_listbox.itemconfig(i, {'fg': '#00695c'})
+            elif msg['type'] == 'codex':
+                self.codex_message_listbox.itemconfig(i, {'fg': '#ff6b35'})
+            elif msg['type'] == 'separator':
+                self.codex_message_listbox.itemconfig(i, {'fg': '#cccccc'})
+
+        self.codex_line_count_label.config(text=f"消息数: {len(self.codex_messages)}")
+
+    def _on_codex_message_select(self, event):
+        """当选择消息时显示详情"""
+        selection = self.codex_message_listbox.curselection()
+        if not selection:
+            return
+
+        index = selection[0]
+        if index >= len(self.codex_messages):
+            return
+
+        msg = self.codex_messages[index]
+
+        # 清空详情区
+        self.codex_detail_text.delete(1.0, tk.END)
+
+        # 显示时间戳（如果有）
+        if msg['timestamp']:
+            self.codex_detail_text.insert(tk.END, f"时间: {msg['timestamp']}\n", "timestamp")
+
+        # 显示标题
+        tag_for_type = {
+            'user': 'user',
+            'thinking': 'thinking',
+            'exec': 'exec',
+            'codex': 'codex',
+            'tokens': 'tokens',
+            'error': 'error',
+            'success': 'exec',
+            'metadata': 'metadata'
+        }.get(msg['type'], '')
+
+        self.codex_detail_text.insert(tk.END, f"{msg['title']}\n", tag_for_type if tag_for_type else None)
+        self.codex_detail_text.insert(tk.END, "━" * 60 + "\n", "metadata")
+
+        # 显示命令（如果有）
+        if 'command' in msg and msg['command']:
+            self.codex_detail_text.insert(tk.END, f"\n命令:\n{msg['command']}\n\n", "exec")
+
+        # 显示内容
+        content = msg.get('content', '')
+        if content:
+            # 对不同类型的内容应用不同的标签
+            if msg['type'] in ['exec', 'success']:
+                self.codex_detail_text.insert(tk.END, content, "output")
+            elif msg['type'] == 'error':
+                self.codex_detail_text.insert(tk.END, content, "error")
+            elif msg['type'] == 'thinking':
+                # 思考内容可能很长，添加适当的格式化
+                formatted_content = self._format_thinking_content(content)
+                self.codex_detail_text.insert(tk.END, formatted_content, "thinking")
+            else:
+                self.codex_detail_text.insert(tk.END, content)
+
+        # 滚动到顶部
+        self.codex_detail_text.see(1.0)
+
+    def _format_thinking_content(self, content: str) -> str:
+        """格式化思考内容，使其更易读"""
+        # 为标题添加换行
+        lines = content.split('\n')
+        formatted = []
+        for line in lines:
+            # 检测是否为标题（以**开头和结尾）
+            if line.strip().startswith('**') and line.strip().endswith('**'):
+                formatted.append('\n' + line + '\n')
+            else:
+                formatted.append(line)
+        return '\n'.join(formatted)
+
+    def _start_codex_monitoring(self):
+        """开始监控文件变化"""
+        filepath = self.codex_file_var.get()
+        if not filepath:
+            messagebox.showwarning("警告", "请先选择文件")
+            return
+
+        if not Path(filepath).exists():
+            messagebox.showerror("错误", f"文件不存在: {filepath}")
+            return
+
+        if self.codex_monitoring:
+            messagebox.showinfo("信息", "已在监控中")
+            return
+
+        self.codex_monitoring = True
+        self.codex_monitor_thread = threading.Thread(
+            target=self._monitor_codex_file,
+            args=(filepath,),
+            daemon=True
+        )
+        self.codex_monitor_thread.start()
+        self.codex_status_label.config(text=f"状态: 监控中 - {Path(filepath).name}")
+        self.log(f"开始监控 Codex 文件: {filepath}")
+
+    def _monitor_codex_file(self, filepath):
+        """监控文件变化的线程函数"""
+        import time
+        path = Path(filepath)
+
+        while self.codex_monitoring:
+            try:
+                if path.exists():
+                    current_mtime = path.stat().st_mtime
+
+                    # 检查文件是否被修改
+                    if current_mtime > self.codex_file_mtime:
+                        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                            content = f.read()
+
+                        # 在主线程中更新 UI
+                        self.root.after(0, lambda: self._update_codex_from_monitor(content))
+                        self.codex_file_mtime = current_mtime
+                        self.codex_last_position = len(content)
+            except Exception as e:
+                print(f"监控文件出错: {e}")
+
+            # 每秒检查一次
+            time.sleep(1)
+
+    def _update_codex_from_monitor(self, content):
+        """从监控线程更新显示"""
+        # 记住当前选择
+        current_selection = self.codex_message_listbox.curselection()
+
+        # 解析并更新
+        self._parse_codex_content(content)
+        self._update_codex_display()
+
+        # 如果之前有选择，尝试恢复
+        if current_selection:
+            try:
+                self.codex_message_listbox.selection_set(current_selection)
+                self.codex_message_listbox.see(current_selection[0])
+            except:
+                pass
+        else:
+            # 自动滚动到最新消息
+            if self.codex_messages:
+                self.codex_message_listbox.see(tk.END)
+
+    def _stop_codex_monitoring(self):
+        """停止监控"""
+        if not self.codex_monitoring:
+            messagebox.showinfo("信息", "未在监控中")
+            return
+
+        self.codex_monitoring = False
+        if self.codex_monitor_thread:
+            self.codex_monitor_thread.join(timeout=2)
+        self.codex_status_label.config(text="状态: 监控已停止")
+        self.log("停止监控 Codex 文件")
+
+    def _clear_codex_display(self):
+        """清空显示"""
+        self.codex_messages = []
+        self.codex_message_listbox.delete(0, tk.END)
+        self.codex_detail_text.delete(1.0, tk.END)
+        self.codex_line_count_label.config(text="消息数: 0")
+        self.codex_last_position = 0
+        self.codex_file_mtime = 0
+        self.codex_status_label.config(text="状态: 已清空")
+        self.log("清空 Codex 显示")
+
+    # ---------------- ghostty operations ----------------
     def _ghostty_embed_help(self):
         msg = (
             "构建步骤（macOS）：\n\n"

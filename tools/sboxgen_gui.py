@@ -938,6 +938,16 @@ class SboxgenGUI:
         ttk.Button(control_frame, text="停止监控", command=self._stop_codex_monitoring).grid(row=0, column=5, padx=(0, 5))
         ttk.Button(control_frame, text="清空", command=self._clear_codex_display).grid(row=0, column=6)
 
+        # 自动跟踪复选框
+        self.auto_follow_var = tk.BooleanVar(value=True)
+        self.auto_follow_checkbox = ttk.Checkbutton(
+            control_frame,
+            text="自动跟踪最新",
+            variable=self.auto_follow_var,
+            command=self._on_auto_follow_change
+        )
+        self.auto_follow_checkbox.grid(row=0, column=7, padx=(10, 0))
+
         # 命令执行框
         exec_frame = ttk.LabelFrame(tab, text="Codex 命令执行", padding=10)
         exec_frame.grid(row=1, column=0, sticky="ew", pady=(0, 5))
@@ -1046,6 +1056,8 @@ class SboxgenGUI:
         self.codex_file_mtime = 0
         self.codex_exec_proc = None  # Codex 执行进程
         self.codex_exec_thread = None  # Codex 执行线程
+        self.codex_auto_follow = True  # 是否自动跟踪最新消息
+        self.codex_is_executing = False  # 是否正在执行命令
 
     def _browse_codex_file(self):
         """浏览选择工作目录（包含 codex_output.txt）"""
@@ -1241,8 +1253,30 @@ class SboxgenGUI:
 
         self.codex_line_count_label.config(text=f"消息数: {len(self.codex_messages)}")
 
+    def _on_auto_follow_change(self):
+        """切换自动跟踪模式"""
+        self.codex_auto_follow = self.auto_follow_var.get()
+        if self.codex_auto_follow and self.codex_messages:
+            # 如果启用自动跟踪，立即跳到最后
+            self.codex_message_listbox.see(tk.END)
+            self.codex_message_listbox.selection_clear(0, tk.END)
+            self.codex_message_listbox.selection_set(tk.END)
+            self.codex_message_listbox.event_generate('<<ListboxSelect>>')
+
     def _on_codex_message_select(self, event):
         """当选择消息时显示详情"""
+        selection = self.codex_message_listbox.curselection()
+        if not selection:
+            return
+
+        # 用户手动选择时，如果不是最后一项，禁用自动跟踪
+        if self.codex_is_executing:
+            index = selection[0]
+            total = self.codex_message_listbox.size()
+            if index < total - 1:
+                # 用户选择了非最后一项，暂时禁用自动跟踪
+                self.auto_follow_var.set(False)
+                self.codex_auto_follow = False
         selection = self.codex_message_listbox.curselection()
         if not selection:
             return
@@ -1294,8 +1328,13 @@ class SboxgenGUI:
             else:
                 self.codex_detail_text.insert(tk.END, content)
 
-        # 滚动到顶部
-        self.codex_detail_text.see(1.0)
+        # 根据自动跟踪设置决定滚动位置
+        if self.codex_auto_follow and self.codex_is_executing:
+            # 正在执行且启用自动跟踪，滚动到底部
+            self.codex_detail_text.see(tk.END)
+        else:
+            # 否则滚动到顶部
+            self.codex_detail_text.see(1.0)
 
     def _format_thinking_content(self, content: str) -> str:
         """格式化思考内容，使其更易读"""
@@ -1329,6 +1368,13 @@ class SboxgenGUI:
         # 禁用执行按钮，启用停止按钮
         self.codex_exec_button.config(state="disabled")
         self.codex_stop_button.config(state="normal")
+
+        # 设置执行状态
+        self.codex_is_executing = True
+
+        # 启用自动跟踪
+        self.auto_follow_var.set(True)
+        self.codex_auto_follow = True
 
         # 设置工作目录
         work_dir = Path(dirpath)
@@ -1466,15 +1512,32 @@ class SboxgenGUI:
         self.codex_exec_button.config(state="normal")
         self.codex_stop_button.config(state="disabled")
 
-        if return_code != 0:
-            self._append_log(f"Codex 执行完成，返回码: {return_code}")
-            self.codex_status_label.config(text=f"状态: 执行完成 (返回码: {return_code})")
-        else:
-            self._append_log("Codex 命令执行成功")
-            self.codex_status_label.config(text="状态: 执行成功")
+        # 清除执行状态
+        self.codex_is_executing = False
 
-        # 重新加载文件以显示最终内容
+        # 根据返回码显示不同的状态
+        if return_code == 0:
+            self._append_log("Codex 命令执行成功")
+            self.codex_status_label.config(text="状态: ✅ 执行成功")
+        elif return_code == 124:
+            self._append_log("Codex 执行超时")
+            self.codex_status_label.config(text="状态: ⏱️ 执行超时")
+        elif return_code == 127:
+            self._append_log("找不到 codex 命令")
+            self.codex_status_label.config(text="状态: ❌ 找不到命令")
+        else:
+            self._append_log(f"Codex 执行完成，返回码: {return_code}")
+            self.codex_status_label.config(text=f"状态: ⚠️ 退出码 {return_code}")
+
+        # 重新加载文件以显示最终内容（包括错误和状态）
         self._load_codex_file()
+
+        # 执行完成后仍保持自动跟踪，显示最后的结果
+        if self.codex_auto_follow and self.codex_messages:
+            self.codex_message_listbox.see(tk.END)
+            self.codex_message_listbox.selection_clear(0, tk.END)
+            self.codex_message_listbox.selection_set(tk.END)
+            self.codex_message_listbox.event_generate('<<ListboxSelect>>')
 
     def _on_codex_command_error(self, error_msg):
         """命令执行错误的回调"""
@@ -1499,6 +1562,7 @@ class SboxgenGUI:
         self.codex_exec_button.config(state="normal")
         self.codex_stop_button.config(state="disabled")
         self.codex_status_label.config(text="状态: 已停止")
+        self.codex_is_executing = False
 
     def _start_codex_monitoring(self):
         """开始监控文件变化"""
@@ -1560,24 +1624,32 @@ class SboxgenGUI:
 
     def _update_codex_from_monitor(self, content):
         """从监控线程更新显示"""
-        # 记住当前选择
-        current_selection = self.codex_message_listbox.curselection()
+        # 保存当前消息数量
+        prev_message_count = len(self.codex_messages)
 
-        # 解析并更新
+        # 解析新内容
         self._parse_codex_content(content)
+
+        # 检查是否有新消息
+        new_message_count = len(self.codex_messages)
+        has_new_messages = new_message_count > prev_message_count
+
+        # 更新列表显示
         self._update_codex_display()
 
-        # 如果之前有选择，尝试恢复
-        if current_selection:
-            try:
-                self.codex_message_listbox.selection_set(current_selection)
-                self.codex_message_listbox.see(current_selection[0])
-            except:
-                pass
-        else:
-            # 自动滚动到最新消息
-            if self.codex_messages:
-                self.codex_message_listbox.see(tk.END)
+        # 如果启用了自动跟踪且有新消息
+        if self.codex_auto_follow and has_new_messages:
+            # 自动选中并显示最后一条消息
+            self.codex_message_listbox.see(tk.END)
+            self.codex_message_listbox.selection_clear(0, tk.END)
+            self.codex_message_listbox.selection_set(tk.END)
+            self.codex_message_listbox.event_generate('<<ListboxSelect>>')
+
+            # 如果详情区有内容，滚动到底部
+            self.codex_detail_text.see(tk.END)
+        elif has_new_messages and not self.codex_auto_follow:
+            # 没有自动跟踪，但有新消息，只是让列表可见
+            self.codex_message_listbox.see(tk.END)
 
     def _stop_codex_monitoring(self):
         """停止监控"""

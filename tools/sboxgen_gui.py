@@ -918,15 +918,15 @@ class SboxgenGUI:
     # ---------------- Codex Output Viewer Methods ----------------
     def _build_codex_output_tab(self, tab):
         """构建 Codex Output 查看器标签页"""
-        tab.rowconfigure(1, weight=1)
+        tab.rowconfigure(2, weight=1)  # 主显示区域
         tab.columnconfigure(0, weight=1)
 
-        # 顶部控制栏
-        control_frame = ttk.LabelFrame(tab, text="文件选择与监控", padding=10)
-        control_frame.grid(row=0, column=0, sticky="ew", pady=(0, 10))
+        # 顶部控制栏 - 文件/文件夹选择
+        control_frame = ttk.LabelFrame(tab, text="文件夹选择与监控", padding=10)
+        control_frame.grid(row=0, column=0, sticky="ew", pady=(0, 5))
         control_frame.columnconfigure(1, weight=1)
 
-        ttk.Label(control_frame, text="文件路径:").grid(row=0, column=0, sticky="w", padx=(0, 10))
+        ttk.Label(control_frame, text="工作目录:").grid(row=0, column=0, sticky="w", padx=(0, 10))
 
         self.codex_file_var = tk.StringVar(value="")
         self.codex_file_entry = ttk.Entry(control_frame, textvariable=self.codex_file_var)
@@ -938,9 +938,31 @@ class SboxgenGUI:
         ttk.Button(control_frame, text="停止监控", command=self._stop_codex_monitoring).grid(row=0, column=5, padx=(0, 5))
         ttk.Button(control_frame, text="清空", command=self._clear_codex_display).grid(row=0, column=6)
 
+        # 命令执行框
+        exec_frame = ttk.LabelFrame(tab, text="Codex 命令执行", padding=10)
+        exec_frame.grid(row=1, column=0, sticky="ew", pady=(0, 5))
+        exec_frame.columnconfigure(1, weight=1)
+
+        ttk.Label(exec_frame, text="指令:").grid(row=0, column=0, sticky="w", padx=(0, 10))
+
+        self.codex_command_var = tk.StringVar(value="请根据README.md的要求完成任务")
+        self.codex_command_entry = ttk.Entry(exec_frame, textvariable=self.codex_command_var)
+        self.codex_command_entry.grid(row=0, column=1, sticky="ew", padx=(0, 10))
+
+        self.codex_exec_button = ttk.Button(exec_frame, text="执行", command=self._execute_codex_command)
+        self.codex_exec_button.grid(row=0, column=2, padx=(0, 5))
+
+        self.codex_stop_button = ttk.Button(exec_frame, text="停止", command=self._stop_codex_execution, state="disabled")
+        self.codex_stop_button.grid(row=0, column=3)
+
+        # 显示完整命令（只读）
+        ttk.Label(exec_frame, text="完整命令:", foreground="#666").grid(row=1, column=0, sticky="w", padx=(0, 10), pady=(5, 0))
+        self.codex_full_command_label = ttk.Label(exec_frame, text="codex exec --skip-git-repo-check --sandbox workspace-write \"...\"", foreground="#666")
+        self.codex_full_command_label.grid(row=1, column=1, columnspan=3, sticky="w", pady=(5, 0))
+
         # 主显示区域 - 使用 PanedWindow 分隔
         paned = tk.PanedWindow(tab, orient=tk.HORIZONTAL, bg="#e0e0e0", sashwidth=4)
-        paned.grid(row=1, column=0, sticky="nsew", pady=(0, 10))
+        paned.grid(row=2, column=0, sticky="nsew", pady=(0, 10))
 
         # 左侧：消息列表框架
         left_frame = ttk.Frame(paned)
@@ -1007,7 +1029,7 @@ class SboxgenGUI:
 
         # 底部状态栏
         status_frame = ttk.Frame(tab)
-        status_frame.grid(row=2, column=0, sticky="ew")
+        status_frame.grid(row=3, column=0, sticky="ew")
         status_frame.columnconfigure(0, weight=1)
 
         self.codex_status_label = ttk.Label(status_frame, text="状态: 未加载文件", foreground="#666")
@@ -1022,27 +1044,44 @@ class SboxgenGUI:
         self.codex_monitoring = False
         self.codex_last_position = 0
         self.codex_file_mtime = 0
+        self.codex_exec_proc = None  # Codex 执行进程
+        self.codex_exec_thread = None  # Codex 执行线程
 
     def _browse_codex_file(self):
-        """浏览选择 codex_output.txt 文件"""
-        filename = filedialog.askopenfilename(
-            title="选择 codex_output.txt 文件",
-            filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
-            initialfile="codex_output.txt"
+        """浏览选择工作目录（包含 codex_output.txt）"""
+        directory = filedialog.askdirectory(
+            title="选择包含 codex_output.txt 的目录"
         )
-        if filename:
-            self.codex_file_var.set(filename)
-            self._append_log(f"选择了文件: {filename}")
+        if directory:
+            self.codex_file_var.set(directory)
+            # 检查目录中是否有 codex_output.txt
+            output_file = Path(directory) / "codex_output.txt"
+            if output_file.exists():
+                self._append_log(f"选择了目录: {directory} (包含 codex_output.txt)")
+            else:
+                self._append_log(f"选择了目录: {directory} (将创建新的 codex_output.txt)")
 
     def _load_codex_file(self):
         """加载并解析 codex_output.txt 文件"""
-        filepath = self.codex_file_var.get()
-        if not filepath:
-            messagebox.showwarning("警告", "请先选择文件")
+        dirpath = self.codex_file_var.get()
+        if not dirpath:
+            messagebox.showwarning("警告", "请先选择目录")
             return
 
-        if not Path(filepath).exists():
-            messagebox.showerror("错误", f"文件不存在: {filepath}")
+        # 如果是目录，查找 codex_output.txt
+        path = Path(dirpath)
+        if path.is_dir():
+            filepath = path / "codex_output.txt"
+        else:
+            # 如果是文件，直接使用
+            filepath = path
+
+        if not filepath.exists():
+            # 文件不存在，创建空文件
+            self._append_log(f"codex_output.txt 不存在，清空显示")
+            self.codex_messages = []
+            self._update_codex_display()
+            self.codex_status_label.config(text=f"状态: 等待执行命令")
             return
 
         try:
@@ -1051,9 +1090,9 @@ class SboxgenGUI:
 
             self._parse_codex_content(content)
             self._update_codex_display()
-            self.codex_status_label.config(text=f"状态: 已加载 {Path(filepath).name}")
+            self.codex_status_label.config(text=f"状态: 已加载 {filepath.name}")
             self.codex_last_position = len(content)
-            self.codex_file_mtime = Path(filepath).stat().st_mtime
+            self.codex_file_mtime = filepath.stat().st_mtime
             self._append_log(f"成功加载 Codex 输出文件: {len(self.codex_messages)} 条消息")
         except Exception as e:
             messagebox.showerror("错误", f"加载文件失败: {e}")
@@ -1271,29 +1310,140 @@ class SboxgenGUI:
                 formatted.append(line)
         return '\n'.join(formatted)
 
+    def _execute_codex_command(self):
+        """执行 Codex 命令"""
+        dirpath = self.codex_file_var.get()
+        if not dirpath:
+            messagebox.showwarning("警告", "请先选择工作目录")
+            return
+
+        command = self.codex_command_var.get().strip()
+        if not command:
+            messagebox.showwarning("警告", "请输入要执行的指令")
+            return
+
+        # 构建完整命令
+        full_command = f'codex exec --skip-git-repo-check --sandbox workspace-write "{command}"'
+        self.codex_full_command_label.config(text=full_command[:100] + "..." if len(full_command) > 100 else full_command)
+
+        # 禁用执行按钮，启用停止按钮
+        self.codex_exec_button.config(state="disabled")
+        self.codex_stop_button.config(state="normal")
+
+        # 设置工作目录
+        work_dir = Path(dirpath)
+        if not work_dir.is_dir():
+            work_dir = work_dir.parent
+
+        # 启动监控（如果还没有）
+        output_file = work_dir / "codex_output.txt"
+        if not self.codex_monitoring:
+            self._start_codex_monitoring()
+
+        # 在线程中执行命令
+        self.codex_exec_thread = threading.Thread(
+            target=self._run_codex_command,
+            args=(full_command, work_dir),
+            daemon=True
+        )
+        self.codex_exec_thread.start()
+
+        self.codex_status_label.config(text="状态: 正在执行 Codex 命令...")
+        self._append_log(f"开始执行 Codex 命令: {command[:50]}...")
+
+    def _run_codex_command(self, command, work_dir):
+        """在后台线程中运行 Codex 命令"""
+        try:
+            # 执行命令
+            self.codex_exec_proc = subprocess.Popen(
+                command,
+                shell=True,
+                cwd=work_dir,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+
+            # 等待命令完成
+            stdout, stderr = self.codex_exec_proc.communicate()
+
+            # 在主线程中更新状态
+            self.root.after(0, lambda: self._on_codex_command_complete(stdout, stderr))
+
+        except Exception as e:
+            self.root.after(0, lambda: self._on_codex_command_error(str(e)))
+
+    def _on_codex_command_complete(self, stdout, stderr):
+        """命令执行完成的回调"""
+        # 重新启用执行按钮，禁用停止按钮
+        self.codex_exec_button.config(state="normal")
+        self.codex_stop_button.config(state="disabled")
+
+        if stderr:
+            self._append_log(f"Codex 执行错误: {stderr[:200]}")
+            self.codex_status_label.config(text="状态: 执行出错")
+        else:
+            self._append_log("Codex 命令执行完成")
+            self.codex_status_label.config(text="状态: 执行完成")
+
+        # 重新加载文件以显示新内容
+        self._load_codex_file()
+
+    def _on_codex_command_error(self, error_msg):
+        """命令执行错误的回调"""
+        self.codex_exec_button.config(state="normal")
+        self.codex_stop_button.config(state="disabled")
+        self._append_log(f"执行 Codex 命令失败: {error_msg}")
+        self.codex_status_label.config(text="状态: 执行失败")
+        messagebox.showerror("错误", f"执行命令失败: {error_msg}")
+
+    def _stop_codex_execution(self):
+        """停止 Codex 命令执行"""
+        if self.codex_exec_proc and self.codex_exec_proc.poll() is None:
+            try:
+                if os.name == "posix":
+                    os.killpg(os.getpgid(self.codex_exec_proc.pid), signal.SIGTERM)
+                else:
+                    self.codex_exec_proc.terminate()
+                self._append_log("已停止 Codex 命令执行")
+            except Exception as e:
+                self._append_log(f"停止命令失败: {e}")
+
+        self.codex_exec_button.config(state="normal")
+        self.codex_stop_button.config(state="disabled")
+        self.codex_status_label.config(text="状态: 已停止")
+
     def _start_codex_monitoring(self):
         """开始监控文件变化"""
-        filepath = self.codex_file_var.get()
-        if not filepath:
-            messagebox.showwarning("警告", "请先选择文件")
+        dirpath = self.codex_file_var.get()
+        if not dirpath:
+            messagebox.showwarning("警告", "请先选择工作目录")
             return
 
-        if not Path(filepath).exists():
-            messagebox.showerror("错误", f"文件不存在: {filepath}")
-            return
+        # 确定 codex_output.txt 的路径
+        path = Path(dirpath)
+        if path.is_dir():
+            filepath = path / "codex_output.txt"
+        else:
+            filepath = path
+            path = path.parent
+
+        # 如果文件不存在，创建空文件
+        if not filepath.exists():
+            filepath.touch()
+            self._append_log(f"创建了 {filepath.name}")
 
         if self.codex_monitoring:
-            messagebox.showinfo("信息", "已在监控中")
-            return
+            return  # 已在监控中
 
         self.codex_monitoring = True
         self.codex_monitor_thread = threading.Thread(
             target=self._monitor_codex_file,
-            args=(filepath,),
+            args=(str(filepath),),
             daemon=True
         )
         self.codex_monitor_thread.start()
-        self.codex_status_label.config(text=f"状态: 监控中 - {Path(filepath).name}")
+        self.codex_status_label.config(text=f"状态: 监控中 - {filepath.name}")
         self._append_log(f"开始监控 Codex 文件: {filepath}")
 
     def _monitor_codex_file(self, filepath):

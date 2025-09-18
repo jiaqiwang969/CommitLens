@@ -1354,39 +1354,126 @@ class SboxgenGUI:
     def _run_codex_command(self, command, work_dir):
         """在后台线程中运行 Codex 命令"""
         try:
-            # 执行命令
+            # 获取 API key
+            api_key = self.api_key_var.get().strip()
+            env = os.environ.copy()
+            if api_key:
+                env["CODEX_API_KEY"] = api_key
+            else:
+                # 尝试从环境变量获取
+                if "CODEX_API_KEY" not in env:
+                    # 尝试从文件读取
+                    try:
+                        key_file = Path(".cache/codex_api_key")
+                        if key_file.exists():
+                            api_key = key_file.read_text(encoding="utf-8").strip()
+                            if api_key:
+                                env["CODEX_API_KEY"] = api_key
+                    except:
+                        pass
+
+            # 确保 codex_output.txt 存在
+            output_file = work_dir / "codex_output.txt"
+            error_file = work_dir / "codex_error.txt"
+            status_file = work_dir / "codex_status.txt"
+
+            # 清空或创建文件
+            output_file.write_text("", encoding="utf-8")
+            error_file.write_text("", encoding="utf-8")
+            status_file.write_text("running", encoding="utf-8")
+
+            # 构建命令数组（不使用 shell=True）
+            cmd_parts = [
+                "codex",
+                "exec",
+                "--skip-git-repo-check",
+                "--sandbox",
+                "workspace-write",
+                self.codex_command_var.get().strip()
+            ]
+
+            self._append_log(f"执行命令: codex exec 在目录 {work_dir}")
+
+            # 执行命令，实现流式输出
             self.codex_exec_proc = subprocess.Popen(
-                command,
-                shell=True,
-                cwd=work_dir,
+                cmd_parts,
+                cwd=str(work_dir),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                bufsize=1,  # 行缓冲
+                env=env
             )
 
+            # 启动线程读取输出
+            import threading
+
+            def stream_output():
+                """流式读取并写入输出"""
+                try:
+                    while True:
+                        line = self.codex_exec_proc.stdout.readline()
+                        if not line:
+                            break
+                        # 追加到文件
+                        with open(output_file, "a", encoding="utf-8") as f:
+                            f.write(line)
+                            f.flush()
+                except:
+                    pass
+
+            def stream_error():
+                """流式读取错误输出"""
+                try:
+                    while True:
+                        line = self.codex_exec_proc.stderr.readline()
+                        if not line:
+                            break
+                        # 追加到错误文件
+                        with open(error_file, "a", encoding="utf-8") as f:
+                            f.write(line)
+                            f.flush()
+                except:
+                    pass
+
+            # 启动输出线程
+            out_thread = threading.Thread(target=stream_output, daemon=True)
+            err_thread = threading.Thread(target=stream_error, daemon=True)
+            out_thread.start()
+            err_thread.start()
+
             # 等待命令完成
-            stdout, stderr = self.codex_exec_proc.communicate()
+            return_code = self.codex_exec_proc.wait()
+            out_thread.join(timeout=1)
+            err_thread.join(timeout=1)
+
+            # 写入状态
+            status_file.write_text(str(return_code), encoding="utf-8")
 
             # 在主线程中更新状态
-            self.root.after(0, lambda: self._on_codex_command_complete(stdout, stderr))
+            self.root.after(0, lambda: self._on_codex_command_complete(return_code))
 
+        except FileNotFoundError:
+            self.root.after(0, lambda: self._on_codex_command_error("找不到 codex 命令，请确保已安装 Codex"))
         except Exception as e:
             self.root.after(0, lambda: self._on_codex_command_error(str(e)))
 
-    def _on_codex_command_complete(self, stdout, stderr):
+    def _on_codex_command_complete(self, return_code):
         """命令执行完成的回调"""
         # 重新启用执行按钮，禁用停止按钮
         self.codex_exec_button.config(state="normal")
         self.codex_stop_button.config(state="disabled")
 
-        if stderr:
-            self._append_log(f"Codex 执行错误: {stderr[:200]}")
-            self.codex_status_label.config(text="状态: 执行出错")
+        if return_code != 0:
+            self._append_log(f"Codex 执行完成，返回码: {return_code}")
+            self.codex_status_label.config(text=f"状态: 执行完成 (返回码: {return_code})")
         else:
-            self._append_log("Codex 命令执行完成")
-            self.codex_status_label.config(text="状态: 执行完成")
+            self._append_log("Codex 命令执行成功")
+            self.codex_status_label.config(text="状态: 执行成功")
 
-        # 重新加载文件以显示新内容
+        # 重新加载文件以显示最终内容
         self._load_codex_file()
 
     def _on_codex_command_error(self, error_msg):

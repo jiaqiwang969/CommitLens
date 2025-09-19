@@ -126,6 +126,47 @@ class IsolatedTaskExecutor:
         log_file = self.log_dir / f"{task['id']}.log"
 
         try:
+            # 准备环境变量，确保包含 API key
+            env = os.environ.copy()
+
+            # 尝试从多个来源获取 API key
+            api_key = None
+
+            # 1. 从环境变量获取
+            if "CODEX_API_KEY" in env:
+                api_key = env["CODEX_API_KEY"]
+
+            # 2. 从 .cache/codex_api_key 文件获取
+            if not api_key:
+                key_file = Path(".cache/codex_api_key")
+                if key_file.exists():
+                    try:
+                        api_key = key_file.read_text(encoding="utf-8").strip()
+                    except:
+                        pass
+
+            # 3. 从 .env 文件获取
+            if not api_key:
+                env_file = Path(".env")
+                if env_file.exists():
+                    try:
+                        with open(env_file, 'r') as f:
+                            for line in f:
+                                if line.startswith("CODEX_API_KEY="):
+                                    api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                                    break
+                    except:
+                        pass
+
+            if api_key:
+                env["CODEX_API_KEY"] = api_key
+            else:
+                print("  ⚠️ 警告: 未找到 CODEX_API_KEY")
+                print("  请通过以下方式之一设置:")
+                print("  1) export CODEX_API_KEY='your-key'")
+                print("  2) echo 'your-key' > .cache/codex_api_key")
+                print("  3) 在 .env 文件中添加 CODEX_API_KEY=your-key")
+
             # 执行 codex 命令
             cmd = [
                 "codex", "exec",
@@ -140,7 +181,8 @@ class IsolatedTaskExecutor:
                 cwd=str(self.current_dir),
                 capture_output=True,
                 text=True,
-                timeout=300  # 5分钟超时
+                timeout=300,  # 5分钟超时
+                env=env  # 使用包含 API key 的环境变量
             )
 
             # 保存执行日志

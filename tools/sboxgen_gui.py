@@ -2784,6 +2784,9 @@ class SboxgenGUI:
                 self.task_executor.prepare_workspace(task)
                 self._task_log(f"工作空间已准备: {self.task_executor.current_dir}", "info")
 
+                # 确保API key被传递给执行器
+                self._ensure_api_key_for_executor()
+
                 # 执行任务
                 success = self.task_executor.execute_task(task)
 
@@ -2842,6 +2845,9 @@ class SboxgenGUI:
                         # 准备工作空间
                         self.task_executor.prepare_workspace(task)
                         self._task_log(f"工作空间已准备", "info")
+
+                        # 确保API key被传递给执行器
+                        self._ensure_api_key_for_executor()
 
                         # 执行任务
                         success = self.task_executor.execute_task(task)
@@ -2911,6 +2917,47 @@ class SboxgenGUI:
             self._refresh_task_list()
             self._task_log("任务状态已重置", "warning")
             messagebox.showinfo("完成", "任务状态已重置")
+
+    def _ensure_api_key_for_executor(self):
+        """确保API key被设置到环境变量中供执行器使用"""
+        import os
+        from pathlib import Path
+
+        # 如果环境变量中已经有了，直接返回
+        if os.environ.get("CODEX_API_KEY"):
+            return
+
+        # 尝试从GUI设置获取
+        api_key = self.api_key_var.get().strip()
+
+        # 尝试从缓存文件读取
+        if not api_key:
+            key_file = Path(".cache/codex_api_key")
+            if key_file.exists():
+                try:
+                    api_key = key_file.read_text(encoding="utf-8").strip()
+                except:
+                    pass
+
+        # 尝试从.env文件读取
+        if not api_key:
+            env_file = Path(".env")
+            if env_file.exists():
+                try:
+                    with open(env_file, 'r') as f:
+                        for line in f:
+                            if line.startswith("CODEX_API_KEY="):
+                                api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                                break
+                except:
+                    pass
+
+        # 设置到环境变量
+        if api_key:
+            os.environ["CODEX_API_KEY"] = api_key
+            self._task_log("✅ API key 已设置", "info")
+        else:
+            self._task_log("⚠️ 未找到 API key，请在'基本设置'中配置", "warning")
 
 
 def main():

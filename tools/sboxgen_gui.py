@@ -921,6 +921,9 @@ class SboxgenGUI:
         tab.rowconfigure(2, weight=1)  # 主显示区域
         tab.columnconfigure(0, weight=1)
 
+        # 初始化消息位置映射
+        self.codex_message_positions = {}  # {index: (start_line, end_line)}
+
         # 顶部控制栏 - 文件/文件夹选择
         control_frame = ttk.LabelFrame(tab, text="文件夹选择与监控", padding=10)
         control_frame.grid(row=0, column=0, sticky="ew", pady=(0, 5))
@@ -938,15 +941,9 @@ class SboxgenGUI:
         ttk.Button(control_frame, text="停止监控", command=self._stop_codex_monitoring).grid(row=0, column=5, padx=(0, 5))
         ttk.Button(control_frame, text="清空", command=self._clear_codex_display).grid(row=0, column=6)
 
-        # 自动跟踪复选框
-        self.auto_follow_var = tk.BooleanVar(value=True)
-        self.auto_follow_checkbox = ttk.Checkbutton(
-            control_frame,
-            text="自动跟踪最新",
-            variable=self.auto_follow_var,
-            command=self._on_auto_follow_change
-        )
-        self.auto_follow_checkbox.grid(row=0, column=7, padx=(10, 0))
+        # 刷新按钮（用于手动更新）
+        self.refresh_button = ttk.Button(control_frame, text="刷新", command=self._manual_refresh)
+        self.refresh_button.grid(row=0, column=7, padx=(5, 0))
 
         # 命令执行框
         exec_frame = ttk.LabelFrame(tab, text="Codex 命令执行", padding=10)
@@ -999,7 +996,7 @@ class SboxgenGUI:
             activestyle="none"
         )
         self.codex_message_listbox.pack(side="left", fill="both", expand=True)
-        self.codex_message_listbox.bind('<<ListboxSelect>>', self._on_codex_message_select)
+        self.codex_message_listbox.bind('<<ListboxSelect>>', lambda e: self._on_codex_message_select(e))
         list_scrollbar.config(command=self.codex_message_listbox.yview)
 
         # 右侧：消息详情框架
@@ -1036,6 +1033,9 @@ class SboxgenGUI:
         self.codex_detail_text.tag_config("timestamp", foreground="#757575", font=("Monaco", 9))
         self.codex_detail_text.tag_config("codex", foreground="#ff6b35", font=("Monaco", 11, "bold"))
         self.codex_detail_text.tag_config("tokens", foreground="#9e9e9e", font=("Monaco", 9, "italic"))
+        self.codex_detail_text.tag_config("status", foreground="#2196f3", font=("Monaco", 10, "bold"))
+        self.codex_detail_text.tag_config("separator", foreground="#cccccc", font=("Monaco", 8))
+        self.codex_detail_text.tag_config("highlight", background="#fffacd")
 
         # 底部状态栏
         status_frame = ttk.Frame(tab)
@@ -1044,6 +1044,16 @@ class SboxgenGUI:
 
         self.codex_status_label = ttk.Label(status_frame, text="状态: 未加载文件", foreground="#666")
         self.codex_status_label.pack(side="left")
+
+        # 自动跟踪复选框（移到状态栏中间位置）
+        self.auto_follow_var = tk.BooleanVar(value=True)
+        self.auto_follow_checkbox = ttk.Checkbutton(
+            status_frame,
+            text="自动跟踪最新",
+            variable=self.auto_follow_var,
+            command=self._on_auto_follow_change
+        )
+        self.auto_follow_checkbox.pack(side="left", padx=(20, 0))
 
         self.codex_line_count_label = ttk.Label(status_frame, text="消息数: 0", foreground="#666")
         self.codex_line_count_label.pack(side="right", padx=(0, 10))
@@ -1058,6 +1068,7 @@ class SboxgenGUI:
         self.codex_exec_thread = None  # Codex 执行线程
         self.codex_auto_follow = True  # 是否自动跟踪最新消息
         self.codex_is_executing = False  # 是否正在执行命令
+        self.codex_message_positions = {}  # 消息在详情区的位置映射
 
     def _browse_codex_file(self):
         """浏览选择工作目录（包含 codex_output.txt）"""
@@ -1118,6 +1129,7 @@ class SboxgenGUI:
         current_message = None
         current_content = []
         in_thinking = False
+        skip_next_codex = False  # 用于跳过thinking后面紧跟的重复codex内容
 
         for i, line in enumerate(lines):
             # 检测时间戳行 [2025-09-18T05:06:39]
@@ -1125,7 +1137,12 @@ class SboxgenGUI:
                 # 保存上一个消息
                 if current_message:
                     current_message['content'] = '\n'.join(current_content).strip()
-                    if current_message['content'] or current_message['type'] == 'separator':
+                    # 过滤掉包含markdown标题格式的codex内容（这些实际上是thinking的内容）
+                    if current_message['type'] == 'codex' and '**' in current_message['content']:
+                        # 这是错误地标记为codex的thinking内容，跳过它
+                        current_content = []
+                        current_message = None
+                    elif current_message['content'] or current_message['type'] == 'separator':
                         self.codex_messages.append(current_message)
                     current_content = []
 
@@ -1138,23 +1155,37 @@ class SboxgenGUI:
                     # 判断消息类型
                     if 'OpenAI Codex' in rest:
                         current_message = {'type': 'header', 'timestamp': timestamp, 'title': 'Codex 初始化', 'content': rest}
+                        in_thinking = False
                     elif 'User instructions:' in rest:
                         current_message = {'type': 'user', 'timestamp': timestamp, 'title': '用户指令'}
+                        in_thinking = False
                     elif rest == 'thinking':
                         current_message = {'type': 'thinking', 'timestamp': timestamp, 'title': 'AI 思考'}
                         in_thinking = True
+                        skip_next_codex = True  # thinking之后的codex可能是重复内容
                     elif rest == 'codex':
-                        current_message = {'type': 'codex', 'timestamp': timestamp, 'title': 'Codex 输出'}
+                        if skip_next_codex:
+                            # 跳过thinking后面紧跟的codex（如果它包含markdown格式内容）
+                            # 先收集内容，稍后判断
+                            current_message = {'type': 'codex', 'timestamp': timestamp, 'title': 'Codex 输出', '_skip_if_markdown': True}
+                            skip_next_codex = False
+                        else:
+                            current_message = {'type': 'codex', 'timestamp': timestamp, 'title': 'Codex 输出'}
                         in_thinking = False
                     elif rest.startswith('exec '):
                         command = rest[5:] if len(rest) > 5 else ''
                         current_message = {'type': 'exec', 'timestamp': timestamp, 'title': '执行命令', 'command': command}
+                        in_thinking = False
+                        skip_next_codex = False
                     elif 'succeeded' in rest:
                         current_message = {'type': 'success', 'timestamp': timestamp, 'title': '执行成功', 'content': rest}
+                        in_thinking = False
                     elif 'failed' in rest or 'exited' in rest:
                         current_message = {'type': 'error', 'timestamp': timestamp, 'title': '执行失败', 'content': rest}
+                        in_thinking = False
                     elif 'tokens used:' in rest:
                         current_message = {'type': 'tokens', 'timestamp': timestamp, 'title': 'Token 使用', 'content': rest}
+                        in_thinking = False
                     else:
                         current_message = {'type': 'info', 'timestamp': timestamp, 'title': '信息', 'content': rest}
                 except Exception:
@@ -1165,12 +1196,21 @@ class SboxgenGUI:
                 # 分隔线
                 if current_message:
                     current_message['content'] = '\n'.join(current_content).strip()
-                    if current_message['content'] or current_message['type'] == 'separator':
+                    # 检查是否需要跳过包含markdown的codex
+                    if current_message.get('_skip_if_markdown') and '**' in current_message['content']:
+                        # 跳过这个错误的codex
+                        pass
+                    elif current_message['content'] or current_message['type'] == 'separator':
+                        # 移除临时标记
+                        if '_skip_if_markdown' in current_message:
+                            del current_message['_skip_if_markdown']
                         self.codex_messages.append(current_message)
                     current_content = []
                     current_message = None
                 # 添加分隔线作为特殊消息
                 self.codex_messages.append({'type': 'separator', 'timestamp': '', 'title': '---', 'content': ''})
+                in_thinking = False
+                skip_next_codex = False
             elif current_message:
                 # 添加到当前消息内容
                 current_content.append(line)
@@ -1189,7 +1229,14 @@ class SboxgenGUI:
         # 保存最后一个消息
         if current_message:
             current_message['content'] = '\n'.join(current_content).strip()
-            if current_message['content'] or current_message['type'] == 'separator':
+            # 检查是否需要跳过包含markdown的codex
+            if current_message.get('_skip_if_markdown') and '**' in current_message['content']:
+                # 跳过这个错误的codex
+                pass
+            elif current_message['content'] or current_message['type'] == 'separator':
+                # 移除临时标记
+                if '_skip_if_markdown' in current_message:
+                    del current_message['_skip_if_markdown']
                 self.codex_messages.append(current_message)
 
     def _update_codex_display(self):
@@ -1198,7 +1245,12 @@ class SboxgenGUI:
 
         for i, msg in enumerate(self.codex_messages):
             # 格式化列表项显示
-            timestamp = msg['timestamp'][:8] if len(msg['timestamp']) > 8 else msg['timestamp']
+            # 从完整时间戳中提取时间部分 (HH:MM:SS)
+            if 'T' in msg['timestamp'] and len(msg['timestamp']) > 11:
+                # 格式：2025-09-18T16:24:10 -> 16:24:10
+                timestamp = msg['timestamp'][11:19] if len(msg['timestamp']) >= 19 else msg['timestamp']
+            else:
+                timestamp = msg['timestamp'][:8] if len(msg['timestamp']) > 8 else msg['timestamp']
             title = msg['title']
 
             # 根据类型添加图标
@@ -1253,88 +1305,79 @@ class SboxgenGUI:
 
         self.codex_line_count_label.config(text=f"消息数: {len(self.codex_messages)}")
 
+        # 同时更新详情视图
+        self._populate_detail_view()
+
     def _on_auto_follow_change(self):
         """切换自动跟踪模式"""
         self.codex_auto_follow = self.auto_follow_var.get()
         if self.codex_auto_follow and self.codex_messages:
-            # 如果启用自动跟踪，立即跳到最后
+            # 如果启用自动跟踪，立即刷新显示并跳到最后
+            self._refresh_codex_display()
             self.codex_message_listbox.see(tk.END)
             self.codex_message_listbox.selection_clear(0, tk.END)
             self.codex_message_listbox.selection_set(tk.END)
-            self.codex_message_listbox.event_generate('<<ListboxSelect>>')
+            # 使用None作为event参数，表示这不是用户直接点击
+            self._on_codex_message_select(None)
+            self._append_log("[UI] 自动跟踪已启用")
+        else:
+            self._append_log("[UI] 自动跟踪已禁用，显示已冻结。点击'刷新'按钮手动更新")
+
+    def _refresh_codex_display(self):
+        """手动刷新显示（用于非自动跟踪模式）"""
+        # 保存当前选择
+        current_selection = self.codex_message_listbox.curselection()
+        selected_index = current_selection[0] if current_selection else None
+
+        # 更新显示
+        self._update_codex_display()
+
+        # 恢复选择（如果之前有选择）
+        if selected_index is not None and selected_index < len(self.codex_messages):
+            self.codex_message_listbox.selection_set(selected_index)
+            # 触发选择事件来更新详情视图
+            self._on_codex_message_select(None)
+
+        # 更新计数
+        self.codex_line_count_label.config(text=f"消息数: {len(self.codex_messages)}")
 
     def _on_codex_message_select(self, event):
-        """当选择消息时显示详情"""
-        selection = self.codex_message_listbox.curselection()
-        if not selection:
-            return
-
-        # 用户手动选择时，如果不是最后一项，禁用自动跟踪
-        if self.codex_is_executing:
-            index = selection[0]
-            total = self.codex_message_listbox.size()
-            if index < total - 1:
-                # 用户选择了非最后一项，暂时禁用自动跟踪
-                self.auto_follow_var.set(False)
-                self.codex_auto_follow = False
+        """当选择消息时滚动到对应位置"""
         selection = self.codex_message_listbox.curselection()
         if not selection:
             return
 
         index = selection[0]
+        total = self.codex_message_listbox.size()
+
+        # 用户手动选择时的逻辑
+        if event:  # 只有真实的用户事件才改变自动跟踪状态
+            # 如果正在执行或监控中
+            if self.codex_is_executing or self.codex_monitoring:
+                if index < total - 1:
+                    # 用户选择了历史消息，立即禁用自动跟踪
+                    if self.codex_auto_follow:
+                        self.auto_follow_var.set(False)
+                        self.codex_auto_follow = False
+                        # 显示提示（可选）
+                        self._append_log("[UI] 已暂停自动跟踪，正在查看历史消息")
+                elif index == total - 1:
+                    # 用户选择了最新消息，可以重新启用自动跟踪
+                    if not self.codex_auto_follow:
+                        self.auto_follow_var.set(True)
+                        self.codex_auto_follow = True
+                        self._append_log("[UI] 已恢复自动跟踪最新消息")
+
         if index >= len(self.codex_messages):
             return
 
-        msg = self.codex_messages[index]
-
-        # 清空详情区
-        self.codex_detail_text.delete(1.0, tk.END)
-
-        # 显示时间戳（如果有）
-        if msg['timestamp']:
-            self.codex_detail_text.insert(tk.END, f"时间: {msg['timestamp']}\n", "timestamp")
-
-        # 显示标题
-        tag_for_type = {
-            'user': 'user',
-            'thinking': 'thinking',
-            'exec': 'exec',
-            'codex': 'codex',
-            'tokens': 'tokens',
-            'error': 'error',
-            'success': 'exec',
-            'metadata': 'metadata'
-        }.get(msg['type'], '')
-
-        self.codex_detail_text.insert(tk.END, f"{msg['title']}\n", tag_for_type if tag_for_type else None)
-        self.codex_detail_text.insert(tk.END, "━" * 60 + "\n", "metadata")
-
-        # 显示命令（如果有）
-        if 'command' in msg and msg['command']:
-            self.codex_detail_text.insert(tk.END, f"\n命令:\n{msg['command']}\n\n", "exec")
-
-        # 显示内容
-        content = msg.get('content', '')
-        if content:
-            # 对不同类型的内容应用不同的标签
-            if msg['type'] in ['exec', 'success']:
-                self.codex_detail_text.insert(tk.END, content, "output")
-            elif msg['type'] == 'error':
-                self.codex_detail_text.insert(tk.END, content, "error")
-            elif msg['type'] == 'thinking':
-                # 思考内容可能很长，添加适当的格式化
-                formatted_content = self._format_thinking_content(content)
-                self.codex_detail_text.insert(tk.END, formatted_content, "thinking")
-            else:
-                self.codex_detail_text.insert(tk.END, content)
-
-        # 根据自动跟踪设置决定滚动位置
-        if self.codex_auto_follow and self.codex_is_executing:
-            # 正在执行且启用自动跟踪，滚动到底部
-            self.codex_detail_text.see(tk.END)
-        else:
-            # 否则滚动到顶部
-            self.codex_detail_text.see(1.0)
+        # 滚动到对应消息的位置
+        if index in self.codex_message_positions:
+            start_line, _ = self.codex_message_positions[index]
+            # 滚动到该消息的开始位置
+            self.codex_detail_text.see(f"{start_line}.0")
+            # 高亮当前选中的消息段
+            self._highlight_selected_message(index)
 
     def _format_thinking_content(self, content: str) -> str:
         """格式化思考内容，使其更易读"""
@@ -1348,6 +1391,90 @@ class SboxgenGUI:
             else:
                 formatted.append(line)
         return '\n'.join(formatted)
+
+    def _populate_detail_view(self):
+        """填充详情视图，所有消息连续显示"""
+        self.codex_detail_text.delete(1.0, tk.END)
+        self.codex_message_positions.clear()
+
+        current_line = 1
+
+        for i, msg in enumerate(self.codex_messages):
+            start_line = current_line
+
+            # 添加分隔符（除了第一条消息）
+            if i > 0:
+                self.codex_detail_text.insert(tk.END, "\n" + "═" * 80 + "\n\n", "separator")
+                current_line += 3
+                start_line = current_line
+
+            # 显示时间戳和标题
+            if msg['timestamp']:
+                self.codex_detail_text.insert(tk.END, f"[{msg['timestamp']}] ", "timestamp")
+
+            # 根据消息类型获取标签
+            tag_for_type = {
+                'user': 'user',
+                'thinking': 'thinking',
+                'exec': 'exec',
+                'codex': 'codex',
+                'tokens': 'tokens',
+                'error': 'error',
+                'success': 'exec',
+                'status': 'status',
+                'metadata': 'metadata'
+            }.get(msg['type'], '')
+
+            # 显示标题
+            self.codex_detail_text.insert(tk.END, f"{msg['title']}\n", tag_for_type if tag_for_type else None)
+            current_line += 1
+
+            # 显示命令（如果有）
+            if 'command' in msg and msg['command']:
+                self.codex_detail_text.insert(tk.END, f"命令: {msg['command']}\n", "exec")
+                current_line += 1
+
+            # 显示内容
+            content = msg.get('content', '')
+            if content and msg['type'] != 'separator':
+                self.codex_detail_text.insert(tk.END, "\n", None)
+                current_line += 1
+
+                # 对不同类型的内容应用不同的标签
+                content_tag = "output" if msg['type'] in ['exec', 'success'] else \
+                             "error" if msg['type'] == 'error' else \
+                             "thinking" if msg['type'] == 'thinking' else None
+
+                # 格式化thinking内容
+                if msg['type'] == 'thinking':
+                    content = self._format_thinking_content(content)
+
+                self.codex_detail_text.insert(tk.END, content, content_tag)
+                # 计算内容的行数
+                content_lines = content.count('\n') + 1
+                current_line += content_lines
+
+            # 记录消息位置
+            end_line = current_line - 1
+            self.codex_message_positions[i] = (start_line, end_line)
+
+        # 添加结束标记
+        if self.codex_messages:
+            self.codex_detail_text.insert(tk.END, "\n" + "═" * 80 + "\n", "separator")
+
+    def _highlight_selected_message(self, index):
+        """高亮显示选中的消息"""
+        # 先清除所有高亮
+        self.codex_detail_text.tag_remove("highlight", "1.0", tk.END)
+
+        # 高亮选中的消息
+        if index in self.codex_message_positions:
+            start_line, end_line = self.codex_message_positions[index]
+            self.codex_detail_text.tag_add("highlight", f"{start_line}.0", f"{end_line}.end+1c")
+
+            # 配置高亮样式
+            self.codex_detail_text.tag_config("highlight", background="#fffacd")
+            self.codex_detail_text.tag_raise("highlight")
 
     def _execute_codex_command(self):
         """执行 Codex 命令"""
@@ -1423,8 +1550,11 @@ class SboxgenGUI:
             error_file = work_dir / "codex_error.txt"
             status_file = work_dir / "codex_status.txt"
 
-            # 清空或创建文件
-            output_file.write_text("", encoding="utf-8")
+            # 处理文件：
+            # - output_file: 追加模式，不覆盖
+            # - error_file 和 status_file: 覆盖模式
+            if not output_file.exists():
+                output_file.write_text("", encoding="utf-8")
             error_file.write_text("", encoding="utf-8")
             status_file.write_text("running", encoding="utf-8")
 
@@ -1457,13 +1587,13 @@ class SboxgenGUI:
             import threading
 
             def stream_output():
-                """流式读取并写入输出"""
+                """流式读取并追加输出"""
                 try:
                     while True:
                         line = self.codex_exec_proc.stdout.readline()
                         if not line:
                             break
-                        # 追加到文件
+                        # 追加到文件（不覆盖）
                         with open(output_file, "a", encoding="utf-8") as f:
                             f.write(line)
                             f.flush()
@@ -1506,6 +1636,33 @@ class SboxgenGUI:
         except Exception as e:
             self.root.after(0, lambda: self._on_codex_command_error(str(e)))
 
+    def _play_notification_sound(self, success=True):
+        """播放提示音（使用系统声音）"""
+        try:
+            import platform
+            system = platform.system()
+
+            if system == "Darwin":  # macOS
+                # 使用 macOS 系统声音
+                if success:
+                    # 成功提示音 (Glass)
+                    os.system("afplay /System/Library/Sounds/Glass.aiff 2>/dev/null &")
+                else:
+                    # 错误提示音 (Basso)
+                    os.system("afplay /System/Library/Sounds/Basso.aiff 2>/dev/null &")
+            elif system == "Windows":
+                import winsound
+                if success:
+                    winsound.MessageBeep(winsound.MB_OK)
+                else:
+                    winsound.MessageBeep(winsound.MB_ICONHAND)
+            else:  # Linux
+                # 尝试使用系统铃声
+                print('\a')  # ASCII bell
+        except Exception:
+            # 如果无法播放声音，静默失败
+            pass
+
     def _on_codex_command_complete(self, return_code):
         """命令执行完成的回调"""
         # 重新启用执行按钮，禁用停止按钮
@@ -1515,19 +1672,23 @@ class SboxgenGUI:
         # 清除执行状态
         self.codex_is_executing = False
 
-        # 根据返回码显示不同的状态
+        # 根据返回码显示不同的状态和播放不同的声音
         if return_code == 0:
             self._append_log("Codex 命令执行成功")
             self.codex_status_label.config(text="状态: ✅ 执行成功")
+            self._play_notification_sound(success=True)  # 播放成功提示音
         elif return_code == 124:
             self._append_log("Codex 执行超时")
             self.codex_status_label.config(text="状态: ⏱️ 执行超时")
+            self._play_notification_sound(success=False)  # 播放错误提示音
         elif return_code == 127:
             self._append_log("找不到 codex 命令")
             self.codex_status_label.config(text="状态: ❌ 找不到命令")
+            self._play_notification_sound(success=False)  # 播放错误提示音
         else:
             self._append_log(f"Codex 执行完成，返回码: {return_code}")
             self.codex_status_label.config(text=f"状态: ⚠️ 退出码 {return_code}")
+            self._play_notification_sound(success=False)  # 播放错误提示音
 
         # 重新加载文件以显示最终内容（包括错误和状态）
         self._load_codex_file()
@@ -1602,54 +1763,132 @@ class SboxgenGUI:
         import time
         path = Path(filepath)
 
+        # 确定工作目录
+        if path.is_dir():
+            work_dir = path
+            output_file = path / "codex_output.txt"
+        else:
+            work_dir = path.parent
+            output_file = path
+
         while self.codex_monitoring:
             try:
-                if path.exists():
-                    current_mtime = path.stat().st_mtime
+                if output_file.exists():
+                    current_mtime = output_file.stat().st_mtime
 
                     # 检查文件是否被修改
                     if current_mtime > self.codex_file_mtime:
-                        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                        with open(output_file, 'r', encoding='utf-8', errors='ignore') as f:
                             content = f.read()
 
                         # 在主线程中更新 UI
-                        self.root.after(0, lambda: self._update_codex_from_monitor(content))
+                        self.root.after(0, lambda: self._update_codex_from_monitor_full(content, work_dir))
                         self.codex_file_mtime = current_mtime
                         self.codex_last_position = len(content)
+
+                # 同时检查 status 和 error 文件
+                self._check_status_and_error_files(work_dir)
+
             except Exception as e:
                 print(f"监控文件出错: {e}")
 
             # 每秒检查一次
             time.sleep(1)
 
+    def _check_status_and_error_files(self, work_dir):
+        """检查状态和错误文件"""
+        try:
+            status_file = work_dir / "codex_status.txt"
+            error_file = work_dir / "codex_error.txt"
+
+            # 检查状态文件
+            if status_file.exists():
+                status = status_file.read_text(encoding="utf-8").strip()
+                if status:
+                    if status == "running":
+                        status_text = "🔄 运行中..."
+                    elif status == "0":
+                        status_text = "✅ 执行成功"
+                    else:
+                        status_text = f"⚠️ 退出码 {status}"
+
+                    # 在主线程更新状态
+                    self.root.after(0, lambda: self._update_status_display(status_text))
+
+            # 检查错误文件
+            if error_file.exists():
+                error_content = error_file.read_text(encoding="utf-8").strip()
+                if error_content:
+                    # 检查是否需要添加错误消息
+                    attr_name = 'codex_last_error'
+                    if not hasattr(self, attr_name) or getattr(self, attr_name) != error_content:
+                        setattr(self, attr_name, error_content)
+                        # 在主线程添加错误消息
+                        self.root.after(0, lambda: self._add_error_message(error_content))
+        except:
+            pass
+
+    def _update_codex_from_monitor_full(self, content, work_dir):
+        """从监控线程更新显示（带状态检查）"""
+        # 调用原有的更新方法
+        self._update_codex_from_monitor(content)
+
+    def _add_error_message(self, error_content):
+        """添加错误消息到列表"""
+        # 避免重复添加相同的错误
+        if not any(msg['type'] == 'error' and error_content[:50] in msg.get('content', '')[:50] for msg in self.codex_messages[-3:] if msg):
+            self.codex_messages.append({
+                'type': 'error',
+                'timestamp': datetime.now().strftime('%H:%M:%S'),
+                'title': '❌ 错误输出',
+                'content': error_content
+            })
+            self._update_codex_display()
+
+            # 如果正在执行，自动跳转到错误
+            if self.codex_is_executing or self.codex_auto_follow:
+                self.codex_message_listbox.see(tk.END)
+                self.codex_message_listbox.selection_clear(0, tk.END)
+                self.codex_message_listbox.selection_set(tk.END)
+                self.codex_message_listbox.event_generate('<<ListboxSelect>>')
+
+    def _update_status_display(self, status_text):
+        """更新状态显示"""
+        self.codex_status_label.config(text=f"状态: {status_text}")
+
     def _update_codex_from_monitor(self, content):
         """从监控线程更新显示"""
-        # 保存当前消息数量
-        prev_message_count = len(self.codex_messages)
-
-        # 解析新内容
+        # 解析新内容（总是解析，但不一定显示）
         self._parse_codex_content(content)
 
-        # 检查是否有新消息
-        new_message_count = len(self.codex_messages)
-        has_new_messages = new_message_count > prev_message_count
+        # 如果没有启用自动跟踪，不更新显示
+        if not self.codex_auto_follow:
+            # 只在内部更新消息列表，但不刷新UI
+            # 可以在状态栏显示有新消息的提示
+            new_count = len(self.codex_messages)
+            try:
+                # 更新消息计数标签（轻量级提示）
+                self.codex_line_count_label.config(text=f"消息数: {new_count} (有新消息)")
+            except:
+                pass
+            return  # 直接返回，不更新显示
+
+        # 自动跟踪模式：正常更新显示
+        prev_message_count = len(self.codex_messages) - 1  # 因为已经解析了
+        has_new_messages = True  # 有新内容才会调用这个函数
 
         # 更新列表显示
         self._update_codex_display()
 
-        # 如果启用了自动跟踪且有新消息
-        if self.codex_auto_follow and has_new_messages:
-            # 自动选中并显示最后一条消息
+        # 自动选中并显示最后一条消息
+        if has_new_messages:
             self.codex_message_listbox.see(tk.END)
             self.codex_message_listbox.selection_clear(0, tk.END)
             self.codex_message_listbox.selection_set(tk.END)
-            self.codex_message_listbox.event_generate('<<ListboxSelect>>')
-
-            # 如果详情区有内容，滚动到底部
+            # 直接调用而不是触发事件
+            self._on_codex_message_select(None)
+            # 详情区滚动到底部
             self.codex_detail_text.see(tk.END)
-        elif has_new_messages and not self.codex_auto_follow:
-            # 没有自动跟踪，但有新消息，只是让列表可见
-            self.codex_message_listbox.see(tk.END)
 
     def _stop_codex_monitoring(self):
         """停止监控"""
@@ -1662,6 +1901,22 @@ class SboxgenGUI:
             self.codex_monitor_thread.join(timeout=2)
         self.codex_status_label.config(text="状态: 监控已停止")
         self._append_log("停止监控 Codex 文件")
+
+    def _manual_refresh(self):
+        """手动刷新显示（点击刷新按钮）"""
+        if not self.codex_auto_follow:
+            # 在非自动跟踪模式下手动刷新
+            self._refresh_codex_display()
+            self._append_log("[UI] 手动刷新完成")
+            # 更新提示
+            if "有新消息" in self.codex_line_count_label.cget("text"):
+                self.codex_line_count_label.config(text=f"消息数: {len(self.codex_messages)}")
+        else:
+            # 自动跟踪模式下，刷新按钮只是确保跳到最新
+            self.codex_message_listbox.see(tk.END)
+            self.codex_message_listbox.selection_clear(0, tk.END)
+            self.codex_message_listbox.selection_set(tk.END)
+            self._on_codex_message_select(None)
 
     def _clear_codex_display(self):
         """清空显示"""

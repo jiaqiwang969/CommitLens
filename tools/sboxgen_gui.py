@@ -13,12 +13,19 @@ import pty
 import select
 from pathlib import Path
 from datetime import datetime
+import time
 
 import tkinter as tk
 from tkinter import ttk, filedialog, scrolledtext, messagebox
 import queue
-from typing import Optional
+from typing import Optional, List, Dict
 import platform as _plat
+
+# Import the isolated task executor
+try:
+    from isolated_task_executor import IsolatedTaskExecutor
+except ImportError:
+    IsolatedTaskExecutor = None
 
 # Ensure we can import sboxgen.* when running from repo root
 try:
@@ -151,11 +158,13 @@ class SboxgenGUI:
         tab_readme = ttk.Frame(nb, padding=12)
         tab_run = ttk.Frame(nb, padding=12)
         tab_codex_output = ttk.Frame(nb, padding=12)
+        tab_task_executor = ttk.Frame(nb, padding=12)  # 新增任务执行标签页
         nb.add(tab_basic, text="基本设置")
         nb.add(tab_codex, text="Codex 与参数")
         nb.add(tab_readme, text="README 模板")
         nb.add(tab_run, text="执行与日志")
         nb.add(tab_codex_output, text="Codex Output")
+        nb.add(tab_task_executor, text="任务执行")  # 添加到标签栏
 
         # --- basic tab ---
         for i in range(8):
@@ -364,6 +373,9 @@ class SboxgenGUI:
 
         # --- codex output viewer tab ---
         self._build_codex_output_tab(tab_codex_output)
+
+        # --- task executor tab ---
+        self._build_task_executor_tab(tab_task_executor)
 
     def _bind_events(self):
         self.repo_var.trace_add("write", lambda *_: self._maybe_update_mirror())
@@ -2556,11 +2568,11 @@ class SboxgenGUI:
 
     def _default_tex_fix_prompt(self) -> str:
         return (
-            "请进入到‘{dir}’，优先完成图形修复与导出，然后进行 LaTeX 编译：\n"
+            "请进入到'{dir}'，优先完成图形修复与导出，然后进行 LaTeX 编译：\n"
             "一、PlantUML 修复与导出：\n"
             "1) 在 figs 子目录中查找 algorithm_flow.puml（若存在）；\n"
             "2) 执行：plantuml -tsvg algorithm_flow.puml 生成 SVG；\n"
-            "3) 若出现如 ‘Error line N in file ...’ 的错误，请打开并修复（语法、引号、未闭合括号、缺少 @startuml/@enduml 等）；\n"
+            "3) 若出现如 'Error line N in file ...' 的错误，请打开并修复（语法、引号、未闭合括号、缺少 @startuml/@enduml 等）；\n"
             "4) 修复后再次编译确保无错误；\n"
             "5) 将 SVG 转成 PDF：优先 rsvg-convert：rsvg-convert -f pdf -o algorithm_flow.pdf algorithm_flow.svg；\n"
             "   无 rsvg-convert 时可用 macOS 的 sips：sips -s format pdf algorithm_flow.svg --out algorithm_flow.pdf；\n\n"
@@ -2571,6 +2583,334 @@ class SboxgenGUI:
             "输出要求：最终生成无错误的 PDF，必要时重复交替修复。\n\n"
             "提示：本次执行可能中断，请回顾已完成工作后继续。\n"
         )
+
+    # ---------------- Task Executor Tab ----------------
+    def _build_task_executor_tab(self, tab):
+        """构建任务执行器标签页"""
+        if IsolatedTaskExecutor is None:
+            ttk.Label(tab, text="任务执行器模块未找到，请确保 isolated_task_executor.py 在同一目录",
+                     foreground="red").pack(pady=20)
+            return
+
+        # 初始化任务执行器
+        self.task_executor = IsolatedTaskExecutor()
+        self.task_executor_thread = None
+        self.task_executor_running = False
+
+        # 布局
+        tab.rowconfigure(1, weight=1)
+        tab.columnconfigure(0, weight=1)
+
+        # 顶部控制面板
+        control_frame = ttk.LabelFrame(tab, text="任务控制", padding=10)
+        control_frame.grid(row=0, column=0, sticky="ew", pady=(0, 10))
+        control_frame.columnconfigure(1, weight=1)
+
+        # 任务目录设置
+        ttk.Label(control_frame, text="任务目录:").grid(row=0, column=0, sticky="w")
+        self.task_artifacts_var = tk.StringVar(value=str(Path(".artifacts")))
+        ttk.Entry(control_frame, textvariable=self.task_artifacts_var).grid(row=0, column=1, sticky="ew", padx=(5, 5))
+        ttk.Button(control_frame, text="浏览", command=self._browse_task_artifacts).grid(row=0, column=2)
+        ttk.Button(control_frame, text="刷新列表", command=self._refresh_task_list).grid(row=0, column=3, padx=(10, 0))
+
+        # 工作目录设置
+        ttk.Label(control_frame, text="工作目录:").grid(row=1, column=0, sticky="w", pady=(5, 0))
+        self.task_workspace_var = tk.StringVar(value=str(Path(".workspace")))
+        ttk.Entry(control_frame, textvariable=self.task_workspace_var).grid(row=1, column=1, sticky="ew", padx=(5, 5), pady=(5, 0))
+        ttk.Button(control_frame, text="浏览", command=self._browse_task_workspace).grid(row=1, column=2, pady=(5, 0))
+
+        # 执行控制按钮
+        button_frame = ttk.Frame(control_frame)
+        button_frame.grid(row=2, column=0, columnspan=4, pady=(10, 0))
+
+        self.task_exec_single_btn = ttk.Button(button_frame, text="执行单个任务", command=self._execute_single_task)
+        self.task_exec_single_btn.pack(side=tk.LEFT, padx=5)
+
+        self.task_exec_all_btn = ttk.Button(button_frame, text="执行所有任务", command=self._execute_all_tasks)
+        self.task_exec_all_btn.pack(side=tk.LEFT, padx=5)
+
+        self.task_stop_btn = ttk.Button(button_frame, text="停止执行", command=self._stop_task_execution, state="disabled")
+        self.task_stop_btn.pack(side=tk.LEFT, padx=5)
+
+        ttk.Button(button_frame, text="重置状态", command=self._reset_task_status).pack(side=tk.LEFT, padx=20)
+
+        # 主要内容区域（分为左右两部分）
+        main_frame = ttk.PanedWindow(tab, orient=tk.HORIZONTAL)
+        main_frame.grid(row=1, column=0, sticky="nsew")
+
+        # 左侧：任务列表
+        left_frame = ttk.LabelFrame(main_frame, text="任务列表", padding=10)
+        main_frame.add(left_frame, weight=1)
+
+        # 任务列表树形控件
+        columns = ("状态", "报告", "图片")
+        self.task_tree = ttk.Treeview(left_frame, columns=columns, show="tree headings", height=15)
+        self.task_tree.heading("#0", text="任务ID")
+        self.task_tree.heading("状态", text="状态")
+        self.task_tree.heading("报告", text="报告")
+        self.task_tree.heading("图片", text="图片")
+
+        self.task_tree.column("#0", width=150)
+        self.task_tree.column("状态", width=80)
+        self.task_tree.column("报告", width=60)
+        self.task_tree.column("图片", width=60)
+
+        # 滚动条
+        task_scroll = ttk.Scrollbar(left_frame, orient="vertical", command=self.task_tree.yview)
+        self.task_tree.configure(yscrollcommand=task_scroll.set)
+
+        self.task_tree.pack(side=tk.LEFT, fill="both", expand=True)
+        task_scroll.pack(side=tk.RIGHT, fill="y")
+
+        # 右侧：执行日志
+        right_frame = ttk.LabelFrame(main_frame, text="执行日志", padding=10)
+        main_frame.add(right_frame, weight=2)
+
+        self.task_log_text = scrolledtext.ScrolledText(right_frame, height=20, wrap=tk.WORD)
+        self.task_log_text.pack(fill="both", expand=True)
+
+        # 配置日志文本标签
+        self.task_log_text.tag_config("info", foreground="black")
+        self.task_log_text.tag_config("success", foreground="green")
+        self.task_log_text.tag_config("error", foreground="red")
+        self.task_log_text.tag_config("warning", foreground="orange")
+
+        # 底部状态栏
+        status_frame = ttk.Frame(tab)
+        status_frame.grid(row=2, column=0, sticky="ew", pady=(5, 0))
+
+        self.task_status_label = ttk.Label(status_frame, text="状态: 就绪")
+        self.task_status_label.pack(side=tk.LEFT)
+
+        self.task_progress_label = ttk.Label(status_frame, text="进度: 0/0")
+        self.task_progress_label.pack(side=tk.RIGHT, padx=(0, 10))
+
+        # 初始加载任务列表
+        self.root.after(100, self._refresh_task_list)
+
+    def _browse_task_artifacts(self):
+        """浏览选择任务目录"""
+        path = filedialog.askdirectory(title="选择任务目录（包含 reports 和 figs）")
+        if path:
+            self.task_artifacts_var.set(path)
+            self._refresh_task_list()
+
+    def _browse_task_workspace(self):
+        """浏览选择工作目录"""
+        path = filedialog.askdirectory(title="选择工作目录")
+        if path:
+            self.task_workspace_var.set(path)
+
+    def _refresh_task_list(self):
+        """刷新任务列表显示"""
+        # 清空现有列表
+        for item in self.task_tree.get_children():
+            self.task_tree.delete(item)
+
+        # 更新执行器路径
+        self.task_executor.artifacts_dir = Path(self.task_artifacts_var.get())
+        self.task_executor.workspace_dir = Path(self.task_workspace_var.get())
+
+        # 获取任务列表
+        tasks = self.task_executor.get_all_tasks()
+        status = self.task_executor.status
+
+        for task in tasks:
+            task_id = task["id"]
+
+            # 确定状态
+            if task_id in status["completed"]:
+                status_text = "✅ 完成"
+                tags = ("completed",)
+            elif task_id in status["failed"]:
+                status_text = f"❌ 失败({status['failed'][task_id]})"
+                tags = ("failed",)
+            elif task_id == status.get("current"):
+                status_text = "🔄 执行中"
+                tags = ("running",)
+            else:
+                status_text = "⏳ 待执行"
+                tags = ("pending",)
+
+            # 检查文件存在
+            report_exists = "✓" if task["report"].exists() else "✗"
+            figs_exists = "✓" if task["figs"].exists() else "✗"
+
+            # 添加到树形控件
+            self.task_tree.insert("", "end", text=task_id, values=(status_text, report_exists, figs_exists), tags=tags)
+
+        # 配置标签颜色
+        self.task_tree.tag_configure("completed", foreground="green")
+        self.task_tree.tag_configure("failed", foreground="red")
+        self.task_tree.tag_configure("running", foreground="blue")
+        self.task_tree.tag_configure("pending", foreground="gray")
+
+        # 更新进度标签
+        total = len(tasks)
+        completed = len(status["completed"])
+        self.task_progress_label.config(text=f"进度: {completed}/{total}")
+
+    def _task_log(self, msg, tag="info"):
+        """添加日志到任务执行日志窗口"""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        self.task_log_text.insert(tk.END, f"[{timestamp}] {msg}\n", tag)
+        self.task_log_text.see(tk.END)
+        self.root.update_idletasks()
+
+    def _execute_single_task(self):
+        """执行单个任务"""
+        if self.task_executor_running:
+            messagebox.showwarning("警告", "任务正在执行中")
+            return
+
+        self.task_executor_running = True
+        self.task_exec_single_btn.config(state="disabled")
+        self.task_exec_all_btn.config(state="disabled")
+        self.task_stop_btn.config(state="normal")
+
+        def run():
+            try:
+                self._task_log("开始执行单个任务...", "info")
+
+                # 获取下一个任务
+                task = self.task_executor.get_next_task()
+                if not task:
+                    self._task_log("所有任务已完成！", "success")
+                    return
+
+                self._task_log(f"执行任务: {task['id']}", "info")
+
+                # 准备工作空间
+                self.task_executor.prepare_workspace(task)
+                self._task_log(f"工作空间已准备: {self.task_executor.current_dir}", "info")
+
+                # 执行任务
+                success = self.task_executor.execute_task(task)
+
+                if success:
+                    self.task_executor.status["completed"].append(task["id"])
+                    self._task_log(f"任务 {task['id']} 执行成功", "success")
+                    self._play_notification_sound(True)
+                else:
+                    self.task_executor.status["failed"][task["id"]] = \
+                        self.task_executor.status["failed"].get(task["id"], 0) + 1
+                    self._task_log(f"任务 {task['id']} 执行失败", "error")
+                    self._play_notification_sound(False)
+
+                # 清理工作空间
+                self.task_executor.cleanup_workspace()
+                self.task_executor.save_status()
+
+            except Exception as e:
+                self._task_log(f"执行出错: {e}", "error")
+                self._play_notification_sound(False)
+            finally:
+                self.task_executor_running = False
+                self.root.after(0, self._on_task_execution_complete)
+
+        self.task_executor_thread = threading.Thread(target=run, daemon=True)
+        self.task_executor_thread.start()
+
+    def _execute_all_tasks(self):
+        """执行所有任务"""
+        if self.task_executor_running:
+            messagebox.showwarning("警告", "任务正在执行中")
+            return
+
+        if not messagebox.askyesno("确认", "确定要执行所有未完成的任务吗？"):
+            return
+
+        self.task_executor_running = True
+        self.task_exec_single_btn.config(state="disabled")
+        self.task_exec_all_btn.config(state="disabled")
+        self.task_stop_btn.config(state="normal")
+
+        def run():
+            try:
+                self._task_log("开始批量执行任务...", "info")
+
+                while self.task_executor_running:
+                    task = self.task_executor.get_next_task()
+                    if not task:
+                        self._task_log("所有任务已完成！", "success")
+                        break
+
+                    self._task_log(f"\n{'='*50}", "info")
+                    self._task_log(f"执行任务: {task['id']}", "info")
+
+                    try:
+                        # 准备工作空间
+                        self.task_executor.prepare_workspace(task)
+                        self._task_log(f"工作空间已准备", "info")
+
+                        # 执行任务
+                        success = self.task_executor.execute_task(task)
+
+                        if success:
+                            self.task_executor.status["completed"].append(task["id"])
+                            self._task_log(f"任务 {task['id']} 执行成功", "success")
+                        else:
+                            self.task_executor.status["failed"][task["id"]] = \
+                                self.task_executor.status["failed"].get(task["id"], 0) + 1
+                            self._task_log(f"任务 {task['id']} 执行失败", "error")
+
+                        # 清理工作空间
+                        self.task_executor.cleanup_workspace()
+                        self.task_executor.save_status()
+
+                        # 刷新列表显示
+                        self.root.after(0, self._refresh_task_list)
+
+                        # 等待间隔
+                        if self.task_executor_running:
+                            self._task_log(f"等待5秒后执行下一个任务...", "info")
+                            time.sleep(5)
+
+                    except Exception as e:
+                        self._task_log(f"任务 {task['id']} 执行异常: {e}", "error")
+
+                self._play_notification_sound(True)
+
+            except Exception as e:
+                self._task_log(f"批量执行出错: {e}", "error")
+                self._play_notification_sound(False)
+            finally:
+                self.task_executor_running = False
+                self.root.after(0, self._on_task_execution_complete)
+
+        self.task_executor_thread = threading.Thread(target=run, daemon=True)
+        self.task_executor_thread.start()
+
+    def _stop_task_execution(self):
+        """停止任务执行"""
+        self.task_executor_running = False
+        self._task_log("正在停止任务执行...", "warning")
+
+    def _on_task_execution_complete(self):
+        """任务执行完成回调"""
+        self.task_exec_single_btn.config(state="normal")
+        self.task_exec_all_btn.config(state="normal")
+        self.task_stop_btn.config(state="disabled")
+        self._refresh_task_list()
+        self.task_status_label.config(text="状态: 就绪")
+
+    def _reset_task_status(self):
+        """重置任务执行状态"""
+        if self.task_executor_running:
+            messagebox.showwarning("警告", "任务正在执行中，无法重置")
+            return
+
+        if messagebox.askyesno("确认", "确定要重置所有任务执行状态吗？\n这将清除所有完成和失败记录。"):
+            self.task_executor.status = {
+                "completed": [],
+                "failed": {},
+                "current": None,
+                "last_execution": None
+            }
+            self.task_executor.save_status()
+            self._refresh_task_list()
+            self._task_log("任务状态已重置", "warning")
+            messagebox.showinfo("完成", "任务状态已重置")
 
 
 def main():

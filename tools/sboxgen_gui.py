@@ -2592,8 +2592,15 @@ class SboxgenGUI:
                      foreground="red").pack(pady=20)
             return
 
-        # 初始化任务执行器
-        self.task_executor = IsolatedTaskExecutor()
+        # 设置默认路径变量
+        self.task_artifacts_var = tk.StringVar(value=str(Path(".artifacts")))
+        self.task_workspace_var = tk.StringVar(value=str(Path(".workspace")))
+
+        # 初始化任务执行器，传递路径参数
+        self.task_executor = IsolatedTaskExecutor(
+            workspace_dir=self.task_workspace_var.get(),
+            artifacts_dir=self.task_artifacts_var.get()
+        )
         self.task_executor_thread = None
         self.task_executor_running = False
 
@@ -2608,14 +2615,12 @@ class SboxgenGUI:
 
         # 任务目录设置
         ttk.Label(control_frame, text="任务目录:").grid(row=0, column=0, sticky="w")
-        self.task_artifacts_var = tk.StringVar(value=str(Path(".artifacts")))
         ttk.Entry(control_frame, textvariable=self.task_artifacts_var).grid(row=0, column=1, sticky="ew", padx=(5, 5))
         ttk.Button(control_frame, text="浏览", command=self._browse_task_artifacts).grid(row=0, column=2)
         ttk.Button(control_frame, text="刷新列表", command=self._refresh_task_list).grid(row=0, column=3, padx=(10, 0))
 
         # 工作目录设置
         ttk.Label(control_frame, text="工作目录:").grid(row=1, column=0, sticky="w", pady=(5, 0))
-        self.task_workspace_var = tk.StringVar(value=str(Path(".workspace")))
         ttk.Entry(control_frame, textvariable=self.task_workspace_var).grid(row=1, column=1, sticky="ew", padx=(5, 5), pady=(5, 0))
         ttk.Button(control_frame, text="浏览", command=self._browse_task_workspace).grid(row=1, column=2, pady=(5, 0))
 
@@ -2707,9 +2712,9 @@ class SboxgenGUI:
         for item in self.task_tree.get_children():
             self.task_tree.delete(item)
 
-        # 更新执行器路径
-        self.task_executor.artifacts_dir = Path(self.task_artifacts_var.get())
-        self.task_executor.workspace_dir = Path(self.task_workspace_var.get())
+        # 更新执行器路径 - 使用新的设置器方法
+        self.task_executor.set_artifacts_dir(self.task_artifacts_var.get())
+        self.task_executor.set_workspace_dir(self.task_workspace_var.get())
 
         # 获取任务列表
         tasks = self.task_executor.get_all_tasks()

@@ -14,20 +14,35 @@ from datetime import datetime
 import time
 
 class IsolatedTaskExecutor:
-    def __init__(self):
-        # 路径配置
-        self.artifacts_dir = Path(".artifacts")
-        self.workspace_dir = Path(".workspace")
+    def __init__(self, workspace_dir=None, artifacts_dir=None):
+        # 路径配置 - 支持自定义路径
+        self.artifacts_dir = Path(artifacts_dir) if artifacts_dir else Path(".artifacts")
+        self.workspace_dir = Path(workspace_dir) if workspace_dir else Path(".workspace")
+
+        # 初始化所有相关路径
+        self._update_paths()
+
+    def _update_paths(self):
+        """更新所有相关路径"""
         self.current_dir = self.workspace_dir / "current"
         self.status_file = self.workspace_dir / "task_status.json"
         self.log_dir = self.workspace_dir / "logs"
 
         # 确保工作目录存在
-        self.workspace_dir.mkdir(exist_ok=True)
-        self.log_dir.mkdir(exist_ok=True)
+        self.workspace_dir.mkdir(parents=True, exist_ok=True)
+        self.log_dir.mkdir(parents=True, exist_ok=True)
 
         # 加载或初始化状态
         self.status = self.load_status()
+
+    def set_workspace_dir(self, workspace_dir):
+        """更新工作目录并重新初始化相关路径"""
+        self.workspace_dir = Path(workspace_dir)
+        self._update_paths()
+
+    def set_artifacts_dir(self, artifacts_dir):
+        """更新产物目录"""
+        self.artifacts_dir = Path(artifacts_dir)
 
     def load_status(self):
         """加载任务执行状态"""

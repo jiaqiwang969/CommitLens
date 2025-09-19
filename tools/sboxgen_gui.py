@@ -2586,7 +2586,7 @@ class SboxgenGUI:
 
     # ---------------- Task Executor Tab ----------------
     def _build_task_executor_tab(self, tab):
-        """构建任务执行器标签页"""
+        """构建任务执行器标签页 - 整合Codex Output功能"""
         if IsolatedTaskExecutor is None:
             ttk.Label(tab, text="任务执行器模块未找到，请确保 isolated_task_executor.py 在同一目录",
                      foreground="red").pack(pady=20)
@@ -2604,13 +2604,17 @@ class SboxgenGUI:
         self.task_executor_thread = None
         self.task_executor_running = False
 
+        # 初始化Codex消息相关变量
+        self.task_codex_messages = []
+        self.task_codex_positions = {}  # 记录每个消息在详情视图中的位置
+
         # 布局
-        tab.rowconfigure(1, weight=1)
+        tab.rowconfigure(2, weight=1)  # 主内容区域
         tab.columnconfigure(0, weight=1)
 
         # 顶部控制面板
         control_frame = ttk.LabelFrame(tab, text="任务控制", padding=10)
-        control_frame.grid(row=0, column=0, sticky="ew", pady=(0, 10))
+        control_frame.grid(row=0, column=0, sticky="ew", pady=(0, 5))
         control_frame.columnconfigure(1, weight=1)
 
         # 任务目录设置
@@ -2639,9 +2643,38 @@ class SboxgenGUI:
 
         ttk.Button(button_frame, text="重置状态", command=self._reset_task_status).pack(side=tk.LEFT, padx=20)
 
-        # 主要内容区域（分为左右两部分）
+        # Prompt编辑框
+        prompt_frame = ttk.LabelFrame(tab, text="任务Prompt（可编辑）", padding=10)
+        prompt_frame.grid(row=1, column=0, sticky="ew", pady=(5, 5))
+        prompt_frame.columnconfigure(0, weight=1)
+
+        # Prompt文本框
+        self.task_prompt_text = scrolledtext.ScrolledText(prompt_frame, height=6, wrap=tk.WORD)
+        self.task_prompt_text.grid(row=0, column=0, sticky="ew")
+
+        # 设置默认prompt
+        default_prompt = """请按照 report.tex 的要求执行任务。
+对应的图片源文件在 figs/ 目录中（.puml 格式）。
+
+任务要求：
+1. 阅读并理解 report.tex 中的需求
+2. 查看 figs/ 中的 PlantUML 图表设计
+3. 根据需求完成相应的实现
+4. 确保所有输出符合tex文档的要求
+
+完成后请生成简短的执行报告。"""
+        self.task_prompt_text.insert("1.0", default_prompt)
+
+        # Prompt控制按钮
+        prompt_btn_frame = ttk.Frame(prompt_frame)
+        prompt_btn_frame.grid(row=1, column=0, sticky="w", pady=(5, 0))
+
+        ttk.Button(prompt_btn_frame, text="重置为默认", command=lambda: self._reset_task_prompt(default_prompt)).pack(side=tk.LEFT, padx=5)
+        ttk.Button(prompt_btn_frame, text="保存Prompt", command=self._save_task_prompt).pack(side=tk.LEFT, padx=5)
+
+        # 主要内容区域（分为三部分）
         main_frame = ttk.PanedWindow(tab, orient=tk.HORIZONTAL)
-        main_frame.grid(row=1, column=0, sticky="nsew")
+        main_frame.grid(row=2, column=0, sticky="nsew")
 
         # 左侧：任务列表
         left_frame = ttk.LabelFrame(main_frame, text="任务列表", padding=10)
@@ -2655,10 +2688,10 @@ class SboxgenGUI:
         self.task_tree.heading("报告", text="报告")
         self.task_tree.heading("图片", text="图片")
 
-        self.task_tree.column("#0", width=150)
+        self.task_tree.column("#0", width=120)
         self.task_tree.column("状态", width=80)
-        self.task_tree.column("报告", width=60)
-        self.task_tree.column("图片", width=60)
+        self.task_tree.column("报告", width=50)
+        self.task_tree.column("图片", width=50)
 
         # 滚动条
         task_scroll = ttk.Scrollbar(left_frame, orient="vertical", command=self.task_tree.yview)
@@ -2667,28 +2700,56 @@ class SboxgenGUI:
         self.task_tree.pack(side=tk.LEFT, fill="both", expand=True)
         task_scroll.pack(side=tk.RIGHT, fill="y")
 
-        # 右侧：执行日志
-        right_frame = ttk.LabelFrame(main_frame, text="执行日志", padding=10)
+        # 中间：消息列表（类似Codex Output）
+        middle_frame = ttk.LabelFrame(main_frame, text="消息列表", padding=10)
+        main_frame.add(middle_frame, weight=1)
+
+        # 消息列表框
+        self.task_message_listbox = tk.Listbox(middle_frame, height=20)
+        self.task_message_listbox.pack(side=tk.LEFT, fill="both", expand=True)
+
+        # 绑定点击事件
+        self.task_message_listbox.bind('<<ListboxSelect>>', self._on_task_message_select)
+
+        # 滚动条
+        msg_scrollbar = ttk.Scrollbar(middle_frame, orient=tk.VERTICAL, command=self.task_message_listbox.yview)
+        msg_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.task_message_listbox.configure(yscrollcommand=msg_scrollbar.set)
+
+        # 右侧：执行日志和消息详情
+        right_frame = ttk.LabelFrame(main_frame, text="执行日志详情", padding=10)
         main_frame.add(right_frame, weight=2)
 
         self.task_log_text = scrolledtext.ScrolledText(right_frame, height=20, wrap=tk.WORD)
         self.task_log_text.pack(fill="both", expand=True)
 
-        # 配置日志文本标签
+        # 配置消息类型标签样式
+        self.task_log_text.tag_config("timestamp", foreground="blue", font=("Courier", 10, "bold"))
+        self.task_log_text.tag_config("user", foreground="green", background="#f0f0f0")
+        self.task_log_text.tag_config("thinking", foreground="gray", font=("Courier", 9, "italic"))
+        self.task_log_text.tag_config("codex", foreground="black")
+        self.task_log_text.tag_config("error", foreground="red", font=("Courier", 10, "bold"))
         self.task_log_text.tag_config("info", foreground="black")
         self.task_log_text.tag_config("success", foreground="green")
-        self.task_log_text.tag_config("error", foreground="red")
         self.task_log_text.tag_config("warning", foreground="orange")
+        self.task_log_text.tag_config("separator", foreground="gray", font=("Courier", 8))
 
         # 底部状态栏
         status_frame = ttk.Frame(tab)
-        status_frame.grid(row=2, column=0, sticky="ew", pady=(5, 0))
+        status_frame.grid(row=3, column=0, sticky="ew", pady=(5, 0))
 
         self.task_status_label = ttk.Label(status_frame, text="状态: 就绪")
         self.task_status_label.pack(side=tk.LEFT)
 
+        # 添加自动跟踪复选框
+        self.task_auto_follow = tk.BooleanVar(value=True)
+        ttk.Checkbutton(status_frame, text="自动跟踪最新", variable=self.task_auto_follow).pack(side=tk.LEFT, padx=(20, 0))
+
         self.task_progress_label = ttk.Label(status_frame, text="进度: 0/0")
         self.task_progress_label.pack(side=tk.RIGHT, padx=(0, 10))
+
+        self.task_message_count_label = ttk.Label(status_frame, text="消息数: 0")
+        self.task_message_count_label.pack(side=tk.RIGHT, padx=(0, 20))
 
         # 初始加载任务列表
         self.root.after(100, self._refresh_task_list)
@@ -2755,6 +2816,177 @@ class SboxgenGUI:
         completed = len(status["completed"])
         self.task_progress_label.config(text=f"进度: {completed}/{total}")
 
+    def _reset_task_prompt(self, default_prompt):
+        """重置prompt为默认值"""
+        self.task_prompt_text.delete("1.0", tk.END)
+        self.task_prompt_text.insert("1.0", default_prompt)
+
+    def _save_task_prompt(self):
+        """保存prompt到文件"""
+        try:
+            prompt = self.task_prompt_text.get("1.0", tk.END).strip()
+            prompt_file = Path(".workspace") / "custom_prompt.txt"
+            prompt_file.parent.mkdir(exist_ok=True)
+            prompt_file.write_text(prompt, encoding="utf-8")
+            messagebox.showinfo("成功", f"Prompt已保存到 {prompt_file}")
+        except Exception as e:
+            messagebox.showerror("错误", f"保存Prompt失败: {e}")
+
+    def _on_task_message_select(self, event):
+        """处理消息列表选择事件"""
+        selection = self.task_message_listbox.curselection()
+        if not selection:
+            return
+
+        index = selection[0]
+        if index < len(self.task_codex_messages):
+            # 如果有记录的位置，跳转到该位置
+            if index in self.task_codex_positions:
+                start_line, _ = self.task_codex_positions[index]
+                self.task_log_text.see(f"{start_line}.0")
+
+    def _parse_task_codex_content(self, content: str):
+        """解析Codex输出内容为结构化消息"""
+        self.task_codex_messages = []
+        lines = content.split('\n')
+
+        current_message = None
+        current_content = []
+        in_thinking = False
+
+        for i, line in enumerate(lines):
+            # 检测时间戳行 [2025-09-18T05:06:39]
+            if line.startswith('[') and 'T' in line[:30] and ']' in line[:30]:
+                # 保存上一个消息
+                if current_message:
+                    current_message['content'] = '\n'.join(current_content).strip()
+                    # 过滤掉包含markdown标题格式的codex内容
+                    if current_message['type'] == 'codex' and '**' in current_message['content']:
+                        # 跳过错误的codex内容
+                        current_content = []
+                        current_message = None
+                    else:
+                        self.task_codex_messages.append(current_message)
+                        current_content = []
+
+                # 解析新消息
+                timestamp_end = line.index(']') + 1
+                timestamp = line[1:timestamp_end-1]
+                rest = line[timestamp_end:].strip()
+
+                # 确定消息类型
+                if "User:" in rest:
+                    msg_type = "user"
+                    content_start = rest.find("User:") + 5
+                    current_content = [rest[content_start:].strip()] if rest[content_start:].strip() else []
+                elif "Thinking:" in rest:
+                    msg_type = "thinking"
+                    in_thinking = True
+                    content_start = rest.find("Thinking:") + 9
+                    current_content = [rest[content_start:].strip()] if rest[content_start:].strip() else []
+                elif "Codex:" in rest:
+                    msg_type = "codex"
+                    in_thinking = False
+                    content_start = rest.find("Codex:") + 6
+                    current_content = [rest[content_start:].strip()] if rest[content_start:].strip() else []
+                else:
+                    msg_type = "info"
+                    current_content = [rest] if rest else []
+
+                current_message = {
+                    'timestamp': timestamp,
+                    'type': msg_type,
+                    'content': ''
+                }
+            else:
+                # 继续添加内容行
+                if current_message:
+                    current_content.append(line)
+
+        # 保存最后一个消息
+        if current_message:
+            current_message['content'] = '\n'.join(current_content).strip()
+            if not (current_message['type'] == 'codex' and '**' in current_message['content']):
+                self.task_codex_messages.append(current_message)
+
+        return self.task_codex_messages
+
+    def _update_task_message_list(self):
+        """更新消息列表显示"""
+        self.task_message_listbox.delete(0, tk.END)
+
+        for msg in self.task_codex_messages:
+            # 提取时间部分（HH:MM:SS）
+            timestamp = msg['timestamp']
+            if 'T' in timestamp and len(timestamp) > 11:
+                timestamp = timestamp[11:19]  # 提取HH:MM:SS部分
+
+            # 根据类型显示不同的图标
+            type_icon = {
+                'user': '👤',
+                'thinking': '🤔',
+                'codex': '💻',
+                'error': '❌',
+                'info': 'ℹ️'
+            }.get(msg['type'], '📝')
+
+            # 截取内容的前50个字符作为预览
+            preview = msg['content'][:50].replace('\n', ' ')
+            if len(msg['content']) > 50:
+                preview += '...'
+
+            # 添加到列表
+            display_text = f"[{timestamp}] {type_icon} {preview}"
+            self.task_message_listbox.insert(tk.END, display_text)
+
+        # 更新消息计数
+        self.task_message_count_label.config(text=f"消息数: {len(self.task_codex_messages)}")
+
+        # 如果自动跟踪，选择最后一个
+        if self.task_auto_follow.get() and self.task_codex_messages:
+            self.task_message_listbox.selection_clear(0, tk.END)
+            self.task_message_listbox.selection_set(tk.END)
+            self.task_message_listbox.see(tk.END)
+
+    def _populate_task_detail_view(self):
+        """填充详情视图，所有消息连续显示"""
+        self.task_log_text.delete(1.0, tk.END)
+        self.task_codex_positions = {}  # 重置位置记录
+
+        for i, msg in enumerate(self.task_codex_messages):
+            # 记录起始位置
+            start_line = int(self.task_log_text.index(tk.END).split('.')[0])
+
+            # 时间戳
+            timestamp = msg['timestamp']
+            if 'T' in timestamp and len(timestamp) > 11:
+                timestamp = timestamp[11:19]
+
+            # 添加时间戳和类型
+            type_label = {
+                'user': 'User',
+                'thinking': 'Thinking',
+                'codex': 'Codex',
+                'error': 'Error',
+                'info': 'Info'
+            }.get(msg['type'], 'Unknown')
+
+            self.task_log_text.insert(tk.END, f"[{timestamp}] {type_label}:\n", "timestamp")
+
+            # 添加内容
+            self.task_log_text.insert(tk.END, msg['content'] + "\n", msg['type'])
+
+            # 添加分隔线
+            self.task_log_text.insert(tk.END, "-" * 80 + "\n\n", "separator")
+
+            # 记录结束位置
+            end_line = int(self.task_log_text.index(tk.END).split('.')[0])
+            self.task_codex_positions[i] = (start_line, end_line)
+
+        # 如果自动跟踪，滚动到底部
+        if self.task_auto_follow.get():
+            self.task_log_text.see(tk.END)
+
     def _task_log(self, msg, tag="info"):
         """添加日志到任务执行日志窗口"""
         timestamp = datetime.now().strftime("%H:%M:%S")
@@ -2792,8 +3024,9 @@ class SboxgenGUI:
                 # 确保API key被传递给执行器
                 self._ensure_api_key_for_executor()
 
-                # 执行任务
-                success = self.task_executor.execute_task(task)
+                # 使用自定义prompt执行任务
+                custom_prompt = self.task_prompt_text.get("1.0", tk.END).strip()
+                success = self._execute_task_with_prompt(task, custom_prompt)
 
                 if success:
                     self.task_executor.status["completed"].append(task["id"])
@@ -2854,8 +3087,9 @@ class SboxgenGUI:
                         # 确保API key被传递给执行器
                         self._ensure_api_key_for_executor()
 
-                        # 执行任务
-                        success = self.task_executor.execute_task(task)
+                        # 使用自定义prompt执行任务
+                        custom_prompt = self.task_prompt_text.get("1.0", tk.END).strip()
+                        success = self._execute_task_with_prompt(task, custom_prompt)
 
                         if success:
                             self.task_executor.status["completed"].append(task["id"])
@@ -2922,6 +3156,147 @@ class SboxgenGUI:
             self._refresh_task_list()
             self._task_log("任务状态已重置", "warning")
             messagebox.showinfo("完成", "任务状态已重置")
+
+    def _execute_task_with_prompt(self, task, custom_prompt):
+        """使用自定义prompt执行任务，并实时解析输出"""
+        import subprocess
+        import threading
+
+        self._task_log(f"准备执行任务 {task['id']}...", "info")
+
+        # 准备工作空间
+        self.task_executor.prepare_workspace(task)
+        self._task_log(f"工作空间已准备: {self.task_executor.current_dir}", "info")
+
+        # 确保API key被设置
+        self._ensure_api_key_for_executor()
+
+        # 添加任务ID到prompt末尾
+        full_prompt = f"{custom_prompt}\n\n任务ID: {task['id']}"
+
+        # 记录执行的prompt
+        self._task_log("执行Prompt:", "info")
+        self.task_log_text.insert(tk.END, full_prompt + "\n", "thinking")
+        self.task_log_text.insert(tk.END, "-" * 80 + "\n", "separator")
+
+        # 准备环境变量
+        env = os.environ.copy()
+
+        # 构建执行命令
+        cmd = [
+            "codex", "exec",
+            "--skip-git-repo-check",
+            "--sandbox", "workspace-write",
+            full_prompt
+        ]
+
+        # 日志文件
+        log_file = self.task_executor.log_dir / f"{task['id']}.log"
+
+        try:
+            # 启动进程
+            process = subprocess.Popen(
+                cmd,
+                cwd=str(self.task_executor.current_dir),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                env=env,
+                bufsize=1
+            )
+
+            # 实时读取输出的线程
+            output_lines = []
+            error_lines = []
+
+            def read_output():
+                for line in process.stdout:
+                    output_lines.append(line)
+                    # 实时解析和显示
+                    self._process_codex_line(line)
+
+            def read_error():
+                for line in process.stderr:
+                    error_lines.append(line)
+                    self._task_log(f"错误: {line.strip()}", "error")
+
+            # 启动读取线程
+            output_thread = threading.Thread(target=read_output, daemon=True)
+            error_thread = threading.Thread(target=read_error, daemon=True)
+            output_thread.start()
+            error_thread.start()
+
+            # 等待进程完成（最多5分钟）
+            return_code = process.wait(timeout=300)
+
+            # 等待线程完成
+            output_thread.join(timeout=1)
+            error_thread.join(timeout=1)
+
+            # 保存完整输出到日志
+            full_output = ''.join(output_lines)
+            full_error = ''.join(error_lines)
+
+            with open(log_file, 'w', encoding='utf-8') as f:
+                f.write(f"=== 任务 {task['id']} 执行日志 ===\n")
+                f.write(f"时间: {datetime.now()}\n")
+                f.write(f"Prompt:\n{full_prompt}\n")
+                f.write(f"\n=== 输出 ===\n")
+                f.write(full_output)
+                if full_error:
+                    f.write(f"\n=== 错误 ===\n")
+                    f.write(full_error)
+
+            # 解析完整输出为消息列表
+            self._parse_task_codex_content(full_output)
+            self._update_task_message_list()
+            self._populate_task_detail_view()
+
+            if return_code == 0:
+                self._task_log(f"任务 {task['id']} 执行成功", "success")
+                return True
+            else:
+                self._task_log(f"任务 {task['id']} 执行失败，返回码: {return_code}", "error")
+                return False
+
+        except subprocess.TimeoutExpired:
+            process.kill()
+            self._task_log(f"任务 {task['id']} 执行超时（5分钟）", "error")
+            return False
+        except Exception as e:
+            self._task_log(f"任务 {task['id']} 执行出错: {e}", "error")
+            return False
+        finally:
+            # 清理工作空间
+            self.task_executor.cleanup_workspace()
+            self._task_log("工作空间已清理", "info")
+
+    def _process_codex_line(self, line):
+        """实时处理Codex输出行"""
+        if not line.strip():
+            return
+
+        # 检测消息类型
+        timestamp = datetime.now().strftime("%H:%M:%S")
+
+        if line.startswith("[") and "T" in line[:30] and "]" in line[:30]:
+            # 这是带时间戳的消息
+            if "User:" in line:
+                self.task_log_text.insert(tk.END, line, "user")
+            elif "Thinking:" in line:
+                self.task_log_text.insert(tk.END, line, "thinking")
+            elif "Codex:" in line:
+                self.task_log_text.insert(tk.END, line, "codex")
+            else:
+                self.task_log_text.insert(tk.END, line, "info")
+        else:
+            # 普通内容行
+            self.task_log_text.insert(tk.END, line, "info")
+
+        # 自动滚动
+        if self.task_auto_follow.get():
+            self.task_log_text.see(tk.END)
+        self.root.update_idletasks()
 
     def _ensure_api_key_for_executor(self):
         """确保API key被设置到环境变量中供执行器使用"""

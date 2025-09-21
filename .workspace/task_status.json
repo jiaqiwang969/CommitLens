@@ -1,6 +1,8 @@
 {
   "completed": [],
-  "failed": {},
-  "current": null,
+  "failed": {
+    "001-84a2fb2": -1
+  },
+  "current": "001-84a2fb2",
   "last_execution": null
 }

@@ -411,6 +411,9 @@ class SboxgenGUI:
                 self.codex_runs_var.set(int(data.get("codex_runs", self.codex_runs_var.get())))
                 self.puml_runs_var.set(int(data.get("puml_runs", self.puml_runs_var.get())))
                 self.max_parallel_var.set(int(data.get("max_parallel", self.max_parallel_var.get())))
+                # Load task executor timeout setting (新增)
+                if hasattr(self, 'task_timeout_var'):
+                    self.task_timeout_var.set(int(data.get("task_timeout", 6000)))
         except Exception:
             pass
 
@@ -444,6 +447,8 @@ class SboxgenGUI:
                 "codex_runs": int(self.codex_runs_var.get()),
                 "puml_runs": int(self.puml_runs_var.get()),
                 "max_parallel": int(self.max_parallel_var.get()),
+                # Task executor timeout setting (新增)
+                "task_timeout": int(self.task_timeout_var.get()) if hasattr(self, 'task_timeout_var') else 6000,
             }
             self.settings_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         except Exception:
@@ -976,7 +981,7 @@ class SboxgenGUI:
 
         # 显示完整命令（只读）
         ttk.Label(exec_frame, text="完整命令:", foreground="#666").grid(row=1, column=0, sticky="w", padx=(0, 10), pady=(5, 0))
-        self.codex_full_command_label = ttk.Label(exec_frame, text="codex exec --skip-git-repo-check --sandbox workspace-write \"...\"", foreground="#666")
+        self.codex_full_command_label = ttk.Label(exec_frame, text="codex exec --skip-git-repo-check --sandbox workspace-write --model gpt-5-codex-high \"...\"", foreground="#666")
         self.codex_full_command_label.grid(row=1, column=1, columnspan=3, sticky="w", pady=(5, 0))
 
         # 主显示区域 - 使用 PanedWindow 分隔
@@ -1501,7 +1506,7 @@ class SboxgenGUI:
             return
 
         # 构建完整命令
-        full_command = f'codex exec --skip-git-repo-check --sandbox workspace-write "{command}"'
+        full_command = f'codex exec --skip-git-repo-check --sandbox workspace-write --model gpt-5-codex-high "{command}"'
         self.codex_full_command_label.config(text=full_command[:100] + "..." if len(full_command) > 100 else full_command)
 
         # 禁用执行按钮，启用停止按钮
@@ -1577,6 +1582,8 @@ class SboxgenGUI:
                 "--skip-git-repo-check",
                 "--sandbox",
                 "workspace-write",
+                "--model",
+                "gpt-5-codex-high",
                 self.codex_command_var.get().strip()
             ]
 
@@ -2595,6 +2602,7 @@ class SboxgenGUI:
         # 设置默认路径变量
         self.task_artifacts_var = tk.StringVar(value=str(Path(".artifacts")))
         self.task_workspace_var = tk.StringVar(value=str(Path(".workspace")))
+        self.task_timeout_var = tk.IntVar(value=6000)  # 默认超时时间6000秒（100分钟）
 
         # 初始化任务执行器，传递路径参数
         self.task_executor = IsolatedTaskExecutor(
@@ -2608,13 +2616,14 @@ class SboxgenGUI:
         self.task_codex_messages = []
         self.task_codex_positions = {}  # 记录每个消息在详情视图中的位置
 
-        # 布局
-        tab.rowconfigure(2, weight=1)  # 主内容区域
-        tab.columnconfigure(0, weight=1)
+        # 布局 - 两列设计
+        tab.rowconfigure(1, weight=1)  # 主内容区域
+        tab.columnconfigure(0, weight=1)  # 左列
+        tab.columnconfigure(1, weight=1)  # 右列
 
-        # 顶部控制面板
+        # 顶部左侧：任务控制面板
         control_frame = ttk.LabelFrame(tab, text="任务控制", padding=10)
-        control_frame.grid(row=0, column=0, sticky="ew", pady=(0, 5))
+        control_frame.grid(row=0, column=0, sticky="nsew", pady=(0, 5), padx=(0, 5))
         control_frame.columnconfigure(1, weight=1)
 
         # 任务目录设置
@@ -2628,53 +2637,209 @@ class SboxgenGUI:
         ttk.Entry(control_frame, textvariable=self.task_workspace_var).grid(row=1, column=1, sticky="ew", padx=(5, 5), pady=(5, 0))
         ttk.Button(control_frame, text="浏览", command=self._browse_task_workspace).grid(row=1, column=2, pady=(5, 0))
 
-        # 执行控制按钮
+        # 项目名称设置（固定输出目录名）
+        ttk.Label(control_frame, text="项目名称:").grid(row=2, column=0, sticky="w", pady=(5, 0))
+        self.task_project_name_var = tk.StringVar(value="rust-project")  # 默认项目名
+        project_name_entry = ttk.Entry(control_frame, textvariable=self.task_project_name_var)
+        project_name_entry.grid(row=2, column=1, sticky="ew", padx=(5, 5), pady=(5, 0))
+        ttk.Label(control_frame, text="(固定目录名)", foreground="#666", font=("", 9)).grid(row=2, column=2, sticky="w", padx=(5, 0), pady=(5, 0))
+
+        # 执行超时设置（新增）
+        ttk.Label(control_frame, text="超时(秒):").grid(row=3, column=0, sticky="w", pady=(5, 0))
+        self.task_timeout_var = tk.IntVar(value=6000)  # 默认6000秒
+        timeout_entry = ttk.Entry(control_frame, textvariable=self.task_timeout_var)
+        timeout_entry.grid(row=3, column=1, sticky="ew", padx=(5, 5), pady=(5, 0))
+        ttk.Label(control_frame, text="(默认6000秒)", foreground="#666", font=("", 9)).grid(row=3, column=2, sticky="w", padx=(5, 0), pady=(5, 0))
+
+        # 执行控制按钮 - 分两行排列
         button_frame = ttk.Frame(control_frame)
-        button_frame.grid(row=2, column=0, columnspan=4, pady=(10, 0))
+        button_frame.grid(row=4, column=0, columnspan=3, pady=(10, 0))
 
-        self.task_exec_single_btn = ttk.Button(button_frame, text="执行单个任务", command=self._execute_single_task)
-        self.task_exec_single_btn.pack(side=tk.LEFT, padx=5)
+        # 第一行按钮
+        button_row1 = ttk.Frame(button_frame)
+        button_row1.pack(fill="x", pady=(0, 5))
 
-        self.task_exec_all_btn = ttk.Button(button_frame, text="执行所有任务", command=self._execute_all_tasks)
+        self.task_exec_single_btn = ttk.Button(button_row1, text="执行单个任务", command=self._execute_single_task)
+        self.task_exec_single_btn.pack(side=tk.LEFT, padx=(0, 5))
+
+        self.task_exec_all_btn = ttk.Button(button_row1, text="执行所有任务", command=self._execute_all_tasks)
         self.task_exec_all_btn.pack(side=tk.LEFT, padx=5)
 
-        self.task_stop_btn = ttk.Button(button_frame, text="停止执行", command=self._stop_task_execution, state="disabled")
+        self.task_stop_btn = ttk.Button(button_row1, text="停止执行", command=self._stop_task_execution, state="disabled")
         self.task_stop_btn.pack(side=tk.LEFT, padx=5)
 
-        ttk.Button(button_frame, text="重置状态", command=self._reset_task_status).pack(side=tk.LEFT, padx=20)
+        # 第二行按钮
+        button_row2 = ttk.Frame(button_frame)
+        button_row2.pack(fill="x")
 
-        # Prompt编辑框
+        ttk.Button(button_row2, text="加载输出", command=self._load_task_output).pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Button(button_row2, text="清空输出", command=self._clear_task_output).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_row2, text="🗑️ 清空项目", command=self._reset_task_status).pack(side=tk.LEFT, padx=10)
+
+        # 顶部右侧：Prompt编辑框
         prompt_frame = ttk.LabelFrame(tab, text="任务Prompt（可编辑）", padding=10)
-        prompt_frame.grid(row=1, column=0, sticky="ew", pady=(5, 5))
+        prompt_frame.grid(row=0, column=1, sticky="nsew", pady=(0, 5))
         prompt_frame.columnconfigure(0, weight=1)
+        prompt_frame.rowconfigure(1, weight=1)  # 让文本框可以垂直扩展
 
-        # Prompt文本框
-        self.task_prompt_text = scrolledtext.ScrolledText(prompt_frame, height=6, wrap=tk.WORD)
-        self.task_prompt_text.grid(row=0, column=0, sticky="ew")
+        # Prompt模板选择器
+        template_frame = ttk.Frame(prompt_frame)
+        template_frame.grid(row=0, column=0, sticky="ew", pady=(0, 5))
 
-        # 设置默认prompt
-        default_prompt = """请按照 report.tex 的要求执行任务。
-对应的图片源文件在 figs/ 目录中（.puml 格式）。
+        ttk.Label(template_frame, text="模板:").pack(side=tk.LEFT, padx=(0, 5))
 
-任务要求：
-1. 阅读并理解 report.tex 中的需求
-2. 查看 figs/ 中的 PlantUML 图表设计
-3. 根据需求完成相应的实现
-4. 确保所有输出符合tex文档的要求
+        self.prompt_templates = {
+            "Rust完整实现（带变量）": """请根据 {todolist_dir}/todolist-{task_id}.tex 文档中描述的架构和需求，实现对应的 Rust 代码。
 
-完成后请生成简短的执行报告。"""
-        self.task_prompt_text.insert("1.0", default_prompt)
+任务说明：
+1. 仔细阅读 {todolist_dir}/todolist-{task_id}.tex 文档，理解其中描述的：
+   - 系统架构设计
+   - 模块划分和职责
+   - 数据结构定义
+   - 算法流程说明
+   - 接口和API设计
+
+2. 查看 {todolist_dir}/figs/ 目录中的 PlantUML 图表（.puml 文件）：
+   - 类图/结构图 → 转换为 Rust struct/trait
+   - 序列图 → 实现为方法调用流程
+   - 流程图 → 实现为算法逻辑
+   - 状态图 → 实现为状态机
+
+3. 使用 Rust 语言实现：
+   - 将 tex 中描述的数据结构转换为 Rust struct/enum
+   - 将接口定义转换为 Rust trait
+   - 实现文档中描述的算法和业务逻辑
+   - 确保代码符合 Rust 最佳实践（ownership、借用、错误处理）
+   - 添加适当的文档注释和单元测试
+
+4. 代码组织：
+   - 在 {project_dir} 目录中创建 Rust 项目（固定目录名：{project_name}）
+   - 创建合理的模块结构（lib.rs, mod.rs）
+   - 实现 Cargo.toml 配置
+   - 添加必要的依赖项
+   - 确保代码可编译运行
+
+输出要求：
+- 生成完整可运行的 Rust 项目代码（位于 {project_dir}）
+- 包含单元测试和集成测试
+- 提供简要的实现报告说明关键设计决策
+
+注意：
+- 工作目录为 {workspace_dir}
+- 项目输出到固定目录 {project_name}/ 便于多次迭代""",
+
+            "Rust完整实现（传统）": """请根据 report.tex 文档中描述的架构和需求，实现对应的 Rust 代码。
+
+任务说明：
+1. 仔细阅读 report.tex 文档，理解其中描述的：
+   - 系统架构设计
+   - 模块划分和职责
+   - 数据结构定义
+   - 算法流程说明
+   - 接口和API设计
+
+2. 查看 figs/ 目录中的 PlantUML 图表（.puml 文件）：
+   - 类图/结构图 → 转换为 Rust struct/trait
+   - 序列图 → 实现为方法调用流程
+   - 流程图 → 实现为算法逻辑
+   - 状态图 → 实现为状态机
+
+3. 使用 Rust 语言实现：
+   - 将 tex 中描述的数据结构转换为 Rust struct/enum
+   - 将接口定义转换为 Rust trait
+   - 实现文档中描述的算法和业务逻辑
+   - 确保代码符合 Rust 最佳实践（ownership、借用、错误处理）
+   - 添加适当的文档注释和单元测试
+
+4. 代码组织：
+   - 创建合理的模块结构（lib.rs, mod.rs）
+   - 实现 Cargo.toml 配置
+   - 添加必要的依赖项
+   - 确保代码可编译运行
+
+输出要求：
+- 生成完整可运行的 Rust 项目代码
+- 包含单元测试和集成测试
+- 提供简要的实现报告说明关键设计决策""",
+
+            "算法实现": """分析 {tex_file} 中描述的算法，使用 Rust 实现。
+
+算法文档位置：{todolist_dir}/todolist-{task_id}.tex
+图表位置：{figs_dir}
+
+重点关注：
+1. 算法的输入输出定义
+2. 算法的时间空间复杂度要求
+3. 边界条件和异常处理
+4. 性能优化点
+
+实现要求：
+- 使用泛型提高代码复用性
+- 实现 Iterator trait 以支持链式调用
+- 使用 #[bench] 添加性能基准测试
+- 考虑并发场景，必要时使用 Arc/Mutex
+- 实现位置：{project_dir} (固定目录 {project_name})""",
+
+            "数据结构": """将 {tex_file} 和 {figs_dir}/*.puml 中的设计转换为 Rust 代码：
+
+1. UML类图 → Rust struct + impl
+2. 接口定义 → Rust trait
+3. 继承关系 → trait 实现
+4. 组合关系 → struct 字段
+5. 依赖关系 → 函数参数
+
+确保：
+- 所有字段都有适当的可见性（pub/pub(crate)/private）
+- 实现必要的 derive（Debug, Clone, PartialEq 等）
+- 使用 Builder 模式处理复杂构造
+- 实现 From/Into trait 进行类型转换
+- 代码位置：{project_dir} (固定目录 {project_name})""",
+
+            "简单测试": """请读取 {tex_file} 文档，理解其描述的功能需求，然后：
+
+1. 创建一个简单的 Rust 项目实现核心功能
+2. 重点实现文档中标记为"必须"的功能
+3. 为主要功能编写测试用例
+4. 确保 cargo run 可以演示基本功能
+
+项目创建位置：{project_dir} (固定目录 {project_name})
+输出最小可运行版本即可。"""}
+
+        # 设置默认模板
+        self.task_prompt_template_var = tk.StringVar(value="Rust完整实现（带变量）")
+        template_combo = ttk.Combobox(template_frame, textvariable=self.task_prompt_template_var,
+                                      values=list(self.prompt_templates.keys()),
+                                      state="readonly", width=20)
+        template_combo.pack(side=tk.LEFT, padx=(0, 10))
+        template_combo.bind('<<ComboboxSelected>>', lambda e: self._load_template())
+
+        ttk.Button(template_frame, text="加载模板", command=self._load_template).pack(side=tk.LEFT)
+
+        # Prompt文本框 - 调整高度以匹配左侧控制面板
+        self.task_prompt_text = scrolledtext.ScrolledText(prompt_frame, height=12, wrap=tk.WORD)
+        self.task_prompt_text.grid(row=1, column=0, sticky="nsew")
+
+        # 优先加载保存的自定义prompt，如果不存在则加载默认模板
+        self._load_saved_or_default_prompt()
 
         # Prompt控制按钮
         prompt_btn_frame = ttk.Frame(prompt_frame)
-        prompt_btn_frame.grid(row=1, column=0, sticky="w", pady=(5, 0))
+        prompt_btn_frame.grid(row=2, column=0, sticky="w", pady=(5, 0))
 
-        ttk.Button(prompt_btn_frame, text="重置为默认", command=lambda: self._reset_task_prompt(default_prompt)).pack(side=tk.LEFT, padx=5)
+        ttk.Button(prompt_btn_frame, text="重置为当前模板", command=self._load_template).pack(side=tk.LEFT, padx=(0, 5))
         ttk.Button(prompt_btn_frame, text="保存Prompt", command=self._save_task_prompt).pack(side=tk.LEFT, padx=5)
 
-        # 主要内容区域（分为三部分）
+        # 参数变量说明
+        help_frame = ttk.Frame(prompt_frame)
+        help_frame.grid(row=3, column=0, sticky="ew", pady=(5, 0))
+
+        help_text = ("可用变量: {workspace_dir} {todolist_dir} {project_dir}\n"
+                    "{project_name} {task_id} {tex_file} {figs_dir}")
+        ttk.Label(help_frame, text=help_text, foreground="#666", font=("", 9), wraplength=400).pack(anchor="w")
+
+        # 主要内容区域（分为三部分） - 跨越两列
         main_frame = ttk.PanedWindow(tab, orient=tk.HORIZONTAL)
-        main_frame.grid(row=2, column=0, sticky="nsew")
+        main_frame.grid(row=1, column=0, columnspan=2, sticky="nsew", pady=(5, 0))
 
         # 左侧：任务列表
         left_frame = ttk.LabelFrame(main_frame, text="任务列表", padding=10)
@@ -2723,20 +2888,20 @@ class SboxgenGUI:
         self.task_log_text = scrolledtext.ScrolledText(right_frame, height=20, wrap=tk.WORD)
         self.task_log_text.pack(fill="both", expand=True)
 
-        # 配置消息类型标签样式
-        self.task_log_text.tag_config("timestamp", foreground="blue", font=("Courier", 10, "bold"))
-        self.task_log_text.tag_config("user", foreground="green", background="#f0f0f0")
-        self.task_log_text.tag_config("thinking", foreground="gray", font=("Courier", 9, "italic"))
-        self.task_log_text.tag_config("codex", foreground="black")
-        self.task_log_text.tag_config("error", foreground="red", font=("Courier", 10, "bold"))
-        self.task_log_text.tag_config("info", foreground="black")
-        self.task_log_text.tag_config("success", foreground="green")
-        self.task_log_text.tag_config("warning", foreground="orange")
-        self.task_log_text.tag_config("separator", foreground="gray", font=("Courier", 8))
+        # 配置消息类型标签样式 - 使用白色或亮色以适应暗色背景
+        self.task_log_text.tag_config("timestamp", foreground="cyan", font=("Courier", 10, "bold"))
+        self.task_log_text.tag_config("user", foreground="#90EE90", background="#2a2a2a")  # 亮绿色
+        self.task_log_text.tag_config("thinking", foreground="#B0B0B0", font=("Courier", 9, "italic"))  # 亮灰色
+        self.task_log_text.tag_config("codex", foreground="white")  # 白色
+        self.task_log_text.tag_config("error", foreground="#FF6B6B", font=("Courier", 10, "bold"))  # 亮红色
+        self.task_log_text.tag_config("info", foreground="#E0E0E0")  # 浅灰色
+        self.task_log_text.tag_config("success", foreground="#90EE90")  # 亮绿色
+        self.task_log_text.tag_config("warning", foreground="#FFD700")  # 金色
+        self.task_log_text.tag_config("separator", foreground="#808080", font=("Courier", 8))  # 中灰色
 
-        # 底部状态栏
+        # 底部状态栏 - 跨越两列
         status_frame = ttk.Frame(tab)
-        status_frame.grid(row=3, column=0, sticky="ew", pady=(5, 0))
+        status_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(5, 0))
 
         self.task_status_label = ttk.Label(status_frame, text="状态: 就绪")
         self.task_status_label.pack(side=tk.LEFT)
@@ -2768,7 +2933,7 @@ class SboxgenGUI:
             self.task_workspace_var.set(path)
 
     def _refresh_task_list(self):
-        """刷新任务列表显示"""
+        """刷新任务列表显示（增强版：支持实时状态监控）"""
         # 清空现有列表
         for item in self.task_tree.get_children():
             self.task_tree.delete(item)
@@ -2781,19 +2946,53 @@ class SboxgenGUI:
         tasks = self.task_executor.get_all_tasks()
         status = self.task_executor.status
 
+        # 检查是否有任务正在执行（通过状态文件判断）
+        current_executing_task = None
+        if hasattr(self, 'current_task_id') and self.current_task_id:
+            current_executing_task = self.current_task_id
+
+        # 也检查状态文件以获取更准确的状态
+        workspace_path = Path(self.task_workspace_var.get())
+        status_file = workspace_path / "codex_status.txt"
+        running_status = None
+        if status_file.exists():
+            try:
+                running_status = status_file.read_text(encoding="utf-8").strip()
+            except:
+                pass
+
         for task in tasks:
             task_id = task["id"]
 
-            # 确定状态
-            if task_id in status["completed"]:
+            # 确定状态（增强逻辑）
+            if current_executing_task == task_id and running_status == "running":
+                # 正在执行的任务
+                status_text = "🔄 执行中..."
+                tags = ("running",)
+            elif task_id in status["completed"]:
                 status_text = "✅ 完成"
                 tags = ("completed",)
             elif task_id in status["failed"]:
-                status_text = f"❌ 失败({status['failed'][task_id]})"
-                tags = ("failed",)
+                error_code = status['failed'][task_id]
+                if error_code == 124:
+                    status_text = "⏱️ 超时"
+                    tags = ("timeout",)
+                elif error_code == -1 or error_code == -15:
+                    status_text = "⏹️ 中断"
+                    tags = ("interrupted",)  # 使用独立的interrupted标签
+                elif error_code == 127:
+                    status_text = "❌ 命令未找到"
+                    tags = ("failed",)
+                elif error_code == 503:
+                    status_text = "🚫 API错误"  # API错误显示
+                    tags = ("api_error",)
+                else:
+                    status_text = f"❌ 失败({error_code})"
+                    tags = ("failed",)
             elif task_id == status.get("current"):
-                status_text = "🔄 执行中"
-                tags = ("running",)
+                # 标记为当前但未运行
+                status_text = "📍 当前"
+                tags = ("current",)
             else:
                 status_text = "⏳ 待执行"
                 tags = ("pending",)
@@ -2805,30 +3004,80 @@ class SboxgenGUI:
             # 添加到树形控件
             self.task_tree.insert("", "end", text=task_id, values=(status_text, report_exists, figs_exists), tags=tags)
 
-        # 配置标签颜色
-        self.task_tree.tag_configure("completed", foreground="green")
-        self.task_tree.tag_configure("failed", foreground="red")
-        self.task_tree.tag_configure("running", foreground="blue")
-        self.task_tree.tag_configure("pending", foreground="gray")
+        # 配置标签颜色（增强配色）
+        self.task_tree.tag_configure("completed", foreground="#00b050")  # 深绿色
+        self.task_tree.tag_configure("failed", foreground="#ff4444")     # 红色
+        self.task_tree.tag_configure("api_error", foreground="#ff00ff")  # 紫色 - API错误
+        self.task_tree.tag_configure("interrupted", foreground="#ff8800") # 橙色 - 中断/暂停
+        self.task_tree.tag_configure("timeout", foreground="#ff6600")    # 深橙色 - 超时
+        self.task_tree.tag_configure("running", foreground="#0066cc", font=("", 10, "bold"))  # 蓝色加粗
+        self.task_tree.tag_configure("current", foreground="#ff8800")    # 橙色
+        self.task_tree.tag_configure("pending", foreground="#888888")    # 灰色
 
         # 更新进度标签
         total = len(tasks)
         completed = len(status["completed"])
-        self.task_progress_label.config(text=f"进度: {completed}/{total}")
+        failed = len(status["failed"])
+        progress_text = f"进度: {completed}/{total}"
+        if failed > 0:
+            progress_text += f" (失败: {failed})"
+        self.task_progress_label.config(text=progress_text)
 
-    def _reset_task_prompt(self, default_prompt):
-        """重置prompt为默认值"""
-        self.task_prompt_text.delete("1.0", tk.END)
-        self.task_prompt_text.insert("1.0", default_prompt)
+        # 如果有任务正在执行，定时刷新
+        if hasattr(self, 'task_executor_running') and self.task_executor_running:
+            # 每2秒刷新一次任务列表以显示最新状态
+            self.root.after(2000, self._refresh_task_list)
+
+    def _load_saved_or_default_prompt(self):
+        """优先加载保存的自定义prompt，如果不存在则加载默认模板"""
+        try:
+            # 首先尝试加载保存的自定义prompt
+            custom_prompt_file = Path(".workspace") / "custom_prompt.txt"
+            if custom_prompt_file.exists():
+                custom_prompt = custom_prompt_file.read_text(encoding="utf-8").strip()
+                if custom_prompt:  # 确保不是空文件
+                    self.task_prompt_text.delete("1.0", tk.END)
+                    self.task_prompt_text.insert("1.0", custom_prompt)
+                    self._append_log(f"已加载自定义Prompt: {custom_prompt_file}")
+                    return
+        except Exception as e:
+            self._append_log(f"加载自定义Prompt失败: {e}")
+
+        # 如果没有保存的prompt或加载失败，则加载默认模板
+        self._load_template()
+
+    def _load_template(self):
+        """加载选中的模板到编辑框"""
+        template_name = self.task_prompt_template_var.get()
+        if template_name in self.prompt_templates:
+            self.task_prompt_text.delete("1.0", tk.END)
+            self.task_prompt_text.insert("1.0", self.prompt_templates[template_name])
+
+    def _reset_task_prompt(self, default_prompt=None):
+        """重置prompt为默认值或当前模板"""
+        if default_prompt:
+            self.task_prompt_text.delete("1.0", tk.END)
+            self.task_prompt_text.insert("1.0", default_prompt)
+        else:
+            self._load_template()
 
     def _save_task_prompt(self):
         """保存prompt到文件"""
         try:
             prompt = self.task_prompt_text.get("1.0", tk.END).strip()
-            prompt_file = Path(".workspace") / "custom_prompt.txt"
-            prompt_file.parent.mkdir(exist_ok=True)
+            # 保存到工作目录下的custom_prompt.txt
+            workspace_path = self.task_workspace_var.get() or ".workspace"
+            prompt_file = Path(workspace_path) / "custom_prompt.txt"
+            prompt_file.parent.mkdir(parents=True, exist_ok=True)
             prompt_file.write_text(prompt, encoding="utf-8")
-            messagebox.showinfo("成功", f"Prompt已保存到 {prompt_file}")
+
+            # 同时保存到.workspace目录，供下次启动时加载
+            backup_file = Path(".workspace") / "custom_prompt.txt"
+            backup_file.parent.mkdir(parents=True, exist_ok=True)
+            backup_file.write_text(prompt, encoding="utf-8")
+
+            messagebox.showinfo("成功", f"Prompt已保存到:\n{prompt_file}\n{backup_file}")
+            self._append_log(f"自定义Prompt已保存")
         except Exception as e:
             messagebox.showerror("错误", f"保存Prompt失败: {e}")
 
@@ -2839,11 +3088,98 @@ class SboxgenGUI:
             return
 
         index = selection[0]
+
+        # 如果用户手动选择了非最后一条消息，暂停自动跟踪
+        if event and index < self.task_message_listbox.size() - 1:
+            if self.task_auto_follow.get():
+                self.auto_follow_var.set(False)
+                self._task_log("已暂停自动跟踪，正在查看历史消息", "info")
+
+        # 如果选择了最后一条，恢复自动跟踪
+        elif event and index == self.task_message_listbox.size() - 1:
+            if not self.task_auto_follow.get():
+                self.auto_follow_var.set(True)
+                self._task_log("已恢复自动跟踪最新消息", "info")
+
+        # 跳转到日志中对应的位置
         if index < len(self.task_codex_messages):
-            # 如果有记录的位置，跳转到该位置
-            if index in self.task_codex_positions:
-                start_line, _ = self.task_codex_positions[index]
-                self.task_log_text.see(f"{start_line}.0")
+            message = self.task_codex_messages[index]
+
+            # 如果消息有记录的位置信息，跳转到该位置
+            if 'log_position' in message:
+                try:
+                    # 滚动到对应位置
+                    self.task_log_text.see(message['log_position'])
+
+                    # 高亮显示对应的内容
+                    # 先清除之前的高亮
+                    self.task_log_text.tag_remove("message_highlight", "1.0", tk.END)
+
+                    # 查找消息内容在日志中的位置
+                    search_text = message.get('content', message.get('title', ''))
+                    if search_text:
+                        # 从记录的位置开始搜索
+                        start_pos = message['log_position']
+                        found_pos = self.task_log_text.search(
+                            search_text[:50],  # 搜索前50个字符
+                            start_pos,
+                            stopindex=tk.END,
+                            nocase=True
+                        )
+
+                        if found_pos:
+                            # 计算结束位置
+                            end_pos = f"{found_pos}+{len(search_text)}c"
+
+                            # 添加高亮标签
+                            self.task_log_text.tag_add("message_highlight", found_pos, end_pos)
+                            self.task_log_text.tag_config("message_highlight", background="#ffff99")
+
+                            # 确保高亮部分可见
+                            self.task_log_text.see(found_pos)
+                except Exception as e:
+                    print(f"跳转到日志位置失败: {e}")
+            else:
+                # 如果没有位置信息，尝试搜索消息内容
+                try:
+                    # 获取消息的时间戳
+                    timestamp = message.get('timestamp', '')
+                    if 'T' in timestamp and len(timestamp) > 11:
+                        search_timestamp = timestamp[11:19]  # 提取 HH:MM:SS
+                    else:
+                        search_timestamp = timestamp[:8] if len(timestamp) > 8 else timestamp
+
+                    # 搜索时间戳在日志中的位置
+                    if search_timestamp:
+                        found_pos = self.task_log_text.search(
+                            f"[{search_timestamp}]",
+                            "1.0",
+                            stopindex=tk.END
+                        )
+
+                        if found_pos:
+                            self.task_log_text.see(found_pos)
+
+                            # 高亮该消息段
+                            self.task_log_text.tag_remove("message_highlight", "1.0", tk.END)
+
+                            # 找到下一个时间戳或分隔线的位置作为结束
+                            next_timestamp = self.task_log_text.search(
+                                "[",
+                                f"{found_pos}+1line",
+                                stopindex=tk.END
+                            )
+
+                            if next_timestamp:
+                                self.task_log_text.tag_add("message_highlight", found_pos, f"{next_timestamp}-1c")
+                            else:
+                                # 如果没有找到下一个时间戳，高亮到下一个分隔线或末尾
+                                self.task_log_text.tag_add("message_highlight", found_pos, f"{found_pos}+5lines")
+
+                            self.task_log_text.tag_config("message_highlight", background="#ffff99")
+
+                except Exception as e:
+                    print(f"搜索日志位置失败: {e}")
 
     def _parse_task_codex_content(self, content: str):
         """解析Codex输出内容为结构化消息"""
@@ -2852,61 +3188,59 @@ class SboxgenGUI:
 
         current_message = None
         current_content = []
-        in_thinking = False
 
         for i, line in enumerate(lines):
-            # 检测时间戳行 [2025-09-18T05:06:39]
-            if line.startswith('[') and 'T' in line[:30] and ']' in line[:30]:
+            # 检测带时间戳的消息行
+            if line.startswith('[') and ']' in line and 'T' in line[:30]:
                 # 保存上一个消息
-                if current_message:
+                if current_message and current_content:
                     current_message['content'] = '\n'.join(current_content).strip()
-                    # 过滤掉包含markdown标题格式的codex内容
-                    if current_message['type'] == 'codex' and '**' in current_message['content']:
-                        # 跳过错误的codex内容
-                        current_content = []
-                        current_message = None
-                    else:
+                    if current_message['content']:  # 只保存有内容的消息
                         self.task_codex_messages.append(current_message)
-                        current_content = []
+                    current_content = []
 
                 # 解析新消息
-                timestamp_end = line.index(']') + 1
-                timestamp = line[1:timestamp_end-1]
-                rest = line[timestamp_end:].strip()
+                bracket_end = line.index(']') + 1
+                timestamp = line[1:bracket_end-1]
+                rest = line[bracket_end:].strip()
 
                 # 确定消息类型
-                if "User:" in rest:
+                msg_type = "info"
+                if "User" in rest or "User instructions" in rest:
                     msg_type = "user"
-                    content_start = rest.find("User:") + 5
-                    current_content = [rest[content_start:].strip()] if rest[content_start:].strip() else []
-                elif "Thinking:" in rest:
+                elif "thinking" in rest.lower():
                     msg_type = "thinking"
-                    in_thinking = True
-                    content_start = rest.find("Thinking:") + 9
-                    current_content = [rest[content_start:].strip()] if rest[content_start:].strip() else []
-                elif "Codex:" in rest:
+                elif "exec" in rest or "bash" in rest:
+                    msg_type = "exec"
+                elif "succeeded" in rest:
+                    msg_type = "success"
+                elif "failed" in rest or "ERROR" in rest:
+                    msg_type = "error"
+                elif "codex" in rest.lower():
                     msg_type = "codex"
-                    in_thinking = False
-                    content_start = rest.find("Codex:") + 6
-                    current_content = [rest[content_start:].strip()] if rest[content_start:].strip() else []
-                else:
-                    msg_type = "info"
-                    current_content = [rest] if rest else []
+                elif "tokens used" in rest:
+                    msg_type = "tokens"
 
                 current_message = {
                     'timestamp': timestamp,
                     'type': msg_type,
-                    'content': ''
+                    'content': rest if rest else ''
                 }
+
+                # 如果当前行还有内容，添加到内容中
+                if rest:
+                    current_content = [rest]
+                else:
+                    current_content = []
             else:
                 # 继续添加内容行
-                if current_message:
+                if line.strip():  # 只添加非空行
                     current_content.append(line)
 
         # 保存最后一个消息
-        if current_message:
+        if current_message and current_content:
             current_message['content'] = '\n'.join(current_content).strip()
-            if not (current_message['type'] == 'codex' and '**' in current_message['content']):
+            if current_message['content']:
                 self.task_codex_messages.append(current_message)
 
         return self.task_codex_messages
@@ -2920,19 +3254,25 @@ class SboxgenGUI:
             timestamp = msg['timestamp']
             if 'T' in timestamp and len(timestamp) > 11:
                 timestamp = timestamp[11:19]  # 提取HH:MM:SS部分
+            elif len(timestamp) > 8:
+                timestamp = timestamp[:8]
 
             # 根据类型显示不同的图标
             type_icon = {
                 'user': '👤',
                 'thinking': '🤔',
-                'codex': '💻',
+                'exec': '⚡',
+                'success': '✅',
                 'error': '❌',
+                'codex': '🤖',
+                'tokens': '🎫',
                 'info': 'ℹ️'
             }.get(msg['type'], '📝')
 
             # 截取内容的前50个字符作为预览
-            preview = msg['content'][:50].replace('\n', ' ')
-            if len(msg['content']) > 50:
+            content = msg.get('content', '')
+            preview = content[:50].replace('\n', ' ')
+            if len(content) > 50:
                 preview += '...'
 
             # 添加到列表
@@ -2945,8 +3285,94 @@ class SboxgenGUI:
         # 如果自动跟踪，选择最后一个
         if self.task_auto_follow.get() and self.task_codex_messages:
             self.task_message_listbox.selection_clear(0, tk.END)
-            self.task_message_listbox.selection_set(tk.END)
+            self.task_message_listbox.selection_set(len(self.task_codex_messages) - 1)
             self.task_message_listbox.see(tk.END)
+
+    def _append_message_to_detail_view(self, message):
+        """流式添加消息到详情视图（复用Codex Output的实时更新策略）"""
+        # 如果是第一条消息，清空详情视图
+        if len(self.task_codex_messages) == 1:
+            self.task_log_text.delete(1.0, tk.END)
+            self.task_codex_positions = {}
+
+        # 记录起始位置
+        start_line = int(self.task_log_text.index(tk.END).split('.')[0])
+
+        # 如果不是第一条消息，添加分隔符
+        if len(self.task_codex_messages) > 1:
+            self.task_log_text.insert(tk.END, "-" * 80 + "\n\n", "separator")
+
+        # 时间戳
+        timestamp = message['timestamp']
+        if 'T' in timestamp and len(timestamp) > 11:
+            timestamp = timestamp[11:19]
+
+        # 添加时间戳和类型
+        type_label = {
+            'user': 'User',
+            'thinking': 'Thinking',
+            'exec': 'Execute',
+            'success': 'Success',
+            'error': 'Error',
+            'codex': 'Codex',
+            'tokens': 'Tokens',
+            'info': 'Info',
+            'status': 'Status'
+        }.get(message['type'], 'Unknown')
+
+        self.task_log_text.insert(tk.END, f"[{timestamp}] {type_label}:\n", "timestamp")
+
+        # 添加内容
+        content = message.get('content', '')
+        if content:
+            self.task_log_text.insert(tk.END, content + "\n", message['type'])
+
+        # 记录结束位置
+        end_line = int(self.task_log_text.index(tk.END).split('.')[0])
+        msg_index = len(self.task_codex_messages) - 1
+        self.task_codex_positions[msg_index] = (start_line, end_line)
+
+        # 如果自动跟踪，滚动到底部
+        if self.task_auto_follow.get():
+            self.task_log_text.see(tk.END)
+
+        self.root.update_idletasks()
+
+    def _update_message_in_detail_view(self, index, message):
+        """更新详情视图中的特定消息（用于流式内容累积）"""
+        if index not in self.task_codex_positions:
+            # 如果位置不存在，添加新消息
+            self._append_message_to_detail_view(message)
+            return
+
+        # 获取消息在详情视图中的位置
+        start_line, end_line = self.task_codex_positions[index]
+
+        # 删除旧内容（保留标题行）
+        self.task_log_text.delete(f"{start_line + 1}.0", f"{end_line}.0")
+
+        # 插入新内容
+        content = message.get('content', '')
+        if content:
+            self.task_log_text.insert(f"{start_line + 1}.0", content + "\n", message['type'])
+
+        # 更新结束位置
+        new_end_line = start_line + 1 + content.count('\n') + 1
+        self.task_codex_positions[index] = (start_line, new_end_line)
+
+        # 更新后续消息的位置
+        line_diff = new_end_line - end_line
+        if line_diff != 0:
+            for i in range(index + 1, len(self.task_codex_messages)):
+                if i in self.task_codex_positions:
+                    old_start, old_end = self.task_codex_positions[i]
+                    self.task_codex_positions[i] = (old_start + line_diff, old_end + line_diff)
+
+        # 如果自动跟踪，保持在底部
+        if self.task_auto_follow.get():
+            self.task_log_text.see(tk.END)
+
+        self.root.update_idletasks()
 
     def _populate_task_detail_view(self):
         """填充详情视图，所有消息连续显示"""
@@ -2966,15 +3392,20 @@ class SboxgenGUI:
             type_label = {
                 'user': 'User',
                 'thinking': 'Thinking',
-                'codex': 'Codex',
+                'exec': 'Execute',
+                'success': 'Success',
                 'error': 'Error',
+                'codex': 'Codex',
+                'tokens': 'Tokens',
                 'info': 'Info'
             }.get(msg['type'], 'Unknown')
 
             self.task_log_text.insert(tk.END, f"[{timestamp}] {type_label}:\n", "timestamp")
 
             # 添加内容
-            self.task_log_text.insert(tk.END, msg['content'] + "\n", msg['type'])
+            content = msg.get('content', '')
+            if content:
+                self.task_log_text.insert(tk.END, content + "\n", msg['type'])
 
             # 添加分隔线
             self.task_log_text.insert(tk.END, "-" * 80 + "\n\n", "separator")
@@ -3015,6 +3446,14 @@ class SboxgenGUI:
                     self._task_log("所有任务已完成！", "success")
                     return
 
+                # 设置当前执行的任务ID
+                self.current_task_id = task["id"]
+                self.task_executor.status["current"] = task["id"]
+                self.task_executor.save_status()
+
+                # 立即刷新任务列表以显示正在执行状态
+                self.root.after(0, self._refresh_task_list)
+
                 self._task_log(f"执行任务: {task['id']}", "info")
 
                 # 准备工作空间
@@ -3024,28 +3463,67 @@ class SboxgenGUI:
                 # 确保API key被传递给执行器
                 self._ensure_api_key_for_executor()
 
-                # 使用自定义prompt执行任务
+                # 获取prompt：优先使用编辑框中的内容（可能是保存的或修改的）
                 custom_prompt = self.task_prompt_text.get("1.0", tk.END).strip()
-                success = self._execute_task_with_prompt(task, custom_prompt)
+
+                # 如果编辑框为空，尝试加载保存的prompt
+                if not custom_prompt:
+                    try:
+                        # 先尝试从工作目录加载
+                        workspace_path = self.task_workspace_var.get() or ".workspace"
+                        prompt_file = Path(workspace_path) / "custom_prompt.txt"
+                        if prompt_file.exists():
+                            custom_prompt = prompt_file.read_text(encoding="utf-8").strip()
+                            self._task_log(f"使用保存的自定义Prompt: {prompt_file}", "info")
+                        else:
+                            # 尝试从备份位置加载
+                            backup_file = Path(".workspace") / "custom_prompt.txt"
+                            if backup_file.exists():
+                                custom_prompt = backup_file.read_text(encoding="utf-8").strip()
+                                self._task_log(f"使用备份的自定义Prompt: {backup_file}", "info")
+                    except Exception as e:
+                        self._task_log(f"加载自定义Prompt失败: {e}", "warning")
+
+                # 如果还是没有prompt，使用当前选择的模板
+                if not custom_prompt:
+                    template_name = self.task_prompt_template_var.get()
+                    if template_name in self.prompt_templates:
+                        custom_prompt = self.prompt_templates[template_name]
+                        self._task_log(f"使用模板Prompt: {template_name}", "info")
+                    else:
+                        self._task_log("警告：没有找到有效的Prompt，使用默认模板", "warning")
+                        custom_prompt = self.prompt_templates["Rust完整实现（带变量）"]
+
+                result = self._execute_task_with_prompt(task, custom_prompt)
+                success = result[0] if isinstance(result, tuple) else result
+                error_code = result[1] if isinstance(result, tuple) else (0 if success else 1)
 
                 if success:
                     self.task_executor.status["completed"].append(task["id"])
                     self._task_log(f"任务 {task['id']} 执行成功", "success")
-                    self._play_notification_sound(True)
+                    # 音效已在_execute_task_with_prompt中处理
                 else:
-                    self.task_executor.status["failed"][task["id"]] = \
-                        self.task_executor.status["failed"].get(task["id"], 0) + 1
-                    self._task_log(f"任务 {task['id']} 执行失败", "error")
-                    self._play_notification_sound(False)
+                    # 保存具体的错误码而不是失败次数
+                    self.task_executor.status["failed"][task["id"]] = error_code
+                    if error_code == -1:
+                        self._task_log(f"任务 {task['id']} 被中断", "warning")
+                    else:
+                        self._task_log(f"任务 {task['id']} 执行失败 (错误码: {error_code})", "error")
+                    # 音效已在_execute_task_with_prompt中处理
 
                 # 清理工作空间
                 self.task_executor.cleanup_workspace()
                 self.task_executor.save_status()
 
+                # 清除当前任务ID
+                self.current_task_id = None
+
             except Exception as e:
                 self._task_log(f"执行出错: {e}", "error")
                 self._play_notification_sound(False)
             finally:
+                # 清除当前任务ID
+                self.current_task_id = None
                 self.task_executor_running = False
                 self.root.after(0, self._on_task_execution_complete)
 
@@ -3076,6 +3554,14 @@ class SboxgenGUI:
                         self._task_log("所有任务已完成！", "success")
                         break
 
+                    # 设置当前执行的任务ID
+                    self.current_task_id = task["id"]
+                    self.task_executor.status["current"] = task["id"]
+                    self.task_executor.save_status()
+
+                    # 立即刷新任务列表以显示正在执行状态
+                    self.root.after(0, self._refresh_task_list)
+
                     self._task_log(f"\n{'='*50}", "info")
                     self._task_log(f"执行任务: {task['id']}", "info")
 
@@ -3087,17 +3573,53 @@ class SboxgenGUI:
                         # 确保API key被传递给执行器
                         self._ensure_api_key_for_executor()
 
-                        # 使用自定义prompt执行任务
+                        # 获取prompt：优先使用编辑框中的内容（可能是保存的或修改的）
                         custom_prompt = self.task_prompt_text.get("1.0", tk.END).strip()
-                        success = self._execute_task_with_prompt(task, custom_prompt)
+
+                        # 如果编辑框为空，尝试加载保存的prompt
+                        if not custom_prompt:
+                            try:
+                                # 先尝试从工作目录加载
+                                workspace_path = self.task_workspace_var.get() or ".workspace"
+                                prompt_file = Path(workspace_path) / "custom_prompt.txt"
+                                if prompt_file.exists():
+                                    custom_prompt = prompt_file.read_text(encoding="utf-8").strip()
+                                    self._task_log(f"使用保存的自定义Prompt: {prompt_file}", "info")
+                                else:
+                                    # 尝试从备份位置加载
+                                    backup_file = Path(".workspace") / "custom_prompt.txt"
+                                    if backup_file.exists():
+                                        custom_prompt = backup_file.read_text(encoding="utf-8").strip()
+                                        self._task_log(f"使用备份的自定义Prompt: {backup_file}", "info")
+                            except Exception as e:
+                                self._task_log(f"加载自定义Prompt失败: {e}", "warning")
+
+                        # 如果还是没有prompt，使用当前选择的模板
+                        if not custom_prompt:
+                            template_name = self.task_prompt_template_var.get()
+                            if template_name in self.prompt_templates:
+                                custom_prompt = self.prompt_templates[template_name]
+                                self._task_log(f"使用模板Prompt: {template_name}", "info")
+                            else:
+                                self._task_log("警告：没有找到有效的Prompt，使用默认模板", "warning")
+                                custom_prompt = self.prompt_templates["Rust完整实现（带变量）"]
+
+                        result = self._execute_task_with_prompt(task, custom_prompt)
+                        success = result[0] if isinstance(result, tuple) else result
+                        error_code = result[1] if isinstance(result, tuple) else (0 if success else 1)
 
                         if success:
                             self.task_executor.status["completed"].append(task["id"])
                             self._task_log(f"任务 {task['id']} 执行成功", "success")
+                            # 音效已在_execute_task_with_prompt中处理
                         else:
-                            self.task_executor.status["failed"][task["id"]] = \
-                                self.task_executor.status["failed"].get(task["id"], 0) + 1
-                            self._task_log(f"任务 {task['id']} 执行失败", "error")
+                            # 保存具体的错误码而不是失败次数
+                            self.task_executor.status["failed"][task["id"]] = error_code
+                            if error_code == -1:
+                                self._task_log(f"任务 {task['id']} 被中断", "warning")
+                            else:
+                                self._task_log(f"任务 {task['id']} 执行失败 (错误码: {error_code})", "error")
+                            # 音效已在_execute_task_with_prompt中处理
 
                         # 清理工作空间
                         self.task_executor.cleanup_workspace()
@@ -3114,12 +3636,26 @@ class SboxgenGUI:
                     except Exception as e:
                         self._task_log(f"任务 {task['id']} 执行异常: {e}", "error")
 
-                self._play_notification_sound(True)
+                # 批量执行完成，播放一次总体状态音效
+                completed_count = len(self.task_executor.status["completed"])
+                failed_count = len(self.task_executor.status["failed"])
+
+                if completed_count > 0 and failed_count == 0:
+                    self._task_log(f"✅ 所有任务完成！成功: {completed_count}", "success")
+                    self._play_notification_sound(True)
+                elif completed_count > 0:
+                    self._task_log(f"⚠️ 部分完成。成功: {completed_count}, 失败: {failed_count}", "warning")
+                    self._play_notification_sound(True)  # 有成功的也播放成功音
+                else:
+                    self._task_log(f"❌ 全部失败。失败: {failed_count}", "error")
+                    self._play_notification_sound(False)
 
             except Exception as e:
                 self._task_log(f"批量执行出错: {e}", "error")
                 self._play_notification_sound(False)
             finally:
+                # 清除当前任务ID
+                self.current_task_id = None
                 self.task_executor_running = False
                 self.root.after(0, self._on_task_execution_complete)
 
@@ -3128,8 +3664,110 @@ class SboxgenGUI:
 
     def _stop_task_execution(self):
         """停止任务执行"""
-        self.task_executor_running = False
-        self._task_log("正在停止任务执行...", "warning")
+        try:
+            self.task_executor_running = False
+            self._task_log("正在停止任务执行...", "warning")
+
+            # 清除当前任务ID
+            if hasattr(self, 'current_task_id'):
+                self.current_task_id = None
+
+            # 停止文件监控
+            if hasattr(self, 'task_monitoring'):
+                self.task_monitoring = False
+
+            # 终止正在运行的子进程
+            if hasattr(self, 'task_exec_process') and self.task_exec_process:
+                try:
+                    if self.task_exec_process.poll() is None:  # 进程仍在运行
+                        if os.name == "posix":
+                            # Unix系统：尝试发送SIGTERM
+                            try:
+                                # 先尝试直接terminate
+                                self.task_exec_process.terminate()
+                                self._task_log("已发送终止信号", "info")
+
+                                # 等待1秒
+                                try:
+                                    self.task_exec_process.wait(timeout=1)
+                                    self._task_log("进程已优雅终止", "success")
+                                except subprocess.TimeoutExpired:
+                                    # 如果还没退出，尝试发送到进程组
+                                    try:
+                                        pgid = os.getpgid(self.task_exec_process.pid)
+                                        os.killpg(pgid, signal.SIGTERM)
+                                        self._task_log("已发送终止信号到进程组", "info")
+                                        # 再等待1秒
+                                        self.task_exec_process.wait(timeout=1)
+                                    except (ProcessLookupError, PermissionError, OSError) as e:
+                                        # 进程组可能已经结束或没有权限
+                                        self._task_log(f"无法终止进程组: {e}", "warning")
+                                        # 最后尝试强制kill
+                                        try:
+                                            self.task_exec_process.kill()
+                                            self._task_log("进程已强制终止", "warning")
+                                        except:
+                                            pass
+                            except (ProcessLookupError, PermissionError, OSError) as e:
+                                self._task_log(f"进程可能已经结束: {e}", "info")
+                        else:
+                            # Windows系统
+                            self.task_exec_process.terminate()
+                            # 等待2秒让进程优雅退出
+                            try:
+                                self.task_exec_process.wait(timeout=2)
+                                self._task_log("进程已优雅终止", "success")
+                            except subprocess.TimeoutExpired:
+                                # 如果还没退出，强制杀死
+                                self.task_exec_process.kill()
+                                self._task_log("进程已强制终止", "warning")
+                    else:
+                        self._task_log("进程已经结束", "info")
+
+                    # 更新状态文件
+                    try:
+                        workspace_path = self.task_workspace_var.get()
+                        if workspace_path:
+                            status_file = Path(workspace_path) / "codex_status.txt"
+                            if status_file.exists():
+                                status_file.write_text("interrupted", encoding="utf-8")
+                    except Exception as e:
+                        self._task_log(f"更新状态文件失败: {e}", "warning")
+
+                    self.task_exec_process = None
+                    self._task_log("任务执行已停止", "warning")
+                except Exception as e:
+                    self._task_log(f"停止进程时出错: {e}", "error")
+                    # 确保清理进程引用
+                    self.task_exec_process = None
+            else:
+                self._task_log("没有正在运行的任务进程", "info")
+
+            # 更新UI状态
+            if hasattr(self, 'task_status_label'):
+                self.task_status_label.config(text="状态: ⏹️ 已停止")
+
+            # 更新任务执行器状态，将当前任务标记为中断
+            if hasattr(self, 'current_task_id') and self.current_task_id:
+                # 将当前任务标记为中断（返回码-1）
+                self.task_executor.status["failed"][self.current_task_id] = -1
+                self.task_executor.save_status()
+                self._task_log(f"任务 {self.current_task_id} 已标记为中断", "warning")
+
+            # 刷新任务列表
+            self.root.after(100, self._refresh_task_list)
+
+        except Exception as e:
+            # 捕获所有异常，避免程序崩溃
+            self._task_log(f"停止执行时发生错误: {e}", "error")
+            import traceback
+            traceback.print_exc()
+            # 确保重置状态
+            self.task_executor_running = False
+            if hasattr(self, 'task_exec_process'):
+                self.task_exec_process = None
+            if hasattr(self, 'current_task_id'):
+                self.current_task_id = None
 
     def _on_task_execution_complete(self):
         """任务执行完成回调"""
@@ -3137,15 +3775,43 @@ class SboxgenGUI:
         self.task_exec_all_btn.config(state="normal")
         self.task_stop_btn.config(state="disabled")
         self._refresh_task_list()
-        self.task_status_label.config(text="状态: 就绪")
+        # 保持最终执行状态，不立即重置为"就绪"
+        # 让用户看到最终执行结果
 
     def _reset_task_status(self):
-        """重置任务执行状态"""
+        """重置任务执行状态并清空整个项目"""
         if self.task_executor_running:
             messagebox.showwarning("警告", "任务正在执行中，无法重置")
             return
 
-        if messagebox.askyesno("确认", "确定要重置所有任务执行状态吗？\n这将清除所有完成和失败记录。"):
+        # 获取项目目录路径
+        workspace_path = self.task_workspace_var.get()
+        project_name = self.task_project_name_var.get().strip() or "rust-project"
+
+        if not workspace_path:
+            messagebox.showwarning("警告", "请先设置工作目录")
+            return
+
+        project_dir = Path(workspace_path) / project_name
+        todolist_dir = Path(workspace_path) / "todolist"
+
+        # 构建提示信息
+        msg = "确定要重置所有任务状态并清空项目吗？\n\n将执行以下操作：\n"
+        msg += "1. 清除所有任务完成/失败记录\n"
+        msg += "2. 清空输出文件 (codex_output.txt等)\n"
+
+        if project_dir.exists():
+            msg += f"3. 删除项目目录: {project_dir.name}/\n"
+        if todolist_dir.exists():
+            msg += f"4. 删除任务目录: todolist/\n"
+
+        msg += "\n⚠️ 此操作不可恢复！"
+
+        if not messagebox.askyesno("确认重置", msg, icon='warning'):
+            return
+
+        try:
+            # 1. 重置任务状态
             self.task_executor.status = {
                 "completed": [],
                 "failed": {},
@@ -3153,29 +3819,139 @@ class SboxgenGUI:
                 "last_execution": None
             }
             self.task_executor.save_status()
+            self._task_log("✓ 任务状态已重置", "success")
+
+            # 2. 清空输出文件
+            output_file = Path(workspace_path) / "codex_output.txt"
+            error_file = Path(workspace_path) / "codex_error.txt"
+            status_file = Path(workspace_path) / "codex_status.txt"
+
+            for file, name in [(output_file, "codex_output.txt"),
+                              (error_file, "codex_error.txt"),
+                              (status_file, "codex_status.txt")]:
+                if file.exists():
+                    file.write_text("", encoding="utf-8")
+                    self._task_log(f"✓ 已清空: {name}", "info")
+
+            # 3. 删除项目目录
+            if project_dir.exists():
+                import shutil
+                shutil.rmtree(project_dir)
+                self._task_log(f"✓ 已删除项目目录: {project_name}/", "warning")
+
+            # 4. 删除todolist目录
+            if todolist_dir.exists():
+                import shutil
+                shutil.rmtree(todolist_dir)
+                self._task_log(f"✓ 已删除任务目录: todolist/", "warning")
+
+            # 5. 清空日志目录
+            log_dir = Path(workspace_path) / "logs"
+            if log_dir.exists():
+                log_count = 0
+                for log_file in log_dir.glob("*.log"):
+                    log_file.unlink()
+                    log_count += 1
+                if log_count > 0:
+                    self._task_log(f"✓ 已清空 {log_count} 个日志文件", "info")
+
+            # 6. 清空UI显示
+            self.task_codex_messages = []
+            self.task_message_listbox.delete(0, tk.END)
+            self.task_log_text.delete(1.0, tk.END)
+            self.task_codex_positions = {}
+            if hasattr(self, 'task_output_position'):
+                self.task_output_position = 0
+
+            # 7. 停止监控（如果正在运行）
+            if hasattr(self, 'task_monitoring') and self.task_monitoring:
+                self.task_monitoring = False
+                self._task_log("✓ 已停止文件监控", "info")
+
+            # 8. 刷新任务列表
             self._refresh_task_list()
-            self._task_log("任务状态已重置", "warning")
-            messagebox.showinfo("完成", "任务状态已重置")
+
+            # 显示完成信息
+            self._task_log("="*50, "separator")
+            self._task_log("🔄 项目已完全重置！", "success")
+            self._task_log(f"工作目录: {workspace_path}", "info")
+            self._task_log(f"项目目录: {project_name}/ (已清空)", "info")
+            self._task_log("您可以开始新的任务执行", "info")
+            self._task_log("="*50, "separator")
+
+            messagebox.showinfo("重置完成",
+                              f"项目已完全重置\n\n"
+                              f"• 任务状态已清空\n"
+                              f"• 项目目录已删除\n"
+                              f"• 输出文件已清理\n\n"
+                              f"可以开始新的迭代开发")
+
+        except PermissionError as e:
+            self._task_log(f"权限错误: {e}", "error")
+            messagebox.showerror("权限错误",
+                               f"无法删除某些文件/目录\n"
+                               f"可能有文件正在被使用\n\n"
+                               f"错误: {e}")
+        except Exception as e:
+            self._task_log(f"重置过程出错: {e}", "error")
+            messagebox.showerror("错误", f"重置失败: {e}")
 
     def _execute_task_with_prompt(self, task, custom_prompt):
-        """使用自定义prompt执行任务，并实时解析输出"""
+        """使用自定义prompt执行任务，并实时解析输出（复用Codex Output策略）"""
         import subprocess
         import threading
+        import time  # 导入time模块用于缓冲区管理
 
         self._task_log(f"准备执行任务 {task['id']}...", "info")
 
+        # 存储进程引用以支持停止功能
+        self.task_exec_process = None
+
+        # 更新执行器的工作目录设置
+        workspace_path = self.task_workspace_var.get()
+        if workspace_path != str(self.task_executor.workspace_dir):
+            self._task_log(f"🔄 切换工作目录: {self.task_executor.workspace_dir} → {workspace_path}", "warning")
+            self.task_executor.set_workspace_dir(workspace_path)
+            self._task_log(f"✅ 工作目录已切换到: {workspace_path}", "success")
+        else:
+            self._task_log(f"📁 使用当前工作目录: {workspace_path}", "info")
+
+        # 设置项目名称
+        project_name = self.task_project_name_var.get().strip() or "rust-project"
+        self.task_executor.set_project_name(project_name)
+        self._task_log(f"📦 项目输出目录: {workspace_path}/{project_name}/", "info")
+
+        # 清空消息列表和日志区
+        self.task_codex_messages = []
+        self.task_message_listbox.delete(0, tk.END)
+        self.task_log_text.delete(1.0, tk.END)
+        self.task_codex_positions = {}  # 清空位置记录
+        self.task_message_count_label.config(text="消息数: 0")  # 重置计数
+
+        # 显示初始执行信息
+        initial_info = f"=== 执行任务: {task['id']} ===\n"
+        initial_info += f"工作目录: {workspace_path}\n"
+        initial_info += f"项目输出: {project_name}/\n"
+        initial_info += f"时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+        initial_info += "=" * 80 + "\n\n"
+        self.task_log_text.insert(tk.END, initial_info, "info")
+
         # 准备工作空间
         self.task_executor.prepare_workspace(task)
-        self._task_log(f"工作空间已准备: {self.task_executor.current_dir}", "info")
+        self._task_log(f"工作空间已准备: {self.task_executor.workspace_dir}", "info")
+        self._task_log(f"任务文件位于: {self.task_executor.workspace_dir}/todolist/", "info")
 
         # 确保API key被设置
         self._ensure_api_key_for_executor()
 
-        # 添加任务ID到prompt末尾
-        full_prompt = f"{custom_prompt}\n\n任务ID: {task['id']}"
+        # 使用变量替换处理prompt
+        processed_prompt = self.task_executor._substitute_prompt_variables(custom_prompt, task)
 
-        # 记录执行的prompt
-        self._task_log("执行Prompt:", "info")
+        # 添加任务ID到prompt末尾
+        full_prompt = f"{processed_prompt}\n\n任务ID: {task['id']}"
+
+        # 记录执行的prompt（包括变量替换信息）
+        self._task_log("执行Prompt (已替换变量):", "info")
         self.task_log_text.insert(tk.END, full_prompt + "\n", "thinking")
         self.task_log_text.insert(tk.END, "-" * 80 + "\n", "separator")
 
@@ -3187,38 +3963,83 @@ class SboxgenGUI:
             "codex", "exec",
             "--skip-git-repo-check",
             "--sandbox", "workspace-write",
+            "--model", "gpt-5-codex-high",
             full_prompt
         ]
 
-        # 日志文件
-        log_file = self.task_executor.log_dir / f"{task['id']}.log"
+        # 准备输出文件（复用Codex Output策略）
+        output_file = self.task_executor.workspace_dir / "codex_output.txt"
+        error_file = self.task_executor.workspace_dir / "codex_error.txt"
+        status_file = self.task_executor.workspace_dir / "codex_status.txt"
+
+        # 处理文件：output追加，error和status覆盖
+        if not output_file.exists():
+            output_file.write_text("", encoding="utf-8")
+        error_file.write_text("", encoding="utf-8")
+        status_file.write_text("running", encoding="utf-8")
+
+        # 记录初始文件位置用于增量读取
+        self.task_output_position = output_file.stat().st_size if output_file.exists() else 0
+        self.task_monitoring = True  # 启动监控标志
 
         try:
-            # 启动进程
-            process = subprocess.Popen(
-                cmd,
-                cwd=str(self.task_executor.current_dir),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                env=env,
-                bufsize=1
-            )
+            # 启动进程 - 在工作空间根目录执行
+            # 在POSIX系统上创建新进程组，便于安全终止
+            kwargs = {
+                "cwd": str(self.task_executor.workspace_dir),  # 在工作空间根目录执行
+                "stdout": subprocess.PIPE,
+                "stderr": subprocess.PIPE,
+                "text": True,
+                "env": env,
+                "bufsize": 1
+            }
+
+            # 在Unix系统上创建新进程组
+            if os.name == "posix":
+                kwargs["start_new_session"] = True
+
+            self.task_exec_process = subprocess.Popen(cmd, **kwargs)
+            process = self.task_exec_process  # 保持向后兼容
 
             # 实时读取输出的线程
             output_lines = []
             error_lines = []
+            self.task_current_buffer = []  # 用于累积当前消息内容
+            self.task_current_message = None  # 当前正在构建的消息
 
             def read_output():
-                for line in process.stdout:
-                    output_lines.append(line)
-                    # 实时解析和显示
-                    self._process_codex_line(line)
+                """流式读取并追加输出到文件（简化版，类似Codex Output）"""
+                try:
+                    while self.task_executor_running:
+                        line = process.stdout.readline()
+                        if not line:
+                            break
+
+                        output_lines.append(line)
+                        # 追加到输出文件（不覆盖）
+                        with open(output_file, "a", encoding="utf-8") as f:
+                            f.write(line)
+                            f.flush()
+
+                        # 不在这里处理解析，让监控线程处理
+                except Exception as e:
+                    print(f"读取输出错误: {e}")
 
             def read_error():
-                for line in process.stderr:
-                    error_lines.append(line)
-                    self._task_log(f"错误: {line.strip()}", "error")
+                """流式读取错误输出"""
+                try:
+                    while self.task_executor_running:  # 检查运行标志
+                        line = process.stderr.readline()
+                        if not line:
+                            break
+                        error_lines.append(line)
+                        # 追加到错误文件
+                        with open(error_file, "a", encoding="utf-8") as f:
+                            f.write(line)
+                            f.flush()
+                        self._task_log(f"错误: {line.strip()}", "error")
+                except:
+                    pass
 
             # 启动读取线程
             output_thread = threading.Thread(target=read_output, daemon=True)
@@ -3226,77 +4047,902 @@ class SboxgenGUI:
             output_thread.start()
             error_thread.start()
 
-            # 等待进程完成（最多5分钟）
-            return_code = process.wait(timeout=300)
+            # 启动文件监控线程（监控status和error文件变化）
+            monitor_thread = threading.Thread(
+                target=self._monitor_task_files,
+                args=(output_file, error_file, status_file),
+                daemon=True
+            )
+            monitor_thread.start()
+
+            # 等待进程完成（使用UI配置的超时时间）
+            try:
+                # 从 UI 控件获取超时时间（默认6000秒）
+                timeout_seconds = self.task_timeout_var.get() if hasattr(self, 'task_timeout_var') else 6000
+                self._task_log(f"🕑 设置执行超时时间: {timeout_seconds}秒", "info")
+                return_code = process.wait(timeout=timeout_seconds)
+            except subprocess.TimeoutExpired:
+                # 超时处理
+                timeout_minutes = timeout_seconds // 60
+                self._task_log(f"⚠️ 任务执行超过{timeout_minutes}分钟（{timeout_seconds}秒），正在终止...", "warning")
+                if process.poll() is None:
+                    process.kill()
+                return_code = 124
+
+            # 检查是否被手动停止（需要在判断返回码之前检查）
+            if not self.task_executor_running:
+                # 用户手动停止了执行
+                return_code = -1  # 标记为被中断
+                self._task_log("任务被用户中断", "warning")
+                status_file.write_text("interrupted", encoding="utf-8")
+            elif return_code == -15:  # SIGTERM
+                # 接收到SIGTERM信号
+                return_code = -1  # 标记为被中断
+                self._task_log("任务被终止信号中断", "warning")
+                status_file.write_text("interrupted", encoding="utf-8")
 
             # 等待线程完成
             output_thread.join(timeout=1)
             error_thread.join(timeout=1)
+            self.task_monitoring = False  # 停止监控
+
+            # 等待监控线程完成
+            if monitor_thread.is_alive():
+                monitor_thread.join(timeout=2)
+
+            # 写入最终状态（在API错误检测后可能会被覆盖）
+            status_file.write_text(str(return_code), encoding="utf-8")
+
+            # 更新最终状态显示（复用Codex Output的状态更新逻辑）
+            if return_code == 0:
+                final_status = "✅ 执行成功"
+            elif return_code == -1:
+                final_status = "⏹️ 用户中断"
+            elif return_code == 124:
+                final_status = "⏱️ 执行超时"
+            elif return_code == 127:
+                final_status = "❌ 找不到命令"
+            elif return_code == 503:
+                final_status = "🚫 API错误"  # 新增503状态
+            elif return_code == -15:
+                final_status = "⏹️ 被终止"
+            else:
+                final_status = f"⚠️ 退出码 {return_code}"
+
+            self.root.after(0, lambda: self.task_status_label.config(text=f"状态: {final_status}"))
 
             # 保存完整输出到日志
             full_output = ''.join(output_lines)
             full_error = ''.join(error_lines)
 
-            with open(log_file, 'w', encoding='utf-8') as f:
-                f.write(f"=== 任务 {task['id']} 执行日志 ===\n")
-                f.write(f"时间: {datetime.now()}\n")
-                f.write(f"Prompt:\n{full_prompt}\n")
-                f.write(f"\n=== 输出 ===\n")
-                f.write(full_output)
-                if full_error:
-                    f.write(f"\n=== 错误 ===\n")
-                    f.write(full_error)
+            # 确保日志目录存在
+            log_dir = self.task_executor.log_dir
+            if not log_dir.exists():
+                log_dir.mkdir(parents=True, exist_ok=True)
 
-            # 解析完整输出为消息列表
-            self._parse_task_codex_content(full_output)
-            self._update_task_message_list()
-            self._populate_task_detail_view()
+            # 日志文件
+            log_file = log_dir / f"{task['id']}.log"
+            try:
+                with open(log_file, 'w', encoding='utf-8') as f:
+                    f.write(f"=== 任务 {task['id']} 执行日志 ===\n")
+                    f.write(f"时间: {datetime.now()}\n")
+                    f.write(f"Prompt:\n{full_prompt}\n")
+                    f.write(f"\n=== 输出 ===\n")
+                    f.write(full_output)
+                    if full_error:
+                        f.write(f"\n=== 错误 ===\n")
+                        f.write(full_error)
+                    f.write(f"\n=== 最终状态 ===\n")
+                    f.write(f"返回码: {return_code}\n")
+                    f.write(f"状态: {final_status}\n")
+                self._task_log(f"日志已保存: {log_file.name}", "info")
+            except Exception as e:
+                self._task_log(f"保存日志失败: {e}", "error")
 
+            # 最后清理一些资源
+            self.task_current_message = None
+            self.task_current_buffer = []
+
+            # 检查输出中是否包含API错误或其他已知错误模式
+            api_error_detected = False
+            error_patterns = [
+                "ERROR: We're currently experiencing high demand",
+                "ERROR: Rate limit exceeded",
+                "ERROR: API key is invalid",
+                "ERROR: Unauthorized",
+                "ERROR: Service unavailable",
+                "ERROR:",  # 通用ERROR模式
+                "stream error: We're currently experiencing high demand",
+                "Authentication failed",
+                "Permission denied"
+            ]
+
+            # 检查输出中是否有错误模式
+            for pattern in error_patterns:
+                if pattern in full_output:
+                    api_error_detected = True
+                    self._task_log(f"⚠️ 检测到API错误: {pattern[:50]}...", "error")
+                    # 如果检测到API错误，覆盖return_code
+                    if return_code == 0:
+                        return_code = 503  # Service Unavailable
+                        # 更新状态文件
+                        status_file.write_text("503", encoding="utf-8")
+                    break
+
+            # 根据返回码判断成功/失败，返回(success, error_code)
             if return_code == 0:
                 self._task_log(f"任务 {task['id']} 执行成功", "success")
-                return True
+                # 播放成功提示音（复用Codex Output）
+                self._play_notification_sound(success=True)
+                return (True, 0)
+            elif return_code == 503:
+                # API错误
+                self._task_log(f"任务 {task['id']} 执行失败：API错误", "error")
+                self.root.after(0, lambda: self.task_status_label.config(text="状态: 🚫 API错误"))
+                self._play_notification_sound(success=False)
+                return (False, 503)
+            elif return_code == -1 or return_code == -15:
+                self._task_log(f"任务 {task['id']} 被用户中断", "warning")
+                # 不播放失败音，因为这是用户主动操作
+                return (False, -1)  # 返回中断状态码
             else:
                 self._task_log(f"任务 {task['id']} 执行失败，返回码: {return_code}", "error")
-                return False
+                # 播放失败提示音
+                self._play_notification_sound(success=False)
+                return (False, return_code)
 
         except subprocess.TimeoutExpired:
             process.kill()
+            status_file.write_text("124", encoding="utf-8")  # 超时状态码
             self._task_log(f"任务 {task['id']} 执行超时（5分钟）", "error")
-            return False
+            self.root.after(0, lambda: self.task_status_label.config(text="状态: ⏱️ 执行超时"))
+            self._play_notification_sound(success=False)
+            return (False, 124)
         except Exception as e:
             self._task_log(f"任务 {task['id']} 执行出错: {e}", "error")
-            return False
+            if status_file.exists():
+                status_file.write_text("1", encoding="utf-8")  # 一般错误状态码
+            self.root.after(0, lambda: self.task_status_label.config(text="状态: ❌ 执行失败"))
+            self._play_notification_sound(success=False)
+            return (False, 1)
         finally:
-            # 清理工作空间
-            self.task_executor.cleanup_workspace()
-            self._task_log("工作空间已清理", "info")
+            # 确保所有监控都停止
+            self.task_monitoring = False  # 确保停止监控
 
-    def _process_codex_line(self, line):
-        """实时处理Codex输出行"""
+            # 清理进程引用
+            if hasattr(self, 'task_exec_process') and self.task_exec_process:
+                # 确保进程已经完全终止
+                if self.task_exec_process.poll() is None:
+                    try:
+                        self.task_exec_process.wait(timeout=2)  # 再等2秒确保进程完全结束
+                    except subprocess.TimeoutExpired:
+                        self.task_exec_process.kill()  # 强制终止
+                        try:
+                            self.task_exec_process.wait(timeout=1)
+                        except:
+                            pass
+
+            self.task_exec_process = None
+
+            # 等待一小段时间，确保所有文件操作都完成
+            import time
+            time.sleep(0.5)
+
+            # 现在可以安全地清理工作空间
+            try:
+                self.task_executor.cleanup_workspace()
+                self._task_log("工作空间已清理", "info")
+            except Exception as e:
+                self._task_log(f"清理工作空间失败: {e}", "error")
+
+    def _monitor_task_files(self, output_file, error_file, status_file):
+        """监控任务执行文件变化（完全复用Codex Output监控策略）"""
+        import time
+        from pathlib import Path
+
+        # 记录上一次的状态和错误内容，避免重复处理
+        last_error_content = ""
+        last_status = ""
+
+        # 用于记录已处理的错误哈希，避免重复
+        self.task_last_error_hash = ""
+
+        # 消息解析缓冲区
+        message_buffer = ""
+
+        while self.task_monitoring and self.task_executor_running:  # 检查两个标志
+            try:
+                # 监控status文件（复用Codex Output的_check_status_and_error_files逻辑）
+                if status_file.exists():
+                    status = status_file.read_text(encoding="utf-8").strip()
+                    if status and status != last_status:
+                        last_status = status
+
+                        # 构建状态文本（与Codex Output保持一致）
+                        if status == "running":
+                            status_text = "🔄 运行中..."
+                        elif status == "0":
+                            status_text = "✅ 执行成功"
+                        elif status == "124":
+                            status_text = "⏱️ 执行超时"
+                        elif status == "127":
+                            status_text = "❌ 找不到命令"
+                        elif status == "interrupted":
+                            status_text = "⏹️ 已中断"
+                        elif status == "-1":
+                            status_text = "⏹️ 用户中断"
+                        elif status == "-15":
+                            status_text = "⏹️ 被终止"
+                        else:
+                            try:
+                                code = int(status)
+                                if code < 0:
+                                    status_text = f"⏹️ 信号 {abs(code)}"
+                                else:
+                                    status_text = f"⚠️ 退出码 {status}"
+                            except:
+                                status_text = f"⚠️ 状态: {status}"
+
+                        # 更新主状态栏
+                        self.root.after(0, lambda st=status_text: self.task_status_label.config(text=f"状态: {st}"))
+
+                # 监控error文件（简化版）
+                if error_file.exists():
+                    error_content = error_file.read_text(encoding="utf-8").strip()
+                    if error_content and error_content != last_error_content:
+                        last_error_content = error_content
+                        # 直接在日志区显示错误
+                        error_display = f"\n❌ 错误输出:\n{error_content[:500]}\n"
+                        self.root.after(0, lambda content=error_display: self._append_to_log_detail(content))
+
+                # 监控output文件增量（改进版：同时更新消息列表和日志）
+                if output_file.exists():
+                    current_size = output_file.stat().st_size
+                    if current_size > self.task_output_position:
+                        # 读取新增内容
+                        with open(output_file, 'r', encoding='utf-8', errors='ignore') as f:
+                            f.seek(self.task_output_position)
+                            new_content = f.read()
+                            self.task_output_position = current_size
+
+                            if new_content:
+                                # 记录当前日志位置（用于消息定位）
+                                current_log_position = None
+                                try:
+                                    current_log_position = self.task_log_text.index("end-1c")
+                                except:
+                                    pass
+
+                                # 1. 直接显示在日志详情区
+                                self.root.after(0, lambda content=new_content: self._append_to_log_detail(content))
+
+                                # 2. 处理消息解析（带缓冲和位置记录）
+                                message_buffer += new_content
+
+                                # 尝试解析完整的消息（按行分割，保留不完整的行）
+                                lines = message_buffer.split('\n')
+
+                                # 如果最后一行不是空的，说明可能不完整，保留它
+                                if lines and lines[-1]:
+                                    message_buffer = lines[-1]
+                                    lines = lines[:-1]
+                                else:
+                                    message_buffer = ""
+
+                                # 解析完整的行（传递日志位置）
+                                if lines:
+                                    complete_content = '\n'.join(lines)
+                                    self._parse_and_update_messages_with_position(complete_content, current_log_position)
+
+            except Exception as e:
+                print(f"监控文件出错: {e}")
+
+            # 每0.3秒检查一次，平衡响应性和性能
+            time.sleep(0.3)
+
+    def _parse_and_update_messages_with_position(self, content, log_position):
+        """轻量级解析内容并更新消息列表（带位置记录）"""
+        try:
+            lines = content.split('\n')
+            messages_to_add = []
+
+            for line in lines:
+                if not line.strip():
+                    continue
+
+                # 检测是否是带时间戳的消息行
+                if line.startswith('[') and 'T' in line[:30] and ']' in line[:30]:
+                    try:
+                        bracket_end = line.index(']')
+                        timestamp = line[1:bracket_end]
+                        rest = line[bracket_end+1:].strip()
+
+                        # 确定消息类型
+                        msg_type = "info"
+                        title = "信息"
+
+                        if "User" in rest or "User instructions" in rest:
+                            msg_type = "user"
+                            title = "用户指令"
+                        elif "thinking" in rest.lower():
+                            msg_type = "thinking"
+                            title = "AI 思考"
+                        elif "exec" in rest or "bash" in rest:
+                            msg_type = "exec"
+                            title = "执行命令"
+                        elif "succeeded" in rest:
+                            msg_type = "success"
+                            title = "执行成功"
+                        elif "failed" in rest or "ERROR" in rest:
+                            msg_type = "error"
+                            title = "执行失败"
+                        elif "codex" in rest.lower():
+                            msg_type = "codex"
+                            title = "Codex 输出"
+                        elif "tokens used" in rest:
+                            msg_type = "tokens"
+                            title = "Token 使用"
+
+                        # 创建简单的消息对象（带位置信息）
+                        message = {
+                            'timestamp': timestamp,
+                            'type': msg_type,
+                            'title': title,
+                            'content': rest[:100] + '...' if len(rest) > 100 else rest
+                        }
+
+                        # 如果有日志位置，记录它
+                        if log_position:
+                            message['log_position'] = log_position
+
+                        messages_to_add.append(message)
+
+                    except Exception as e:
+                        # 忽略解析错误，继续处理其他行
+                        pass
+
+            # 批量更新UI（在主线程中）
+            if messages_to_add:
+                self.root.after(0, self._batch_add_messages_to_list, messages_to_add)
+
+        except Exception as e:
+            print(f"解析消息错误: {e}")
+
+    def _parse_and_update_messages(self, content):
+        """轻量级解析内容并更新消息列表"""
+        try:
+            lines = content.split('\n')
+            messages_to_add = []
+
+            for line in lines:
+                if not line.strip():
+                    continue
+
+                # 检测是否是带时间戳的消息行
+                if line.startswith('[') and 'T' in line[:30] and ']' in line[:30]:
+                    try:
+                        bracket_end = line.index(']')
+                        timestamp = line[1:bracket_end]
+                        rest = line[bracket_end+1:].strip()
+
+                        # 确定消息类型
+                        msg_type = "info"
+                        title = "信息"
+
+                        if "User" in rest or "User instructions" in rest:
+                            msg_type = "user"
+                            title = "用户指令"
+                        elif "thinking" in rest.lower():
+                            msg_type = "thinking"
+                            title = "AI 思考"
+                        elif "exec" in rest or "bash" in rest:
+                            msg_type = "exec"
+                            title = "执行命令"
+                        elif "succeeded" in rest:
+                            msg_type = "success"
+                            title = "执行成功"
+                        elif "failed" in rest or "ERROR" in rest:
+                            msg_type = "error"
+                            title = "执行失败"
+                        elif "codex" in rest.lower():
+                            msg_type = "codex"
+                            title = "Codex 输出"
+                        elif "tokens used" in rest:
+                            msg_type = "tokens"
+                            title = "Token 使用"
+
+                        # 创建简单的消息对象
+                        message = {
+                            'timestamp': timestamp,
+                            'type': msg_type,
+                            'title': title,
+                            'content': rest[:100] + '...' if len(rest) > 100 else rest
+                        }
+
+                        messages_to_add.append(message)
+
+                    except Exception as e:
+                        # 忽略解析错误，继续处理其他行
+                        pass
+
+            # 批量更新UI（在主线程中）
+            if messages_to_add:
+                self.root.after(0, self._batch_add_messages_to_list, messages_to_add)
+
+        except Exception as e:
+            print(f"解析消息错误: {e}")
+
+    def _batch_add_messages_to_list(self, messages):
+        """批量添加消息到列表框"""
+        try:
+            for message in messages:
+                # 如果消息没有位置信息，尝试获取当前日志位置
+                if 'log_position' not in message:
+                    try:
+                        message['log_position'] = self.task_log_text.index("end-1c")
+                    except:
+                        pass
+
+                # 添加到消息数组
+                self.task_codex_messages.append(message)
+
+                # 提取时间（HH:MM:SS）
+                timestamp = message['timestamp']
+                if 'T' in timestamp and len(timestamp) > 11:
+                    timestamp = timestamp[11:19]
+                elif len(timestamp) > 8:
+                    timestamp = timestamp[:8]
+
+                # 根据类型选择图标
+                icon = {
+                    'user': '👤',
+                    'thinking': '🤔',
+                    'exec': '⚡',
+                    'success': '✅',
+                    'error': '❌',
+                    'codex': '🤖',
+                    'tokens': '🎫',
+                    'info': 'ℹ️'
+                }.get(message['type'], '📝')
+
+                # 构建显示文本
+                content = message.get('content', '')
+                preview = content[:50].replace('\n', ' ')
+                if len(content) > 50:
+                    preview += '...'
+
+                display_text = f"[{timestamp}] {icon} {message['title']}"
+                if preview:
+                    display_text += f": {preview}"
+
+                # 添加到列表框
+                self.task_message_listbox.insert(tk.END, display_text)
+
+                # 设置颜色
+                index = self.task_message_listbox.size() - 1
+                color_map = {
+                    'error': '#d32f2f',
+                    'success': '#388e3c',
+                    'thinking': '#7c4dff',
+                    'exec': '#00695c',
+                    'codex': '#ff6b35'
+                }
+                if message['type'] in color_map:
+                    self.task_message_listbox.itemconfig(index, {'fg': color_map[message['type']]})
+
+            # 更新消息计数
+            self.task_message_count_label.config(text=f"消息数: {len(self.task_codex_messages)}")
+
+            # 如果启用自动跟踪，选择最后一条消息
+            if self.task_auto_follow.get() and self.task_message_listbox.size() > 0:
+                self.task_message_listbox.see(tk.END)
+                self.task_message_listbox.selection_clear(0, tk.END)
+                self.task_message_listbox.selection_set(self.task_message_listbox.size() - 1)
+
+        except Exception as e:
+            print(f"批量添加消息错误: {e}")
+
+    def _add_single_message_to_list(self, index, msg):
+        """添加单个消息到列表框"""
+        try:
+            # 提取时间（HH:MM:SS）
+            timestamp = msg['timestamp']
+            if 'T' in timestamp and len(timestamp) > 11:
+                timestamp = timestamp[11:19]
+            elif len(timestamp) > 8:
+                timestamp = timestamp[:8]
+
+            # 根据类型选择图标
+            icon = {
+                'user': '👤',
+                'thinking': '🤔',
+                'exec': '⚡',
+                'success': '✅',
+                'error': '❌',
+                'codex': '🤖',
+                'tokens': '🎫',
+                'info': 'ℹ️'
+            }.get(msg['type'], '📝')
+
+            # 构建显示文本
+            display_text = f"[{timestamp}] {icon} {msg['title']}"
+            if msg.get('content'):
+                preview = msg['content'][:50].replace('\n', ' ')
+                if len(msg['content']) > 50:
+                    preview += '...'
+                display_text += f": {preview}"
+
+            # 添加到列表框
+            self.task_message_listbox.insert(tk.END, display_text)
+
+            # 设置颜色
+            color_map = {
+                'error': '#d32f2f',
+                'success': '#388e3c',
+                'thinking': '#7c4dff',
+                'exec': '#00695c',
+                'codex': '#ff6b35'
+            }
+            if msg['type'] in color_map:
+                self.task_message_listbox.itemconfig(index, {'fg': color_map[msg['type']]})
+
+            # 更新消息计数
+            self.task_message_count_label.config(text=f"消息数: {len(self.task_codex_messages)}")
+
+            # 如果启用自动跟踪，选择最后一条消息
+            if self.task_auto_follow.get():
+                self.task_message_listbox.see(tk.END)
+                self.task_message_listbox.selection_clear(0, tk.END)
+                self.task_message_listbox.selection_set(tk.END)
+
+        except Exception as e:
+            print(f"添加消息到列表错误: {e}")
+
+    def _append_to_log_detail(self, content):
+        """简单地追加内容到日志详情区（避免复杂解析）"""
+        try:
+            # 直接插入内容
+            self.task_log_text.insert(tk.END, content)
+
+            # 自动滚动到底部
+            if self.task_auto_follow.get():
+                self.task_log_text.see(tk.END)
+
+            # 限制文本大小（避免内存溢出）
+            lines = int(self.task_log_text.index('end-1c').split('.')[0])
+            if lines > 5000:  # 最多保留5000行
+                self.task_log_text.delete('1.0', f'{lines-4000}.0')
+        except Exception as e:
+            print(f"追加日志详情错误: {e}")
+
+    def _process_codex_line_streaming(self, line):
+
+        # 检测是否是新消息开始
+        if line.startswith('[') and 'T' in line[:30] and ']' in line[:30]:
+            # 先完成上一个消息
+            if self.task_current_message:
+                self._finalize_current_message()
+
+            # 解析新消息
+            try:
+                bracket_end = line.index(']') + 1
+                timestamp = line[1:bracket_end-1]
+                rest = line[bracket_end:].strip()
+
+                # 确定消息类型
+                msg_type = self._determine_message_type(rest)
+
+                # 创建新消息
+                self.task_current_message = {
+                    'timestamp': timestamp,
+                    'type': msg_type,
+                    'content': rest if rest else ''
+                }
+                self.task_current_buffer = [rest] if rest else []
+
+                # 立即添加到列表（即使内容还在累积）
+                self._add_message_to_list(self.task_current_message)
+
+            except Exception as e:
+                print(f"解析消息头失败: {e}")
+        elif line.strip() and self.task_current_message:
+            # 添加到当前消息内容
+            self.task_current_buffer.append(line.rstrip())
+            # 更新当前消息内容
+            self.task_current_message['content'] = '\n'.join(self.task_current_buffer)
+            # 更新消息列表中的显示
+            self._update_current_message_display()
+
+    def _determine_message_type(self, text):
+        """根据文本内容确定消息类型"""
+        if "User" in text or "User instructions" in text:
+            return "user"
+        elif "thinking" in text.lower():
+            return "thinking"
+        elif "exec" in text or "bash" in text:
+            return "exec"
+        elif "succeeded" in text:
+            return "success"
+        elif "failed" in text or "ERROR" in text:
+            return "error"
+        elif "codex" in text.lower():
+            return "codex"
+        elif "tokens used" in text:
+            return "tokens"
+        else:
+            return "info"
+
+    def _write_to_log_detail(self, line):
+        """写入日志详情视图"""
         if not line.strip():
             return
 
-        # 检测消息类型
-        timestamp = datetime.now().strftime("%H:%M:%S")
-
+        # 根据内容类型设置标签
         if line.startswith("[") and "T" in line[:30] and "]" in line[:30]:
-            # 这是带时间戳的消息
+            # 带时间戳的消息头
             if "User:" in line:
-                self.task_log_text.insert(tk.END, line, "user")
-            elif "Thinking:" in line:
-                self.task_log_text.insert(tk.END, line, "thinking")
-            elif "Codex:" in line:
-                self.task_log_text.insert(tk.END, line, "codex")
+                tag = "user"
+            elif "thinking" in line.lower():
+                tag = "thinking"
+            elif "exec" in line:
+                tag = "exec"
+            elif "succeeded" in line:
+                tag = "success"
+            elif "failed" in line or "ERROR" in line:
+                tag = "error"
+            elif "codex" in line.lower():
+                tag = "codex"
             else:
-                self.task_log_text.insert(tk.END, line, "info")
+                tag = "info"
         else:
             # 普通内容行
-            self.task_log_text.insert(tk.END, line, "info")
+            tag = "info"
+
+        self.task_log_text.insert(tk.END, line, tag)
 
         # 自动滚动
         if self.task_auto_follow.get():
             self.task_log_text.see(tk.END)
         self.root.update_idletasks()
+
+    def _finalize_current_message(self):
+        """完成当前消息并添加到列表"""
+        if self.task_current_message:
+            # 更新内容
+            if self.task_current_buffer:
+                self.task_current_message['content'] = '\n'.join(self.task_current_buffer)
+
+            # 如果消息还没在列表中，添加它
+            if self.task_current_message not in self.task_codex_messages:
+                self.task_codex_messages.append(self.task_current_message)
+                self._update_task_message_list()
+                # 更新详情视图
+                self._append_message_to_detail_view(self.task_current_message)
+            else:
+                # 如果消息已存在，更新详情视图中的内容
+                try:
+                    index = self.task_codex_messages.index(self.task_current_message)
+                    self._update_message_in_detail_view(index, self.task_current_message)
+                except ValueError:
+                    pass
+
+            # 重置
+            self.task_current_message = None
+            self.task_current_buffer = []
+
+    def _add_message_to_list(self, message):
+        """添加消息到列表并立即显示"""
+        # 添加到消息数组
+        if message not in self.task_codex_messages:
+            self.task_codex_messages.append(message)
+
+        # 更新显示
+        self._update_single_message_display(len(self.task_codex_messages) - 1, message)
+
+        # 同时更新详情视图（流式更新）
+        self._append_message_to_detail_view(message)
+
+    def _update_single_message_display(self, index, msg):
+        """更新单个消息在列表中的显示"""
+        # 格式化显示文本
+        timestamp = msg['timestamp']
+        if 'T' in timestamp and len(timestamp) > 11:
+            timestamp = timestamp[11:19]
+        elif len(timestamp) > 8:
+            timestamp = timestamp[:8]
+
+        # 根据类型显示图标
+        type_icon = {
+            'user': '👤',
+            'thinking': '🤔',
+            'exec': '⚡',
+            'success': '✅',
+            'error': '❌',
+            'codex': '🤖',
+            'tokens': '🎫',
+            'info': 'ℹ️'
+        }.get(msg['type'], '📝')
+
+        # 截取内容预览
+        content = msg.get('content', '')
+        preview = content[:50].replace('\n', ' ')
+        if len(content) > 50:
+            preview += '...'
+
+        # 构建显示文本
+        display_text = f"[{timestamp}] {type_icon} {preview}"
+
+        # 如果是当前索引，更新它；否则插入新项
+        if index < self.task_message_listbox.size():
+            # 更新现有项
+            self.task_message_listbox.delete(index)
+            self.task_message_listbox.insert(index, display_text)
+        else:
+            # 添加新项
+            self.task_message_listbox.insert(tk.END, display_text)
+
+        # 更新消息计数
+        self.task_message_count_label.config(text=f"消息数: {len(self.task_codex_messages)}")
+
+        # 自动跟踪
+        if self.task_auto_follow.get():
+            self.task_message_listbox.see(tk.END)
+            # 选中最新消息
+            self.task_message_listbox.selection_clear(0, tk.END)
+            if self.task_message_listbox.size() > 0:
+                self.task_message_listbox.selection_set(self.task_message_listbox.size() - 1)
+
+    def _update_current_message_display(self):
+        """更新当前正在累积的消息显示"""
+        if self.task_current_message:
+            # 找到消息在列表中的索引
+            try:
+                index = self.task_codex_messages.index(self.task_current_message)
+                self._update_single_message_display(index, self.task_current_message)
+                # 更新详情视图中的当前消息
+                self._update_message_in_detail_view(index, self.task_current_message)
+            except ValueError:
+                # 消息不在列表中，添加它
+                self._add_message_to_list(self.task_current_message)
+
+    def _load_task_output(self):
+        """加载已存在的Codex输出文件"""
+        workspace_path = self.task_workspace_var.get()
+        if not workspace_path:
+            messagebox.showwarning("警告", "请先设置工作目录")
+            return
+
+        output_file = Path(workspace_path) / "codex_output.txt"
+        error_file = Path(workspace_path) / "codex_error.txt"
+        status_file = Path(workspace_path) / "codex_status.txt"
+
+        if not output_file.exists():
+            self._task_log("未找到输出文件，可能还未执行过任务", "warning")
+            return
+
+        try:
+            # 清空现有消息
+            self.task_codex_messages = []
+            self.task_message_listbox.delete(0, tk.END)
+            self.task_log_text.delete(1.0, tk.END)
+
+            # 读取输出文件
+            with open(output_file, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+
+            # 解析内容
+            self._parse_task_codex_content(content)
+            self._update_task_message_list()
+            # 重新填充详情视图（因为是加载历史内容）
+            self._populate_task_detail_view()
+
+            # 读取状态文件（复用Codex Output的状态文本）
+            if status_file.exists():
+                status = status_file.read_text(encoding="utf-8").strip()
+                if status == "0":
+                    status_text = "✅ 上次执行成功"
+                elif status == "124":
+                    status_text = "⏱️ 上次执行超时"
+                elif status == "127":
+                    status_text = "❌ 找不到命令"
+                elif status == "running":
+                    status_text = "🔄 可能仍在运行"
+                elif status == "interrupted":
+                    status_text = "⏹️ 上次被中断"
+                elif status == "-1":
+                    status_text = "⏹️ 上次用户中断"
+                elif status == "-15":
+                    status_text = "⏹️ 上次被终止"
+                else:
+                    status_text = f"⚠️ 上次退出码 {status}"
+                self._task_log(f"状态: {status_text}", "info")
+                # 更新状态栏
+                self.task_status_label.config(text=f"状态: {status_text}")
+
+            # 读取错误文件
+            if error_file.exists():
+                error_content = error_file.read_text(encoding="utf-8").strip()
+                if error_content:
+                    self._task_log("检测到错误输出:", "error")
+                    self.task_log_text.insert(tk.END, error_content + "\n", "error")
+
+            self._task_log(f"成功加载输出文件: {len(self.task_codex_messages)} 条消息", "success")
+
+            # 记录当前文件位置以便继续监控
+            self.task_output_position = len(content)
+
+            # 询问是否启动监控
+            if messagebox.askyesno("监控", "是否启动文件监控以查看新的输出？"):
+                self._start_task_monitoring()
+
+        except Exception as e:
+            messagebox.showerror("错误", f"加载输出文件失败: {e}")
+            self._task_log(f"加载失败: {e}", "error")
+
+    def _clear_task_output(self):
+        """清空输出文件和显示"""
+        if not messagebox.askyesno("确认", "确定要清空所有输出文件和显示内容吗？"):
+            return
+
+        workspace_path = self.task_workspace_var.get()
+        if workspace_path:
+            output_file = Path(workspace_path) / "codex_output.txt"
+            error_file = Path(workspace_path) / "codex_error.txt"
+            status_file = Path(workspace_path) / "codex_status.txt"
+
+            try:
+                # 清空文件
+                if output_file.exists():
+                    output_file.write_text("", encoding="utf-8")
+                if error_file.exists():
+                    error_file.write_text("", encoding="utf-8")
+                if status_file.exists():
+                    status_file.write_text("", encoding="utf-8")
+
+                self._task_log("输出文件已清空", "success")
+            except Exception as e:
+                self._task_log(f"清空文件失败: {e}", "error")
+
+        # 清空显示
+        self.task_codex_messages = []
+        self.task_message_listbox.delete(0, tk.END)
+        self.task_log_text.delete(1.0, tk.END)
+        self.task_codex_positions = {}
+        self.task_output_position = 0
+        self.task_message_count_label.config(text="消息数: 0")
+
+        self._task_log("显示内容已清空", "info")
+
+    def _start_task_monitoring(self):
+        """启动任务输出文件监控"""
+        workspace_path = self.task_workspace_var.get()
+        if not workspace_path:
+            messagebox.showwarning("警告", "请先设置工作目录")
+            return
+
+        output_file = Path(workspace_path) / "codex_output.txt"
+        error_file = Path(workspace_path) / "codex_error.txt"
+        status_file = Path(workspace_path) / "codex_status.txt"
+
+        # 如果还没有位置记录，获取当前文件大小
+        if not hasattr(self, 'task_output_position'):
+            self.task_output_position = output_file.stat().st_size if output_file.exists() else 0
+
+        # 启动监控
+        self.task_monitoring = True
+        monitor_thread = threading.Thread(
+            target=self._monitor_task_files,
+            args=(output_file, error_file, status_file),
+            daemon=True
+        )
+        monitor_thread.start()
+
+        self._task_log("已启动文件监控", "success")
+
+    def _stop_task_monitoring(self):
+        """停止任务输出文件监控"""
+        self.task_monitoring = False
+        self._task_log("已停止文件监控", "info")
 
     def _ensure_api_key_for_executor(self):
         """确保API key被设置到环境变量中供执行器使用"""

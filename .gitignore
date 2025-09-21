@@ -8,3 +8,4 @@
 temp
 *.pyc
 learnGitBranching
+.workspace*

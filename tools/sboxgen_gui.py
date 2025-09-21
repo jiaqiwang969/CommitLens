@@ -2676,6 +2676,17 @@ class SboxgenGUI:
         ttk.Button(button_row2, text="清空输出", command=self._clear_task_output).pack(side=tk.LEFT, padx=5)
         ttk.Button(button_row2, text="🗑️ 清空项目", command=self._reset_task_status).pack(side=tk.LEFT, padx=10)
 
+        # 第三行：从指定 commit 开始重放
+        rerun_frame = ttk.Frame(control_frame)
+        rerun_frame.grid(row=5, column=0, columnspan=4, sticky="ew", pady=(10, 0))
+        rerun_frame.columnconfigure(1, weight=1)
+        ttk.Label(rerun_frame, text="从指定任务ID重放:").grid(row=0, column=0, sticky="w")
+        self.rerun_start_id_var = tk.StringVar(value="")
+        ttk.Entry(rerun_frame, textvariable=self.rerun_start_id_var).grid(row=0, column=1, sticky="ew", padx=(6, 6))
+        ttk.Button(rerun_frame, text="取自选中", command=self._fill_rerun_id_from_selection).grid(row=0, column=2)
+        ttk.Button(rerun_frame, text="开始重放", command=self._rerun_from_commit_gui).grid(row=0, column=3, padx=(6, 0))
+        ttk.Label(rerun_frame, text="示例: 016-f620960", foreground="#666").grid(row=1, column=1, sticky="w", pady=(4,0))
+
         # 顶部右侧：Prompt编辑框
         prompt_frame = ttk.LabelFrame(tab, text="任务Prompt（可编辑）", padding=10)
         prompt_frame.grid(row=0, column=1, sticky="nsew", pady=(0, 5))
@@ -2689,44 +2700,41 @@ class SboxgenGUI:
         ttk.Label(template_frame, text="模板:").pack(side=tk.LEFT, padx=(0, 5))
 
         self.prompt_templates = {
-            "Rust完整实现（带变量）": """请根据 {todolist_dir}/todolist-{task_id}.tex 文档中描述的架构和需求，实现对应的 Rust 代码。
+            "Rust完整实现（带变量）": """请在 {workspace_dir} 内，依据 {todolist_dir}/todolist-{task_id}.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 {project_dir}。
 
-任务说明：
-1. 仔细阅读 {todolist_dir}/todolist-{task_id}.tex 文档，理解其中描述的：
-   - 系统架构设计
-   - 模块划分和职责
-   - 数据结构定义
-   - 算法流程说明
-   - 接口和API设计
+提示：当前已在 {workspace_dir}（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 {todolist_dir} 与 {project_dir}。
 
-2. 查看 {todolist_dir}/figs/ 目录中的 PlantUML 图表（.puml 文件）：
-   - 类图/结构图 → 转换为 Rust struct/trait
-   - 序列图 → 实现为方法调用流程
-   - 流程图 → 实现为算法逻辑
-   - 状态图 → 实现为状态机
+一、信息收集
+- 打开 tex 报告；如有，参考 {todolist_dir}/figs/{task_id}/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
 
-3. 使用 Rust 语言实现：
-   - 将 tex 中描述的数据结构转换为 Rust struct/enum
-   - 将接口定义转换为 Rust trait
-   - 实现文档中描述的算法和业务逻辑
-   - 确保代码符合 Rust 最佳实践（ownership、借用、错误处理）
-   - 添加适当的文档注释和单元测试
+二、代码复现
+- 在 {project_dir} 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
 
-4. 代码组织：
-   - 在 {project_dir} 目录中创建 Rust 项目（固定目录名：{project_name}）
-   - 创建合理的模块结构（lib.rs, mod.rs）
-   - 实现 Cargo.toml 配置
-   - 添加必要的依赖项
-   - 确保代码可编译运行
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
 
-输出要求：
-- 生成完整可运行的 Rust 项目代码（位于 {project_dir}）
-- 包含单元测试和集成测试
-- 提供简要的实现报告说明关键设计决策
+四、提交
+- 在 {project_dir} 中 `git add -A` 并提交，提交信息格式："{task_id}：复现提交代码内容。"
 
-注意：
-- 工作目录为 {workspace_dir}
-- 项目输出到固定目录 {project_name}/ 便于多次迭代""",
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - {workspace_dir}/codex_error.txt
+  - {workspace_dir}/codex_status.txt
+  - {workspace_dir}/codex_output.txt
+  - {workspace_dir}/logs/
+  - {workspace_dir}/task_status.json
+  - {todolist_dir}/
+- 仅允许在 {project_dir}/ 目录内创建/修改/删除代码与配置。
+""",
 
             "Rust完整实现（传统）": """请根据 report.tex 文档中描述的架构和需求，实现对应的 Rust 代码。
 
@@ -2918,6 +2926,107 @@ class SboxgenGUI:
 
         # 初始加载任务列表
         self.root.after(100, self._refresh_task_list)
+
+    def _fill_rerun_id_from_selection(self):
+        try:
+            sel = self.task_tree.selection()
+            if not sel:
+                messagebox.showinfo("提示", "请先在任务列表中选中一个任务")
+                return
+            task_id = self.task_tree.item(sel[0], "text")
+            self.rerun_start_id_var.set(task_id)
+        except Exception as e:
+            messagebox.showerror("错误", f"读取选择失败: {e}")
+
+    def _rerun_from_commit_gui(self):
+        """GUI入口：从指定任务ID开始重放（自动新建分支→切为主分支→原主分支重命名为历史分支-时间）。"""
+        if self.task_executor_running:
+            messagebox.showwarning("警告", "任务正在执行中，无法重放")
+            return
+        raw = (self.rerun_start_id_var.get() or "").strip()
+        if not raw:
+            messagebox.showwarning("提示", "请先输入起始任务ID，例如 016-f620960")
+            return
+
+        # 允许仅输入数字（1/2/3 或 001/002），自动映射为完整ID（如 001-84a2fb2）
+        def _normalize(user_text: str) -> Optional[str]:
+            txt = (user_text or "").strip()
+            # 确保执行器路径与当前 UI 同步
+            self.task_executor.set_artifacts_dir(self.task_artifacts_var.get())
+            self.task_executor.set_workspace_dir(self.task_workspace_var.get())
+            tasks = self.task_executor.get_all_tasks()
+            if not txt:
+                return None
+            # 若是纯数字：按序号映射（1-based）
+            if txt.isdigit():
+                idx = int(txt)
+                if idx <= 0:
+                    return None
+                # tasks 已按 001.. 排序；映射 1 -> tasks[0]
+                if idx - 1 < len(tasks):
+                    return tasks[idx - 1]["id"]
+                return None
+            # 若是三位数字：以前缀匹配
+            if len(txt) == 3 and all(ch.isdigit() for ch in txt):
+                pref = f"{txt}-"
+                for t in tasks:
+                    if t["id"].startswith(pref):
+                        return t["id"]
+                return None
+            # 若已包含连字符：尝试直接匹配或按前缀匹配
+            if "-" in txt:
+                ids = [t["id"] for t in tasks]
+                if txt in ids:
+                    return txt
+                pref = txt.split("-", 1)[0] + "-"
+                for t in tasks:
+                    if t.startswith(pref):
+                        return t
+                return None
+            return None
+
+        start_id = _normalize(raw)
+        if not start_id:
+            messagebox.showerror("无效的任务ID", "请输入有效的任务序号（如 1 或 001）或完整ID（如 001-xxxxxxx）")
+            return
+
+        confirm = messagebox.askyesno(
+            "确认",
+            "将进行以下操作：\n\n"
+            "1) 在项目仓库内，从该任务对应的提交创建新分支\n"
+            "2) 将该分支设为主分支\n"
+            "3) 原主分支重命名为 历史分支-<时间>\n\n"
+            "并从该任务的下一个开始重新执行。是否继续？"
+        )
+        if not confirm:
+            return
+
+        # 使用后台线程执行，以避免阻塞 UI
+        def _do():
+            try:
+                self._task_log(f"开始重放：输入={raw} → 解析起点={start_id}", "info")
+                # 同步执行器路径
+                self.task_executor.set_artifacts_dir(self.task_artifacts_var.get())
+                self.task_executor.set_workspace_dir(self.task_workspace_var.get())
+                self.task_executor.set_project_name(self.task_project_name_var.get().strip() or "rust-project")
+
+                ok = False
+                try:
+                    ok = self.task_executor.rerun_from_commit(start_id, run=False)
+                except Exception as e:
+                    self._task_log(f"重放失败: {e}", "error")
+                    ok = False
+                if not ok:
+                    messagebox.showerror("失败", "重放操作失败，请检查日志")
+                    return
+
+                self._task_log("✓ 分支切换与状态更新成功，开始批量执行剩余任务…", "success")
+                # 开始 GUI 内的批量执行（带输出监控）
+                self.root.after(0, self._execute_all_tasks)
+            except Exception as e:
+                self._task_log(f"重放过程错误: {e}", "error")
+
+        threading.Thread(target=_do, daemon=True).start()
 
     def _browse_task_artifacts(self):
         """浏览选择任务目录"""
@@ -3501,6 +3610,14 @@ class SboxgenGUI:
                 if success:
                     self.task_executor.status["completed"].append(task["id"])
                     self._task_log(f"任务 {task['id']} 执行成功", "success")
+                    # 成功后：在 {project_name} 目录内提交结果
+                    try:
+                        if self.task_executor.commit_results(task):
+                            self._task_log("已创建提交（见项目目录）", "success")
+                        else:
+                            self._task_log("提交失败（已忽略）", "warning")
+                    except Exception as e:
+                        self._task_log(f"提交时发生异常（已忽略）: {e}", "warning")
                     # 音效已在_execute_task_with_prompt中处理
                 else:
                     # 保存具体的错误码而不是失败次数
@@ -3611,6 +3728,14 @@ class SboxgenGUI:
                         if success:
                             self.task_executor.status["completed"].append(task["id"])
                             self._task_log(f"任务 {task['id']} 执行成功", "success")
+                            # 成功后：在 {project_name} 目录内提交结果
+                            try:
+                                if self.task_executor.commit_results(task):
+                                    self._task_log("已创建提交（见项目目录）", "success")
+                                else:
+                                    self._task_log("提交失败（已忽略）", "warning")
+                            except Exception as e:
+                                self._task_log(f"提交时发生异常（已忽略）: {e}", "warning")
                             # 音效已在_execute_task_with_prompt中处理
                         else:
                             # 保存具体的错误码而不是失败次数
@@ -3805,6 +3930,7 @@ class SboxgenGUI:
         if todolist_dir.exists():
             msg += f"4. 删除任务目录: todolist/\n"
 
+        msg += "5. 重新创建项目目录并初始化 Git 仓库 (git init)\n"
         msg += "\n⚠️ 此操作不可恢复！"
 
         if not messagebox.askyesno("确认重置", msg, icon='warning'):
@@ -3868,14 +3994,25 @@ class SboxgenGUI:
                 self.task_monitoring = False
                 self._task_log("✓ 已停止文件监控", "info")
 
-            # 8. 刷新任务列表
+            # 8. 重新创建项目目录并初始化 Git（幂等）
+            try:
+                project_dir.mkdir(parents=True, exist_ok=True)
+                if not (project_dir / ".git").exists():
+                    subprocess.run(["git", "init"], cwd=str(project_dir), check=True)
+                    self._task_log(f"✓ 已初始化 Git 仓库: {project_dir}", "info")
+                else:
+                    self._task_log(f"ℹ️ 已存在 Git 仓库: {project_dir}", "info")
+            except Exception as e:
+                self._task_log(f"Git 初始化失败（忽略继续）: {e}", "warning")
+
+            # 9. 刷新任务列表
             self._refresh_task_list()
 
             # 显示完成信息
             self._task_log("="*50, "separator")
             self._task_log("🔄 项目已完全重置！", "success")
             self._task_log(f"工作目录: {workspace_path}", "info")
-            self._task_log(f"项目目录: {project_name}/ (已清空)", "info")
+            self._task_log(f"项目目录: {project_name}/ (已重新创建并初始化 Git)", "info")
             self._task_log("您可以开始新的任务执行", "info")
             self._task_log("="*50, "separator")
 

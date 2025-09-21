@@ -10,6 +10,7 @@ import json
 import shutil
 import subprocess
 from pathlib import Path
+from typing import Optional
 from datetime import datetime
 import time
 
@@ -35,6 +36,13 @@ class IsolatedTaskExecutor:
 
         # 加载或初始化状态
         self.status = self.load_status()
+
+        # 同步确保项目目录存在（用于提交结果）
+        try:
+            project_dir = self.workspace_dir / self.project_name
+            project_dir.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            pass
 
     def set_workspace_dir(self, workspace_dir):
         """更新工作目录并重新初始化相关路径"""
@@ -127,13 +135,31 @@ class IsolatedTaskExecutor:
         shutil.copy2(task["report"], task_report)
         print(f"  ✓ 复制报告: {task['report'].name} -> todolist/todolist-{task['id']}.tex")
 
-        # 3. 复制对应的图片文件夹到 todolist/figs
+        # 3. 复制对应的图片文件夹到 todolist/figs（仅保留 .puml，排除 .svg/.pdf 等）
         if task["figs"].exists():
+            src_figs = task["figs"]
             task_figs = todolist_dir / "figs"
             if task_figs.exists():
                 shutil.rmtree(task_figs)
-            shutil.copytree(task["figs"], task_figs)
-            print(f"  ✓ 复制图片: {task['figs'].name}/ -> todolist/figs/")
+            task_figs.mkdir(parents=True, exist_ok=True)
+
+            copied = 0
+            try:
+                for path in src_figs.rglob("*"):
+                    if path.is_dir():
+                        continue
+                    if path.suffix.lower() != ".puml":
+                        # skip non-puml (e.g., .svg/.pdf)
+                        continue
+                    rel = path.relative_to(src_figs)
+                    dst = task_figs / rel
+                    dst.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(path, dst)
+                    copied += 1
+            except Exception as e:
+                print(f"  ⚠️ 复制 puml 文件时出错: {e}")
+
+            print(f"  ✓ 复制图片(puml-only): {src_figs.name}/ -> todolist/figs/ ({copied} files; svg/pdf excluded)")
         else:
             print(f"  ℹ️ 未找到图片目录: {task['figs']}")
 
@@ -149,6 +175,17 @@ class IsolatedTaskExecutor:
             "project_name": self.project_name,
             "project_output_dir": str(self.workspace_dir / self.project_name)
         }, indent=2))
+
+        # 5. 确保项目输出目录存在并初始化 Git 仓库（如有必要）
+        project_dir = self.workspace_dir / self.project_name
+        project_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            # 若未初始化为 git 仓库，则执行 git init（幂等）
+            if not (project_dir / ".git").exists():
+                subprocess.run(["git", "init"], cwd=str(project_dir), check=True)
+                print(f"  ✓ 已初始化 Git 仓库: {project_dir}")
+        except Exception as e:
+            print(f"  ⚠️ Git 初始化失败（忽略继续）: {e}")
 
         print(f"\n  📋 目录结构:")
         print(f"  {self.workspace_dir.name}/")
@@ -264,19 +301,29 @@ class IsolatedTaskExecutor:
             return False
 
     def commit_results(self, task):
-        """提交任务结果"""
+        """在 {project_name} 目录内提交任务结果。
+
+        - 使用全角冒号的提交信息格式："{task_id}：xxxxx。"
+        - 仅在项目目录内执行 git 操作，避免污染工作空间其它文件。
+        """
         print(f"\n💾 提交任务 {task['id']} 的结果...")
 
-        try:
-            # Git 操作
-            subprocess.run(["git", "add", "-A"], cwd=str(self.current_dir), check=True)
+        project_dir = self.workspace_dir / self.project_name
+        project_dir.mkdir(parents=True, exist_ok=True)
 
-            commit_msg = f"{task['id']}: 完成任务执行"
-            subprocess.run(
-                ["git", "commit", "-m", commit_msg],
-                cwd=str(self.current_dir),
-                check=True
-            )
+        try:
+            # 若未初始化为 git 仓库，则执行 git init（幂等）
+            if not (project_dir / ".git").exists():
+                subprocess.run(["git", "init"], cwd=str(project_dir), check=True)
+                print(f"  ✓ 已初始化 Git 仓库: {project_dir}")
+
+            # Git 操作（限定在项目目录）
+            subprocess.run(["git", "add", "-A"], cwd=str(project_dir), check=True)
+
+            commit_msg = f"{task['id']}：完成任务执行。"
+            subprocess.run([
+                "git", "commit", "-m", commit_msg
+            ], cwd=str(project_dir), check=True)
 
             print(f"  ✓ 已提交: {commit_msg}")
             return True
@@ -301,6 +348,167 @@ class IsolatedTaskExecutor:
                 elif item.is_dir():
                     shutil.rmtree(item)
             print(f"  ✓ 已清理: {todolist_dir}/")
+
+    # === 新增：从指定 commit（任务ID）开始重新执行 ===
+    def _git(self, args, cwd: Path, check=True, capture_output=True):
+        """Run a git command under cwd and return CompletedProcess."""
+        return subprocess.run(
+            ["git", *args],
+            cwd=str(cwd),
+            check=check,
+            capture_output=capture_output,
+            text=True,
+        )
+
+    def _project_dir(self) -> Path:
+        return self.workspace_dir / self.project_name
+
+    def _ensure_project_repo(self) -> bool:
+        p = self._project_dir()
+        if not p.exists():
+            p.mkdir(parents=True, exist_ok=True)
+        # init if missing
+        try:
+            if not (p / ".git").exists():
+                self._git(["init"], cwd=p)
+        except Exception:
+            return False
+        return True
+
+    def _git_current_branch(self) -> Optional[str]:
+        p = self._project_dir()
+        try:
+            cp = self._git(["rev-parse", "--abbrev-ref", "HEAD"], cwd=p)
+            name = (cp.stdout or "").strip()
+            return name if name and name != "HEAD" else name
+        except Exception:
+            return None
+
+    def _git_is_clean(self) -> bool:
+        p = self._project_dir()
+        try:
+            cp = self._git(["status", "--porcelain"], cwd=p)
+            return (cp.stdout or "").strip() == ""
+        except Exception:
+            return False
+
+    def _find_commit_by_task_id(self, task_id: str) -> Optional[str]:
+        p = self._project_dir()
+        # 支持纯数字（如 1/01/001）：按三位序号前缀匹配（^001-）
+        norm_prefix: Optional[str] = None
+        t = (task_id or "").strip()
+        if t.isdigit():
+            z3 = f"{int(t):03d}"
+            norm_prefix = f"^{z3}-"
+        elif "-" not in t and len(t) == 3 and all(ch.isdigit() for ch in t):
+            norm_prefix = f"^{t}-"
+
+        # 优先匹配完整 ID（NNN-xxxxxxx）带中文/英文冒号的样式
+        patterns = [f"^{t}：", f"^{t}:"]
+        # 其次匹配仅有序号的前缀形式（^NNN-）
+        if norm_prefix:
+            patterns.insert(0, norm_prefix)
+        for pat in patterns:
+            try:
+                cp = self._git(["log", "--all", "-n", "1", f"--grep={pat}", "--format=%H"], cwd=p)
+                sha = (cp.stdout or "").strip()
+                if sha:
+                    return sha
+            except Exception:
+                pass
+        # 兜底：扫描最近 1000 条提交，在 subject 中查找 task_id
+        try:
+            cp = self._git(["log", "-n", "1000", "--pretty=%H;%s"], cwd=p)
+            for line in (cp.stdout or "").splitlines():
+                try:
+                    sha, subj = line.split(";", 1)
+                except ValueError:
+                    continue
+                # 完整 ID（NNN-xxxxxxx）样式
+                if subj.startswith(f"{t}：") or subj.startswith(f"{t}:"):
+                    return sha
+                # 仅序号形式：^NNN-
+                if norm_prefix and subj.startswith(norm_prefix[1:]):
+                    return sha
+        except Exception:
+            pass
+        return None
+
+    def _update_status_up_to(self, task_id: str) -> None:
+        # 将 task_status.json 的 completed 置为从 .artifacts/reports 中按序到 task_id（含）为止。
+        all_reports = sorted(self.artifacts_dir.glob("reports/*.tex"))
+        ids = [p.stem for p in all_reports]
+        try:
+            idx = ids.index(task_id)
+        except ValueError:
+            print(f"⚠️ 未在 .artifacts/reports/ 中找到 {task_id}.tex，保持原状态")
+            return
+        # 以该 id 为起点，执行“下一个 commit”，所以将该 id 标为已完成
+        completed = ids[: idx + 1]
+        self.status["completed"] = completed
+        self.status["failed"] = {}
+        self.status["current"] = None
+        self.status["last_execution"] = datetime.now().isoformat()
+        self.save_status()
+
+    def rerun_from_commit(self, start_task_id: str, delay_between_tasks: int = 5, run: bool = True) -> bool:
+        # 从项目仓库中定位以“{start_task_id}：”提交消息的提交，基于该提交创建新分支；
+        # 将当前主分支重命名为“历史分支-<timestamp>”，并把新分支改名为原主分支名；
+        # 随后更新执行状态，使 {start_task_id} 之前的任务视为已完成，从下一个任务开始重新执行所有任务。
+        print("\n🧭 准备从指定 commit 重新执行所有任务…")
+        print(f"  ⏱️ 起点任务ID: {start_task_id}")
+
+        if not self._ensure_project_repo():
+            print("❌ 未能初始化/定位项目 Git 仓库")
+            return False
+        project_dir = self._project_dir()
+
+        # 安全检查：工作区需干净
+        if not self._git_is_clean():
+            print("❌ 项目仓库存在未提交更改，请先提交或清理后重试")
+            return False
+
+        # 查找对应 commit
+        sha = self._find_commit_by_task_id(start_task_id)
+        if not sha:
+            print("❌ 未找到对应的提交（按提交消息前缀匹配）。请确认任务ID正确，例如 021-b4b7821。")
+            return False
+        print(f"  🔎 找到提交: {sha}")
+
+        # 当前主分支名
+        curr = self._git_current_branch() or "main"
+        print(f"  🌿 当前分支: {curr}")
+
+        # 生成时间戳
+        ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+        replay_branch = f"replay-{ts}"
+        history_branch = f"历史分支-{ts}"
+
+        try:
+            # 1) 从目标提交创建并切换到临时重放分支
+            self._git(["checkout", "-b", replay_branch, sha], cwd=project_dir)
+            print(f"  ✓ 已创建并切换到分支: {replay_branch} @ {sha}")
+
+            # 2) 将原来的主分支改名为 历史分支-<ts>
+            #    注意：此时不在原分支上，可以直接改名
+            self._git(["branch", "-m", curr, history_branch], cwd=project_dir)
+            print(f"  ✓ 已重命名原分支 {curr} -> {history_branch}")
+
+            # 3) 将当前分支（replay-<ts>）改回原主分支名，使之成为新的主分支
+            self._git(["branch", "-m", curr], cwd=project_dir)
+            print(f"  ✓ 将 {replay_branch} 改名为新的主分支 {curr}")
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Git 分支操作失败: {e}")
+            return False
+
+        # 更新状态：把起点 id 标记为已完成，从下一条开始执行
+        self._update_status_up_to(start_task_id)
+
+        if run:
+            # 连续执行所有剩余任务
+            print("\n🔁 开始从下一条任务起重新执行所有任务…")
+            self.run_all_tasks(delay_between_tasks=delay_between_tasks)
+        return True
 
     def _substitute_prompt_variables(self, prompt, task):
         """替换prompt中的变量"""
@@ -332,47 +540,42 @@ class IsolatedTaskExecutor:
         return result
 
     def _get_default_prompt(self, task):
-        """获取默认的prompt模板"""
+        """获取默认的 prompt：复现 commit 报告代码内容（含环境与提交约定）"""
         return f"""
-请根据 {self.workspace_dir}/todolist/todolist-{task['id']}.tex 文档中描述的架构和需求，实现对应的 Rust 代码。
+请在 {self.workspace_dir} 内，依据 todolist/todolist-{task['id']}.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 {self.workspace_dir}/{self.project_name}。
 
-任务说明：
-1. 仔细阅读 todolist/todolist-{task['id']}.tex 文档，理解其中描述的：
-   - 系统架构设计
-   - 模块划分和职责
-   - 数据结构定义
-   - 算法流程说明
-   - 接口和API设计
+提示：当前已在 {self.workspace_dir}（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 todolist/ 与 {self.project_name}/。
 
-2. 查看 todolist/figs/ 目录中的 PlantUML 图表（.puml 文件）：
-   - 类图/结构图 → 转换为 Rust struct/trait
-   - 序列图 → 实现为方法调用流程
-   - 流程图 → 实现为算法逻辑
-   - 状态图 → 实现为状态机
+一、信息收集
+- 打开 tex 报告；如有，参考 todolist/figs/{task['id']}/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
 
-3. 使用 Rust 语言实现：
-   - 将 tex 中描述的数据结构转换为 Rust struct/enum
-   - 将接口定义转换为 Rust trait
-   - 实现文档中描述的算法和业务逻辑
-   - 确保代码符合 Rust 最佳实践（ownership、借用、错误处理）
-   - 添加适当的文档注释和单元测试
+二、代码复现
+- 在 {self.workspace_dir}/{self.project_name} 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
 
-4. 代码组织：
-   - 在 {self.workspace_dir}/{self.project_name} 目录中创建项目（固定目录名，便于迭代）
-   - 创建合理的模块结构（lib.rs, mod.rs）
-   - 实现 Cargo.toml 配置
-   - 添加必要的依赖项
-   - 确保代码可编译运行
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
 
-输出要求：
-- 生成完整可运行的 Rust 项目代码
-- 包含单元测试和集成测试
-- 提供简要的实现报告说明关键设计决策
+四、提交
+- 在 {self.workspace_dir}/{self.project_name} 中 `git add -A` 并提交，提交信息格式："{task['id']}：复现提交代码内容。"
 
-注意：
-- tex 文档位于：todolist/todolist-{task['id']}.tex
-- 图表文件位于：todolist/figs/
-- 项目代码应创建在：{self.project_name}/ （恒定目录名，支持多次迭代）
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - {self.workspace_dir}/codex_error.txt
+  - {self.workspace_dir}/codex_status.txt
+  - {self.workspace_dir}/codex_output.txt
+  - {self.workspace_dir}/logs/
+  - {self.workspace_dir}/task_status.json
+  - {self.workspace_dir}/todolist/
+- 仅允许在 {self.workspace_dir}/{self.project_name}/ 目录内创建/修改/删除代码与配置。
 """
 
     def run_single_task(self):
@@ -475,21 +678,28 @@ def main():
     print("🎯 任务隔离执行器")
     print("1. 执行单个任务")
     print("2. 批量执行所有任务")
-    print("3. 查看执行状态")
-    print("4. 重置状态（慎用）")
-    print("5. 退出")
+    print("3. 从指定 commit 开始重新执行所有任务（自动创建新分支并切换为主分支）")
+    print("4. 查看执行状态")
+    print("5. 重置状态（慎用）")
+    print("6. 退出")
 
-    choice = input("\n请选择操作 (1-5): ")
+    choice = input("\n请选择操作 (1-6): ")
 
     if choice == "1":
         executor.run_single_task()
     elif choice == "2":
         executor.run_all_tasks()
     elif choice == "3":
-        executor.print_summary()
+        start_id = input("请输入起始 commit 任务ID（例如 021-b4b7821）: ").strip()
+        if not start_id:
+            print("❌ 任务ID不能为空")
+        else:
+            executor.rerun_from_commit(start_id)
     elif choice == "4":
-        executor.reset_status()
+        executor.print_summary()
     elif choice == "5":
+        executor.reset_status()
+    elif choice == "6":
         print("👋 再见！")
     else:
         print("❌ 无效选择")

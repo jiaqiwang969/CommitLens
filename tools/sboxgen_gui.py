@@ -3782,12 +3782,28 @@ class SboxgenGUI:
             bin_path = self._ensure_git_graph_bin()
         except Exception as e:
             self._append_log(f"[igraph] FFI 不可用且未找到 git-graph 可执行文件: {e}")
+            # 最后兜底：使用 git 构建简化布局（单列，无连线）
+            try:
+                data = self._igraph_build_simple_layout(repo)
+                if data.get("nodes"):
+                    self._append_log("[igraph] 使用简化布局渲染（无 FFI/JSON）")
+                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+            except Exception as e2:
+                self._append_log(f"[igraph] 简化布局渲染失败: {e2}")
             return
         try:
             self._append_log(f"[graph-tab] 使用 {bin_path} 执行 --json 渲染")
             proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
         except Exception as e:
             self._append_log(f"[igraph] 运行 git-graph --json 失败: {e}")
+            # 回退到简化布局
+            try:
+                data = self._igraph_build_simple_layout(repo)
+                if data.get("nodes"):
+                    self._append_log("[igraph] 使用简化布局渲染（无 FFI/JSON）")
+                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+            except Exception as e2:
+                self._append_log(f"[igraph] 简化布局渲染失败: {e2}")
             return
         out = proc.stdout or ""
         if not out.strip():
@@ -3797,6 +3813,14 @@ class SboxgenGUI:
             raw = json.loads(out)
         except Exception as e:
             self._append_log(f"[igraph] 解析 git-graph JSON 失败: {e}")
+            # 回退到简化布局
+            try:
+                data = self._igraph_build_simple_layout(repo)
+                if data.get("nodes"):
+                    self._append_log("[igraph] 使用简化布局渲染（无 FFI/JSON）")
+                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+            except Exception as e2:
+                self._append_log(f"[igraph] 简化布局渲染失败: {e2}")
             return
         # 适配成 _draw_interactive_graph 需要的结构
         try:
@@ -3838,6 +3862,14 @@ class SboxgenGUI:
             self._draw_interactive_graph(self.exec_graph_canvas, data)
         except Exception as e:
             self._append_log(f"[igraph] 适配 JSON 渲染失败: {e}")
+            # 回退到简化布局
+            try:
+                data = self._igraph_build_simple_layout(repo)
+                if data.get("nodes"):
+                    self._append_log("[igraph] 使用简化布局渲染（无 FFI/JSON）")
+                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+            except Exception as e2:
+                self._append_log(f"[igraph] 简化布局渲染失败: {e2}")
             return
 
     def _draw_interactive_graph(self, canvas: tk.Canvas, data: dict):
@@ -3921,10 +3953,11 @@ class SboxgenGUI:
                         self._select_task_in_list(m.group(1))
                     # Update commit details in Graph tab if we're in Graph tab
                     if canvas == self.graph_canvas:
+                        # Graph 标签页：在右侧面板更新提交详情
                         self._update_graph_commit_details(nd)
                     else:
-                        # For other canvases, open the detail window
-                        self._open_commit_detail_window(nd)
+                        # 任务执行页：仅显示便签与选中任务，不弹出对话框
+                        pass
                     clicked = True
                     break
             if not clicked:
@@ -3956,6 +3989,55 @@ class SboxgenGUI:
             except Exception:
                 pass
         canvas.bind('<Motion>', _on_motion)
+
+    def _igraph_build_simple_layout(self, repo: Path, max_commits: Optional[int] = None) -> dict:
+        """当 FFI 与 --json 都不可用时，使用 git 构建最简交互布局。
+        - HEAD 优先顺序 (最新→最旧)
+        - 单列 column=0；不绘制连线 edges（后续可增强）
+        """
+        try:
+            import subprocess, json as _json
+        except Exception:
+            return {"nodes": [], "edges": []}
+        # 分支名称（仅用于标签展示）
+        try:
+            cp = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True, check=True)
+            branch = (cp.stdout or "").strip()
+        except Exception:
+            branch = "HEAD"
+        # 限制数量：优先使用 UI 的 limit
+        try:
+            lim = int(self.limit_var.get()) if hasattr(self, 'limit_var') else 150
+        except Exception:
+            lim = 150
+        if max_commits is not None:
+            lim = min(lim, int(max_commits))
+        # 提交列表（最新在前，便于 idx=0 映射到底部）
+        try:
+            args = ["git", "rev-list", "--first-parent", f"--max-count={lim}", branch]
+            cp = subprocess.run(args, cwd=str(repo), capture_output=True, text=True, check=True)
+            shas = [ln.strip() for ln in cp.stdout.splitlines() if ln.strip()]
+        except Exception:
+            shas = []
+        nodes = []
+        for i, sha in enumerate(shas):  # idx: 0 是最新
+            try:
+                cp = subprocess.run(["git", "show", "-s", f"--format=%H%x01%h%x01%as%x01%an%x01%s", sha], cwd=str(repo), capture_output=True, text=True, check=True)
+                full, short, date, author, subject = (cp.stdout.strip().split("\x01", 4) + [""]*5)[:5]
+            except Exception:
+                full, short, date, author, subject = sha, sha[:7], "", "", ""
+            nodes.append({
+                "idx": i,
+                "id": full,
+                "column": 0,
+                "short": short,
+                "subject": subject,
+                "date": date,
+                "author": author,
+                "branch": branch,
+                "color": "#007acc",
+            })
+        return {"nodes": nodes, "edges": []}
 
     def _igraph_clear_label(self, canvas: tk.Canvas):
         try:
@@ -4617,11 +4699,27 @@ class SboxgenGUI:
             bin_path = self._ensure_git_graph_bin()
         except Exception as e:
             self._append_log(f"[graph-tab] FFI 不可用且未找到 git-graph 可执行文件: {e}")
+            # 最后兜底：使用简化布局
+            try:
+                data = self._igraph_build_simple_layout(repo)
+                if data.get("nodes"):
+                    self._append_log("[graph-tab] 使用简化布局渲染（无 FFI/JSON）")
+                    self._draw_interactive_graph(self.graph_canvas, data)
+            except Exception as e2:
+                self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
             return
         try:
             proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
         except Exception as e:
             self._append_log(f"[graph-tab] 运行 git-graph --json 失败: {e}")
+            # 回退到简化布局
+            try:
+                data = self._igraph_build_simple_layout(repo)
+                if data.get("nodes"):
+                    self._append_log("[graph-tab] 使用简化布局渲染（无 FFI/JSON）")
+                    self._draw_interactive_graph(self.graph_canvas, data)
+            except Exception as e2:
+                self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
             return
         out = proc.stdout or ""
         if not out.strip():
@@ -4631,6 +4729,14 @@ class SboxgenGUI:
             raw = json.loads(out)
         except Exception as e:
             self._append_log(f"[graph-tab] 解析 git-graph JSON 失败: {e}")
+            # 回退到简化布局
+            try:
+                data = self._igraph_build_simple_layout(repo)
+                if data.get("nodes"):
+                    self._append_log("[graph-tab] 使用简化布局渲染（无 FFI/JSON）")
+                    self._draw_interactive_graph(self.graph_canvas, data)
+            except Exception as e2:
+                self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
             return
         # adapt to _draw_interactive_graph schema: nodes[idx/column/subject/date/short/branch/color], edges[from/to/color]
         try:
@@ -4672,6 +4778,14 @@ class SboxgenGUI:
             self._draw_interactive_graph(self.graph_canvas, data)
         except Exception as e:
             self._append_log(f"[graph-tab] 适配 JSON 渲染失败: {e}")
+            # 回退到简化布局
+            try:
+                data = self._igraph_build_simple_layout(repo)
+                if data.get("nodes"):
+                    self._append_log("[graph-tab] 使用简化布局渲染（无 FFI/JSON）")
+                    self._draw_interactive_graph(self.graph_canvas, data)
+            except Exception as e2:
+                self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
             return
 
     def _graph_render_via_rust_threaded(self):

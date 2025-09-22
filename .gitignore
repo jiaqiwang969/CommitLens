@@ -7,4 +7,4 @@
 .sboxes_tex
 temp
 *.pyc
-learnGitBranching
+.workspace*

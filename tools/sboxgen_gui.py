@@ -141,6 +141,30 @@ class SboxgenGUI:
             pass
         self._start_pollers()
 
+
+    # ---------------- Tk Main-Thread Helpers ----------------
+    def _draw_interactive_graph_safe_safe(self, canvas: tk.Canvas, data: dict):
+        """Schedule interactive graph drawing on the Tk main thread.
+        Tkinter is not thread-safe; all widget ops must run on the UI thread.
+        """
+        try:
+            self.root.after(0, lambda c=canvas, d=data: self._draw_interactive_graph_safe(c, d))
+        except Exception:
+            try:
+                self._draw_interactive_graph_safe(canvas, data)
+            except Exception:
+                pass
+
+    def _display_png_on_canvas_safe(self, canvas: tk.Canvas, png_path: Path, attr_name: str, log_prefix: str = ""):
+        """Schedule PNG display on canvas on the Tk main thread."""
+        try:
+            self.root.after(0, lambda c=canvas, p=png_path, a=attr_name, lp=log_prefix: self._display_png_on_canvas(c, p, a, lp))
+        except Exception:
+            try:
+                self._display_png_on_canvas(canvas, png_path, attr_name, log_prefix)
+            except Exception:
+                pass
+
     # ---------------- UI ----------------
     def _build_ui(self):
         outer = ttk.Frame(self.root, padding=10)
@@ -3729,14 +3753,19 @@ class SboxgenGUI:
         except Exception as e:
             self._append_log(f"[exec-graph] SVG 转 PNG 失败: {e}")
             return
-        # 显示到任务执行页嵌入画布
-        self._display_png_on_canvas(self.exec_graph_canvas, png_path, attr_name='_exec_graph_imgtk', log_prefix='[exec-graph]')
+        # 显示到任务执行页嵌入画布（必须在主线程）
+        self._display_png_on_canvas_safe(self.exec_graph_canvas, png_path, attr_name='_exec_graph_imgtk', log_prefix='[exec-graph]')
 
     # ---------- Interactive Graph (Tk Canvas + Rust Layout JSON) ----------
     def _interactive_graph_render_threaded(self):
-        threading.Thread(target=self._interactive_graph_render, daemon=True).start()
+        # Capture Tk variables on main thread before spawning
+        try:
+            limit_snap = int(self.limit_var.get()) if hasattr(self, 'limit_var') else None
+        except Exception:
+            limit_snap = None
+        threading.Thread(target=self._interactive_graph_render, args=(limit_snap,), daemon=True).start()
 
-    def _interactive_graph_render(self):
+    def _interactive_graph_render(self, limit_snap: Optional[int] = None):
         """在任务执行页渲染交互式 commit 图。
         优先走 Rust FFI(JSON 布局)；失败则自动降级到 git-graph --json。
         """
@@ -3777,7 +3806,7 @@ class SboxgenGUI:
                     try:
                         data = json.loads(s)
                         # Draw into exec_graph_canvas
-                        self._draw_interactive_graph(self.exec_graph_canvas, data)
+                        self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
                         return
                     except Exception as e:
                         self._append_log(f"[igraph] JSON 解析失败: {e}")
@@ -3793,10 +3822,10 @@ class SboxgenGUI:
             self._append_log(f"[igraph] FFI 不可用且未找到 git-graph 可执行文件: {e}")
             # 回退：简化 ASCII 解析不可行（缺可执行），使用最简布局
             try:
-                data = self._igraph_build_simple_layout(repo)
+                data = self._igraph_build_simple_layout(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[igraph] 使用简化布局渲染（无 FFI/JSON）")
-                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
             except Exception as e2:
                 self._append_log(f"[igraph] 简化布局渲染失败: {e2}")
             return
@@ -3807,19 +3836,19 @@ class SboxgenGUI:
             self._append_log(f"[igraph] 运行 git-graph --json 失败: {e}")
             # 回退：尝试解析 ASCII 输出
             try:
-                data = self._igraph_build_layout_from_ascii(repo)
+                data = self._igraph_build_layout_from_ascii(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[igraph] 使用 ASCII 解析渲染（无 JSON）")
-                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
                     return
             except Exception as e2:
                 self._append_log(f"[igraph] ASCII 解析失败: {e2}")
             # 最后兜底
             try:
-                data = self._igraph_build_simple_layout(repo)
+                data = self._igraph_build_simple_layout(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[igraph] 使用简化布局渲染（无 FFI/JSON）")
-                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
             except Exception as e2:
                 self._append_log(f"[igraph] 简化布局渲染失败: {e2}")
             return
@@ -3828,10 +3857,10 @@ class SboxgenGUI:
             self._append_log("[igraph] git-graph --json 输出为空")
             # 回退 ASCII
             try:
-                data = self._igraph_build_layout_from_ascii(repo)
+                data = self._igraph_build_layout_from_ascii(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[igraph] 使用 ASCII 解析渲染（无 JSON）")
-                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
                     return
             except Exception as e2:
                 self._append_log(f"[igraph] ASCII 解析失败: {e2}")
@@ -3845,20 +3874,20 @@ class SboxgenGUI:
                 data = self._igraph_build_layout_from_ascii(repo)
                 if data.get("nodes"):
                     self._append_log("[igraph] 使用 ASCII 解析渲染（无 JSON）")
-                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
                     return
             except Exception as e2:
                 self._append_log(f"[igraph] ASCII 解析失败: {e2}")
             # 最后兜底
             try:
-                data = self._igraph_build_simple_layout(repo)
+                data = self._igraph_build_simple_layout(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[igraph] 使用简化布局渲染（无 FFI/JSON）")
-                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
             except Exception as e2:
                 self._append_log(f"[igraph] 简化布局渲染失败: {e2}")
             return
-        # 适配成 _draw_interactive_graph 需要的结构
+        # 适配成 _draw_interactive_graph_safe 需要的结构
         try:
             br_colors = {}
             for br in raw.get("branches", []):
@@ -3895,7 +3924,7 @@ class SboxgenGUI:
                 })
             data = {"nodes": nodes, "edges": edges}
             self._append_log(f"[igraph] 使用 git-graph --json 渲染（FFI 不可用）: {bin_path}")
-            self._draw_interactive_graph(self.exec_graph_canvas, data)
+            self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
         except Exception as e:
             self._append_log(f"[igraph] 适配 JSON 渲染失败: {e}")
             # 回退 ASCII
@@ -3903,7 +3932,7 @@ class SboxgenGUI:
                 data = self._igraph_build_layout_from_ascii(repo)
                 if data.get("nodes"):
                     self._append_log("[igraph] 使用 ASCII 解析渲染（无 JSON）")
-                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
                     return
             except Exception as e2:
                 self._append_log(f"[igraph] ASCII 解析失败: {e2}")
@@ -3912,12 +3941,459 @@ class SboxgenGUI:
                 data = self._igraph_build_simple_layout(repo)
                 if data.get("nodes"):
                     self._append_log("[igraph] 使用简化布局渲染（无 FFI/JSON）")
-                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.exec_graph_canvas, data)
             except Exception as e2:
                 self._append_log(f"[igraph] 简化布局渲染失败: {e2}")
             return
 
+    def _draw_interactive_graph_safe(self, canvas: tk.Canvas, data: dict):
+        """Thread-safe entry for interactive graph drawing.
+
+        Many call sites run from worker threads. Tk must be updated on the
+        main thread, so we schedule the actual render via `after(0)`.
+        Falls back to direct call if scheduling is not available.
+        """
+        try:
+            # Schedule on Tk main loop
+            self.root.after(0, lambda c=canvas, d=data: self._draw_interactive_graph(c, d))
+        except Exception:
+            # In rare contexts where `root` or the event loop isn't ready,
+            # render synchronously and let the method handle its own fallbacks.
+            try:
+                self._draw_interactive_graph(canvas, data)
+            except Exception:
+                try:
+                    self._draw_interactive_graph_safe_enhanced(canvas, data)
+                except Exception:
+                    self._draw_interactive_graph_fallback(canvas, data)
+
     def _draw_interactive_graph(self, canvas: tk.Canvas, data: dict):
+        """使用完美的 git-graph 线条渲染方案
+
+        支持：
+        - SVG 解析和贝塞尔曲线渲染
+        - 精确的分支/合并视觉效果
+        - 与 git-graph 完全一致的布局
+        """
+        try:
+            # 尝试使用新的完美渲染方案
+            self._draw_interactive_graph_perfect(canvas, data)
+        except Exception as e:
+            # 如果失败，优先回退到增强版（含贝塞尔/平滑曲线）；再兜底到最简单实现
+            print(f"[igraph] Perfect render failed, using enhanced fallback: {e}")
+            try:
+                self._draw_interactive_graph_safe_enhanced(canvas, data)
+            except Exception as e2:
+                print(f"[igraph] Enhanced fallback failed, using basic fallback: {e2}")
+                self._draw_interactive_graph_fallback(canvas, data)
+
+    def _draw_interactive_graph_perfect(self, canvas: tk.Canvas, data: dict):
+        """完美渲染方案 - 通过 SVG 实现 git-graph 的线条效果"""
+        import subprocess
+        import xml.etree.ElementTree as ET
+        import re
+
+        print("[DEBUG] Entering _draw_interactive_graph_perfect")
+        canvas.delete('all')
+        nodes = data.get('nodes', [])
+
+        if not nodes:
+            print("[DEBUG] No nodes, returning")
+            return
+
+        # 获取仓库路径和限制数量
+        workspace = self._resolve_workspace_dir()
+        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+        repo = workspace / project
+
+        print(f"[DEBUG] Using repo: {repo}")
+
+        # 尝试生成 SVG
+        try:
+            bin_path = self._ensure_git_graph_bin()
+            limit = len(nodes)
+
+            # 生成 SVG
+            result = subprocess.run(
+                [bin_path, "--svg", "-n", str(limit)],
+                cwd=str(repo),
+                capture_output=True,
+                text=True,
+                env=self._spawn_env()
+            )
+
+            if result.returncode == 0 and result.stdout:
+                # 解析并渲染 SVG
+                self._render_svg_to_canvas(canvas, result.stdout, nodes)
+                return
+        except Exception as e:
+            print(f"[igraph] SVG generation failed: {e}")
+
+        # 如果 SVG 失败，使用增强的原有方法
+        self._draw_interactive_graph_safe_enhanced(canvas, data)
+
+    def _render_svg_to_canvas(self, canvas: tk.Canvas, svg_content: str, nodes_data: list):
+        """将 SVG 内容渲染到 Canvas，实现完美的线条效果"""
+        import xml.etree.ElementTree as ET
+        import re
+
+        # 解析 SVG
+        root = ET.fromstring(svg_content)
+
+        # 颜色映射
+        color_map = {
+            "blue": "#2196F3",
+            "red": "#F44336",
+            "green": "#4CAF50",
+            "orange": "#FF9800",
+            "purple": "#9C27B0",
+            "brown": "#795548",
+            "gray": "#9E9E9E",
+            "white": "#FFFFFF",
+            "black": "#000000"
+        }
+
+        # 倒序显示参数（与原实现保持一致）
+        n = len(nodes_data)
+        y_offset = 24
+        y_step = 28
+
+        # 先绘制所有边（line 和 path），再绘制节点
+        # 这样节点会在边的上层
+
+        # 1. 绘制 lines 和 paths（边）
+        for element in root:
+            tag = element.tag.split('}')[-1] if '}' in element.tag else element.tag
+
+            if tag == "line":
+                # 直线
+                x1 = float(element.get("x1", 0))
+                y1 = float(element.get("y1", 0))
+                x2 = float(element.get("x2", 0))
+                y2 = float(element.get("y2", 0))
+                stroke = element.get("stroke", "black")
+                width = float(element.get("stroke-width", 1))
+
+                # 转换 y 坐标为倒序显示
+                y1_inv = y_offset + (n - 1 - int((y1 - 15) / 15)) * y_step
+                y2_inv = y_offset + (n - 1 - int((y2 - 15) / 15)) * y_step
+
+                color = color_map.get(stroke, stroke)
+                canvas.create_line(
+                    x1, y1_inv, x2, y2_inv,
+                    fill=color,
+                    width=width * 1.5,
+                    capstyle=tk.ROUND,
+                    tags="edge"
+                )
+
+            elif tag == "path":
+                # 贝塞尔曲线
+                d = element.get("d", "")
+                stroke = element.get("stroke", "black")
+                width = float(element.get("stroke-width", 1))
+                color = color_map.get(stroke, stroke)
+
+                # 解析并转换路径
+                coords = self._parse_svg_path_inverted(d, n, y_offset, y_step)
+                if len(coords) >= 4:
+                    canvas.create_line(
+                        coords,
+                        fill=color,
+                        width=width * 1.5,
+                        smooth=True,
+                        splinesteps=20,
+                        capstyle=tk.ROUND,
+                        joinstyle=tk.ROUND,
+                        tags="edge"
+                    )
+
+        # 2. 收集节点信息
+        self._igraph_hitboxes = []
+        self._igraph_nodes_xy = []
+        circle_elements = []
+
+        for element in root:
+            tag = element.tag.split('}')[-1] if '}' in element.tag else element.tag
+            if tag == "circle":
+                cx = float(element.get("cx", 0))
+                cy = float(element.get("cy", 0))
+                r = float(element.get("r", 4))
+                fill = element.get("fill", "blue")
+                stroke = element.get("stroke", "blue")
+                circle_elements.append({
+                    "cx": cx,
+                    "cy": cy,
+                    "r": r,
+                    "fill": fill,
+                    "stroke": stroke,
+                    "y_idx": int((cy - 15) / 15)
+                })
+
+        # 3. 绘制节点（按照倒序）
+        for i, circle in enumerate(sorted(circle_elements, key=lambda c: c["y_idx"])):
+            # 转换坐标
+            x = circle["cx"]
+            y = y_offset + (n - 1 - circle["y_idx"]) * y_step
+            r = 5
+
+            # 获取节点数据
+            nd = nodes_data[i] if i < len(nodes_data) else {"id": "", "subject": ""}
+
+            # 判断节点类型
+            is_merge = circle["fill"] == "white"
+            color = color_map.get(circle["stroke"], circle["stroke"])
+
+            if is_merge:
+                # 合并节点 - 空心圆
+                canvas.create_oval(
+                    x-r-1, y-r-1, x+r+1, y+r+1,
+                    fill="#2a2a2a",
+                    outline=color,
+                    width=2,
+                    tags="node"
+                )
+            else:
+                # 普通节点 - 实心圆
+                canvas.create_oval(
+                    x-r, y-r, x+r, y+r,
+                    fill=color,
+                    outline=color,
+                    tags="node"
+                )
+
+            # 保存热区信息
+            bbox = (x-8, y-8, x+300, y+12)
+            self._igraph_hitboxes.append((bbox, nd))
+            self._igraph_nodes_xy.append((x, y, r, nd))
+
+        # 设置事件处理（复用原有逻辑）
+        self._setup_graph_events(canvas)
+
+        # 设置滚动区域
+        max_col = max((nd.get('column', 0) for nd in nodes_data), default=0)
+        width = 80 + (max_col + 1) * 90 + 800
+        height = y_offset + n * y_step + 100
+        canvas.configure(scrollregion=(0, 0, width, height))
+
+    def _parse_svg_path_inverted(self, path: str, n: int, y_offset: int, y_step: int) -> list:
+        """解析 SVG 路径并转换为倒序 Canvas 坐标"""
+        import re
+
+        coords = []
+        commands = re.findall(r'[MLQ][^MLQ]*', path)
+
+        for cmd in commands:
+            parts = cmd.strip().split()
+            cmd_type = parts[0]
+
+            if cmd_type in ['M', 'L']:
+                # 移动或直线
+                match = re.search(r'(\d+(?:\.\d+)?),(\d+(?:\.\d+)?)', cmd)
+                if match:
+                    x = float(match.group(1))
+                    y_svg = float(match.group(2))
+                    # 转换 y 坐标
+                    y_idx = int((y_svg - 15) / 15)
+                    y = y_offset + (n - 1 - y_idx) * y_step
+                    coords.extend([x, y])
+
+            elif cmd_type == 'Q':
+                # 二次贝塞尔曲线
+                matches = re.findall(r'(\d+(?:\.\d+)?),(\d+(?:\.\d+)?)', cmd)
+                for match in matches:
+                    x = float(match[0])
+                    y_svg = float(match[1])
+                    # 转换 y 坐标
+                    y_idx = int((y_svg - 15) / 15)
+                    y = y_offset + (n - 1 - y_idx) * y_step
+                    coords.extend([x, y])
+
+        return coords
+
+    def _draw_interactive_graph_safe_enhanced(self, canvas: tk.Canvas, data: dict):
+        """增强的渲染方法 - 改进曲线效果"""
+        canvas.delete('all')
+        nodes = data.get('nodes', [])
+        edges = data.get('edges', [])
+        n = len(nodes)
+        if n == 0:
+            return
+
+        # Layout params
+        y_step = 28
+        lane_dx = 90
+        x_offset = 80
+        y_offset = 24
+
+        # Build dict idx->node
+        idx_map = {nd['idx']: nd for nd in nodes}
+
+        # Draw edges with improved curves
+        for e in edges:
+            a = idx_map.get(e['from'])
+            b = idx_map.get(e['to'])
+            if not a or not b:
+                continue
+
+            x1 = x_offset + a.get('column', 0) * lane_dx
+            y1 = y_offset + (n - 1 - a['idx']) * y_step
+            x2 = x_offset + b.get('column', 0) * lane_dx
+            y2 = y_offset + (n - 1 - b['idx']) * y_step
+            color = e.get('color') or '#2196F3'
+
+            # 如果是跨列连接，绘制曲线
+            if abs(x1 - x2) > lane_dx / 2:
+                pts = self._edge_curve_points(x1, y1, x2, y2)
+                canvas.create_line(
+                    *pts,
+                    fill=color,
+                    width=2,
+                    smooth=True,
+                    splinesteps=24,
+                    capstyle=tk.ROUND
+                )
+            else:
+                # 同列连接，使用直线（与 git-graph 视觉一致）
+                canvas.create_line(
+                    x1, y1, x2, y2,
+                    fill=color,
+                    width=2,
+                    capstyle=tk.ROUND
+                )
+
+        # Draw nodes
+        self._igraph_hitboxes = []
+        self._igraph_nodes_xy = []
+
+        for nd in nodes:
+            x = x_offset + nd.get('column', 0) * lane_dx
+            y = y_offset + (n - 1 - nd['idx']) * y_step
+            r = 5
+
+            # Check if merge commit
+            is_merge = nd.get('is_merge', False)
+            color = nd.get('color') or '#2196F3'
+
+            if is_merge:
+                # Merge commit - hollow circle
+                canvas.create_oval(
+                    x-r-1, y-r-1, x+r+1, y+r+1,
+                    fill="#2a2a2a",
+                    outline=color,
+                    width=2
+                )
+            else:
+                # Regular commit
+                canvas.create_oval(
+                    x-r, y-r, x+r, y+r,
+                    fill=color,
+                    outline=color
+                )
+
+            # hitbox for click
+            bbox = (x-8, y-8, x+300, y+12)
+            self._igraph_hitboxes.append((bbox, nd))
+            self._igraph_nodes_xy.append((x, y, r, nd))
+
+        # Setup events
+        self._setup_graph_events(canvas)
+
+        # scrollregion
+        max_col = max((nd.get('column', 0) for nd in nodes), default=0)
+        width = x_offset + (max_col + 1) * lane_dx + 800
+        height = y_offset + n * y_step + 100
+        canvas.configure(scrollregion=(0, 0, width, height))
+
+    def _edge_curve_points(self, x1: float, y1: float, x2: float, y2: float) -> list:
+        """生成边的平滑曲线控制点序列 - 使用贝塞尔曲线"""
+        points = []
+
+        # 生成贝塞尔曲线点
+        if y1 < y2:  # Branch out (going down in inverted display)
+            # 控制点在起始端
+            ctrl1_x = x1
+            ctrl1_y = y1 + abs(y2 - y1) * 0.5
+            ctrl2_x = x2
+            ctrl2_y = y2 - abs(y2 - y1) * 0.5
+        else:  # Merge (going up)
+            ctrl1_x = x1
+            ctrl1_y = y1 - abs(y1 - y2) * 0.5
+            ctrl2_x = x2
+            ctrl2_y = y2 + abs(y1 - y2) * 0.5
+
+        # 生成平滑的贝塞尔曲线点
+        steps = 16
+        for i in range(steps + 1):
+            t = i / steps
+            # 三次贝塞尔曲线公式
+            px = (1-t)**3 * x1 + 3*(1-t)**2*t * ctrl1_x + 3*(1-t)*t**2 * ctrl2_x + t**3 * x2
+            py = (1-t)**3 * y1 + 3*(1-t)**2*t * ctrl1_y + 3*(1-t)*t**2 * ctrl2_y + t**3 * y2
+            points.extend([px, py])
+
+        return points
+
+    def _setup_graph_events(self, canvas: tk.Canvas):
+        """设置图形事件处理"""
+        # Clear any previous label overlay
+        self._igraph_clear_label(canvas)
+
+        # Capture data in closure
+        hitboxes_snapshot = list(self._igraph_hitboxes)
+        nodes_xy_snapshot = list(self._igraph_nodes_xy)
+        text_color = '#E0E0E0'
+
+        def _on_click(ev):
+            x = canvas.canvasx(ev.x)
+            y = canvas.canvasy(ev.y)
+            clicked = False
+            for (bx0,by0,bx1,by1), nd in hitboxes_snapshot:
+                if bx0 <= x <= bx1 and by0 <= y <= by1:
+                    self._igraph_show_label(canvas, nd, x, y, text_color)
+                    # Try to select task
+                    import re
+                    m = re.match(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?", nd.get('subject',''))
+                    if m:
+                        self._select_task_in_list(m.group(1))
+                    # Update commit details in Graph tab
+                    if canvas == self.graph_canvas:
+                        self._update_graph_commit_details(nd)
+                    clicked = True
+                    break
+            if not clicked:
+                self._igraph_clear_label(canvas)
+
+        def _on_motion(ev):
+            try:
+                hx = canvas.canvasx(ev.x)
+                hy = canvas.canvasy(ev.y)
+                hit = None
+                for (bx0,by0,bx1,by1), nd in hitboxes_snapshot:
+                    if bx0 <= hx <= bx1 and by0 <= hy <= by1:
+                        hit = nd
+                        break
+                # Update hover ring
+                hov = getattr(canvas, '_igraph_hover_item', None)
+                if hov:
+                    canvas.delete(hov)
+                    setattr(canvas, '_igraph_hover_item', None)
+                if hit:
+                    for x,y,r,nd2 in nodes_xy_snapshot:
+                        if nd2 is hit:
+                            hov_item = canvas.create_oval(
+                                x-(r+4), y-(r+4), x+(r+4), y+(r+4),
+                                outline='#2196f3', width=2
+                            )
+                            setattr(canvas, '_igraph_hover_item', hov_item)
+                            break
+            except Exception:
+                pass
+
+        canvas.bind('<Button-1>', _on_click)
+        canvas.bind('<Motion>', _on_motion)
+
+    def _draw_interactive_graph_fallback(self, canvas: tk.Canvas, data: dict):
+        """原始的渲染实现（备份）"""
         canvas.delete('all')
         nodes = data.get('nodes', [])
         edges = data.get('edges', [])
@@ -3940,8 +4416,7 @@ class SboxgenGUI:
         for i in range(n):
             y = y_offset + (n-1-i)*y_step
             canvas.create_line(0, y, x_offset + (max_col+1)*lane_dx + 800, y, fill=grid_color)
-        # Draw edges (001 at top): invert y so that idx 0 (HEAD) at bottom => 001 at top if indices are HEAD-first
-        # We assume indices are HEAD-first; so y = (n-1-idx)*y_step
+        # Draw edges with curves for branch/merge
         for e in edges:
             a = idx_map.get(e['from'])
             b = idx_map.get(e['to'])
@@ -3952,11 +4427,76 @@ class SboxgenGUI:
             x2 = x_offset + b.get('column',0)*lane_dx
             y2 = y_offset + (n-1-b['idx'])*y_step
             color = e.get('color') or '#90a4ae'
-            canvas.create_line(x1, y1, x2, y2, fill=color)
-        # Draw nodes (labels按需显示，点击时才绘制)
+
+            # Check if columns are different (branch/merge)
+            col1 = a.get('column', 0)
+            col2 = b.get('column', 0)
+
+            # DEBUG: Print edge information
+            print(f"[DEBUG] Edge from {a['idx']} to {b['idx']}: col1={col1}, col2={col2}, color={color}")
+
+            if col1 == col2:
+                # Same column - straight line
+                print(f"  -> Drawing straight line")
+                canvas.create_line(x1, y1, x2, y2, fill=color, width=2)
+            else:
+                # Different columns - draw smooth curve with BRIGHT COLOR
+                print(f"  -> Drawing CURVE with bright color!")
+                # Use bright color for curves so they're visible
+                curve_color = '#FF5722'  # Bright orange-red for curves
+                # Create bezier curve points
+                points = []
+
+                # Control point for smooth curve
+                if y1 < y2:  # Going down (newer to older in reversed display)
+                    # Branch out curve
+                    ctrl_x = x1
+                    ctrl_y = y1 + (y2 - y1) * 0.3
+                    mid_x = (x1 + x2) / 2
+                    mid_y = (y1 + y2) / 2
+                    ctrl2_x = x2
+                    ctrl2_y = y2 - (y2 - y1) * 0.3
+                else:  # Going up (merge)
+                    # Merge in curve
+                    ctrl_x = x1
+                    ctrl_y = y1 - (y1 - y2) * 0.3
+                    mid_x = (x1 + x2) / 2
+                    mid_y = (y1 + y2) / 2
+                    ctrl2_x = x2
+                    ctrl2_y = y2 + (y1 - y2) * 0.3
+
+                # Generate smooth curve using quadratic bezier
+                steps = 20
+                for i in range(steps + 1):
+                    t = i / steps
+                    if t <= 0.5:
+                        # First half of curve
+                        t2 = t * 2
+                        px = (1-t2)**2 * x1 + 2*(1-t2)*t2 * ctrl_x + t2**2 * mid_x
+                        py = (1-t2)**2 * y1 + 2*(1-t2)*t2 * ctrl_y + t2**2 * mid_y
+                    else:
+                        # Second half of curve
+                        t2 = (t - 0.5) * 2
+                        px = (1-t2)**2 * mid_x + 2*(1-t2)*t2 * ctrl2_x + t2**2 * x2
+                        py = (1-t2)**2 * mid_y + 2*(1-t2)*t2 * ctrl2_y + t2**2 * y2
+                    points.extend([px, py])
+
+                # Draw the curve with BRIGHT COLOR
+                if len(points) >= 4:
+                    canvas.create_line(
+                        points,
+                        fill=curve_color,  # Use bright curve color
+                        width=3,  # Thicker line for visibility
+                        smooth=True,
+                        splinesteps=10,
+                        capstyle=tk.ROUND,
+                        tags="curve"  # Tag for debugging
+                    )
+                    print(f"  -> CURVE DRAWN with color {curve_color}")
+        # Draw nodes
         self._igraph_hitboxes = []
-        self._igraph_nodes_xy = []  # [(x,y,r,nd)]
-        # Clear hover mark for this canvas
+        self._igraph_nodes_xy = []
+        # Clear hover mark
         try:
             hov = getattr(canvas, '_igraph_hover_item', None)
             if hov:
@@ -3964,7 +4504,6 @@ class SboxgenGUI:
                 setattr(canvas, '_igraph_hover_item', None)
         except Exception:
             pass
-        # Clear any previous label overlay for this canvas
         self._igraph_clear_label(canvas)
         for nd in nodes:
             x = x_offset + nd.get('column',0)*lane_dx
@@ -3973,7 +4512,6 @@ class SboxgenGUI:
             fill = nd.get('fill') or (nd.get('color') or '#007acc')
             outline = nd.get('outline') or (nd.get('color') or '#007acc')
             canvas.create_oval(x-r, y-r, x+r, y+r, fill=fill, outline=outline)
-            # hitbox for click
             bbox = (x-8, y-8, x+300, y+12)
             self._igraph_hitboxes.append((bbox, nd))
             self._igraph_nodes_xy.append((x, y, r, nd))
@@ -3981,61 +4519,10 @@ class SboxgenGUI:
         width = x_offset + (max_col+1)*lane_dx + 800
         height = y_offset + n*y_step + 100
         canvas.configure(scrollregion=(0,0,width,height))
-        # bind click
-        def _on_click(ev):
-            # Convert to canvas (world) coordinates so hitboxes work after scroll
-            x = canvas.canvasx(ev.x)
-            y = canvas.canvasy(ev.y)
-            clicked = False
-            for (bx0,by0,bx1,by1), nd in self._igraph_hitboxes:
-                if bx0 <= x <= bx1 and by0 <= y <= by1:
-                    # show on-demand label near node
-                    self._igraph_show_label(canvas, nd, x, y, text_color)
-                    # try map to task id in subject, select in list
-                    import re
-                    m = re.match(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?", nd.get('subject',''))
-                    if m:
-                        self._select_task_in_list(m.group(1))
-                    # Update commit details in Graph tab if we're in Graph tab
-                    if canvas == self.graph_canvas:
-                        # Graph 标签页：在右侧面板更新提交详情
-                        self._update_graph_commit_details(nd)
-                    else:
-                        # 任务执行页：仅显示便签与选中任务，不弹出对话框
-                        pass
-                    clicked = True
-                    break
-            if not clicked:
-                # click blank: clear label
-                self._igraph_clear_label(canvas)
-        canvas.bind('<Button-1>', _on_click)
-        # hover ring
-        def _on_motion(ev):
-            try:
-                # Convert to canvas (world) coordinates for hover hit test
-                hx = canvas.canvasx(ev.x)
-                hy = canvas.canvasy(ev.y)
-                hit = None
-                for (bx0,by0,bx1,by1), nd in self._igraph_hitboxes:
-                    if bx0 <= hx <= bx1 and by0 <= hy <= by1:
-                        hit = nd
-                        break
-                # update hover ring
-                hov = getattr(canvas, '_igraph_hover_item', None)
-                if hov:
-                    canvas.delete(hov)
-                    setattr(canvas, '_igraph_hover_item', None)
-                if hit:
-                    for x,y,r,nd2 in self._igraph_nodes_xy:
-                        if nd2 is hit:
-                            hov_item = canvas.create_oval(x-(r+4), y-(r+4), x+(r+4), y+(r+4), outline='#2196f3', width=2)
-                            setattr(canvas, '_igraph_hover_item', hov_item)
-                            break
-            except Exception:
-                pass
-        canvas.bind('<Motion>', _on_motion)
+        # Setup events
+        self._setup_graph_events(canvas)
 
-    def _igraph_build_simple_layout(self, repo: Path, max_commits: Optional[int] = None) -> dict:
+    def _igraph_build_simple_layout(self, repo: Path, max_commits: Optional[int] = None, effective_limit: Optional[int] = None) -> dict:
         """当 FFI 与 --json 都不可用时，使用 git 构建最简交互布局。
         - HEAD 优先顺序 (最新→最旧)
         - 单列 column=0；不绘制连线 edges（后续可增强）
@@ -4051,10 +4538,18 @@ class SboxgenGUI:
         except Exception:
             branch = "HEAD"
         # 限制数量：优先使用 UI 的 limit
-        try:
-            lim = int(self.limit_var.get()) if hasattr(self, 'limit_var') else 150
-        except Exception:
-            lim = 150
+        lim = 150
+        if effective_limit is not None:
+            try:
+                lim = int(effective_limit)
+            except Exception:
+                lim = 150
+        else:
+            try:
+                # Avoid reading Tk vars off main-thread; this branch is best-effort
+                lim = int(self.limit_var.get()) if hasattr(self, 'limit_var') else 150
+            except Exception:
+                lim = 150
         if max_commits is not None:
             lim = min(lim, int(max_commits))
         # 提交列表（最新在前，便于 idx=0 映射到底部）
@@ -4084,7 +4579,7 @@ class SboxgenGUI:
             })
         return {"nodes": nodes, "edges": []}
 
-    def _igraph_build_layout_from_ascii(self, repo: Path, max_commits: Optional[int] = None) -> dict:
+    def _igraph_build_layout_from_ascii(self, repo: Path, max_commits: Optional[int] = None, effective_limit: Optional[int] = None) -> dict:
         """使用 git-graph 文本（ASCII）输出解析出 lanes 与父子关系，构造交互布局。
         要求可执行的 git-graph；无需 JSON/FFI。
         - 解析每一行的图形区，取最右侧的提交标记字符（*, o, ●, ○）的字符位置 pos
@@ -4096,10 +4591,17 @@ class SboxgenGUI:
         # resolve binary first
         bin_path = self._ensure_git_graph_bin()
         # derive limit
-        try:
-            lim = int(self.limit_var.get()) if hasattr(self, 'limit_var') else 150
-        except Exception:
-            lim = 150
+        lim = 150
+        if effective_limit is not None:
+            try:
+                lim = int(effective_limit)
+            except Exception:
+                lim = 150
+        else:
+            try:
+                lim = int(self.limit_var.get()) if hasattr(self, 'limit_var') else 150
+            except Exception:
+                lim = 150
         if max_commits is not None:
             lim = min(lim, int(max_commits))
 
@@ -4118,19 +4620,34 @@ class SboxgenGUI:
             if not m:
                 continue
             graph_part = ln[: m.start()]
-            # rightmost commit marker in graph area
-            pos = -1
-            for i in range(len(graph_part) - 1, -1, -1):
-                ch = graph_part[i]
+
+            # Find ALL commit markers and their positions in graph area
+            marker_positions = []
+            for i, ch in enumerate(graph_part):
                 if ch in ('*', 'o', '●', '○'):
-                    pos = i
-                    break
-            if pos < 0:
-                # fallback: try last star
-                pos = graph_part.rfind('*')
-                if pos < 0:
-                    pos = 0
-            col = max(0, pos // 2)
+                    marker_positions.append(i)
+
+            # Use the LAST (rightmost) marker position for this line
+            if marker_positions:
+                pos = marker_positions[-1]
+            else:
+                # No marker found, try to estimate from branch characters
+                pos = 0
+                for i, ch in enumerate(graph_part):
+                    if ch in ('│', '┃', '|'):
+                        pos = i
+                        break
+
+            # Column calculation: git-graph specific positioning
+            # Position 0,1 = column 0
+            # Position 3,4 = column 1
+            # Position 6,7 = column 2, etc.
+            # Formula: round down (pos / 3) for positions > 1
+            if pos <= 1:
+                col = 0
+            else:
+                col = (pos - 1) // 2
+
             short = m.group(0).lower()
             commits.append({"short": short, "column": col})
 
@@ -4141,9 +4658,11 @@ class SboxgenGUI:
             head_name = "HEAD"
 
         # pass 2: Build mapping via rev-list --parents (one shot)
+        # CRITICAL FIX: Use --all to get ALL branches, not just HEAD!
         parents_map: dict[str, list[str]] = {}
         try:
-            rlp = subprocess.run(["git", "rev-list", "--parents", "--topo-order", f"-n", str(lim), head_name], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
+            # Use --all to include all branches
+            rlp = subprocess.run(["git", "rev-list", "--parents", "--all", "--topo-order", f"-n", str(lim * 2)], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
             for ln in rlp.stdout.splitlines():
                 parts = [x.strip().lower() for x in ln.split() if x.strip()]
                 if not parts:
@@ -4248,13 +4767,69 @@ class SboxgenGUI:
         # pass 3: edges by parent indices
         id_to_idx = {nd["id"]: i for i, nd in enumerate(nodes)}
         edges: list[dict] = []
+
+        # DEBUG: Print parent relationships
+        print(f"[DEBUG] Building edges for {len(nodes)} nodes")
+
         for i, parents in enumerate(parent_lists):
+            child_node = nodes[i]
+            print(f"[DEBUG] Node {i} ({child_node['short']}) has parents: {parents[:2] if parents else 'none'}")
+
             for p in parents:
                 j = id_to_idx.get(p)
                 if j is not None:
-                    # color: merge edge use parent's branch color; single-parent use child's color
+                    # Found parent in list
+                    parent_node = nodes[j]
                     edge_color = nodes[j].get("color") if len(parents) > 1 else nodes[i].get("color")
-                    edges.append({"from": i, "to": j, "color": edge_color or "#90a4ae"})
+
+                    # Check if columns are different (for curve detection)
+                    from_col = child_node.get("column", 0)
+                    to_col = parent_node.get("column", 0)
+
+                    edge = {"from": i, "to": j, "color": edge_color or "#90a4ae"}
+                    edges.append(edge)
+
+                    if from_col != to_col:
+                        print(f"  -> CURVE EDGE: {child_node['short']} (col {from_col}) -> {parent_node['short']} (col {to_col})")
+                    else:
+                        print(f"  -> straight edge: {child_node['short']} -> {parent_node['short']}")
+                else:
+                    # Parent not in displayed nodes - this breaks the connection!
+                    print(f"  -> WARNING: Parent {p[:7]} not found in nodes!")
+
+        # CRITICAL FIX: Find and add missing branch-to-main connections
+        # Look for the specific pattern where branches need to connect to main line
+        print(f"[DEBUG] Checking for branch-to-main connections...")
+
+        # Special case: If we have commits in column 1 (branch) that need to connect to column 0 (main)
+        # This happens at merge/branch points
+        for i, node in enumerate(nodes):
+            if node.get("column", 0) == 1:  # Branch commit
+                # Check if this is the last branch commit (before merge)
+                # Look for next commit in column 0
+                for j in range(i + 1, len(nodes)):
+                    next_node = nodes[j]
+                    if next_node.get("column", 0) == 0:
+                        # Check if edge exists
+                        edge_exists = any(
+                            e["from"] == i and e["to"] == j
+                            for e in edges
+                        )
+
+                        # Check if these should be connected (branch merging back)
+                        # If the branch commit has no outgoing edges, it needs connection
+                        has_outgoing = any(e["from"] == i for e in edges)
+
+                        if not has_outgoing and not edge_exists:
+                            print(f"  -> Adding branch-to-main connection: {node['short']} (col 1) -> {next_node['short']} (col 0)")
+                            edges.append({
+                                "from": i,
+                                "to": j,
+                                "color": "#FF5722"  # Orange for branch connections
+                            })
+                        break  # Only connect to the first main line commit
+
+        print(f"[DEBUG] Total edges created: {len(edges)}")
         meta = {
             "produced_by": "ascii",
             "repo": str(repo),
@@ -4866,9 +5441,14 @@ class SboxgenGUI:
         self.root.after(300, self._interactive_graph_render_tab_threaded)
 
     def _interactive_graph_render_tab_threaded(self):
-        threading.Thread(target=self._interactive_graph_render_tab, daemon=True).start()
+        # Capture Tk vars before background work
+        try:
+            limit_snap = int(self.limit_var.get()) if hasattr(self, 'limit_var') else None
+        except Exception:
+            limit_snap = None
+        threading.Thread(target=self._interactive_graph_render_tab, args=(limit_snap,), daemon=True).start()
 
-    def _interactive_graph_render_tab(self):
+    def _interactive_graph_render_tab(self, limit_snap: Optional[int] = None):
         """Render interactive commit graph in Graph tab.
         Prefer Rust FFI layout JSON; gracefully fall back to calling git-graph --json.
         """
@@ -4909,7 +5489,7 @@ class SboxgenGUI:
                         lib.gg_free_string(ptr)
                     try:
                         data = json.loads(s)
-                        self._draw_interactive_graph(self.graph_canvas, data)
+                        self._draw_interactive_graph_safe(self.graph_canvas, data)
                         return
                     except Exception as e:
                         self._append_log(f"[graph-tab] JSON 解析失败: {e}")
@@ -4925,10 +5505,10 @@ class SboxgenGUI:
             self._append_log(f"[graph-tab] FFI 不可用且未找到 git-graph 可执行文件: {e}")
             # 最后兜底：使用简化布局
             try:
-                data = self._igraph_build_simple_layout(repo)
+                data = self._igraph_build_simple_layout(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[graph-tab] 使用简化布局渲染（无 FFI/JSON）")
-                    self._draw_interactive_graph(self.graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.graph_canvas, data)
             except Exception as e2:
                 self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
             return
@@ -4938,19 +5518,19 @@ class SboxgenGUI:
             self._append_log(f"[graph-tab] 运行 git-graph --json 失败: {e}")
             # 回退：尝试解析 ASCII 输出
             try:
-                data = self._igraph_build_layout_from_ascii(repo)
+                data = self._igraph_build_layout_from_ascii(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[graph-tab] 使用 ASCII 解析渲染（无 JSON）")
-                    self._draw_interactive_graph(self.graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.graph_canvas, data)
                     return
             except Exception as e2:
                 self._append_log(f"[graph-tab] ASCII 解析失败: {e2}")
             # 最后兜底
             try:
-                data = self._igraph_build_simple_layout(repo)
+                data = self._igraph_build_simple_layout(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[graph-tab] 使用简化布局渲染（无 FFI/JSON）")
-                    self._draw_interactive_graph(self.graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.graph_canvas, data)
             except Exception as e2:
                 self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
             return
@@ -4959,10 +5539,10 @@ class SboxgenGUI:
             self._append_log("[graph-tab] git-graph --json 输出为空")
             # 回退 ASCII
             try:
-                data = self._igraph_build_layout_from_ascii(repo)
+                data = self._igraph_build_layout_from_ascii(repo, effective_limit=limit_snap)
                 if data.get("nodes"):
                     self._append_log("[graph-tab] 使用 ASCII 解析渲染（无 JSON）")
-                    self._draw_interactive_graph(self.graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.graph_canvas, data)
                     return
             except Exception as e2:
                 self._append_log(f"[graph-tab] ASCII 解析失败: {e2}")
@@ -4976,12 +5556,12 @@ class SboxgenGUI:
                 data = self._igraph_build_layout_from_ascii(repo)
                 if data.get("nodes"):
                     self._append_log("[graph-tab] 使用 ASCII 解析渲染（无 JSON）")
-                    self._draw_interactive_graph(self.graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.graph_canvas, data)
                     return
             except Exception as e2:
                 self._append_log(f"[graph-tab] ASCII 解析失败: {e2}")
             return
-        # adapt to _draw_interactive_graph schema: nodes[idx/column/subject/date/short/branch/color], edges[from/to/color]
+        # adapt to _draw_interactive_graph_safe schema: nodes[idx/column/subject/date/short/branch/color], edges[from/to/color]
         try:
             br_colors = {}
             for br in raw.get("branches", []):
@@ -5018,7 +5598,7 @@ class SboxgenGUI:
                 })
             data = {"nodes": nodes, "edges": edges}
             self._append_log("[graph-tab] 使用 git-graph --json 渲染（FFI 不可用）")
-            self._draw_interactive_graph(self.graph_canvas, data)
+            self._draw_interactive_graph_safe(self.graph_canvas, data)
         except Exception as e:
             self._append_log(f"[graph-tab] 适配 JSON 渲染失败: {e}")
             # 回退 ASCII
@@ -5026,7 +5606,7 @@ class SboxgenGUI:
                 data = self._igraph_build_layout_from_ascii(repo)
                 if data.get("nodes"):
                     self._append_log("[graph-tab] 使用 ASCII 解析渲染（无 JSON）")
-                    self._draw_interactive_graph(self.graph_canvas, data)
+                    self._draw_interactive_graph_safe(self.graph_canvas, data)
                     return
             except Exception as e2:
                 self._append_log(f"[graph-tab] ASCII 解析失败: {e2}")
@@ -5095,7 +5675,8 @@ class SboxgenGUI:
             self._append_log(f"[graph] SVG 转 PNG 失败: {e}")
             return
         # Display on canvas
-        self._display_png_on_canvas(self.graph_canvas, png_path, attr_name='_graph_imgtk', log_prefix='[graph]')
+        # Display on main thread
+        self._display_png_on_canvas_safe(self.graph_canvas, png_path, attr_name='_graph_imgtk', log_prefix='[graph]')
 
     def _graph_zoom(self, factor: float):
         self._graph_scale = max(0.2, min(3.0, self._graph_scale * factor))

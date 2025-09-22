@@ -3731,7 +3731,9 @@ class SboxgenGUI:
         canvas.configure(scrollregion=(0,0,width,height))
         # bind click
         def _on_click(ev):
-            x,y = ev.x, ev.y
+            # Convert to canvas (world) coordinates so hitboxes work after scroll
+            x = canvas.canvasx(ev.x)
+            y = canvas.canvasy(ev.y)
             clicked = False
             for (bx0,by0,bx1,by1), nd in self._igraph_hitboxes:
                 if bx0 <= x <= bx1 and by0 <= y <= by1:
@@ -3751,7 +3753,9 @@ class SboxgenGUI:
         # hover ring
         def _on_motion(ev):
             try:
-                hx, hy = ev.x, ev.y
+                # Convert to canvas (world) coordinates for hover hit test
+                hx = canvas.canvasx(ev.x)
+                hy = canvas.canvasy(ev.y)
                 hit = None
                 for (bx0,by0,bx1,by1), nd in self._igraph_hitboxes:
                     if bx0 <= hx <= bx1 and by0 <= hy <= by1:

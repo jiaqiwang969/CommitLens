@@ -2892,6 +2892,7 @@ class SboxgenGUI:
         gp_toolbar = ttk.Frame(graph_pane)
         gp_toolbar.grid(row=0, column=0, sticky="ew")
         ttk.Button(gp_toolbar, text="刷新 Graph", command=self._embed_repo_graph_rust_threaded).pack(side=tk.LEFT)
+        ttk.Button(gp_toolbar, text="交互渲染 (Beta)", command=self._interactive_graph_render_threaded).pack(side=tk.LEFT, padx=(8,0))
         gp_container = ttk.Frame(graph_pane)
         gp_container.grid(row=1, column=0, sticky="nsew")
         gp_container.rowconfigure(0, weight=1)
@@ -3511,6 +3512,116 @@ class SboxgenGUI:
             return
         # 显示到任务执行页嵌入画布
         self._display_png_on_canvas(self.exec_graph_canvas, png_path, attr_name='_exec_graph_imgtk', log_prefix='[exec-graph]')
+
+    # ---------- Interactive Graph (Tk Canvas + Rust Layout JSON) ----------
+    def _interactive_graph_render_threaded(self):
+        threading.Thread(target=self._interactive_graph_render, daemon=True).start()
+
+    def _interactive_graph_render(self):
+        # Fetch layout JSON via FFI
+        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+        repo = workspace / project
+        if not (repo / ".git").exists():
+            self._append_log(f"[igraph] 未找到项目仓库: {repo}")
+            return
+        import ctypes as C, json
+        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        if not Path(dylib).exists():
+            try:
+                self._append_log("[igraph] 构建 Rust FFI…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+            except Exception as e:
+                self._append_log(f"[igraph] 构建失败: {e}")
+        if not Path(dylib).exists():
+            self._append_log(f"[igraph] 未找到动态库: {dylib}")
+            return
+        try:
+            lib = C.CDLL(dylib)
+            lib.gg_layout_json.argtypes = [C.c_char_p, C.c_size_t, C.c_bool]
+            lib.gg_layout_json.restype = C.c_void_p
+            lib.gg_free_string.argtypes = [C.c_void_p]
+            lib.gg_free_string.restype = None
+        except Exception as e:
+            self._append_log(f"[igraph] 加载 FFI 失败: {e}")
+            return
+        ptr = lib.gg_layout_json(str(repo).encode('utf-8'), C.c_size_t(0), C.c_bool(False))
+        if not ptr:
+            self._append_log('[igraph] FFI 返回空 JSON')
+            return
+        try:
+            s = C.string_at(ptr).decode('utf-8')
+        finally:
+            lib.gg_free_string(ptr)
+        try:
+            data = json.loads(s)
+        except Exception as e:
+            self._append_log(f"[igraph] JSON 解析失败: {e}")
+            return
+        # Draw into exec_graph_canvas
+        self._draw_interactive_graph(self.exec_graph_canvas, data)
+
+    def _draw_interactive_graph(self, canvas: tk.Canvas, data: dict):
+        canvas.delete('all')
+        nodes = data.get('nodes', [])
+        edges = data.get('edges', [])
+        n = len(nodes)
+        if n == 0:
+            return
+        # Layout params
+        y_step = 26
+        lane_dx = 80
+        x_offset = 60
+        y_offset = 20
+        # Build dict idx->node
+        idx_map = {nd['idx']: nd for nd in nodes}
+        # compute max column
+        max_col = max((nd.get('column',0) for nd in nodes), default=0)
+        # Draw edges (001 at top): invert y so that idx 0 (HEAD) at bottom => 001 at top if indices are HEAD-first
+        # We assume indices are HEAD-first; so y = (n-1-idx)*y_step
+        for e in edges:
+            a = idx_map.get(e['from'])
+            b = idx_map.get(e['to'])
+            if not a or not b:
+                continue
+            x1 = x_offset + a.get('column',0)*lane_dx
+            y1 = y_offset + (n-1-a['idx'])*y_step
+            x2 = x_offset + b.get('column',0)*lane_dx
+            y2 = y_offset + (n-1-b['idx'])*y_step
+            canvas.create_line(x1, y1, x2, y2, fill='#999999')
+        # Draw nodes and texts
+        self._igraph_hitboxes = []
+        for nd in nodes:
+            x = x_offset + nd.get('column',0)*lane_dx
+            y = y_offset + (n-1-nd['idx'])*y_step
+            r = 5
+            fill = '#007acc' if not nd.get('is_merge') else '#ffffff'
+            outline = '#007acc'
+            canvas.create_oval(x-r, y-r, x+r, y+r, fill=fill, outline=outline)
+            subj = (nd.get('subject','') or '').split('\n')[0]
+            if len(subj) > 60:
+                subj = subj[:60] + '…'
+            label = f"{nd.get('short','') } {subj} {nd.get('date','')}"
+            canvas.create_text(x+10, y, anchor='w', text=label, fill='#111111', font=('',10))
+            # hitbox for click
+            bbox = (x-8, y-8, x+300, y+12)
+            self._igraph_hitboxes.append((bbox, nd))
+        # scrollregion
+        width = x_offset + (max_col+1)*lane_dx + 800
+        height = y_offset + n*y_step + 100
+        canvas.configure(scrollregion=(0,0,width,height))
+        # bind click
+        def _on_click(ev):
+            x,y = ev.x, ev.y
+            for (bx0,by0,bx1,by1), nd in self._igraph_hitboxes:
+                if bx0 <= x <= bx1 and by0 <= y <= by1:
+                    # try map to task id in subject, select in list
+                    import re
+                    m = re.match(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?", nd.get('subject',''))
+                    if m:
+                        self._select_task_in_list(m.group(1))
+                    break
+        canvas.bind('<Button-1>', _on_click)
 
     # ---------------- Graph Tab (Native Tk Canvas) ----------------
     def _build_graph_tab(self, tab):

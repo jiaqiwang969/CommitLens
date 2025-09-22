@@ -5075,8 +5075,11 @@ class SboxgenGUI:
 
         self._task_log(f"准备执行任务 {task['id']}...", "info")
 
-        # 存储进程引用以支持停止功能
+        # 存储进程与当前任务引用，支持错误时的重试/停止
         self.task_exec_process = None
+        self._current_task_ref = task
+        self._current_custom_prompt = custom_prompt
+        self._error_prompt_active = False
 
         # 更新执行器的工作目录设置
         workspace_path = self.task_workspace_var.get()
@@ -5419,11 +5422,16 @@ class SboxgenGUI:
                 self._task_log("工作空间已清理", "info")
             except Exception as e:
                 self._task_log(f"清理工作空间失败: {e}", "error")
+            # 清理当前任务引用
+            self._current_task_ref = None
+            self._current_custom_prompt = None
+            self._error_prompt_active = False
 
     def _monitor_task_files(self, output_file, error_file, status_file):
         """监控任务执行文件变化（完全复用Codex Output监控策略）"""
         import time
         from pathlib import Path
+        from collections import deque
 
         # 记录上一次的状态和错误内容，避免重复处理
         last_error_content = ""
@@ -5434,6 +5442,8 @@ class SboxgenGUI:
 
         # 消息解析缓冲区
         message_buffer = ""
+        # 维护输出尾部 N 行，便于实时检测 API/网络错误
+        tail_lines = deque(maxlen=30)
 
         while self.task_monitoring and self.task_executor_running:  # 检查两个标志
             try:
@@ -5491,6 +5501,27 @@ class SboxgenGUI:
                             self.task_output_position = current_size
 
                             if new_content:
+                                # 更新尾部行缓冲
+                                for ln in new_content.splitlines():
+                                    tail_lines.append(ln)
+                                # 实时错误检测：API/网络错误模式（小写匹配）
+                                try:
+                                    hay = "\n".join(list(tail_lines)[-20:]).lower()
+                                    patterns = [
+                                        'stream error', 'service unavailable', 'temporarily unavailable',
+                                        'rate limit', 'too many requests', 'deadline exceeded', 'timed out', 'timeout',
+                                        'network is unreachable', 'connection reset', 'connection refused', 'bad gateway',
+                                        'temporary failure in name resolution', 'invalid api key', 'unauthorized', 'tls',
+                                    ]
+                                    hit = any(p in hay for p in patterns)
+                                except Exception:
+                                    hit = False
+                                if hit and (not getattr(self, '_error_prompt_active', False)):
+                                    # 触发一次性的错误对话框
+                                    self._error_prompt_active = True
+                                    last20 = "\n".join(list(tail_lines)[-20:])
+                                    self.root.after(0, lambda txt=last20: self._prompt_api_error_decision(txt))
+
                                 # 记录当前日志位置（用于消息定位）
                                 current_log_position = None
                                 try:
@@ -5592,6 +5623,57 @@ class SboxgenGUI:
 
         except Exception as e:
             print(f"解析消息错误: {e}")
+
+    def _prompt_api_error_decision(self, tail_text: str):
+        """弹出对话框：检测到疑似 API/网络错误，询问是否重试/继续/停止。"""
+        from tkinter import messagebox
+        msg = (
+            "检测到疑似网络/API 错误。\n\n"
+            "是否要重试当前步骤？\n\n"
+            "Yes = 重试当前步骤\nNo = 继续执行（忽略本次错误）\nCancel = 停止执行\n\n"
+            "最近输出: \n" + tail_text[-500:]
+        )
+        ans = messagebox.askyesnocancel("检测到错误", msg)
+        # 恢复激活标志，让后续错误可再次触发（防止被锁住）
+        self._error_prompt_active = False
+        if ans is True:
+            # 重试：停止当前进程后重新执行当前任务
+            try:
+                self._task_log("用户选择：重试当前步骤", "warning")
+                self._stop_task_execution()
+            except Exception:
+                pass
+            # 延迟重试，等待清理完成
+            self.root.after(800, self._rerun_current_task)
+        elif ans is False:
+            # 继续：不做处理
+            try:
+                self._task_log("用户选择：继续执行", "info")
+            except Exception:
+                pass
+        else:
+            # 停止
+            try:
+                self._task_log("用户选择：停止执行", "warning")
+                self._stop_task_execution()
+            except Exception:
+                pass
+
+    def _rerun_current_task(self):
+        """在同一工作空间重试当前任务（使用相同的自定义 Prompt）。"""
+        try:
+            task = getattr(self, '_current_task_ref', None)
+            prompt = getattr(self, '_current_custom_prompt', None)
+            if not task or not prompt:
+                return
+            # 仅当当前没有执行器在运行时才重试
+            if getattr(self, 'task_executor_running', False):
+                return
+            self.task_executor_running = True
+            # 直接调用执行函数（与单次执行一致）
+            threading.Thread(target=lambda: (self._task_log("开始重试当前任务...", "info"), self._execute_task_with_prompt(task, prompt)), daemon=True).start()
+        except Exception:
+            pass
 
     def _parse_and_update_messages(self, content):
         """轻量级解析内容并更新消息列表"""

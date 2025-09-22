@@ -167,7 +167,8 @@ class SboxgenGUI:
         nb.add(tab_run, text="执行与日志")
         nb.add(tab_codex_output, text="Codex Output")
         nb.add(tab_task_executor, text="任务执行")  # 添加到标签栏
-        nb.add(tab_graph, text="Graph")  # 任务图（原生绘制）
+        # Rename tab from "Graph" to user-preferred label
+        nb.add(tab_graph, text="commit info")  # 任务图（原生绘制）
 
         # --- basic tab ---
         for i in range(8):
@@ -3289,6 +3290,29 @@ class SboxgenGUI:
 
 
     # ---------------- Graph generation ----------------
+    def _gg_crate_dir(self) -> Path:
+        """Return the path to the embedded git-graph Rust crate.
+        Respects env `SBOXGEN_GG_DIR`; defaults to <repo_root>/src/git-graph.
+        """
+        try:
+            env = os.environ.get("SBOXGEN_GG_DIR")
+            if env:
+                return Path(env)
+            repo_root = Path(__file__).resolve().parents[1]
+            return repo_root / "src" / "git-graph"
+        except Exception:
+            return Path("src/git-graph").resolve()
+
+    def _gg_dylib_path(self) -> Path:
+        """Best-effort guess of libgit_graph.<ext> path (cdylib) for FFI.
+        Respects env `SBOXGEN_GG_FFI`. Note: build may only produce rlib; we gracefully
+        fall back to CLI when the cdylib is absent.
+        """
+        env = os.environ.get("SBOXGEN_GG_FFI")
+        if env:
+            return Path(env)
+        ext = "dylib" if sys.platform == "darwin" else ("dll" if sys.platform.startswith("win") else "so")
+        return self._gg_crate_dir() / "target" / "release" / f"libgit_graph.{ext}"
     def _ensure_git_graph_bin(self) -> str:
         """Locate or build git-graph; return executable path.
         Order: env -> PATH -> workspace targets -> build workspace crates.
@@ -3306,7 +3330,7 @@ class SboxgenGUI:
         if exe:
             self._git_graph_bin = exe
             return exe
-        # 3) workspace candidates
+        # 3) workspace candidates (preferred: likely JSON-capable)
         ws = Path('.workspace').resolve()
         candidates = [
             ws / 'rust-project' / 'target' / 'release' / 'git-graph',
@@ -3318,9 +3342,20 @@ class SboxgenGUI:
             if cand.exists():
                 self._git_graph_bin = str(cand)
                 return str(cand)
-        # 4) try build top-level crate first
-        repo_top = ws / 'rust-project'
+        # 3b) repo-embedded crate candidates (fallback)
+        local_candidates = [
+            self._gg_crate_dir() / 'target' / 'release' / 'git-graph',
+            self._gg_crate_dir() / 'target' / 'debug' / 'git-graph',
+        ]
+        for cand in local_candidates:
+            if cand.exists():
+                self._git_graph_bin = str(cand)
+                return str(cand)
+
+        # 4) try build top-level workspace crate first (preferred)
+        repo_top_crate = self._gg_crate_dir()
         try:
+            repo_top = ws / 'rust-project'
             if (repo_top / 'Cargo.toml').exists():
                 self._task_log("开始构建 git-graph（.workspace/rust-project）", "info")
                 subprocess.run(["cargo", "build", "--release"], cwd=str(repo_top), check=True)
@@ -3330,7 +3365,7 @@ class SboxgenGUI:
                     return str(cand)
         except Exception as e:
             self._task_log(f"构建 .workspace/rust-project 失败: {e}", "error")
-        # 5) fallback build rust-project-01
+        # 5) fallback build rust-project-01 (legacy)
         repo_legacy = ws / 'rust-project' / 'rust-project-01'
         try:
             if (repo_legacy / 'Cargo.toml').exists():
@@ -3342,6 +3377,17 @@ class SboxgenGUI:
                     return str(cand)
         except Exception as e:
             self._task_log(f"构建 legacy 失败: {e}", "error")
+        # 6) last resort: build embedded crate (may not be JSON-capable)
+        try:
+            if (repo_top_crate / 'Cargo.toml').exists():
+                self._task_log("开始构建 git-graph（src/git-graph）", "info")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(repo_top_crate), check=True)
+                cand = repo_top_crate / 'target' / 'release' / 'git-graph'
+                if cand.exists():
+                    self._git_graph_bin = str(cand)
+                    return str(cand)
+        except Exception as e:
+            self._task_log(f"构建 src/git-graph 失败: {e}", "error")
         raise RuntimeError("未找到 git-graph 可执行文件，且构建失败。请设置 SBOXGEN_GIT_GRAPH 或修复工作区。")
 
     def _parse_seq_from_id(self, task_id: str) -> int:
@@ -3378,11 +3424,11 @@ class SboxgenGUI:
 
         # 加载 FFI
         import ctypes as C
-        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        dylib = str(self._gg_dylib_path())
         if not Path(dylib).exists():
             try:
-                self._append_log("[graph] 构建 Rust FFI…")
-                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+                self._append_log("[graph] 构建 Rust FFI（src/git-graph）…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(self._gg_crate_dir()), check=True)
             except Exception as e:
                 self._task_log(f"构建 FFI 失败: {e}", "error")
         if not Path(dylib).exists():
@@ -3593,11 +3639,11 @@ class SboxgenGUI:
             return
         # FFI 调用
         import ctypes as C
-        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        dylib = str(self._gg_dylib_path())
         if not Path(dylib).exists():
             try:
-                self._append_log("[exec-graph] 构建 Rust FFI…")
-                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+                self._append_log("[exec-graph] 构建 Rust FFI（src/git-graph）…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(self._gg_crate_dir()), check=True)
             except Exception as e:
                 self._append_log(f"[exec-graph] 构建失败: {e}")
         if not Path(dylib).exists():
@@ -3656,12 +3702,12 @@ class SboxgenGUI:
             self._append_log(f"[igraph] 未找到项目仓库: {repo}")
             return
         import ctypes as C, json
-        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        dylib = str(self._gg_dylib_path())
         use_cli_fallback = False
         if not Path(dylib).exists():
             try:
-                self._append_log("[igraph] 构建 Rust FFI…")
-                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+                self._append_log("[igraph] 构建 Rust FFI（src/git-graph）…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(self._gg_crate_dir()), check=True)
             except Exception as e:
                 self._append_log(f"[igraph] 构建失败: {e}")
         if not Path(dylib).exists():
@@ -3701,6 +3747,7 @@ class SboxgenGUI:
             self._append_log(f"[igraph] FFI 不可用且未找到 git-graph 可执行文件: {e}")
             return
         try:
+            self._append_log(f"[graph-tab] 使用 {bin_path} 执行 --json 渲染")
             proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
         except Exception as e:
             self._append_log(f"[igraph] 运行 git-graph --json 失败: {e}")
@@ -3725,16 +3772,20 @@ class SboxgenGUI:
             for nd in raw.get("nodes", []):
                 idx = int(nd.get("index", 0))
                 short = nd.get("short") or (nd.get("oid") or "")[:7]
+                oid = nd.get("oid") or ""  # Full commit SHA
                 subject = nd.get("summary") or ""
                 date = nd.get("date") or ""
+                author = nd.get("author", "")  # Get author if available
                 br_name = nd.get("branch_name") or (nd.get("branches", [None])[0])
                 color = br_colors.get(br_name, "#007acc") if br_name else "#007acc"
                 nodes.append({
                     "idx": idx,
+                    "id": oid,  # Add full commit SHA
                     "column": nd.get("column") or 0,
                     "short": short,
                     "subject": subject,
                     "date": date,
+                    "author": author,  # Add author
                     "branch": br_name or "",
                     "color": color,
                 })
@@ -3746,7 +3797,7 @@ class SboxgenGUI:
                     "color": ln.get("color") or "#90a4ae",
                 })
             data = {"nodes": nodes, "edges": edges}
-            self._append_log("[igraph] 使用 git-graph --json 渲染（FFI 不可用）")
+            self._append_log(f"[igraph] 使用 git-graph --json 渲染（FFI 不可用）: {bin_path}")
             self._draw_interactive_graph(self.exec_graph_canvas, data)
         except Exception as e:
             self._append_log(f"[igraph] 适配 JSON 渲染失败: {e}")
@@ -3831,6 +3882,12 @@ class SboxgenGUI:
                     m = re.match(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?", nd.get('subject',''))
                     if m:
                         self._select_task_in_list(m.group(1))
+                    # Update commit details in Graph tab if we're in Graph tab
+                    if canvas == self.graph_canvas:
+                        self._update_graph_commit_details(nd)
+                    else:
+                        # For other canvases, open the detail window
+                        self._open_commit_detail_window(nd)
                     clicked = True
                     break
             if not clicked:
@@ -3946,6 +4003,398 @@ class SboxgenGUI:
         canvas.tag_raise(txt, rect)
         setattr(canvas, '_igraph_label_items', [rect, txt])
 
+    # ---------------- Graph Tab Commit Details Integration ----------------
+    def _update_graph_commit_details(self, node: dict):
+        """Update the commit details panel in Graph tab."""
+        commit_sha = node.get('id', '')
+        if not commit_sha:
+            return
+
+        # Update commit info labels
+        self.graph_commit_sha_label.config(text=f"SHA: {commit_sha[:7]}")
+        subject = node.get('subject', '').split('\n')[0]
+        self.graph_commit_subject_label.config(text=f"Subject: {subject[:80]}...")
+        self.graph_commit_author_label.config(text=f"Author: {node.get('author', '')}")
+        self.graph_commit_date_label.config(text=f"Date: {node.get('date', '')}")
+
+        # Store current commit SHA
+        self.graph_current_commit_sha = commit_sha
+
+        # Load commit data in background
+        def load_commit_data():
+            workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+            project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+            repo_path = workspace / project
+
+            if not (repo_path / ".git").exists():
+                self.graph_content_text.delete('1.0', tk.END)
+                self.graph_content_text.insert('1.0', f"Repository not found: {repo_path}")
+                return
+
+            # Get commit diff info
+            diff_info = self._get_commit_diff_info(repo_path, commit_sha)
+            if not diff_info:
+                self.graph_content_text.delete('1.0', tk.END)
+                self.graph_content_text.insert('1.0', "Failed to load commit diff")
+                return
+
+            # Populate file tree
+            self._populate_file_tree(self.graph_file_tree, diff_info['files'])
+
+            # Auto-select first file if available
+            if diff_info['files']:
+                children = self.graph_file_tree.get_children()
+                if children:
+                    first_item = children[0]
+                    # If first item is a directory, get its first child
+                    sub_children = self.graph_file_tree.get_children(first_item)
+                    if sub_children:
+                        first_item = sub_children[0]
+                    self.graph_file_tree.selection_set(first_item)
+                    self.graph_file_tree.see(first_item)
+                    self.graph_file_tree.event_generate('<<TreeviewSelect>>')
+
+        # Load data in background
+        threading.Thread(target=load_commit_data, daemon=True).start()
+
+    def _on_graph_file_tree_select(self, event):
+        """Handle file tree selection in Graph tab."""
+        selection = self.graph_file_tree.selection()
+        if not selection or not self.graph_current_commit_sha:
+            return
+
+        item = selection[0]
+        values = self.graph_file_tree.item(item, 'values')
+        if not values or len(values) < 3:
+            return
+
+        file_path = values[2]
+        if not file_path:
+            return
+
+        # Update current file label
+        self.graph_current_file_var.set(file_path)
+
+        # Clear content
+        self.graph_content_text.delete('1.0', tk.END)
+
+        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+        repo_path = workspace / project
+
+        mode = self.graph_view_mode_var.get()
+        if mode == 'diff':
+            # Show diff
+            diff_content = self._get_file_diff(repo_path, self.graph_current_commit_sha, file_path)
+            self._display_diff_content(self.graph_content_text, diff_content)
+        else:
+            # Show file content at commit
+            file_content = self._get_file_at_commit(repo_path, self.graph_current_commit_sha, file_path)
+            self._display_file_content(self.graph_content_text, file_content, file_path)
+
+    def _on_graph_view_mode_change(self, *args):
+        """Handle view mode change in Graph tab."""
+        # Re-trigger selection to update content
+        selection = self.graph_file_tree.selection()
+        if selection:
+            self.graph_file_tree.event_generate('<<TreeviewSelect>>')
+
+    # ---------------- Commit Detail Window ----------------
+    def _open_commit_detail_window(self, node: dict):
+        """Open a new window showing commit details with file tree and diff viewer."""
+        commit_sha = node.get('id', '')
+        if not commit_sha:
+            return
+
+        # Create new top-level window
+        detail_window = tk.Toplevel(self.root)
+        detail_window.title(f"Commit Details: {commit_sha[:7]}")
+        detail_window.geometry("1200x800")
+
+        # Main container with paned window
+        main_paned = ttk.PanedWindow(detail_window, orient=tk.HORIZONTAL)
+        main_paned.pack(fill=tk.BOTH, expand=True)
+
+        # Left frame for file tree
+        left_frame = ttk.Frame(main_paned, width=300)
+        left_frame.pack_propagate(False)
+        main_paned.add(left_frame, weight=1)
+
+        # Right frame for content viewer
+        right_frame = ttk.Frame(main_paned)
+        main_paned.add(right_frame, weight=3)
+
+        # Commit info header
+        header_frame = ttk.Frame(left_frame)
+        header_frame.pack(fill=tk.X, padx=5, pady=5)
+
+        subject = node.get('subject', '').split('\n')[0]
+        author = node.get('author', '')
+        date = node.get('date', '')
+
+        ttk.Label(header_frame, text=f"SHA: {commit_sha[:7]}", font=('Monaco', 10, 'bold')).pack(anchor='w')
+        ttk.Label(header_frame, text=f"Subject: {subject[:50]}...", wraplength=280).pack(anchor='w')
+        ttk.Label(header_frame, text=f"Author: {author}").pack(anchor='w')
+        ttk.Label(header_frame, text=f"Date: {date}").pack(anchor='w')
+
+        # Separator
+        ttk.Separator(left_frame, orient='horizontal').pack(fill=tk.X, pady=5)
+
+        # File tree
+        tree_frame = ttk.Frame(left_frame)
+        tree_frame.pack(fill=tk.BOTH, expand=True, padx=5)
+
+        tree_scroll = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL)
+        tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        file_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode='browse')
+        file_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        tree_scroll.config(command=file_tree.yview)
+
+        # Configure tree columns
+        file_tree['columns'] = ('status', 'lines')
+        file_tree.column('#0', width=200, minwidth=100)
+        file_tree.column('status', width=50, minwidth=30)
+        file_tree.column('lines', width=60, minwidth=40)
+        file_tree.heading('#0', text='File')
+        file_tree.heading('status', text='Status')
+        file_tree.heading('lines', text='Lines')
+
+        # Right side - content viewer
+        viewer_toolbar = ttk.Frame(right_frame)
+        viewer_toolbar.pack(fill=tk.X, padx=5, pady=5)
+
+        # View mode toggle
+        view_mode_var = tk.StringVar(value='diff')
+        ttk.Radiobutton(viewer_toolbar, text="Diff View", variable=view_mode_var, value='diff').pack(side=tk.LEFT, padx=5)
+        ttk.Radiobutton(viewer_toolbar, text="File View", variable=view_mode_var, value='file').pack(side=tk.LEFT, padx=5)
+
+        # Current file label
+        current_file_var = tk.StringVar(value="")
+        ttk.Label(viewer_toolbar, textvariable=current_file_var).pack(side=tk.LEFT, padx=20)
+
+        # Content viewer
+        content_frame = ttk.Frame(right_frame)
+        content_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        content_scroll = ttk.Scrollbar(content_frame, orient=tk.VERTICAL)
+        content_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        content_text = tk.Text(content_frame, yscrollcommand=content_scroll.set, wrap='none', font=('Monaco', 10))
+        content_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        content_scroll.config(command=content_text.yview)
+
+        # Horizontal scrollbar
+        h_scroll = ttk.Scrollbar(content_frame, orient=tk.HORIZONTAL, command=content_text.xview)
+        h_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+        content_text.config(xscrollcommand=h_scroll.set)
+
+        # Configure text tags for diff highlighting (dark theme friendly colors)
+        content_text.tag_config('added', background='#1a3d1a', foreground='#90ee90')
+        content_text.tag_config('deleted', background='#3d1a1a', foreground='#ff6b6b')
+        content_text.tag_config('header', background='#2d3748', foreground='#e2e8f0', font=('Monaco', 10, 'bold'))
+        content_text.tag_config('linenumber', foreground='#6c757d')
+
+        # Load commit data in background
+        def load_commit_data():
+            workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+            project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+            repo_path = workspace / project
+
+            if not (repo_path / ".git").exists():
+                content_text.insert('1.0', f"Repository not found: {repo_path}")
+                return
+
+            # Get commit diff info
+            diff_info = self._get_commit_diff_info(repo_path, commit_sha)
+            if not diff_info:
+                content_text.insert('1.0', "Failed to load commit diff")
+                return
+
+            # Populate file tree
+            self._populate_file_tree(file_tree, diff_info['files'])
+
+            # Handle tree selection
+            def on_tree_select(event):
+                selection = file_tree.selection()
+                if not selection:
+                    return
+                item = selection[0]
+                values = file_tree.item(item, 'values')
+                if not values or len(values) < 3:
+                    return
+                file_path = values[2]
+                if not file_path:
+                    return
+
+                # Update current file label
+                current_file_var.set(file_path)
+
+                # Clear content
+                content_text.delete('1.0', tk.END)
+
+                mode = view_mode_var.get()
+                if mode == 'diff':
+                    # Show diff
+                    diff_content = self._get_file_diff(repo_path, commit_sha, file_path)
+                    self._display_diff_content(content_text, diff_content)
+                else:
+                    # Show file content at commit
+                    file_content = self._get_file_at_commit(repo_path, commit_sha, file_path)
+                    self._display_file_content(content_text, file_content, file_path)
+
+            file_tree.bind('<<TreeviewSelect>>', on_tree_select)
+
+            # Handle view mode change (compatible with Python 3.13+)
+            def on_mode_change(*args):
+                # Re-trigger selection to update content
+                selection = file_tree.selection()
+                if selection:
+                    file_tree.event_generate('<<TreeviewSelect>>')
+
+            try:
+                view_mode_var.trace_add('write', on_mode_change)
+            except AttributeError:
+                # Fallback for older Python versions
+                view_mode_var.trace('w', on_mode_change)
+
+            # Auto-select first file
+            if diff_info['files']:
+                children = file_tree.get_children()
+                if children:
+                    first_item = children[0]
+                    # If first item is a directory, get its first child
+                    sub_children = file_tree.get_children(first_item)
+                    if sub_children:
+                        first_item = sub_children[0]
+                    file_tree.selection_set(first_item)
+                    file_tree.see(first_item)
+                    file_tree.event_generate('<<TreeviewSelect>>')
+
+        # Load data in background
+        threading.Thread(target=load_commit_data, daemon=True).start()
+
+    def _get_commit_diff_info(self, repo_path: Path, commit_sha: str) -> dict:
+        """Get commit diff information including changed files."""
+        import subprocess
+        try:
+            # Get list of changed files with stats
+            cmd = ['git', 'diff-tree', '--no-commit-id', '--name-status', '-r', commit_sha]
+            result = subprocess.run(cmd, cwd=str(repo_path), capture_output=True, text=True, encoding='utf-8')
+            if result.returncode != 0:
+                return None
+
+            files = []
+            for line in result.stdout.strip().split('\n'):
+                if not line:
+                    continue
+                parts = line.split('\t')
+                if len(parts) >= 2:
+                    status = parts[0]
+                    file_path = parts[1]
+
+                    # Get line changes
+                    stats_cmd = ['git', 'diff', f'{commit_sha}~1', commit_sha, '--numstat', '--', file_path]
+                    stats_result = subprocess.run(stats_cmd, cwd=str(repo_path), capture_output=True, text=True)
+                    added, deleted = 0, 0
+                    if stats_result.returncode == 0 and stats_result.stdout:
+                        stats_parts = stats_result.stdout.strip().split('\t')
+                        if len(stats_parts) >= 2:
+                            try:
+                                added = int(stats_parts[0]) if stats_parts[0] != '-' else 0
+                                deleted = int(stats_parts[1]) if stats_parts[1] != '-' else 0
+                            except ValueError:
+                                pass
+
+                    files.append({
+                        'path': file_path,
+                        'status': status,
+                        'added': added,
+                        'deleted': deleted
+                    })
+
+            return {'files': files}
+        except Exception as e:
+            print(f"Error getting diff info: {e}")
+            return None
+
+    def _populate_file_tree(self, tree: ttk.Treeview, files: list):
+        """Populate the file tree with changed files."""
+        # Clear existing items
+        tree.delete(*tree.get_children())
+
+        # Group files by directory
+        dir_structure = {}
+        for file_info in files:
+            path_parts = file_info['path'].split('/')
+            current = dir_structure
+            for part in path_parts[:-1]:
+                if part not in current:
+                    current[part] = {}
+                current = current[part]
+            # Add file
+            filename = path_parts[-1]
+            current[filename] = file_info
+
+        # Build tree recursively
+        def add_items(parent, structure, path=''):
+            for name, value in sorted(structure.items()):
+                if isinstance(value, dict) and 'status' in value:
+                    # It's a file
+                    status_map = {'A': 'Added', 'M': 'Modified', 'D': 'Deleted', 'R': 'Renamed'}
+                    status = status_map.get(value['status'], value['status'])
+                    lines = f"+{value['added']} -{value['deleted']}"
+                    tree.insert(parent, 'end', text=name, values=(status, lines, value['path']))
+                else:
+                    # It's a directory
+                    dir_item = tree.insert(parent, 'end', text=name + '/', values=('', '', ''))
+                    add_items(dir_item, value, path + '/' + name if path else name)
+                    tree.item(dir_item, open=True)  # Expand directories by default
+
+        add_items('', dir_structure)
+
+    def _get_file_diff(self, repo_path: Path, commit_sha: str, file_path: str) -> str:
+        """Get diff for a specific file in a commit."""
+        import subprocess
+        try:
+            cmd = ['git', 'diff', f'{commit_sha}~1', commit_sha, '--', file_path]
+            result = subprocess.run(cmd, cwd=str(repo_path), capture_output=True, text=True, encoding='utf-8')
+            return result.stdout if result.returncode == 0 else "Failed to get diff"
+        except Exception as e:
+            return f"Error: {e}"
+
+    def _get_file_at_commit(self, repo_path: Path, commit_sha: str, file_path: str) -> str:
+        """Get file content at a specific commit."""
+        import subprocess
+        try:
+            cmd = ['git', 'show', f'{commit_sha}:{file_path}']
+            result = subprocess.run(cmd, cwd=str(repo_path), capture_output=True, text=True, encoding='utf-8')
+            return result.stdout if result.returncode == 0 else "File not found or deleted"
+        except Exception as e:
+            return f"Error: {e}"
+
+    def _display_diff_content(self, text_widget: tk.Text, diff: str):
+        """Display diff content with syntax highlighting."""
+        lines = diff.split('\n')
+        for line in lines:
+            if line.startswith('+++') or line.startswith('---'):
+                text_widget.insert(tk.END, line + '\n', 'header')
+            elif line.startswith('+'):
+                text_widget.insert(tk.END, line + '\n', 'added')
+            elif line.startswith('-'):
+                text_widget.insert(tk.END, line + '\n', 'deleted')
+            elif line.startswith('@@'):
+                text_widget.insert(tk.END, line + '\n', 'header')
+            else:
+                text_widget.insert(tk.END, line + '\n')
+
+    def _display_file_content(self, text_widget: tk.Text, content: str, file_path: str):
+        """Display file content with line numbers."""
+        lines = content.split('\n')
+        for i, line in enumerate(lines, 1):
+            text_widget.insert(tk.END, f"{i:4} ", 'linenumber')
+            text_widget.insert(tk.END, line + '\n')
+
     # ---------------- Graph Tab (Native Tk Canvas) ----------------
     def _build_graph_tab(self, tab):
         tab.rowconfigure(1, weight=1)
@@ -3956,18 +4405,119 @@ class SboxgenGUI:
 
         ttk.Button(toolbar, text="交互渲染", command=self._interactive_graph_render_tab_threaded).pack(side=tk.LEFT)
 
-        container = ttk.Frame(tab)
-        container.grid(row=1, column=0, sticky="nsew")
-        container.rowconfigure(0, weight=1)
-        container.columnconfigure(0, weight=1)
+        # Main container with horizontal paned window
+        main_paned = ttk.PanedWindow(tab, orient=tk.HORIZONTAL)
+        main_paned.grid(row=1, column=0, sticky="nsew")
 
-        self.graph_canvas = tk.Canvas(container, background="#2a2a2a", highlightthickness=0)
+        # Left side - Graph canvas
+        left_frame = ttk.Frame(main_paned)
+        left_frame.rowconfigure(0, weight=1)
+        left_frame.columnconfigure(0, weight=1)
+        main_paned.add(left_frame, weight=2)
+
+        self.graph_canvas = tk.Canvas(left_frame, background="#2a2a2a", highlightthickness=0)
         self.graph_canvas.grid(row=0, column=0, sticky="nsew")
-        yscroll = ttk.Scrollbar(container, orient="vertical", command=self.graph_canvas.yview)
+        yscroll = ttk.Scrollbar(left_frame, orient="vertical", command=self.graph_canvas.yview)
         yscroll.grid(row=0, column=1, sticky="ns")
-        xscroll = ttk.Scrollbar(container, orient="horizontal", command=self.graph_canvas.xview)
+        xscroll = ttk.Scrollbar(left_frame, orient="horizontal", command=self.graph_canvas.xview)
         xscroll.grid(row=1, column=0, sticky="ew")
         self.graph_canvas.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
+
+        # Right side - Commit details panel
+        right_paned = ttk.PanedWindow(main_paned, orient=tk.VERTICAL)
+        main_paned.add(right_paned, weight=1)
+
+        # Top right - Commit info and file tree
+        top_frame = ttk.Frame(right_paned)
+        right_paned.add(top_frame, weight=1)
+
+        # Commit info header
+        self.graph_commit_info_frame = ttk.Frame(top_frame)
+        self.graph_commit_info_frame.pack(fill=tk.X, padx=5, pady=5)
+
+        # Initialize commit info labels
+        self.graph_commit_sha_label = ttk.Label(self.graph_commit_info_frame, text="Select a commit", font=('Monaco', 10, 'bold'))
+        self.graph_commit_sha_label.pack(anchor='w')
+        self.graph_commit_subject_label = ttk.Label(self.graph_commit_info_frame, text="", wraplength=380)
+        self.graph_commit_subject_label.pack(anchor='w')
+        self.graph_commit_author_label = ttk.Label(self.graph_commit_info_frame, text="")
+        self.graph_commit_author_label.pack(anchor='w')
+        self.graph_commit_date_label = ttk.Label(self.graph_commit_info_frame, text="")
+        self.graph_commit_date_label.pack(anchor='w')
+
+        ttk.Separator(top_frame, orient='horizontal').pack(fill=tk.X, pady=5)
+
+        # File tree
+        tree_frame = ttk.Frame(top_frame)
+        tree_frame.pack(fill=tk.BOTH, expand=True, padx=5)
+
+        tree_scroll = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL)
+        tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.graph_file_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode='browse')
+        self.graph_file_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        tree_scroll.config(command=self.graph_file_tree.yview)
+
+        # Configure tree columns
+        self.graph_file_tree['columns'] = ('status', 'lines')
+        self.graph_file_tree.column('#0', width=200, minwidth=100)
+        self.graph_file_tree.column('status', width=50, minwidth=30)
+        self.graph_file_tree.column('lines', width=60, minwidth=40)
+        self.graph_file_tree.heading('#0', text='File')
+        self.graph_file_tree.heading('status', text='Status')
+        self.graph_file_tree.heading('lines', text='Lines')
+
+        # Bottom right - Content viewer
+        bottom_frame = ttk.Frame(right_paned)
+        right_paned.add(bottom_frame, weight=1)
+
+        # View mode toggle
+        viewer_toolbar = ttk.Frame(bottom_frame)
+        viewer_toolbar.pack(fill=tk.X, padx=5, pady=5)
+
+        self.graph_view_mode_var = tk.StringVar(value='diff')
+        ttk.Radiobutton(viewer_toolbar, text="Diff View", variable=self.graph_view_mode_var, value='diff').pack(side=tk.LEFT, padx=5)
+        ttk.Radiobutton(viewer_toolbar, text="File View", variable=self.graph_view_mode_var, value='file').pack(side=tk.LEFT, padx=5)
+
+        self.graph_current_file_var = tk.StringVar(value="")
+        ttk.Label(viewer_toolbar, textvariable=self.graph_current_file_var).pack(side=tk.LEFT, padx=20)
+
+        # Content viewer
+        content_frame = ttk.Frame(bottom_frame)
+        content_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        content_scroll = ttk.Scrollbar(content_frame, orient=tk.VERTICAL)
+        content_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.graph_content_text = tk.Text(content_frame, yscrollcommand=content_scroll.set, wrap='none',
+                                          font=('Monaco', 10), bg='#1e1e1e', fg='#e0e0e0',
+                                          insertbackground='#ffffff')
+        self.graph_content_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        content_scroll.config(command=self.graph_content_text.yview)
+
+        # Horizontal scrollbar
+        h_scroll = ttk.Scrollbar(content_frame, orient=tk.HORIZONTAL, command=self.graph_content_text.xview)
+        h_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+        self.graph_content_text.config(xscrollcommand=h_scroll.set)
+
+        # Configure text tags for diff highlighting (dark theme friendly colors)
+        self.graph_content_text.tag_config('added', background='#1a3d1a', foreground='#90ee90')
+        self.graph_content_text.tag_config('deleted', background='#3d1a1a', foreground='#ff6b6b')
+        self.graph_content_text.tag_config('header', background='#2d3748', foreground='#e2e8f0', font=('Monaco', 10, 'bold'))
+        self.graph_content_text.tag_config('linenumber', foreground='#6c757d')
+
+        # Bind tree selection event
+        self.graph_file_tree.bind('<<TreeviewSelect>>', self._on_graph_file_tree_select)
+
+        # Bind view mode change (compatible with Python 3.13+)
+        try:
+            self.graph_view_mode_var.trace_add('write', self._on_graph_view_mode_change)
+        except AttributeError:
+            # Fallback for older Python versions
+            self.graph_view_mode_var.trace('w', self._on_graph_view_mode_change)
+
+        # Store current commit SHA
+        self.graph_current_commit_sha = None
 
         # 初次自动渲染交互图
         self.root.after(300, self._interactive_graph_render_tab_threaded)
@@ -3988,12 +4538,12 @@ class SboxgenGUI:
             return
 
         # 1) Try FFI first
-        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        dylib = str(self._gg_dylib_path())
         use_cli_fallback = False
         if not Path(dylib).exists():
             try:
-                self._append_log("[graph-tab] 构建 Rust FFI…")
-                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+                self._append_log("[graph-tab] 构建 Rust FFI（src/git-graph）…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(self._gg_crate_dir()), check=True)
             except Exception as e:
                 self._append_log(f"[graph-tab] 构建失败: {e}")
         if not Path(dylib).exists():
@@ -4056,16 +4606,20 @@ class SboxgenGUI:
             for nd in raw.get("nodes", []):
                 idx = int(nd.get("index", 0))
                 short = nd.get("short") or (nd.get("oid") or "")[:7]
+                oid = nd.get("oid") or ""  # Full commit SHA
                 subject = nd.get("summary") or ""
                 date = nd.get("date") or ""
+                author = nd.get("author", "")  # Get author if available
                 br_name = nd.get("branch_name") or (nd.get("branches", [None])[0])
                 color = br_colors.get(br_name, "#007acc") if br_name else "#007acc"
                 nodes.append({
                     "idx": idx,
+                    "id": oid,  # Add full commit SHA
                     "column": nd.get("column") or 0,
                     "short": short,
                     "subject": subject,
                     "date": date,
+                    "author": author,  # Add author
                     "branch": br_name or "",
                     "color": color,
                 })
@@ -4095,12 +4649,12 @@ class SboxgenGUI:
             self._append_log(f"[graph] 未找到项目仓库: {repo}")
             return
         # Locate dylib
-        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        dylib = str(self._gg_dylib_path())
         if not Path(dylib).exists():
             # try build
             try:
-                self._append_log("[graph] 构建 Rust FFI…")
-                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+                self._append_log("[graph] 构建 Rust FFI（src/git-graph）…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(self._gg_crate_dir()), check=True)
             except Exception as e:
                 self._append_log(f"[graph] 构建失败: {e}")
         if not Path(dylib).exists():

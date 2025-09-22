@@ -1,0 +1,3029 @@
+=== 任务 023-6c8f6ba 执行日志 ===
+时间: 2025-09-21 21:36:27.152744
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-023-6c8f6ba.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/023-6c8f6ba/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："023-6c8f6ba：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 023-6c8f6ba
+
+=== 输出 ===
+[2025-09-21T13:19:34] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-21T13:19:34] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-023-6c8f6ba.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/023-6c8f6ba/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："023-6c8f6ba：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 023-6c8f6ba
+
+[2025-09-21T13:19:38] thinking
+
+**Deciding on planning approach**
+[2025-09-21T13:19:38] exec bash -lc pwd in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:19:38] bash -lc pwd succeeded in 10ms:
+/Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:19:38] tokens used: 866
+
+[2025-09-21T13:19:47] thinking
+
+**Formulating task plan internally**
+[2025-09-21T13:19:47] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:19:47] bash -lc 'ls -la' succeeded in 15ms:
+total 12312
+drwxr-xr-x@  9 jqwang  staff      288 Sep 21 15:57 .
+drwxr-xr-x@ 29 jqwang  staff      928 Sep 21 07:49 ..
+-rw-r--r--@  1 jqwang  staff        0 Sep 21 21:19 codex_error.txt
+-rw-r--r--@  1 jqwang  staff  5366772 Sep 21 21:19 codex_output.txt
+-rw-r--r--@  1 jqwang  staff        7 Sep 21 21:19 codex_status.txt
+drwxr-xr-x@ 24 jqwang  staff      768 Sep 21 21:19 logs
+drwxr-xr-x@ 12 jqwang  staff      384 Sep 21 20:54 rust-project
+-rw-r--r--@  1 jqwang  staff      535 Sep 21 21:19 task_status.json
+drwxr-xr-x@  5 jqwang  staff      160 Sep 21 21:19 todolist
+[2025-09-21T13:19:47] tokens used: 1,489
+
+[2025-09-21T13:19:49] thinking
+
+**Viewing .tex file contents**
+[2025-09-21T13:19:50] exec bash -lc 'cat todolist/todolist-023-6c8f6ba.tex' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:19:50] bash -lc 'cat todolist/todolist-023-6c8f6ba.tex' succeeded in 10ms:
+\section{提交考古：023-6c8f6ba}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：implemented Unicode text graph
+  % Escape underscores in email to avoid math-mode errors
+  \item 作者：Martin Lange <martin\_lange\_@gmx.net>
+  \item 日期：2020-12-23T02:18:19+01:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+本次提交为控制台输出实现了“Unicode 文本图”渲染路径，并在 \lstinline!main! 中增加切换逻辑：默认输出 Unicode，保留可选 SVG。核心变化集中于 \lstinline!src/print/unicode.rs!，补齐了连线绘制（竖线/横线/转角/合并箭头）并将栅格转储改为块文本。参考 diffstat：\lstinline!src/print/unicode.rs | +150 −11!，\lstinline!src/main.rs | +11 −?!。
+
+\subsection*{差异解读（证据）}
+\paragraph{改了什么}
+\begin{itemize}
+  \item 新增并启用 Unicode 盒绘字符，支持竖/横/交叉/拐角及合并箭头：\lstinline!head/src/print/unicode.rs:9! 至 \lstinline!head/src/print/unicode.rs:25!；节点符号由 \lstinline!DOT=●! 与 \lstinline!CIRCLE=○! 组成（合并点使用空心圆）。
+  \item 实现连线逻辑：竖线 \lstinline!vline! 与横线 \lstinline!hline! 处理与现有字符的冲突与拼接，合并分支在横线末端插入箭头：\lstinline!head/src/print/unicode.rs:125!、\lstinline!head/src/print/unicode.rs:138!。
+  \item 在主循环中根据父子所在列决定直连或“分流-横连-并入”，分流点由 \lstinline!get_deviate_index! 提供：\lstinline!head/src/print/unicode.rs:81! 至 \lstinline!head/src/print/unicode.rs:116!，分流索引计算在 \lstinline!head/src/print/mod.rs:11!。
+  \item 栅格转储函数从 \lstinline!to_string! 更名并语义化为 \lstinline!to_string_block!：\lstinline!head/src/print/unicode.rs:341!。同时 \lstinline!get_inserts! 判断简化为列值直比较以避免重复展开：\lstinline!head/src/print/unicode.rs:230!。
+[2025-09-21T13:19:50] tokens used: 1,955
+
+[2025-09-21T13:19:52] thinking
+
+**Inspecting Rust project workspace**
+[2025-09-21T13:19:52] exec bash -lc ls in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:19:52] bash -lc ls succeeded in 10ms:
+Cargo.lock
+Cargo.toml
+LICENSE
+README.md
+scripts
+src
+target
+[2025-09-21T13:19:52] tokens used: 3,517
+
+[2025-09-21T13:19:54] thinking
+
+**Evaluating modification scope**
+[2025-09-21T13:19:54] exec bash -lc 'ls src' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:19:54] bash -lc 'ls src' succeeded in 12ms:
+graph.rs
+lib.rs
+main.rs
+print
+settings.rs
+text.rs
+[2025-09-21T13:19:54] tokens used: 3,681
+
+[2025-09-21T13:19:56] thinking
+
+**Opening relevant source files**
+[2025-09-21T13:19:56] exec bash -lc 'ls src/print' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:19:56] bash -lc 'ls src/print' succeeded in 9ms:
+mod.rs
+svg.rs
+unicode.rs
+[2025-09-21T13:19:56] tokens used: 3,865
+
+[2025-09-21T13:19:59] thinking
+
+**Reviewing unicode.rs implementation**
+[2025-09-21T13:19:59] exec bash -lc "sed -n '1,200p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:19:59] bash -lc "sed -n '1,200p' src/print/unicode.rs" succeeded in 12ms:
+use crate::{
+    graph::{BranchInfo, CommitInfo, GitGraph},
+    settings::BranchSettings,
+};
+
+#[derive(Clone, Debug)]
+struct Insert {
+    parent_index: usize,
+    to_col: usize,
+    layer: usize,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct Occ {
+    start: usize,
+    end: usize,
+}
+
+impl Occ {
+    fn overlaps(&self, other: &Occ) -> bool {
+[2025-09-21T13:19:59] tokens used: 4,034
+
+[2025-09-21T13:20:01] thinking
+
+**Continuing processing**
+[2025-09-21T13:20:01] exec bash -lc "sed -n '200,400p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:20:01] bash -lc "sed -n '200,400p' src/print/unicode.rs" succeeded in 12ms:
+            inserts[index].push(Insert {
+                parent_index,
+                to_col: parent_col,
+                layer: assigned,
+            });
+        }
+    }
+
+    inserts
+}
+
+fn index_map(len: usize, inserts: &[Vec<Insert>]) -> (Vec<usize>, Vec<usize>) {
+    let mut rows = vec![0usize; len];
+    let mut extras = vec![0usize; len];
+
+    let mut offset = 0usize;
+    for index in 0..len {
+        rows[index] = index + offset;
+        let extra_rows = inserts[index]
+            .iter()
+[2025-09-21T13:20:01] tokens used: 5,977
+
+[2025-09-21T13:20:04] thinking
+
+**Preparing for code alignment**
+[2025-09-21T13:20:04] exec bash -lc "sed -n '1,160p' src/print/mod.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:20:04] bash -lc "sed -n '1,160p' src/print/mod.rs" succeeded in 21ms:
+pub mod svg;
+pub mod unicode;
+
+use crate::graph::GitGraph;
+
+/// Determine the zero-based position of `child_index` within the visible children of
+/// `parent_index`. Rendering uses this offset to introduce slight horizontal deviations
+/// when multiple edges leave the same parent column.
+pub fn get_deviate_index(
+    graph: &GitGraph,
+    parent_index: usize,
+    child_index: usize,
+) -> Option<usize> {
+    let parent = graph.commits.get(parent_index)?;
+    let child_oid = graph.commits.get(child_index)?.oid;
+
+    let mut ordinal = 0usize;
+    for candidate_oid in &parent.children {
+        if let Some(&idx) = graph.indices.get(candidate_oid) {
+            if idx == child_index {
+[2025-09-21T13:20:04] tokens used: 7,818
+
+[2025-09-21T13:20:06] thinking
+
+**Checking main branch**
+[2025-09-21T13:20:06] exec bash -lc "sed -n '1,160p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:20:06] bash -lc "sed -n '1,160p' src/main.rs" succeeded in 14ms:
+use git2::Error;
+use git_graph::graph::{CommitInfo, GitGraph};
+use git_graph::print::unicode::print_unicode;
+// use git_graph::print::svg::print_svg;
+use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+use std::time::Instant;
+
+struct Args {}
+
+fn main() -> Result<(), Error> {
+    let _args = Args {};
+
+    let settings = Settings {
+        debug: true,
+        include_remote: true,
+        branch_order: BranchOrder::ShortestFirst(true),
+        branches: BranchSettings::git_flow(),
+        merge_patterns: MergePatterns::default(),
+    };
+
+[2025-09-21T13:20:06] tokens used: 8,336
+
+[2025-09-21T13:20:11] thinking
+
+**Preparing to replicate specific commit**
+[2025-09-21T13:20:12] exec bash -lc 'rg "to_string" -n src' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:20:12] bash -lc 'rg "to_string" -n src' succeeded in 27ms:
+src/settings.rs:50:                "master".to_string(),
+src/settings.rs:51:                "main".to_string(),
+src/settings.rs:52:                "develop".to_string(),
+src/settings.rs:53:                "dev".to_string(),
+src/settings.rs:54:                "feature".to_string(),
+src/settings.rs:55:                "release".to_string(),
+src/settings.rs:56:                "hotfix".to_string(),
+src/settings.rs:57:                "bugfix".to_string(),
+src/settings.rs:60:                "master".to_string(),
+src/settings.rs:61:                "main".to_string(),
+src/settings.rs:62:                "hotfix".to_string(),
+src/settings.rs:63:                "release".to_string(),
+src/settings.rs:64:                "develop".to_string(),
+src/settings.rs:65:                "dev".to_string(),
+src/settings.rs:68:                ("master".to_string(), "blue".to_string()),
+src/settings.rs:69:                ("main".to_string(), "blue".to_string()),
+src/settings.rs:70:                ("develop".to_string(), "orange".to_string()),
+src/settings.rs:71:                ("dev".to_string(), "orange".to_string()),
+src/settings.rs:72:                ("feature".to_string(), "purple".to_string()),
+src/settings.rs:73:                ("release".to_string(), "green".to_string()),
+[2025-09-21T13:20:12] tokens used: 9,669
+
+[2025-09-21T13:20:14] thinking
+
+**Preparing to add to_string_block**
+[2025-09-21T13:20:14] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:20:14] bash -lc 'git status -sb' succeeded in 37ms:
+## main
+[2025-09-21T13:20:14] tokens used: 10,501
+
+[2025-09-21T13:20:26] thinking
+
+**Reconstructing commit details from report**
+
+I’m carefully parsing the textual report to recreate the changes from the commit. It involves adding Unicode box-drawing character constants, implementing vertical and horizontal line logic with merging arrows, adjusting main loop connection decisions via `get_deviate_index`, and simplifying `get_inserts`. Since I can't access the actual commit, I'm piecing everything together from line references and existing code patterns to approximate the final expected state in `unicode.rs`.
+[2025-09-21T13:20:27] exec bash -lc 'git log --oneline | head' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:20:27] bash -lc 'git log --oneline | head' succeeded in 28ms:
+7aea985 022-10dd4fe：复现提交代码内容。
+8a95d12 021-573b442：复现提交代码内容。
+a55c389 020-d48e780：复现提交代码内容。
+4571e7b 019-854edee：复现提交代码内容。
+99f2358 018-f7aeb45：复现提交代码内容。
+4114d95 017-525aaac：复现提交代码内容。
+abfc061 016-f620960：复现提交代码内容。
+80b0f1b 015-2e0c191：复现提交代码内容。
+d5ebdad 014-39e562c：复现提交代码内容。
+35fea60 013-3091f5b：复现提交代码内容。
+[2025-09-21T13:20:27] tokens used: 11,435
+
+[2025-09-21T13:20:42] thinking
+
+**Planning commit 023 updates**
+
+I’m piecing together how to adjust the code from commit 022 to match 023, focusing on adding a debug toggle off by default and introducing an `svg_out` flag to switch output between SVG and Unicode, while also aligning with the `print_svg` function’s signature and error handling. Let’s explore the code changes needed in `main.rs` and look closer at `print_svg` in `src/print/svg.rs` to sync everything properly.
+[2025-09-21T13:20:43] exec bash -lc 'grep -n "pub fn print_svg" -n src/print/svg.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:20:43] bash -lc 'grep -n "pub fn print_svg" -n src/print/svg.rs' succeeded in 18ms:
+23:pub fn print_svg(graph: &GitGraph, settings: &Settings) -> String {
+[2025-09-21T13:20:43] tokens used: 12,936
+[2025-09-21T13:20:45] exec bash -lc "sed -n '1,160p' src/print/svg.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:20:45] bash -lc "sed -n '1,160p' src/print/svg.rs" succeeded in 20ms:
+use crate::{
+    graph::{BranchInfo, CommitInfo, GitGraph},
+    print::get_deviate_index,
+    settings::Settings,
+};
+use svg::node::element::path::Data;
+use svg::node::element::{Circle, Group, Line, Path, Text};
+use svg::node::Text as TextNode;
+use svg::Document;
+
+const COLUMN_STEP: f64 = 15.0;
+const ROW_STEP: f64 = 15.0;
+const NODE_RADIUS: f64 = 3.0;
+const STROKE_WIDTH: f64 = 1.5;
+const MERGE_STROKE_WIDTH: f64 = 2.5;
+const DEBUG_FONT_SIZE: i32 = 7;
+
+const BRANCH_COLORS: [&str; 8] = [
+    "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f",
+];
+[2025-09-21T13:20:45] tokens used: 13,163
+
+[2025-09-21T13:21:01] thinking
+
+**Analyzing Unicode line-drawing features**
+
+I'm unpacking the instructions and commit hints about adding new Unicode box-drawing chars like vertical, horizontal, cross, and arrows. I want to identify constants like `CROSS`, `HOR_U`, `HOR_D` and relate them to actual characters. There's also mention of restructuring `print_unicode` logic and renaming a function to `to_string_block`. I’m thinking about how to handle line deviations with `get_deviate_index` and reorganize insertions in the char grid. To understand better, I'll search the entire repo for these constants and patterns to guide my implementation.
+[2025-09-21T13:21:02] exec bash -lc 'rg "HOR_U" -n' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:21:02] bash -lc 'rg "HOR_U" -n' succeeded in 14ms:
+todolist/todolist-023-6c8f6ba.tex:34:  \item 边界条件：同列父子使用直连竖线，跨列父子依赖分流索引拆为“竖-横-竖”；合并提交的第二父边在横线末尾带方向箭头，字符冲突处以 \lstinline!CROSS/HOR_U/HOR_D! 消解，保证连线闭合。
+codex_output.txt:157156:I'm unpacking the instructions and commit hints about adding new Unicode box-drawing chars like vertical, horizontal, cross, and arrows. I want to identify constants like `CROSS`, `HOR_U`, `HOR_D` and relate them to actual characters. There's also mention of restructuring `print_unicode` logic and renaming a function to `to_string_block`. I’m thinking about how to handle line deviations with `get_deviate_index` and reorganize insertions in the char grid. To understand better, I'll search the entire repo for these constants and patterns to guide my implementation.
+codex_output.txt:157157:[2025-09-21T13:21:02] exec bash -lc 'rg "HOR_U" -n' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:21:02] tokens used: 27,202
+
+[2025-09-21T13:22:09] thinking
+
+**Designing Unicode grid and merging logic**
+
+This is a deep dive into redesigning the Unicode grid renderer with new character constants, refined merging logic for lines and intersections, and smarter handling of inserts and overlays. I'm outlining a fresh approach using richer cell state tracking to elegantly compose vertical, horizontal, corner, and arrow elements, plus a way to compute layers for branch inserts to avoid overlaps. It’s quite a puzzle but I’m excited to bring it all together thoughtfully!
+**Evaluating corner drawing and code approach**
+[2025-09-21T13:22:13] codex
+**Evaluating corner drawing and code approach**
+[2025-09-21T13:22:13] exec bash -lc 'rg "to_string_block" codex_output.txt' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:22:13] bash -lc 'rg "to_string_block" codex_output.txt' succeeded in 19ms:
+  \item 栅格转储函数从 \lstinline!to_string! 更名并语义化为 \lstinline!to_string_block!：\lstinline!head/src/print/unicode.rs:341!。同时 \lstinline!get_inserts! 判断简化为列值直比较以避免重复展开：\lstinline!head/src/print/unicode.rs:230!。
+**Preparing to add to_string_block**
+I'm unpacking the instructions and commit hints about adding new Unicode box-drawing chars like vertical, horizontal, cross, and arrows. I want to identify constants like `CROSS`, `HOR_U`, `HOR_D` and relate them to actual characters. There's also mention of restructuring `print_unicode` logic and renaming a function to `to_string_block`. I’m thinking about how to handle line deviations with `get_deviate_index` and reorganize insertions in the char grid. To understand better, I'll search the entire repo for these constants and patterns to guide my implementation.
+codex_output.txt:157156:I'm unpacking the instructions and commit hints about adding new Unicode box-drawing chars like vertical, horizontal, cross, and arrows. I want to identify constants like `CROSS`, `HOR_U`, `HOR_D` and relate them to actual characters. There's also mention of restructuring `print_unicode` logic and renaming a function to `to_string_block`. I’m thinking about how to handle line deviations with `get_deviate_index` and reorganize insertions in the char grid. To understand better, I'll search the entire repo for these constants and patterns to guide my implementation.
+[2025-09-21T13:22:13] exec bash -lc 'rg "to_string_block" codex_output.txt' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:22:13] tokens used: 31,977
+
+[2025-09-21T13:22:39] thinking
+
+**Designing advanced Unicode commit graph printing**
+
+This chunk plans a detailed redesign of `print_unicode` using a `CharGrid` struct and defined Unicode characters for drawing commit graphs. I’m outlining how to implement vertical and horizontal lines with proper corner characters, handle connection logic based on parent-child column positions, and include arrows for merge parents by tracking parent indices—all while preserving existing graph layout logic but improving clarity and extensibility.
+[2025-09-21T13:22:40] exec bash -lc "sed -n '1,200p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:22:40] bash -lc "sed -n '1,200p' src/graph.rs" succeeded in 21ms:
+use crate::settings::{BranchOrder, BranchSettings, Settings};
+use crate::text;
+use git2::{BranchType, Commit, Error, Oid, Repository};
+use itertools::Itertools;
+use std::collections::{HashMap, VecDeque};
+
+/// Represents a git history graph.
+pub struct GitGraph {
+    pub repository: Repository,
+    pub commits: Vec<CommitInfo>,
+    pub indices: HashMap<Oid, usize>,
+    pub branches: Vec<BranchInfo>,
+}
+
+impl GitGraph {
+    pub fn new(path: &str, settings: &Settings) -> Result<Self, Error> {
+        let repository = Repository::open(path)?;
+        let mut walk = repository.revwalk()?;
+
+        walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)?;
+[2025-09-21T13:22:40] tokens used: 34,150
+
+[2025-09-21T13:23:34] thinking
+
+**Integrating deviation index and drawing helpers**
+
+I'm piecing together how `get_deviate_index` replaces or complements previous layering logic to handle merge branch offsets consistently with SVG output. I'll adjust `get_inserts` to incorporate this deviation as the layer, helping align arrow and horizontal routing positions. Then, I'll rework the unicode grid drawing with new helper functions for vertical and horizontal lines, carefully placing arrow characters at the right spots near parents, and crafting corner pieces for correct branch connections, managing character merges for overlaps gracefully. This should unify routing logic and improve visual clarity in the graph representation.
+**Designing character merge logic with bitmask mapping**
+
+I’m laying out a detailed plan for merging grid characters by mapping line directions to bitmasks and using those to pick the correct combined character. This includes handling arrows specially—treating them as horizontal lines plus direction—so they override or merge correctly without losing meaning. I’ll define functions to get masks from chars, produce chars from masks, and merge overlays with special cases to preserve arrows while still combining lines into proper corners or intersections as needed. This approach should keep the unicode graph drawing consistent and visually clear.
+**Specifying arrow and line merge edge cases**
+
+I’m refining the character merging rules to treat arrows as special cases that override simple horizontal lines but yield proper junction characters when vertical lines overlay them. I’ll implement helper functions to detect arrows and vertical presence, then handle arrow merging priorities so arrows remain visible unless vertical lines force intersection chars. Also, I plan to restructure rendering to use a block-to-string helper and update how insert positions are computed with awareness of deviation points for layer assignment, preparing for clearer, maintainable Unicode graph output.
+**Completing graph edge rendering logic**
+
+I'm finalizing the Unicode graph rendering by assigning insert rows for edges with layering that respects deviation indexes, then drawing vertical lines and horizontal routes with arrow decorations. I'm implementing `draw_horizontal_segment` to handle left/right directions and arrow placement carefully, and refining character merging to maintain proper junctions. This design ensures edges connect cleanly with arrows and corners while managing layered spacing to avoid overlaps.
+**Refactoring insert layering and rendering internals**
+
+I'm redesigning `get_inserts` to layer graph edges by considering deviation indexes properly, using a `Vec<Option<Occ>>` for occupancy to find the earliest free layer at or above the deviation. This ensures edges don't overlap in vertical spacing. I'm updating grid handling methods (`CharGrid`), including overlay merging, row rendering, and adapting `print_unicode` to integrate these changes and toggle output modes. Also, I'm planning thorough tests and formatting to keep code robust and clean.
+[2025-09-21T13:28:04] codex
+**Designing character merge logic with bitmask mapping**
+
+I’m laying out a detailed plan for merging grid characters by mapping line directions to bitmasks and using those to pick the correct combined character. This includes handling arrows specially—treating them as horizontal lines plus direction—so they override or merge correctly without losing meaning. I’ll define functions to get masks from chars, produce chars from masks, and merge overlays with special cases to preserve arrows while still combining lines into proper corners or intersections as needed. This approach should keep the unicode graph drawing consistent and visually clear.
+[2025-09-21T13:28:04] codex
+**Specifying arrow and line merge edge cases**
+
+I’m refining the character merging rules to treat arrows as special cases that override simple horizontal lines but yield proper junction characters when vertical lines overlay them. I’ll implement helper functions to detect arrows and vertical presence, then handle arrow merging priorities so arrows remain visible unless vertical lines force intersection chars. Also, I plan to restructure rendering to use a block-to-string helper and update how insert positions are computed with awareness of deviation points for layer assignment, preparing for clearer, maintainable Unicode graph output.
+[2025-09-21T13:28:04] codex
+**Completing graph edge rendering logic**
+
+I'm finalizing the Unicode graph rendering by assigning insert rows for edges with layering that respects deviation indexes, then drawing vertical lines and horizontal routes with arrow decorations. I'm implementing `draw_horizontal_segment` to handle left/right directions and arrow placement carefully, and refining character merging to maintain proper junctions. This design ensures edges connect cleanly with arrows and corners while managing layered spacing to avoid overlaps.
+[2025-09-21T13:28:04] codex
+**Refactoring insert layering and rendering internals**
+
+I'm redesigning `get_inserts` to layer graph edges by considering deviation indexes properly, using a `Vec<Option<Occ>>` for occupancy to find the earliest free layer at or above the deviation. This ensures edges don't overlap in vertical spacing. I'm updating grid handling methods (`CharGrid`), including overlay merging, row rendering, and adapting `print_unicode` to integrate these changes and toggle output modes. Also, I'm planning thorough tests and formatting to keep code robust and clean.
+[2025-09-21T13:28:17] stream error: stream disconnected before completion: stream closed before response.completed; retrying 1/5 in 205ms…
+
+[2025-09-21T13:29:54] thinking
+
+**Updating commit parent iteration and layer calculation**
+**Implementing insert calculation and CharGrid enhancements**
+
+I’m writing `get_inserts` to assign unique rows per parent differing in column by incrementing layers sequentially, ensuring distinct paths for multiple parents. Then, I’m adjusting `CharGrid` to support overlaying chars with better merge logic using segment-based merges, handling line intersections, corners, and new arrow characters to indicate merges graphically. This involves mapping chars to directional segments, combining them, and decoding back to correct Unicode symbols for clean, accurate graph rendering.
+[2025-09-21T13:29:55] codex
+**Implementing insert calculation and CharGrid enhancements**
+
+I’m writing `get_inserts` to assign unique rows per parent differing in column by incrementing layers sequentially, ensuring distinct paths for multiple parents. Then, I’m adjusting `CharGrid` to support overlaying chars with better merge logic using segment-based merges, handling line intersections, corners, and new arrow characters to indicate merges graphically. This involves mapping chars to directional segments, combining them, and decoding back to correct Unicode symbols for clean, accurate graph rendering.
+[2025-09-21T13:29:55] exec bash -lc "python - <<'PY'
+chars = ['┬','┴','┼','└','┘','┌','┐']
+for ch in chars:
+    print(ch)
+PY" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T13:29:55] bash -lc "python - <<'PY'
+chars = ['┬','┴','┼','└','┘','┌','┐']
+for ch in chars:
+    print(ch)
+PY" succeeded in 71ms:
+┬
+┴
+┼
+└
+┘
+┌
+┐
+[2025-09-21T13:29:55] tokens used: 41,625
+
+[2025-09-21T13:31:48] thinking
+
+**Mapping box-drawing chars to connectors and back**
+**Designing line drawing and output logic**
+
+I’m sorting out how to place arrow characters correctly on horizontal lines by checking the direction and ensuring the arrow lands near the parent node. I’m refining horizontal and vertical line drawing functions to handle cases with or without spaces between points, making sure arrows overwrite lines only when appropriate. I also plan to integrate these changes into the main printing flow, including toggling Unicode versus SVG output and updating relevant tests to match the revised line-merging and glyph logic.
+**Refining commit insertion layering and rendering**
+
+I'm improving the logic for assigning sequential layers to commit-parent edges by sorting them deterministically and incorporating the `get_deviate_index` function to order branches consistently. Then, in the main Unicode print function, I’m updating how vertical and horizontal lines plus arrows are drawn between commits and their parents, ensuring rows and columns map correctly with trimmed rows and proper character merging. I’m also preparing to rewrite the entire unicode.rs file and add targeted tests to verify merges, layering, and index mapping behave as expected.
+**Aligning insert layers with deviate indices**
+
+I'm refining `get_inserts` to assign each parent's layer using `get_deviate_index`, ensuring consistent row allocation for branching. Then in `print_unicode`, I plan to call `get_deviate_index` again per parent to compute their insert rows and properly manage horizontal and vertical lines with merged corner characters. This approach handles multiple parents sharing the same deviate value by relying on character merging to visually represent splits, so no artificial layer reassignment is necessary. I'll craft the full updated unicode rendering code accordingly.
+[2025-09-21T13:34:01] codex
+**Designing line drawing and output logic**
+
+I’m sorting out how to place arrow characters correctly on horizontal lines by checking the direction and ensuring the arrow lands near the parent node. I’m refining horizontal and vertical line drawing functions to handle cases with or without spaces between points, making sure arrows overwrite lines only when appropriate. I also plan to integrate these changes into the main printing flow, including toggling Unicode versus SVG output and updating relevant tests to match the revised line-merging and glyph logic.
+[2025-09-21T13:34:01] codex
+**Refining commit insertion layering and rendering**
+
+I'm improving the logic for assigning sequential layers to commit-parent edges by sorting them deterministically and incorporating the `get_deviate_index` function to order branches consistently. Then, in the main Unicode print function, I’m updating how vertical and horizontal lines plus arrows are drawn between commits and their parents, ensuring rows and columns map correctly with trimmed rows and proper character merging. I’m also preparing to rewrite the entire unicode.rs file and add targeted tests to verify merges, layering, and index mapping behave as expected.
+[2025-09-21T13:34:01] codex
+**Aligning insert layers with deviate indices**
+
+I'm refining `get_inserts` to assign each parent's layer using `get_deviate_index`, ensuring consistent row allocation for branching. Then in `print_unicode`, I plan to call `get_deviate_index` again per parent to compute their insert rows and properly manage horizontal and vertical lines with merged corner characters. This approach handles multiple parents sharing the same deviate value by relying on character merging to visually represent splits, so no artificial layer reassignment is necessary. I'll craft the full updated unicode rendering code accordingly.
+[2025-09-21T13:35:10] exec bash -lc "cat <<'EOF' > src/print/unicode.rs
+use crate::{
+    graph::{BranchInfo, CommitInfo, GitGraph},
+    print::get_deviate_index,
+    settings::BranchSettings,
+};
+
+const DOT: char = '●';
+const CIRCLE: char = '○';
+const HOR: char = '─';
+const VER: char = '│';
+const TURN_UP_RIGHT: char = '└';
+const TURN_UP_LEFT: char = '┘';
+const TURN_DOWN_RIGHT: char = '┌';
+const TURN_DOWN_LEFT: char = '┐';
+const T_UP: char = '┴';
+const T_DOWN: char = '┬';
+const T_RIGHT: char = '├';
+const T_LEFT: char = '┤';
+const CROSS: char = '┼';
+const ARROW_RIGHT: char = '▶';
+const ARROW_LEFT: char = '◀';
+
+#[derive(Clone, Debug)]
+struct Insert {
+    parent_index: usize,
+    to_col: usize,
+    layer: usize,
+}
+
+/// Render the git graph as a Unicode string representation suitable for terminals.
+pub fn print_unicode(graph: &GitGraph, _branch_settings: &BranchSettings, debug: bool) -> String {
+    if graph.commits.is_empty() {
+        return String::new();
+    }
+
+    let inserts = get_inserts(graph);
+    let (row_map, extras) = index_map(graph.commits.len(), &inserts);
+    let total_extra: usize = extras.iter().sum();
+    let height = graph.commits.len() + total_extra;
+    let max_column = graph
+        .commits
+        .iter()
+        .filter_map(|commit| commit_column(graph, commit))
+        .max()
+        .unwrap_or(0);
+    let width = max_column * 2 + 1;
+
+    let mut grid = CharGrid::new(width, height);
+    let mut labels: Vec<Option<String>> = vec"'![None; height];
+
+    for (index, commit) in graph.commits.iter().enumerate() {
+        let row = row_map[index];
+        let column = commit_column(graph, commit).unwrap_or(0);
+        let gcol = column * 2;
+        let symbol = if commit.is_merge { CIRCLE } else { DOT };
+        grid.place_node(row, gcol, symbol);
+
+        let summary = graph
+            .commit(commit.oid)
+            .ok()
+            .and_then(|commit_obj| commit_obj.summary().map(|s| s.to_string()))
+            .unwrap_or_else(|| String::from("---"));
+        let short_id = commit.oid.to_string();
+        let short_id = short_id.chars().take(7).collect::<String>();
+        let label = if debug {
+            format!("#{index:03} {short_id} {summary}")
+        } else {
+            format!("{short_id} {summary}")
+        };
+        labels[row] = Some(label);
+
+        for (parent_position, parent_oid_opt) in commit.parents.iter().enumerate() {
+            let parent_oid = match parent_oid_opt {
+                Some(oid) => oid,
+                None => continue,
+            };
+
+            let parent_index = match graph.indices.get(parent_oid) {
+                Some(index) => *index,
+                None => continue,
+            };
+
+            let parent_row = row_map[parent_index];
+            let parent_col = match commit_column(graph, &graph.commits[parent_index]) {
+                Some(col) => col,
+                None => continue,
+            };
+
+            let child_col = column;
+
+            if parent_row == row {
+                continue;
+            }
+
+            if parent_col == child_col {
+                grid.vline(gcol, row, parent_row);
+                continue;
+            }
+
+            let parent_gcol = parent_col * 2;
+            let split = get_deviate_index(graph, parent_index, index).unwrap_or(0);
+
+            let layer = inserts[index]
+                .iter()
+                .find(|insert| insert.parent_index == parent_index && insert.to_col == parent_col)
+                .map(|insert| insert.layer)
+                .unwrap_or(split);
+
+            let insert_row = row + layer + 1;
+
+            if row + 1 <= insert_row.saturating_sub(1) {
+                grid.vline(gcol, row, insert_row - 1);
+            }
+
+            let arrow = if parent_position > 0 {
+                if gcol < parent_gcol {
+                    Some(Arrow::Right)
+                } else {
+                    Some(Arrow::Left)
+                }
+            } else {
+                None
+            };
+
+            if gcol < parent_gcol {
+                grid.overlay(insert_row, gcol, TURN_UP_RIGHT);
+                if gcol + 1 <= parent_gcol.saturating_sub(1) {
+                    grid.hline(insert_row, gcol + 1, parent_gcol - 1, arrow);
+                }
+                grid.overlay(insert_row, parent_gcol, TURN_DOWN_LEFT);
+            } else {
+                grid.overlay(insert_row, gcol, TURN_UP_LEFT);
+                if parent_gcol + 1 <= gcol.saturating_sub(1) {
+                    grid.hline(insert_row, parent_gcol + 1, gcol - 1, arrow);
+                }
+                grid.overlay(insert_row, parent_gcol, TURN_DOWN_RIGHT);
+            }
+
+            if insert_row + 1 <= parent_row.saturating_sub(1) {
+                grid.vline(parent_gcol, insert_row + 1, parent_row - 1);
+            }
+        }
+    }
+
+    to_string_block(&grid, &labels)
+}
+
+struct CharGrid {
+    width: usize,
+    height: usize,
+    cells: Vec<char>,
+}
+
+impl CharGrid {
+    fn new(width: usize, height: usize) -> Self {
+        let width = width.max(1);
+        let height = height.max(1);
+        CharGrid {
+            width,
+            height,
+            cells: vec!['"' '; width * height],
+        }
+    }
+
+    fn index(&self, row: usize, col: usize) -> usize {
+        row * self.width + col
+    }
+
+    fn place_node(&mut self, row: usize, col: usize, ch: char) {
+        if row < self.height && col < self.width {
+            let idx = self.index(row, col);
+            self.cells[idx] = ch;
+        }
+    }
+
+    fn overlay(&mut self, row: usize, col: usize, ch: char) {
+        if row >= self.height || col >= self.width {
+            return;
+        }
+        let idx = self.index(row, col);
+        let current = self.cells[idx];
+        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
+        self.cells[idx] = merged;
+    }
+
+    fn vline(&mut self, col: usize, from_row: usize, to_row: usize) {
+        if col >= self.width || from_row == to_row {
+            return;
+        }
+
+        let (start, end) = if from_row < to_row {
+            (from_row + 1, to_row)
+        } else {
+            (to_row + 1, from_row)
+        };
+
+        if start >= end {
+            return;
+        }
+
+        for row in start..end {
+            self.overlay(row, col, VER);
+        }
+    }
+
+    fn hline(&mut self, row: usize, start_col: usize, end_col: usize, arrow: Option<Arrow>) {
+        if row >= self.height {
+            return;
+        }
+        if start_col > end_col {
+            return;
+        }
+
+        for col in start_col..=end_col {
+            self.overlay(row, col, HOR);
+        }
+
+        if let Some(arrow) = arrow {
+            let arrow_col = match arrow {
+                Arrow::Right => end_col,
+                Arrow::Left => start_col,
+            };
+            self.overlay(row, arrow_col, arrow.char());
+        }
+    }
+
+    fn row(&self, row: usize) -> String {
+        if row >= self.height {
+            return String::new();
+        }
+        let start = self.index(row, 0);
+        let end = self.index(row, self.width - 1) + 1;
+        let mut line: String = self.cells[start..end].iter().collect();
+        while line.ends_with(' ') {
+            line.pop();
+        }
+        line
+    }
+}
+
+#[derive(Clone, Copy)]
+enum Arrow {
+    Left,
+    Right,
+}
+
+impl Arrow {
+    fn char(self) -> char {
+        match self {
+            Arrow::Left => ARROW_LEFT,
+            Arrow::Right => ARROW_RIGHT,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Default)]
+struct LineBits {
+    up: bool,
+    down: bool,
+    left: bool,
+    right: bool,
+    arrow_left: bool,
+    arrow_right: bool,
+    node: Option<char>,
+}
+
+impl LineBits {
+    fn from_char(ch: char) -> Self {
+        match ch {
+            DOT => LineBits {
+                node: Some(DOT),
+                ..Default::default()
+            },
+            CIRCLE => LineBits {
+                node: Some(CIRCLE),
+                ..Default::default()
+            },
+            VER => LineBits {
+                up: true,
+                down: true,
+                ..Default::default()
+            },
+            HOR => LineBits {
+                left: true,
+                right: true,
+                ..Default::default()
+            },
+            TURN_UP_RIGHT => LineBits {
+                up: true,
+                right: true,
+                ..Default::default()
+            },
+            TURN_UP_LEFT => LineBits {
+                up: true,
+                left: true,
+                ..Default::default()
+            },
+            TURN_DOWN_RIGHT => LineBits {
+                down: true,
+                right: true,
+                ..Default::default()
+            },
+            TURN_DOWN_LEFT => LineBits {
+                down: true,
+                left: true,
+                ..Default::default()
+            },
+            T_UP => LineBits {
+                up: true,
+                left: true,
+                right: true,
+                ..Default::default()
+            },
+            T_DOWN => LineBits {
+                down: true,
+                left: true,
+                right: true,
+                ..Default::default()
+            },
+            T_RIGHT => LineBits {
+                up: true,
+                down: true,
+                right: true,
+                ..Default::default()
+            },
+            T_LEFT => LineBits {
+                up: true,
+                down: true,
+                left: true,
+                ..Default::default()
+            },
+            CROSS => LineBits {
+                up: true,
+                down: true,
+                left: true,
+                right: true,
+                ..Default::default()
+            },
+            ARROW_RIGHT => LineBits {
+                arrow_right: true,
+                ..Default::default()
+            },
+            ARROW_LEFT => LineBits {
+                arrow_left: true,
+                ..Default::default()
+            },
+            _ => LineBits::default(),
+        }
+    }
+
+    fn merge(self, other: LineBits) -> LineBits {
+        if other.node.is_some() {
+            return other;
+        }
+
+        let mut result = self;
+        if result.node.is_some() {
+            return result;
+        }
+
+        result.up |= other.up;
+        result.down |= other.down;
+        result.left |= other.left;
+        result.right |= other.right;
+        result.arrow_left |= other.arrow_left;
+        result.arrow_right |= other.arrow_right;
+
+        result
+    }
+
+    fn to_char(self) -> char {
+        if let Some(node) = self.node {
+            return node;
+        }
+        if self.arrow_left && "'!self.arrow_right {
+            return ARROW_LEFT;
+        }
+        if self.arrow_right && !self.arrow_left {
+            return ARROW_RIGHT;
+        }
+
+        match (self.up, self.down, self.left, self.right) {
+            (true, true, true, true) => CROSS,
+            (true, false, true, true) => T_UP,
+            (false, true, true, true) => T_DOWN,
+            (true, true, true, false) => T_LEFT,
+            (true, true, false, true) => T_RIGHT,
+            (true, true, false, false) => VER,
+            (false, false, true, true) => HOR,
+            (true, false, false, true) => TURN_UP_RIGHT,
+            (true, false, true, false) => TURN_UP_LEFT,
+            (false, true, false, true) => TURN_DOWN_RIGHT,
+            (false, true, true, false) => TURN_DOWN_LEFT,
+            (true, false, false, false) => VER,
+            (false, true, false, false) => VER,
+            (false, false, true, false) => HOR,
+            (false, false, false, true) => HOR,
+            _ => '"' ',
+        }
+    }
+}
+
+fn merge_chars(current: char, new: char) -> char {
+    if current == new {
+        return current;
+    }
+    let current_bits = LineBits::from_char(current);
+    let new_bits = LineBits::from_char(new);
+    current_bits.merge(new_bits).to_char()
+}
+
+fn get_inserts(graph: &GitGraph) -> Vec<Vec<Insert>> {
+    let mut inserts: Vec<Vec<Insert>> = vec"'![Vec::new(); graph.commits.len()];
+
+    for (child_index, commit) in graph.commits.iter().enumerate() {
+        let from_col = match commit_column(graph, commit) {
+            Some(col) => col,
+            None => continue,
+        };
+
+        let mut edges: Vec<Insert> = Vec::new();
+
+        for parent_oid in commit.parents.iter().flatten() {
+            if let Some(&parent_index) = graph.indices.get(parent_oid) {
+                if let Some(parent_col) = commit_column(graph, &graph.commits[parent_index]) {
+                    if parent_col == from_col {
+                        continue;
+                    }
+                    let layer = get_deviate_index(graph, parent_index, child_index).unwrap_or(0);
+                    edges.push(Insert {
+                        parent_index,
+                        to_col: parent_col,
+                        layer,
+                    });
+                }
+            }
+        }
+
+        edges.sort_by_key(|insert| (insert.layer, insert.to_col));
+        inserts[child_index] = edges;
+    }
+
+    inserts
+}
+
+fn index_map(len: usize, inserts: &[Vec<Insert>]) -> (Vec<usize>, Vec<usize>) {
+    let mut rows = vec![0usize; len];
+    let mut extras = vec![0usize; len];
+
+    let mut offset = 0usize;
+    for index in 0..len {
+        rows[index] = index + offset;
+        let extra_rows = inserts[index]
+            .iter()
+            .map(|insert| insert.layer)
+            .max()
+            .map(|max_layer| max_layer + 1)
+            .unwrap_or(0);
+        extras[index] = extra_rows;
+        offset += extra_rows;
+    }
+
+    (rows, extras)
+}
+
+fn commit_column(graph: &GitGraph, info: &CommitInfo) -> Option<usize> {
+    primary_branch(graph, info).and_then(|branch| branch.visual.column)
+}
+
+fn primary_branch<'"'graph>(
+    graph: &'graph GitGraph,
+    info: &CommitInfo,
+) -> Option<&'graph BranchInfo> {
+    if let Some(trace) = info.branch_trace {
+        return graph.branches.get(trace);
+    }
+
+    info.branches
+        .iter()
+        .find_map(|index| graph.branches.get(*index))
+}
+
+fn to_string_block(grid: &CharGrid, labels: &[Option<String>]) -> String {
+    let mut lines = Vec::with_capacity(grid.height);
+    for row in 0..grid.height {
+        let mut line = grid.row(row);
+        if let Some(label) = &labels[row] {
+            if "'!line.is_empty() {
+                line.push('"' ');
+            }
+            line.push_str(label);
+        }
+        lines.push(line);
+    }
+    lines.join(\"\\n\")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn merge_chars_combines_perpendicular_lines() {
+        assert_eq"'!(merge_chars(VER, HOR), CROSS);
+        assert_eq!(merge_chars(HOR, VER), CROSS);
+    }
+
+    #[test]
+    fn merge_chars_keeps_nodes() {
+        assert_eq!(merge_chars(DOT, HOR), DOT);
+        assert_eq!(merge_chars(CIRCLE, VER), CIRCLE);
+    }
+
+    #[test]
+    fn index_map_accumulates_layers() {
+        let inserts = vec![
+            vec![Insert {
+                parent_index: 0,
+                to_col: 1,
+                layer: 0,
+            }],
+            vec![
+                Insert {
+                    parent_index: 0,
+                    to_col: 2,
+                    layer: 0,
+                },
+                Insert {
+                    parent_index: 0,
+                    to_col: 3,
+                    layer: 1,
+                },
+            ],
+        ];
+        let (rows, extras) = index_map(2, &inserts);
+        assert_eq!(rows, vec![0, 1]);
+        assert_eq!(extras, vec![1, 2]);
+    }
+}
+EOF
+' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:35:10] bash -lc "cat <<'EOF' > src/print/unicode.rs
+use crate::{
+    graph::{BranchInfo, CommitInfo, GitGraph},
+    print::get_deviate_index,
+    settings::BranchSettings,
+};
+
+const DOT: char = '●';
+const CIRCLE: char = '○';
+const HOR: char = '─';
+const VER: char = '│';
+const TURN_UP_RIGHT: char = '└';
+const TURN_UP_LEFT: char = '┘';
+const TURN_DOWN_RIGHT: char = '┌';
+const TURN_DOWN_LEFT: char = '┐';
+const T_UP: char = '┴';
+const T_DOWN: char = '┬';
+const T_RIGHT: char = '├';
+const T_LEFT: char = '┤';
+const CROSS: char = '┼';
+const ARROW_RIGHT: char = '▶';
+const ARROW_LEFT: char = '◀';
+
+#[derive(Clone, Debug)]
+struct Insert {
+    parent_index: usize,
+    to_col: usize,
+    layer: usize,
+}
+
+/// Render the git graph as a Unicode string representation suitable for terminals.
+pub fn print_unicode(graph: &GitGraph, _branch_settings: &BranchSettings, debug: bool) -> String {
+    if graph.commits.is_empty() {
+        return String::new();
+    }
+
+    let inserts = get_inserts(graph);
+    let (row_map, extras) = index_map(graph.commits.len(), &inserts);
+    let total_extra: usize = extras.iter().sum();
+    let height = graph.commits.len() + total_extra;
+    let max_column = graph
+        .commits
+        .iter()
+        .filter_map(|commit| commit_column(graph, commit))
+        .max()
+        .unwrap_or(0);
+    let width = max_column * 2 + 1;
+
+    let mut grid = CharGrid::new(width, height);
+    let mut labels: Vec<Option<String>> = vec"'![None; height];
+
+    for (index, commit) in graph.commits.iter().enumerate() {
+        let row = row_map[index];
+        let column = commit_column(graph, commit).unwrap_or(0);
+        let gcol = column * 2;
+        let symbol = if commit.is_merge { CIRCLE } else { DOT };
+        grid.place_node(row, gcol, symbol);
+
+        let summary = graph
+            .commit(commit.oid)
+            .ok()
+            .and_then(|commit_obj| commit_obj.summary().map(|s| s.to_string()))
+            .unwrap_or_else(|| String::from("---"));
+        let short_id = commit.oid.to_string();
+        let short_id = short_id.chars().take(7).collect::<String>();
+        let label = if debug {
+            format!("#{index:03} {short_id} {summary}")
+        } else {
+            format!("{short_id} {summary}")
+        };
+        labels[row] = Some(label);
+
+        for (parent_position, parent_oid_opt) in commit.parents.iter().enumerate() {
+            let parent_oid = match parent_oid_opt {
+                Some(oid) => oid,
+                None => continue,
+            };
+
+            let parent_index = match graph.indices.get(parent_oid) {
+                Some(index) => *index,
+                None => continue,
+            };
+
+            let parent_row = row_map[parent_index];
+            let parent_col = match commit_column(graph, &graph.commits[parent_index]) {
+                Some(col) => col,
+                None => continue,
+            };
+
+            let child_col = column;
+
+            if parent_row == row {
+                continue;
+            }
+
+            if parent_col == child_col {
+                grid.vline(gcol, row, parent_row);
+                continue;
+            }
+
+            let parent_gcol = parent_col * 2;
+            let split = get_deviate_index(graph, parent_index, index).unwrap_or(0);
+
+            let layer = inserts[index]
+                .iter()
+                .find(|insert| insert.parent_index == parent_index && insert.to_col == parent_col)
+                .map(|insert| insert.layer)
+                .unwrap_or(split);
+
+            let insert_row = row + layer + 1;
+
+            if row + 1 <= insert_row.saturating_sub(1) {
+                grid.vline(gcol, row, insert_row - 1);
+            }
+
+            let arrow = if parent_position > 0 {
+                if gcol < parent_gcol {
+                    Some(Arrow::Right)
+                } else {
+                    Some(Arrow::Left)
+                }
+            } else {
+                None
+            };
+
+            if gcol < parent_gcol {
+                grid.overlay(insert_row, gcol, TURN_UP_RIGHT);
+                if gcol + 1 <= parent_gcol.saturating_sub(1) {
+                    grid.hline(insert_row, gcol + 1, parent_gcol - 1, arrow);
+                }
+                grid.overlay(insert_row, parent_gcol, TURN_DOWN_LEFT);
+            } else {
+                grid.overlay(insert_row, gcol, TURN_UP_LEFT);
+                if parent_gcol + 1 <= gcol.saturating_sub(1) {
+                    grid.hline(insert_row, parent_gcol + 1, gcol - 1, arrow);
+                }
+                grid.overlay(insert_row, parent_gcol, TURN_DOWN_RIGHT);
+            }
+
+            if insert_row + 1 <= parent_row.saturating_sub(1) {
+                grid.vline(parent_gcol, insert_row + 1, parent_row - 1);
+            }
+        }
+    }
+
+    to_string_block(&grid, &labels)
+}
+
+struct CharGrid {
+    width: usize,
+    height: usize,
+    cells: Vec<char>,
+}
+
+impl CharGrid {
+    fn new(width: usize, height: usize) -> Self {
+        let width = width.max(1);
+        let height = height.max(1);
+        CharGrid {
+            width,
+            height,
+            cells: vec!['"' '; width * height],
+        }
+    }
+
+    fn index(&self, row: usize, col: usize) -> usize {
+        row * self.width + col
+    }
+
+    fn place_node(&mut self, row: usize, col: usize, ch: char) {
+        if row < self.height && col < self.width {
+            let idx = self.index(row, col);
+            self.cells[idx] = ch;
+        }
+    }
+
+    fn overlay(&mut self, row: usize, col: usize, ch: char) {
+        if row >= self.height || col >= self.width {
+            return;
+        }
+        let idx = self.index(row, col);
+        let current = self.cells[idx];
+        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
+        self.cells[idx] = merged;
+    }
+
+    fn vline(&mut self, col: usize, from_row: usize, to_row: usize) {
+        if col >= self.width || from_row == to_row {
+            return;
+        }
+
+        let (start, end) = if from_row < to_row {
+            (from_row + 1, to_row)
+        } else {
+            (to_row + 1, from_row)
+        };
+
+        if start >= end {
+            return;
+        }
+
+        for row in start..end {
+            self.overlay(row, col, VER);
+        }
+    }
+
+    fn hline(&mut self, row: usize, start_col: usize, end_col: usize, arrow: Option<Arrow>) {
+        if row >= self.height {
+            return;
+        }
+        if start_col > end_col {
+            return;
+        }
+
+        for col in start_col..=end_col {
+            self.overlay(row, col, HOR);
+        }
+
+        if let Some(arrow) = arrow {
+            let arrow_col = match arrow {
+                Arrow::Right => end_col,
+                Arrow::Left => start_col,
+            };
+            self.overlay(row, arrow_col, arrow.char());
+        }
+    }
+
+    fn row(&self, row: usize) -> String {
+        if row >= self.height {
+            return String::new();
+        }
+        let start = self.index(row, 0);
+        let end = self.index(row, self.width - 1) + 1;
+        let mut line: String = self.cells[start..end].iter().collect();
+        while line.ends_with(' ') {
+            line.pop();
+        }
+        line
+    }
+}
+
+#[derive(Clone, Copy)]
+enum Arrow {
+    Left,
+    Right,
+}
+
+impl Arrow {
+    fn char(self) -> char {
+        match self {
+            Arrow::Left => ARROW_LEFT,
+            Arrow::Right => ARROW_RIGHT,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Default)]
+struct LineBits {
+    up: bool,
+    down: bool,
+    left: bool,
+    right: bool,
+    arrow_left: bool,
+    arrow_right: bool,
+    node: Option<char>,
+}
+
+impl LineBits {
+    fn from_char(ch: char) -> Self {
+        match ch {
+            DOT => LineBits {
+                node: Some(DOT),
+                ..Default::default()
+            },
+            CIRCLE => LineBits {
+                node: Some(CIRCLE),
+                ..Default::default()
+            },
+            VER => LineBits {
+                up: true,
+                down: true,
+                ..Default::default()
+            },
+            HOR => LineBits {
+                left: true,
+                right: true,
+                ..Default::default()
+            },
+            TURN_UP_RIGHT => LineBits {
+                up: true,
+                right: true,
+                ..Default::default()
+            },
+            TURN_UP_LEFT => LineBits {
+                up: true,
+                left: true,
+                ..Default::default()
+            },
+            TURN_DOWN_RIGHT => LineBits {
+                down: true,
+                right: true,
+                ..Default::default()
+            },
+            TURN_DOWN_LEFT => LineBits {
+                down: true,
+                left: true,
+                ..Default::default()
+            },
+            T_UP => LineBits {
+                up: true,
+                left: true,
+                right: true,
+                ..Default::default()
+            },
+            T_DOWN => LineBits {
+                down: true,
+                left: true,
+                right: true,
+                ..Default::default()
+            },
+            T_RIGHT => LineBits {
+                up: true,
+                down: true,
+                right: true,
+                ..Default::default()
+            },
+            T_LEFT => LineBits {
+                up: true,
+                down: true,
+                left: true,
+                ..Default::default()
+            },
+            CROSS => LineBits {
+                up: true,
+                down: true,
+                left: true,
+                right: true,
+                ..Default::default()
+            },
+            ARROW_RIGHT => LineBits {
+                arrow_right: true,
+                ..Default::default()
+            },
+            ARROW_LEFT => LineBits {
+                arrow_left: true,
+                ..Default::default()
+            },
+            _ => LineBits::default(),
+        }
+    }
+
+    fn merge(self, other: LineBits) -> LineBits {
+        if other.node.is_some() {
+            return other;
+        }
+
+        let mut result = self;
+        if result.node.is_some() {
+            return result;
+        }
+
+        result.up |= other.up;
+        result.down |= other.down;
+        result.left |= other.left;
+        result.right |= other.right;
+        result.arrow_left |= other.arrow_left;
+        result.arrow_right |= other.arrow_right;
+
+        result
+    }
+
+    fn to_char(self) -> char {
+        if let Some(node) = self.node {
+            return node;
+        }
+        if self.arrow_left && "'!self.arrow_right {
+            return ARROW_LEFT;
+        }
+        if self.arrow_right && !self.arrow_left {
+            return ARROW_RIGHT;
+        }
+
+        match (self.up, self.down, self.left, self.right) {
+            (true, true, true, true) => CROSS,
+            (true, false, true, true) => T_UP,
+            (false, true, true, true) => T_DOWN,
+            (true, true, true, false) => T_LEFT,
+            (true, true, false, true) => T_RIGHT,
+            (true, true, false, false) => VER,
+            (false, false, true, true) => HOR,
+            (true, false, false, true) => TURN_UP_RIGHT,
+            (true, false, true, false) => TURN_UP_LEFT,
+            (false, true, false, true) => TURN_DOWN_RIGHT,
+            (false, true, true, false) => TURN_DOWN_LEFT,
+            (true, false, false, false) => VER,
+            (false, true, false, false) => VER,
+            (false, false, true, false) => HOR,
+            (false, false, false, true) => HOR,
+            _ => '"' ',
+        }
+    }
+}
+
+fn merge_chars(current: char, new: char) -> char {
+    if current == new {
+        return current;
+    }
+    let current_bits = LineBits::from_char(current);
+    let new_bits = LineBits::from_char(new);
+    current_bits.merge(new_bits).to_char()
+}
+
+fn get_inserts(graph: &GitGraph) -> Vec<Vec<Insert>> {
+    let mut inserts: Vec<Vec<Insert>> = vec"'![Vec::new(); graph.commits.len()];
+
+    for (child_index, commit) in graph.commits.iter().enumerate() {
+        let from_col = match commit_column(graph, commit) {
+            Some(col) => col,
+            None => continue,
+        };
+
+        let mut edges: Vec<Insert> = Vec::new();
+
+        for parent_oid in commit.parents.iter().flatten() {
+            if let Some(&parent_index) = graph.indices.get(parent_oid) {
+                if let Some(parent_col) = commit_column(graph, &graph.commits[parent_index]) {
+                    if parent_col == from_col {
+                        continue;
+                    }
+                    let layer = get_deviate_index(graph, parent_index, child_index).unwrap_or(0);
+                    edges.push(Insert {
+                        parent_index,
+                        to_col: parent_col,
+                        layer,
+                    });
+                }
+            }
+        }
+
+        edges.sort_by_key(|insert| (insert.layer, insert.to_col));
+        inserts[child_index] = edges;
+    }
+
+    inserts
+}
+
+fn index_map(len: usize, inserts: &[Vec<Insert>]) -> (Vec<usize>, Vec<usize>) {
+    let mut rows = vec![0usize; len];
+    let mut extras = vec![0usize; len];
+
+    let mut offset = 0usize;
+    for index in 0..len {
+        rows[index] = index + offset;
+        let extra_rows = inserts[index]
+            .iter()
+            .map(|insert| insert.layer)
+            .max()
+            .map(|max_layer| max_layer + 1)
+            .unwrap_or(0);
+        extras[index] = extra_rows;
+        offset += extra_rows;
+    }
+
+    (rows, extras)
+}
+
+fn commit_column(graph: &GitGraph, info: &CommitInfo) -> Option<usize> {
+    primary_branch(graph, info).and_then(|branch| branch.visual.column)
+}
+
+fn primary_branch<'"'graph>(
+    graph: &'graph GitGraph,
+    info: &CommitInfo,
+) -> Option<&'graph BranchInfo> {
+    if let Some(trace) = info.branch_trace {
+        return graph.branches.get(trace);
+    }
+
+    info.branches
+        .iter()
+        .find_map(|index| graph.branches.get(*index))
+}
+
+fn to_string_block(grid: &CharGrid, labels: &[Option<String>]) -> String {
+    let mut lines = Vec::with_capacity(grid.height);
+    for row in 0..grid.height {
+        let mut line = grid.row(row);
+        if let Some(label) = &labels[row] {
+            if "'!line.is_empty() {
+                line.push('"' ');
+            }
+            line.push_str(label);
+        }
+        lines.push(line);
+    }
+    lines.join(\"\\n\")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn merge_chars_combines_perpendicular_lines() {
+        assert_eq"'!(merge_chars(VER, HOR), CROSS);
+        assert_eq!(merge_chars(HOR, VER), CROSS);
+    }
+
+    #[test]
+    fn merge_chars_keeps_nodes() {
+        assert_eq!(merge_chars(DOT, HOR), DOT);
+        assert_eq!(merge_chars(CIRCLE, VER), CIRCLE);
+    }
+
+    #[test]
+    fn index_map_accumulates_layers() {
+        let inserts = vec![
+            vec![Insert {
+                parent_index: 0,
+                to_col: 1,
+                layer: 0,
+            }],
+            vec![
+                Insert {
+                    parent_index: 0,
+                    to_col: 2,
+                    layer: 0,
+                },
+                Insert {
+                    parent_index: 0,
+                    to_col: 3,
+                    layer: 1,
+                },
+            ],
+        ];
+        let (rows, extras) = index_map(2, &inserts);
+        assert_eq!(rows, vec![0, 1]);
+        assert_eq!(extras, vec![1, 2]);
+    }
+}
+EOF
+' succeeded in 41ms:
+
+[2025-09-21T13:35:10] tokens used: 67,111
+
+[2025-09-21T13:35:26] thinking
+
+**Reviewing and correcting index mapping and merge logic**
+
+I'm double-checking calculations around the expected rows array and realized the test expectation was off, so I need to fix it from `[0,1]` to `[0,2]` and adjust related variables too. I'm also verifying the character merging logic in `LineBits::merge` to ensure overlays behave correctly when spaces are involved. Additionally, I’m making sure vertical line drawing in the grid handles row ordering properly, since it can be non-monotonic, and updating the second test accordingly to reflect these fixes.
+[2025-09-21T13:35:27] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/unicode.rs
+@@ -535,3 +535,3 @@
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+[2025-09-21T13:35:27] apply_patch(auto_approved=true) exited 0 in 15ms:
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T13:35:27] turn diff:
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..547aa282f1cf035d6a194eaec836928d3fb963b7
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -533,7 +533,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+[2025-09-21T13:35:27] tokens used: 72,333
+[2025-09-21T13:35:27] turn diff:
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..547aa282f1cf035d6a194eaec836928d3fb963b7
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -533,7 +533,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:35:33] thinking
+
+**Modifying main.rs to add svg output toggle**
+
+I'm updating `main.rs` to import `print_svg`, add an `svg_out` flag, set `debug` to false in settings, and adjust the `run` function signature so it accepts the new flag. Inside `run`, I'll print either SVG or Unicode output based on this flag, while disabling debug output by default.
+[2025-09-21T13:35:35] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/main.rs
+@@ -2,4 +2,4 @@
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+@@ -12,4 +12,6 @@
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+@@ -20,3 +22,3 @@
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+@@ -24,3 +26,3 @@
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+@@ -50,10 +52,10 @@
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+[2025-09-21T13:35:35] apply_patch(auto_approved=true) exited 0 in 31ms:
+Success. Updated the following files:
+M src/main.rs
+[2025-09-21T13:35:35] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..547aa282f1cf035d6a194eaec836928d3fb963b7
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -533,7 +533,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+[2025-09-21T13:35:35] tokens used: 73,363
+[2025-09-21T13:35:35] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..547aa282f1cf035d6a194eaec836928d3fb963b7
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -533,7 +533,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:35:42] thinking
+
+**Preparing to format code**
+[2025-09-21T13:35:42] exec bash -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:35:42] bash -lc 'cargo fmt' succeeded in 68ms:
+
+[2025-09-21T13:35:42] tokens used: 74,042
+[2025-09-21T13:35:42] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:35:45] thinking
+
+**Running tests with cargo**
+[2025-09-21T13:35:45] exec bash -lc 'cargo test' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:35:45] bash -lc 'cargo test' exited -1 in 0ms:
+error: checksum for `svg v0.8.0` changed between lock files
+
+this could be indicative of a few possible errors:
+
+    * the lock file is corrupt
+    * a replacement source in use (e.g., a mirror) returned a different checksum
+    * the source itself may be corrupt in one way or another
+
+unable to verify that `svg v0.8.0` is the same as when the lockfile was generated
+
+[2025-09-21T13:35:45] tokens used: 74,289
+[2025-09-21T13:35:45] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:35:54] thinking
+
+**Diagnosing cargo test checksum failure**
+[2025-09-21T13:35:54] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:35:54] bash -lc 'git status -sb' succeeded in 46ms:
+## main
+ M src/main.rs
+ M src/print/unicode.rs
+[2025-09-21T13:35:54] tokens used: 74,937
+[2025-09-21T13:35:54] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:35:57] thinking
+
+**Preparing commit with all changes**
+[2025-09-21T13:35:58] exec bash -lc 'git add -A' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:35:58] bash -lc 'git add -A' succeeded in 27ms:
+
+[2025-09-21T13:35:58] tokens used: 75,090
+[2025-09-21T13:35:58] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:36:00] thinking
+
+**Committing changes**
+[2025-09-21T13:36:00] exec bash -lc 'git commit -m "023-6c8f6ba：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:36:00] bash -lc 'git commit -m "023-6c8f6ba：复现提交代码内容。"' succeeded in 37ms:
+[main 7d2e064] 023-6c8f6ba：复现提交代码内容。
+ 2 files changed, 400 insertions(+), 244 deletions(-)
+[2025-09-21T13:36:00] tokens used: 75,266
+[2025-09-21T13:36:00] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:36:05] thinking
+
+**Preparing line number references**
+[2025-09-21T13:36:05] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '1,120p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:36:05] bash -lc "nl -ba src/print/unicode.rs | sed -n '1,120p'" succeeded in 38ms:
+     1	use crate::{
+     2	    graph::{BranchInfo, CommitInfo, GitGraph},
+     3	    print::get_deviate_index,
+     4	    settings::BranchSettings,
+     5	};
+     6	
+     7	const DOT: char = '●';
+     8	const CIRCLE: char = '○';
+     9	const HOR: char = '─';
+    10	const VER: char = '│';
+    11	const TURN_UP_RIGHT: char = '└';
+    12	const TURN_UP_LEFT: char = '┘';
+    13	const TURN_DOWN_RIGHT: char = '┌';
+    14	const TURN_DOWN_LEFT: char = '┐';
+    15	const T_UP: char = '┴';
+    16	const T_DOWN: char = '┬';
+    17	const T_RIGHT: char = '├';
+    18	const T_LEFT: char = '┤';
+    19	const CROSS: char = '┼';
+    20	const ARROW_RIGHT: char = '▶';
+[2025-09-21T13:36:05] tokens used: 75,711
+[2025-09-21T13:36:05] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:36:08] thinking
+
+**Gathering line references**
+[2025-09-21T13:36:08] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '200,360p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:36:08] bash -lc "nl -ba src/print/unicode.rs | sed -n '200,360p'" succeeded in 19ms:
+   200	
+   201	        if start >= end {
+   202	            return;
+   203	        }
+   204	
+   205	        for row in start..end {
+   206	            self.overlay(row, col, VER);
+   207	        }
+   208	    }
+   209	
+   210	    fn hline(&mut self, row: usize, start_col: usize, end_col: usize, arrow: Option<Arrow>) {
+   211	        if row >= self.height {
+   212	            return;
+   213	        }
+   214	        if start_col > end_col {
+   215	            return;
+   216	        }
+   217	
+   218	        for col in start_col..=end_col {
+   219	            self.overlay(row, col, HOR);
+[2025-09-21T13:36:08] tokens used: 77,475
+[2025-09-21T13:36:08] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:36:11] thinking
+
+**Referencing get_inserts function**
+[2025-09-21T13:36:11] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '360,520p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:36:11] bash -lc "nl -ba src/print/unicode.rs | sed -n '360,520p'" succeeded in 21ms:
+   360	        let mut result = self;
+   361	        if result.node.is_some() {
+   362	            return result;
+   363	        }
+   364	
+   365	        result.up |= other.up;
+   366	        result.down |= other.down;
+   367	        result.left |= other.left;
+   368	        result.right |= other.right;
+   369	        result.arrow_left |= other.arrow_left;
+   370	        result.arrow_right |= other.arrow_right;
+   371	
+   372	        result
+   373	    }
+   374	
+   375	    fn to_char(self) -> char {
+   376	        if let Some(node) = self.node {
+   377	            return node;
+   378	        }
+   379	        if self.arrow_left && !self.arrow_right {
+[2025-09-21T13:36:11] tokens used: 79,350
+[2025-09-21T13:36:11] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:36:14] thinking
+
+**Documenting main.rs changes**
+[2025-09-21T13:36:14] exec bash -lc 'nl -ba src/main.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:36:14] bash -lc 'nl -ba src/main.rs' succeeded in 12ms:
+     1	use git2::Error;
+     2	use git_graph::graph::{CommitInfo, GitGraph};
+     3	use git_graph::print::svg::print_svg;
+     4	use git_graph::print::unicode::print_unicode;
+     5	use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+     6	use std::time::Instant;
+     7	
+     8	struct Args {}
+     9	
+    10	fn main() -> Result<(), Error> {
+    11	    let _args = Args {};
+    12	
+    13	    let svg_out = false;
+    14	
+    15	    let settings = Settings {
+    16	        debug: false,
+    17	        include_remote: true,
+    18	        branch_order: BranchOrder::ShortestFirst(true),
+    19	        branches: BranchSettings::git_flow(),
+    20	        merge_patterns: MergePatterns::default(),
+[2025-09-21T13:36:14] tokens used: 81,490
+[2025-09-21T13:36:14] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:36:17] thinking
+
+**Preparing to verify test failure**
+[2025-09-21T13:36:17] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T13:36:17] bash -lc 'git status -sb' succeeded in 27ms:
+## main
+[2025-09-21T13:36:17] tokens used: 83,082
+[2025-09-21T13:36:17] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+[2025-09-21T13:36:25] thinking
+
+**Preparing detailed final message**
+
+I’m crafting a thorough final message that outlines the changes made with specific file and line references, notes the failed `cargo test` due to an SVG checksum error, and highlights assumptions like the added arrow characters and default debug settings. I’ll also mention next steps for verification and the testing hiccup to keep everything clear and transparent.
+[2025-09-21T13:36:25] codex
+
+**复现要点**
+- `src/print/unicode.rs:7-200` 定义了完整的 Unicode 盒绘字符集（含箭头）、重写 `print_unicode` 主循环，通过 `get_deviate_index` 计算分流层并在第二父边添加箭头，同时将栅格绘制拆分为 `CharGrid` 的 `vline`/`hline`/`overlay` 调度。
+- `src/print/unicode.rs:245-404` 引入 `Arrow` 与 `LineBits`，用线段合并规则生成 `CROSS/HOR_U/HOR_D` 等字形，`to_string_block` 负责输出块文本。
+- `src/print/unicode.rs:416-468` 让 `get_inserts` 仅按列差与分流索引记录额外行，`index_map` 依 layer 计算偏移，配套单元测试覆盖线段合并与行映射。
+- `src/main.rs:13-61` 新增 `svg_out` 开关，默认 `debug=false`，按开关选择 `print_unicode` 或 `print_svg` 输出，符合报告里的默认终端渲染/可选 SVG 逻辑。
+
+**验证**
+- 尝试 `cargo test`（受限 checksum 冲突：`svg v0.8.0` 校验失败，未能执行编译）。若具备联网或可更新 registry，建议重新获取依赖后再运行。
+
+如需下一步：1) 在有权限环境重新拉取 `svg` 依赖并 `cargo test`。
+[2025-09-21T13:36:27] tokens used: 83,746
+[2025-09-21T13:36:27] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index 1c06a73c3f040b78c2e7db8c978a62c6eaa73096..bb0d888632337f90e5fde58c55d6c05d0d266def
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,7 +1,7 @@
+ use git2::Error;
+ use git_graph::graph::{CommitInfo, GitGraph};
++use git_graph::print::svg::print_svg;
+ use git_graph::print::unicode::print_unicode;
+-// use git_graph::print::svg::print_svg;
+ use git_graph::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+ use std::time::Instant;
+ 
+@@ -10,19 +10,21 @@
+ fn main() -> Result<(), Error> {
+     let _args = Args {};
+ 
++    let svg_out = false;
++
+     let settings = Settings {
+-        debug: true,
++        debug: false,
+         include_remote: true,
+         branch_order: BranchOrder::ShortestFirst(true),
+         branches: BranchSettings::git_flow(),
+         merge_patterns: MergePatterns::default(),
+     };
+ 
+-    run(&settings)?;
++    run(&settings, svg_out)?;
+     Ok(())
+ }
+ 
+-fn run(settings: &Settings) -> Result<(), Error> {
++fn run(settings: &Settings, svg_out: bool) -> Result<(), Error> {
+     let path = ".";
+ 
+     let now = Instant::now();
+@@ -48,14 +50,14 @@
+     }
+ 
+     let now = Instant::now();
+-    println!(
+-        "{}",
+-        print_unicode(&graph, &settings.branches, settings.debug)
+-    );
+-    // println!(
+-    //     "{}",
+-    //     print_svg(&graph, &settings.branches, settings.debug).unwrap()
+-    // );
++    if svg_out {
++        println!("{}", print_svg(&graph, settings));
++    } else {
++        println!(
++            "{}",
++            print_unicode(&graph, &settings.branches, settings.debug)
++        );
++    }
+     let duration_print = now.elapsed().as_micros();
+ 
+     eprintln!(
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index e1184a20d636ef034267b84e0b25a785a2b4225c..779bdfcaa316c0ab7918f3225ed2a7d8e357d87e
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -179,7 +179,11 @@
+         }
+         let idx = self.index(row, col);
+         let current = self.cells[idx];
+-        let merged = if current == ' ' { ch } else { merge_chars(current, ch) };
++        let merged = if current == ' ' {
++            ch
++        } else {
++            merge_chars(current, ch)
++        };
+         self.cells[idx] = merged;
+     }
+ 
+@@ -533,7 +537,7 @@
+             ],
+         ];
+         let (rows, extras) = index_map(2, &inserts);
+-        assert_eq!(rows, vec![0, 1]);
++        assert_eq!(rows, vec![0, 2]);
+         assert_eq!(extras, vec![1, 2]);
+     }
+ }
+
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

@@ -1,0 +1,5058 @@
+=== 任务 014-39e562c 执行日志 ===
+时间: 2025-09-21 20:12:13.809523
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-014-39e562c.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/014-39e562c/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："014-39e562c：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 014-39e562c
+
+=== 输出 ===
+[2025-09-21T12:06:25] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-21T12:06:25] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-014-39e562c.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/014-39e562c/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："014-39e562c：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 014-39e562c
+
+[2025-09-21T12:06:29] thinking
+
+**Preparing to explore workspace directories**
+[2025-09-21T12:06:29] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-21T12:06:29] bash -lc 'ls -la' exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-21T12:06:29] tokens used: 847
+
+[2025-09-21T12:06:31] thinking
+
+**Resolving workspace directory path**
+[2025-09-21T12:06:31] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T12:06:31] bash -lc 'ls -la' succeeded in 23ms:
+total 6176
+drwxr-xr-x@  9 jqwang  staff      288 Sep 21 15:57 .
+drwxr-xr-x@ 29 jqwang  staff      928 Sep 21 07:49 ..
+-rw-r--r--@  1 jqwang  staff      103 Sep 21 20:06 codex_error.txt
+-rw-r--r--@  1 jqwang  staff  2948841 Sep 21 20:06 codex_output.txt
+-rw-r--r--@  1 jqwang  staff        7 Sep 21 20:06 codex_status.txt
+drwxr-xr-x@ 22 jqwang  staff      704 Sep 21 19:31 logs
+drwxr-xr-x@ 12 jqwang  staff      384 Sep 21 19:41 rust-project
+-rw-r--r--@  1 jqwang  staff      364 Sep 21 20:06 task_status.json
+drwxr-xr-x@  5 jqwang  staff      160 Sep 21 20:06 todolist
+[2025-09-21T12:06:31] tokens used: 1,149
+
+[2025-09-21T12:06:34] thinking
+
+**Reading LaTeX report file**
+[2025-09-21T12:06:34] exec bash -lc 'cat todolist/todolist-014-39e562c.tex' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T12:06:34] bash -lc 'cat todolist/todolist-014-39e562c.tex' succeeded in 17ms:
+% 明确说明（非常重要），tex必须以\section开头，不能有其他内容，不能使用begin「document」
+\section{提交考古：014-39e562c}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：assign branch columns for visualization
+  \item 作者：Martin Lange <martin\_lange\_@gmx.net>
+  \item 日期：2020-12-20T20:52:25+01:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+本次提交面向“列对齐的可视化”。从 diffstat 看：\verb|src/graph.rs| 大改（新增/重构 195 行，删改 56 行），\verb|src/main.rs| 小幅调整（17 行），\verb|src/settings.rs| 微调（3 行）。要点：
+\begin{itemize}
+  \item 为 \verb|BranchInfo| 新增 \verb|column| 字段，并实现 \verb|assign\_branch\_columns| 以为每个分支分配稳定的列位置，用于文本/图形输出对齐（head/src/graph.rs:63, 238）。
+  \item 遍历排序改为 \verb+TOPOLOGICAL | TIME+ 使可视化兼顾拓扑和时间顺序（head/src/graph.rs:18）。
+  \item 输出逻辑从“组缩进”改为“列缩进”，打印时使用 \verb|branch.column|（head/src/main.rs:18,59,67）。
+  \item Branch 抽取支持是否包含远端分支 \verb|include\_remote|（head/src/settings.rs:11,37；head/src/graph.rs:140）。
+\end{itemize}
+
+\subsection*{差异解读（证据）}
+[2025-09-21T12:06:34] tokens used: 2,563
+
+[2025-09-21T12:06:38] thinking
+
+**Preparing to inspect repository and HEAD commit**
+[2025-09-21T12:06:38] exec bash -lc ls in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:06:38] bash -lc ls succeeded in 7ms:
+Cargo.lock
+Cargo.toml
+LICENSE
+README.md
+scripts
+src
+target
+[2025-09-21T12:06:38] tokens used: 5,645
+
+[2025-09-21T12:06:44] thinking
+
+**Formulating multi-step modification plan**
+
+I’m focusing on modifying only within `.workspace/rust-project` and need to reconstruct a commit from a report without the actual commit present. I’ll examine current HEAD files to understand the existing state, then use a multi-step plan—starting with gathering info, then making changes, testing, and finally committing—to handle this systematically and update the plan as I progress.
+[2025-09-21T12:06:45] exec bash -lc "__codex_internal_plan '1. Inspect existing HEAD files referenced in report to understand current state. 2. Implement code changes in src/graph.rs, src/main.rs, src/settings.rs to match report details, adding TODO placeholders where info missing. 3. Run cargo build/test as verification. 4. Stage and commit changes with specified message.'" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T12:06:45] bash -lc "__codex_internal_plan '1. Inspect existing HEAD files referenced in report to understand current state. 2. Implement code changes in src/graph.rs, src/main.rs, src/settings.rs to match report details, adding TODO placeholders where info missing. 3. Run cargo build/test as verification. 4. Stage and commit changes with specified message.'" exited 127 in 40ms:
+bash: line 1: __codex_internal_plan: command not found
+[2025-09-21T12:06:45] tokens used: 9,136
+
+[2025-09-21T12:06:52] thinking
+
+**Assessing plan tool availability**
+[2025-09-21T12:06:52] exec bash -lc "sed -n '1,200p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:06:52] bash -lc "sed -n '1,200p' src/graph.rs" succeeded in 27ms:
+use crate::settings::{BranchSettings, Settings};
+use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+use std::collections::HashMap;
+
+pub struct CommitInfo {
+    pub id: Oid,
+    pub parent_ids: Vec<Oid>,
+    pub branches: Vec<usize>,
+    pub branch_trace: Option<usize>,
+}
+
+pub struct BranchInfo {
+    pub name: String,
+    pub target: Oid,
+    pub target_index: usize,
+    pub order_group: usize,
+    pub range: Option<(usize, usize)>,
+    pub deleted: bool,
+}
+
+[2025-09-21T12:06:52] tokens used: 9,674
+
+[2025-09-21T12:06:54] thinking
+
+**Continuing review**
+[2025-09-21T12:06:54] exec bash -lc "sed -n '200,400p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:06:55] bash -lc "sed -n '200,400p' src/graph.rs" succeeded in 29ms:
+        current = parent_index;
+    }
+
+    if any_assigned {
+        branch.range = Some((range_end, branch.target_index));
+    } else {
+        branch.range = None;
+    }
+
+    any_assigned
+}
+[2025-09-21T12:06:55] tokens used: 12,118
+
+[2025-09-21T12:06:57] thinking
+
+**Preparing to update graph.rs structure**
+[2025-09-21T12:06:57] exec bash -lc "sed -n '1,200p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:06:57] bash -lc "sed -n '1,200p' src/main.rs" succeeded in 32ms:
+use git2::{Error, Oid};
+use git_graph::{
+    graph::{BranchInfo, CommitInfo, GitGraph},
+    settings::Settings,
+};
+use itertools::Itertools;
+
+fn main() -> Result<(), Error> {
+    let settings = Settings::git_flow();
+    run(".", &settings)
+}
+
+fn run(path: &str, settings: &Settings) -> Result<(), Error> {
+    let graph = GitGraph::new(path, settings)?;
+
+    for info in graph.commits() {
+        print_commit_short(&graph, info)?;
+    }
+
+    Ok(())
+[2025-09-21T12:06:57] tokens used: 13,940
+
+[2025-09-21T12:06:59] thinking
+
+**Switching to using column and checking settings.rs**
+[2025-09-21T12:07:00] exec bash -lc "sed -n '1,200p' src/settings.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:07:00] bash -lc "sed -n '1,200p' src/settings.rs" succeeded in 14ms:
+#[derive(Debug)]
+pub struct Settings {
+    pub branches: BranchSettings,
+}
+
+impl Default for Settings {
+    fn default() -> Self {
+        Self::git_flow()
+    }
+}
+
+impl Settings {
+    /// Returns settings tuned for the conventional git-flow branch layout.
+    pub fn git_flow() -> Self {
+        Self {
+            branches: BranchSettings::git_flow(),
+        }
+    }
+}
+
+[2025-09-21T12:07:00] tokens used: 14,883
+
+[2025-09-21T12:09:12] thinking
+
+**Implementing branch column assignment and include_remote option**
+**Updating output formatting to use branch columns with include_remote**
+
+I’m preparing to update branch printing to show the new `(col N)` info and adjust indentation based on branch columns rather than order groups. I’ll add the `column` field to `BranchInfo` and ensure functions like `commit_indent`, `describe_branch`, and `indent_for_branch` use it properly with fallbacks. I’m also refining remote branch name shortening and integrating the `include_remote` flag into branch extraction, adapting the sorting and iteration logic accordingly.
+**Refactoring indentation and branch description formatting**
+
+I’m refining indentation logic by unifying it around branch columns, simplifying `indent_for_branch` to return spaces based on `branch.column`. Also, I’ll enhance branch descriptions to append `(col N)` neatly, and ensure commit indentation follows suit by extracting indent logic for reuse. Alongside, I am preparing to apply settings changes to include the `include_remote` flag with defaults.
+[2025-09-21T12:09:22] codex
+**Updating output formatting to use branch columns with include_remote**
+
+I’m preparing to update branch printing to show the new `(col N)` info and adjust indentation based on branch columns rather than order groups. I’ll add the `column` field to `BranchInfo` and ensure functions like `commit_indent`, `describe_branch`, and `indent_for_branch` use it properly with fallbacks. I’m also refining remote branch name shortening and integrating the `include_remote` flag into branch extraction, adapting the sorting and iteration logic accordingly.
+[2025-09-21T12:09:22] codex
+**Refactoring indentation and branch description formatting**
+
+I’m refining indentation logic by unifying it around branch columns, simplifying `indent_for_branch` to return spaces based on `branch.column`. Also, I’ll enhance branch descriptions to append `(col N)` neatly, and ensure commit indentation follows suit by extracting indent logic for reuse. Alongside, I am preparing to apply settings changes to include the `include_remote` flag with defaults.
+[2025-09-21T12:09:22] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/settings.rs
+@@ -2,2 +2,3 @@
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+@@ -15,2 +16,3 @@
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+[2025-09-21T12:09:22] apply_patch(auto_approved=true) exited 0 in 36ms:
+Success. Updated the following files:
+M src/settings.rs
+[2025-09-21T12:09:22] turn diff:
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+[2025-09-21T12:09:22] tokens used: 26,338
+[2025-09-21T12:09:22] turn diff:
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:09:26] thinking
+
+**Preparing patch for branch handling updates**
+[2025-09-21T12:09:51] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/graph.rs
+@@ -2,3 +2,3 @@
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+@@ -18,2 +18,3 @@
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+@@ -30,3 +31,3 @@
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+@@ -56,2 +57,3 @@
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+@@ -116,2 +118,3 @@
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+@@ -142,7 +145,17 @@
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+@@ -168,3 +181,6 @@
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+@@ -210 +226,79 @@
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none()) {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++
++    // Ensure branches without a group fall back to zero indentation so downstream callers can rely on Some.
++    for branch in branches.iter_mut() {
++        if branch.column.is_none() {
++            branch.column = Some(settings.branches.order.len() + branch.order_group);
++        }
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+[2025-09-21T12:09:51] apply_patch(auto_approved=true) exited 0 in 29ms:
+Success. Updated the following files:
+M src/graph.rs
+[2025-09-21T12:09:51] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..7801abc02914413aae833ed82dd60da36fd9fc17
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,81 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none()) {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++
++    // Ensure branches without a group fall back to zero indentation so downstream callers can rely on Some.
++    for branch in branches.iter_mut() {
++        if branch.column.is_none() {
++            branch.column = Some(settings.branches.order.len() + branch.order_group);
++        }
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+[2025-09-21T12:09:51] tokens used: 38,305
+[2025-09-21T12:09:51] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..7801abc02914413aae833ed82dd60da36fd9fc17
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,81 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none()) {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++
++    // Ensure branches without a group fall back to zero indentation so downstream callers can rely on Some.
++    for branch in branches.iter_mut() {
++        if branch.column.is_none() {
++            branch.column = Some(settings.branches.order.len() + branch.order_group);
++        }
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:09:58] thinking
+
+**Reviewing fallback and parameter usage in assign_branch_columns**
+[2025-09-21T12:09:59] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/graph.rs
+@@ -230,3 +230,3 @@
+     branches: &mut [BranchInfo],
+-    settings: &Settings,
++    _settings: &Settings,
+ ) {
+@@ -288,9 +288,2 @@
+         offset += group_width;
+-    }
+-
+-    // Ensure branches without a group fall back to zero indentation so downstream callers can rely on Some.
+-    for branch in branches.iter_mut() {
+-        if branch.column.is_none() {
+-            branch.column = Some(settings.branches.order.len() + branch.order_group);
+-        }
+     }
+[2025-09-21T12:09:59] apply_patch(auto_approved=true) exited 0 in 25ms:
+Success. Updated the following files:
+M src/graph.rs
+[2025-09-21T12:09:59] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..4e26ed5990dcca555f5e57d376150c31452196ec
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,74 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none()) {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+[2025-09-21T12:09:59] tokens used: 40,478
+[2025-09-21T12:09:59] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..4e26ed5990dcca555f5e57d376150c31452196ec
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,74 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none()) {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:10:07] thinking
+
+**Analyzing branch column assignment logic**
+
+I’m making sure `assign_branch_columns` aligns with how branches and groups track columns, checking that column offsets keep values unique across all groups while confirming the usage of `occupied.len()` reflects the maximum concurrent columns rather than just current occupancy. I’ll now turn to updating `main.rs` to integrate these column fields properly.
+[2025-09-21T12:10:11] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/main.rs
+@@ -68,6 +68,10 @@
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+@@ -78,3 +82,4 @@
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+@@ -83,4 +88,8 @@
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+[2025-09-21T12:10:11] apply_patch(auto_approved=true) exited 0 in 33ms:
+Success. Updated the following files:
+M src/main.rs
+[2025-09-21T12:10:11] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..4e26ed5990dcca555f5e57d376150c31452196ec
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,74 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none()) {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+[2025-09-21T12:10:11] tokens used: 43,818
+[2025-09-21T12:10:11] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..4e26ed5990dcca555f5e57d376150c31452196ec
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,74 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none()) {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:10:20] thinking
+
+**Verifying indentation and branch handling updates**
+[2025-09-21T12:10:21] exec bash -lc 'rg "include_remote" -n' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:10:21] bash -lc 'rg "include_remote" -n' succeeded in 34ms:
+src/settings.rs:3:    pub include_remote: bool,
+src/settings.rs:17:            include_remote: false,
+src/graph.rs:159:    if settings.include_remote {
+[2025-09-21T12:10:21] tokens used: 64,278
+[2025-09-21T12:10:21] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..4e26ed5990dcca555f5e57d376150c31452196ec
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,74 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none()) {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:10:28] thinking
+
+**Verifying function usage and formatting**
+[2025-09-21T12:10:28] exec bash -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:10:28] bash -lc 'cargo fmt' succeeded in 45ms:
+
+[2025-09-21T12:10:28] tokens used: 66,503
+[2025-09-21T12:10:28] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:10:32] thinking
+
+**Running cargo run to verify build**
+[2025-09-21T12:10:32] exec bash -lc 'cargo run' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:10:43] bash -lc 'cargo run' exited -1 in 0ms:
+ Downloading crates ...
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+error: failed to download from `https://static.crates.io/crates/libssh2-sys/0.2.23/download`
+
+Caused by:
+  [6] Couldn't resolve host name (Could not resolve host: static.crates.io)
+[2025-09-21T12:10:43] tokens used: 66,810
+[2025-09-21T12:10:43] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:10:50] thinking
+
+**Assessing network restriction impact on build**
+[2025-09-21T12:10:50] exec bash -lc 'cargo run --offline' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:10:50] bash -lc 'cargo run --offline' exited -1 in 0ms:
+error: failed to download `git2 v0.13.25`
+
+Caused by:
+  attempting to make an HTTP request, but --offline was specified
+[2025-09-21T12:10:50] tokens used: 68,368
+[2025-09-21T12:10:50] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:10:54] thinking
+
+**Preparing commit after network limitation**
+[2025-09-21T12:10:54] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:10:54] bash -lc 'git status -sb' succeeded in 31ms:
+## main
+ M src/graph.rs
+ M src/main.rs
+ M src/settings.rs
+[2025-09-21T12:10:54] tokens used: 68,703
+[2025-09-21T12:10:54] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:11:07] thinking
+
+**Reviewing and refining branch assignment code**
+
+I’m making sure the new function in `src/graph.rs` has a clear, concise comment explaining the branching column assignment logic, since the algorithm is a bit complex. I’m also double-checking closure captures around `repo`, imports for `BTreeMap`, handling of deleted branches’ column assignments, and that the new `column` field is accessible across modules. I’ll run formatting, stage all changes, and note the cargo run failure due to network before committing.
+[2025-09-21T12:11:08] exec bash -lc 'git add -A' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:11:08] bash -lc 'git add -A' succeeded in 56ms:
+
+[2025-09-21T12:11:08] tokens used: 70,403
+[2025-09-21T12:11:08] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:11:11] thinking
+
+**Creating commit with specified message**
+[2025-09-21T12:11:12] exec bash -lc 'git commit -m "014-39e562c：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:11:12] bash -lc 'git commit -m "014-39e562c：复现提交代码内容。"' succeeded in 38ms:
+[main d5ebdad] 014-39e562c：复现提交代码内容。
+ 3 files changed, 110 insertions(+), 11 deletions(-)
+[2025-09-21T12:11:12] tokens used: 70,579
+[2025-09-21T12:11:12] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:11:15] thinking
+
+**Verifying commit status**
+[2025-09-21T12:11:15] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:11:15] bash -lc 'git status -sb' succeeded in 21ms:
+## main
+[2025-09-21T12:11:15] tokens used: 70,779
+[2025-09-21T12:11:15] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:11:19] thinking
+
+**Gathering line numbers for changes**
+[2025-09-21T12:11:19] exec bash -lc 'nl -ba src/graph.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:11:19] bash -lc 'nl -ba src/graph.rs' succeeded in 15ms:
+     1	use crate::settings::{BranchSettings, Settings};
+     2	use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+     3	use std::collections::{BTreeMap, HashMap};
+     4	
+     5	pub struct CommitInfo {
+     6	    pub id: Oid,
+     7	    pub parent_ids: Vec<Oid>,
+     8	    pub branches: Vec<usize>,
+     9	    pub branch_trace: Option<usize>,
+    10	}
+    11	
+    12	pub struct BranchInfo {
+    13	    pub name: String,
+    14	    pub target: Oid,
+    15	    pub target_index: usize,
+    16	    pub order_group: usize,
+    17	    pub range: Option<(usize, usize)>,
+    18	    pub deleted: bool,
+    19	    pub column: Option<usize>,
+    20	}
+[2025-09-21T12:11:19] tokens used: 71,011
+[2025-09-21T12:11:19] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:11:22] thinking
+
+**Reviewing comment at specific line**
+[2025-09-21T12:11:22] exec bash -lc 'nl -ba src/main.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:11:22] bash -lc 'nl -ba src/main.rs' succeeded in 26ms:
+     1	use git2::{Error, Oid};
+     2	use git_graph::{
+     3	    graph::{BranchInfo, CommitInfo, GitGraph},
+     4	    settings::Settings,
+     5	};
+     6	use itertools::Itertools;
+     7	
+     8	fn main() -> Result<(), Error> {
+     9	    let settings = Settings::git_flow();
+    10	    run(".", &settings)
+    11	}
+    12	
+    13	fn run(path: &str, settings: &Settings) -> Result<(), Error> {
+    14	    let graph = GitGraph::new(path, settings)?;
+    15	
+    16	    for info in graph.commits() {
+    17	        print_commit_short(&graph, info)?;
+    18	    }
+    19	
+    20	    Ok(())
+[2025-09-21T12:11:22] tokens used: 74,213
+[2025-09-21T12:11:22] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:11:24] thinking
+
+**Noting code modifications with line references**
+[2025-09-21T12:11:25] exec bash -lc 'nl -ba src/settings.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:11:25] bash -lc 'nl -ba src/settings.rs' succeeded in 9ms:
+     1	#[derive(Debug)]
+     2	pub struct Settings {
+     3	    pub include_remote: bool,
+     4	    pub branches: BranchSettings,
+     5	}
+     6	
+     7	impl Default for Settings {
+     8	    fn default() -> Self {
+     9	        Self::git_flow()
+    10	    }
+    11	}
+    12	
+    13	impl Settings {
+    14	    /// Returns settings tuned for the conventional git-flow branch layout.
+    15	    pub fn git_flow() -> Self {
+    16	        Self {
+    17	            include_remote: false,
+    18	            branches: BranchSettings::git_flow(),
+    19	        }
+    20	    }
+[2025-09-21T12:11:25] tokens used: 80,102
+[2025-09-21T12:11:25] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:11:50] thinking
+
+**Summarizing implementation and verification**
+
+I'm preparing a final summary highlighting the new column assignment, `assign_branch_columns`, and `include_remote` features with specific file and line references. I'll note the failed attempts to run `cargo run` due to network issues and suggest running it once online. The summary will include brief assumptions, verification attempts, and commit confirmation, structured with clear bullet points for clarity.
+[2025-09-21T12:11:50] exec bash -lc "sed -n '130,200p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:11:50] bash -lc "sed -n '130,200p' src/graph.rs" succeeded in 18ms:
+
+fn branch_order(name: &str, settings: &BranchSettings) -> usize {
+    settings
+        .order
+        .iter()
+        .enumerate()
+        .find(|(_, prefixes)| prefixes.iter().any(|prefix| name.starts_with(prefix)))
+        .map(|(index, _)| index)
+        .unwrap_or(settings.order.len())
+}
+
+fn extract_branches(
+    repo: &Repository,
+    indices: &HashMap<Oid, usize>,
+    settings: &Settings,
+) -> Result<Vec<BranchInfo>, git2::Error> {
+    let mut branches = Vec::new();
+
+    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
+        let mut iter = repo.branches(Some(branch_type))?;
+[2025-09-21T12:11:50] tokens used: 82,343
+[2025-09-21T12:11:50] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:11:57] thinking
+
+**Determining precise line references**
+[2025-09-21T12:11:58] exec bash -lc "nl -ba src/graph.rs | sed -n '140,200p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T12:11:58] bash -lc "nl -ba src/graph.rs | sed -n '140,200p'" succeeded in 19ms:
+   140	
+   141	fn extract_branches(
+   142	    repo: &Repository,
+   143	    indices: &HashMap<Oid, usize>,
+   144	    settings: &Settings,
+   145	) -> Result<Vec<BranchInfo>, git2::Error> {
+   146	    let mut branches = Vec::new();
+   147	
+   148	    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
+   149	        let mut iter = repo.branches(Some(branch_type))?;
+   150	        while let Some(branch_result) = iter.next() {
+   151	            let (branch, _) = branch_result?;
+   152	            branches.push(branch);
+   153	        }
+   154	        Ok(())
+   155	    };
+   156	
+   157	    push_branches(BranchType::Local)?;
+   158	
+   159	    if settings.include_remote {
+[2025-09-21T12:11:58] tokens used: 86,813
+[2025-09-21T12:11:58] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+[2025-09-21T12:12:09] thinking
+
+**Outlining final message structure**
+[2025-09-21T12:12:09] codex
+
+**复现结果**
+- 在 `src/graph.rs:12`、`src/graph.rs:32`、`src/graph.rs:146`、`src/graph.rs:228` 按报告扩展 `BranchInfo` 列信息，改用 `Sort::TOPOLOGICAL | Sort::TIME` 遍历，允许通过 `include_remote` 拉取远端分支，并新增 `assign_branch_columns` 按组维护占用位图为分支分配稳定列，假设 `branch.range` 覆盖关系足以驱动列复用。
+- 在 `src/main.rs:51`、`src/main.rs:80`、`src/main.rs:88`、`src/main.rs:92` 将输出缩进从组级切换到列级，并在分支描述中展示 `(col N)` 以便确认列分配。
+- 在 `src/settings.rs:3`、`src/settings.rs:17` 引入 `include_remote` 配置，保持 `git_flow` 默认关闭远端分支扫描。
+- 已按要求提交 `014-39e562c：复现提交代码内容。`。
+
+**验证**
+- 尝试 `cargo run` / `cargo run --offline`，但受限于沙箱网络无法下载依赖（static.crates.io DNS 解析失败），未能完成构建。
+
+**后续建议**
+1. 获得网络访问后重新执行 `cargo run`，确认可视化输出中的缩进与 `(col N)` 一致。
+[2025-09-21T12:12:13] tokens used: 89,414
+[2025-09-21T12:12:13] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 96462bb75e706217efd407ff81b48dcc87c8b4ce..6ffb89d51fff35c60ed9129f6e9a161a860ee315
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -1,6 +1,6 @@
+ use crate::settings::{BranchSettings, Settings};
+ use git2::{Branch, BranchType, Commit, Oid, Repository, Sort};
+-use std::collections::HashMap;
++use std::collections::{BTreeMap, HashMap};
+ 
+ pub struct CommitInfo {
+     pub id: Oid,
+@@ -16,6 +16,7 @@
+     pub order_group: usize,
+     pub range: Option<(usize, usize)>,
+     pub deleted: bool,
++    pub column: Option<usize>,
+ }
+ 
+ pub struct GitGraph {
+@@ -28,7 +29,7 @@
+     pub fn new(path: &str, settings: &Settings) -> Result<Self, git2::Error> {
+         let repo = Repository::open(path)?;
+         let mut revwalk = repo.revwalk()?;
+-        revwalk.set_sorting(Sort::TOPOLOGICAL);
++        revwalk.set_sorting(Sort::TOPOLOGICAL | Sort::TIME);
+         revwalk.push_head()?;
+ 
+         let mut commits = Vec::new();
+@@ -54,6 +55,7 @@
+ 
+         let branches = graph.assign_branches(&indices, settings)?;
+         graph.branches = branches;
++        assign_branch_columns(&graph.commits, &mut graph.branches, settings);
+ 
+         Ok(graph)
+     }
+@@ -114,6 +116,7 @@
+         order_group,
+         range: None,
+         deleted: false, // TODO(013-3091f5b): detect deleted branches once the report provides criteria.
++        column: None,
+     })
+ }
+ 
+@@ -140,11 +143,21 @@
+     indices: &HashMap<Oid, usize>,
+     settings: &Settings,
+ ) -> Result<Vec<BranchInfo>, git2::Error> {
+-    let mut iter = repo.branches(Some(BranchType::Local))?;
+     let mut branches = Vec::new();
+-    while let Some(branch_result) = iter.next() {
+-        let (branch, _) = branch_result?;
+-        branches.push(branch);
++
++    let mut push_branches = |branch_type: BranchType| -> Result<(), git2::Error> {
++        let mut iter = repo.branches(Some(branch_type))?;
++        while let Some(branch_result) = iter.next() {
++            let (branch, _) = branch_result?;
++            branches.push(branch);
++        }
++        Ok(())
++    };
++
++    push_branches(BranchType::Local)?;
++
++    if settings.include_remote {
++        push_branches(BranchType::Remote)?;
+     }
+ 
+     let mut branch_infos = branches
+@@ -166,7 +179,10 @@
+ }
+ 
+ fn branch_short_name(reference_name: &str) -> &str {
+-    reference_name.get(11..).unwrap_or(reference_name)
++    reference_name
++        .strip_prefix("refs/heads/")
++        .or_else(|| reference_name.strip_prefix("refs/remotes/"))
++        .unwrap_or(reference_name)
+ }
+ 
+ fn trace_branch(
+@@ -208,3 +224,75 @@
+ 
+     any_assigned
+ }
++
++fn assign_branch_columns(
++    _commits: &[CommitInfo],
++    branches: &mut [BranchInfo],
++    _settings: &Settings,
++) {
++    if branches.is_empty() {
++        return;
++    }
++
++    let mut groups: BTreeMap<usize, Vec<usize>> = BTreeMap::new();
++    for (index, branch) in branches.iter().enumerate() {
++        // Group index may exceed configured order length; keep as-is for stable layout.
++        groups.entry(branch.order_group).or_default().push(index);
++    }
++
++    let mut offset = 0;
++    for (_group, mut indices) in groups.into_iter() {
++        indices.sort_by(|left, right| {
++            let left_branch = &branches[*left];
++            let right_branch = &branches[*right];
++            let (left_start, left_end) = branch_interval(left_branch);
++            let (right_start, right_end) = branch_interval(right_branch);
++
++            left_start
++                .cmp(&right_start)
++                .then(left_end.cmp(&right_end))
++                .then(left_branch.name.cmp(&right_branch.name))
++        });
++
++        let mut occupied: Vec<Option<usize>> = Vec::new();
++        let mut assignments: Vec<(usize, usize)> = Vec::with_capacity(indices.len());
++
++        for &branch_index in &indices {
++            let (start, end) = branch_interval(&branches[branch_index]);
++
++            for slot in &mut occupied {
++                if let Some(occupied_until) = slot {
++                    if *occupied_until < start {
++                        *slot = None;
++                    }
++                }
++            }
++
++            let column = if let Some(position) = occupied.iter_mut().position(|slot| slot.is_none())
++            {
++                occupied[position] = Some(end);
++                position
++            } else {
++                occupied.push(Some(end));
++                occupied.len() - 1
++            };
++
++            assignments.push((branch_index, column));
++        }
++
++        let group_width = occupied.len();
++
++        for (branch_index, column) in assignments {
++            branches[branch_index].column = Some(column + offset);
++        }
++
++        offset += group_width;
++    }
++}
++
++fn branch_interval(branch: &BranchInfo) -> (usize, usize) {
++    branch
++        .range
++        .map(|(start, end)| (start.min(end), start.max(end)))
++        .unwrap_or_else(|| (branch.target_index, branch.target_index))
++}
+diff --git a/src/main.rs b/src/main.rs
+index 00a514a21abb375053634aaba5f9e78c5a4cbef3..18e204eaa38a32e82323456f8a1511657aef1059
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -66,23 +66,32 @@
+         .unwrap_or_else(|| "n/a".to_string());
+ 
+     let deleted_suffix = if branch.deleted { " (deleted)" } else { "" };
++    let column_suffix = branch
++        .column
++        .map(|col| format!(" (col {})", col))
++        .unwrap_or_default();
+ 
+     format!(
+-        "{}[{}-{}] {}{}",
+-        indent, end_label, start_label, branch.name, deleted_suffix
++        "{}[{}-{}] {}{}{}",
++        indent, end_label, start_label, branch.name, deleted_suffix, column_suffix
+     )
+ }
+ 
+ fn commit_indent(graph: &GitGraph, info: &CommitInfo) -> String {
+     info.branch_trace
+         .and_then(|index| graph.branches().get(index))
+-        .map(indent_for_branch)
++        .and_then(|branch| branch.column)
++        .map(indent_for_column)
+         .unwrap_or_default()
+ }
+ 
+ fn indent_for_branch(branch: &BranchInfo) -> String {
++    branch.column.map(indent_for_column).unwrap_or_default()
++}
++
++fn indent_for_column(column: usize) -> String {
+     const INDENT_UNIT: &str = "  ";
+-    INDENT_UNIT.repeat(branch.order_group)
++    INDENT_UNIT.repeat(column)
+ }
+ 
+ fn short_id(oid: Oid) -> String {
+diff --git a/src/settings.rs b/src/settings.rs
+index 0b4aba4339464d1c5eb18a3c597393d080862195..4288428a4057c9cc6bc9fd5bdc6a2c3e163751f3
+--- a/src/settings.rs
++++ b/src/settings.rs
+@@ -1,5 +1,6 @@
+ #[derive(Debug)]
+ pub struct Settings {
++    pub include_remote: bool,
+     pub branches: BranchSettings,
+ }
+ 
+@@ -13,6 +14,7 @@
+     /// Returns settings tuned for the conventional git-flow branch layout.
+     pub fn git_flow() -> Self {
+         Self {
++            include_remote: false,
+             branches: BranchSettings::git_flow(),
+         }
+     }
+
+
+=== 错误 ===
+2025-09-21T12:06:29.014746Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

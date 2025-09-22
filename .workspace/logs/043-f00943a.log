@@ -1,0 +1,4783 @@
+=== 任务 043-f00943a 执行日志 ===
+时间: 2025-09-22 01:02:10.510108
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-043-f00943a.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/043-f00943a/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："043-f00943a：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 043-f00943a
+
+=== 输出 ===
+[2025-09-21T16:55:42] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-21T16:55:42] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-043-f00943a.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/043-f00943a/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："043-f00943a：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 043-f00943a
+
+[2025-09-21T16:55:46] thinking
+
+**Preparing workspace and planning**
+[2025-09-21T16:55:46] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-21T16:55:46] bash -lc 'ls -la' exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-21T16:55:46] tokens used: 843
+
+[2025-09-21T16:55:49] thinking
+
+**Adjusting working directory for command execution**
+[2025-09-21T16:55:49] exec bash -lc pwd in /Users/jqwang/104-CommitLens-codex/.workspace/.
+[2025-09-21T16:55:49] bash -lc pwd succeeded in 8ms:
+/Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T16:55:49] tokens used: 1,819
+
+[2025-09-21T16:55:51] thinking
+
+**Setting working directory to current**
+[2025-09-21T16:55:51] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.
+[2025-09-21T16:55:51] bash -lc 'ls -la' succeeded in 11ms:
+total 26656
+drwxr-xr-x@  9 jqwang  staff       288 Sep 21 15:57 .
+drwxr-xr-x@ 29 jqwang  staff       928 Sep 21 07:49 ..
+-rw-r--r--@  1 jqwang  staff       103 Sep 22 00:55 codex_error.txt
+-rw-r--r--@  1 jqwang  staff  12709633 Sep 22 00:55 codex_output.txt
+-rw-r--r--@  1 jqwang  staff         7 Sep 22 00:55 codex_status.txt
+drwxr-xr-x@ 44 jqwang  staff      1408 Sep 22 00:55 logs
+drwxr-xr-x@ 12 jqwang  staff       384 Sep 21 20:54 rust-project
+-rw-r--r--@  1 jqwang  staff       940 Sep 22 00:55 task_status.json
+drwxr-xr-x@  5 jqwang  staff       160 Sep 22 00:55 todolist
+[2025-09-21T16:55:51] tokens used: 2,873
+
+[2025-09-21T16:55:59] thinking
+
+**Planning approach and opening LaTeX file**
+[2025-09-21T16:55:59] exec bash -lc "sed -n '1,160p' todolist/todolist-043-f00943a.tex" in /Users/jqwang/104-CommitLens-codex/.workspace/.
+[2025-09-21T16:55:59] bash -lc "sed -n '1,160p' todolist/todolist-043-f00943a.tex" succeeded in 20ms:
+\section{提交考古：043-f00943a}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：draw HEAD next to branch if not detached
+  % Escape underscores in email to avoid math-mode errors
+  \item 作者：Martin Lange <martin\_lange\_@gmx.net>
+  \item 日期：2020-12-26T23:59:15+01:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+\begin{verbatim}
+HEAD:   src/graph.rs         |  32 +++++++++++---
+       src/print/unicode.rs | 118 ++++++++++++++++++++++++++++-----------------------
+       2 files changed, 91 insertions(+), 59 deletions(-)
+HEAD-1: README.md            |  7 -----
+       src/graph.rs         | 78 +++++++++++++++++++++++++++++++++++++++++++---------
+       src/main.rs          | 20 ++------------
+       src/print/unicode.rs | 50 +++++++++++++++++++++++++++++++--
+       src/settings.rs      | 21 ++++++++++----
+[2025-09-21T16:55:59] tokens used: 3,761
+
+[2025-09-21T16:56:03] thinking
+
+**Examining code reconstruction needs**
+[2025-09-21T16:56:03] exec bash -lc 'rg -n "```" -n todolist/todolist-043-f00943a.tex' in /Users/jqwang/104-CommitLens-codex/.workspace/.
+[2025-09-21T16:56:03] bash -lc 'rg -n "```" -n todolist/todolist-043-f00943a.tex' exited -1 in 0ms:
+bash: -c: line 1: unexpected EOF while looking for matching ``'
+[2025-09-21T16:56:03] tokens used: 5,939
+
+[2025-09-21T16:56:06] thinking
+
+**Correcting search command syntax**
+[2025-09-21T16:56:06] exec bash -lc 'rg "code" todolist/todolist-043-f00943a.tex' in /Users/jqwang/104-CommitLens-codex/.workspace/.
+[2025-09-21T16:56:06] bash -lc 'rg "code" todolist/todolist-043-f00943a.tex' succeeded in 24ms:
+       src/print/unicode.rs | 118 ++++++++++++++++++++++++++++-----------------------
+       src/print/unicode.rs | 50 +++++++++++++++++++++++++++++++--
+       src/print/unicode.rs | 91 +++++++++++++++++++++++++++++++++-------------------
+  \item 改了什么：在 \texttt{src/graph.rs} 中将 \texttt{GitGraph.head} 由 \texttt{Oid} 改为 \texttt{HeadInfo}（含 \texttt{oid,name,is\_branch}），并新增构造逻辑（head/src/graph.rs:1\,--\,64, 89\,--\,118）。在 \texttt{src/print/unicode.rs} 中，渲染函数改为传入 \texttt{Option<HeadInfo>}，并在 \texttt{write\_post} 中根据 \texttt{is\_branch} 决定 \texttt{HEAD ->} 的位置（head/src/print/unicode.rs:1\,--\,40, 520\,--\,640）。
+    - 渲染接口：\texttt{write\_post} 签名从布尔 \texttt{is\_head} 演进为 \texttt{head: Option<HeadInfo>}；调用处按行判断是否为 HEAD 行（head/src/print/unicode.rs:480\,--\,560）。
+    - 输出格式：当 \texttt{is\_branch=true} 时在分支列表首项前插入 \texttt{HEAD ->}；否则在分支列表之前输出该标记（head/src/print/unicode.rs:600\,--\,720）。
+  \item head/src/print/unicode.rs:520：\texttt{print\_graph} 计算 \texttt{head\_opt} 并传给 \texttt{write\_post}。
+  \item head/src/print/unicode.rs:580\,--\,720：\texttt{write\_post} 根据 \texttt{head.is\_branch} 决定 \texttt{HEAD ->} 的插入位置，并将当前分支排在首位。
+  \item 变化范围：\texttt{graph.rs} 与 \texttt{print/unicode.rs}；
+  \item 证据：见 head/src/graph.rs 与 head/src/print/unicode.rs 对应行段；
+[2025-09-21T16:56:06] tokens used: 6,170
+
+[2025-09-21T16:56:09] thinking
+
+**Preparing to inspect rust-project structure**
+[2025-09-21T16:56:09] exec bash -lc 'ls -R' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:56:09] bash -lc 'ls -R' succeeded in 22ms:
+Cargo.lock
+Cargo.toml
+LICENSE
+README.md
+scripts
+src
+target
+
+./scripts:
+linearize-history.sh
+
+./src:
+graph.rs
+lib.rs
+main.rs
+print
+settings.rs
+text.rs
+
+./src/print:
+[2025-09-21T16:56:09] tokens used: 13,097
+
+[2025-09-21T16:56:12] thinking
+
+**Inspecting rust-project source files**
+[2025-09-21T16:56:12] exec bash -lc "sed -n '1,200p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:56:12] bash -lc "sed -n '1,200p' src/graph.rs" succeeded in 9ms:
+use crate::print::colors::to_terminal_color;
+use crate::settings::{BranchOrder, BranchSettings, Settings};
+use crate::text;
+use git2::{BranchType, Commit, Error, ObjectType, Oid, Repository};
+use itertools::Itertools;
+use regex::Regex;
+use std::collections::{HashMap, VecDeque};
+use std::str;
+
+/// Represents a git history graph.
+pub struct GitGraph {
+    pub repository: Repository,
+    pub head: Oid,
+    pub commits: Vec<CommitInfo>,
+    pub indices: HashMap<Oid, usize>,
+    pub branches: Vec<BranchInfo>,
+}
+
+impl GitGraph {
+    pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+[2025-09-21T16:56:12] tokens used: 13,931
+
+[2025-09-21T16:56:17] thinking
+
+**Navigating large file for GitGraph.head update**
+[2025-09-21T16:56:18] exec bash -lc 'rg -n "struct GitGraph" -n src/graph.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:56:18] bash -lc 'rg -n "struct GitGraph" -n src/graph.rs' succeeded in 10ms:
+11:pub struct GitGraph {
+[2025-09-21T16:56:18] tokens used: 15,704
+
+[2025-09-21T16:56:20] thinking
+
+**Searching for `.head` usage**
+[2025-09-21T16:56:20] exec bash -lc 'rg -n "head" src/graph.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:56:20] bash -lc 'rg -n "head" src/graph.rs' succeeded in 21ms:
+13:    pub head: Oid,
+22:        let head = repository
+23:            .head()
+76:                head,
+119:                head,
+[2025-09-21T16:56:20] tokens used: 15,926
+
+[2025-09-21T16:56:24] thinking
+
+**Updating header structure usage**
+[2025-09-21T16:56:24] exec bash -lc "sed -n '1,200p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:56:24] bash -lc "sed -n '1,200p' src/print/unicode.rs" succeeded in 8ms:
+use crate::graph::GitGraph;
+use crate::settings::{Characters, Settings};
+use atty::Stream;
+use std::collections::hash_map::Entry::{Occupied, Vacant};
+use std::collections::HashMap;
+use yansi::Paint;
+
+const SPACE: u8 = 0;
+const DOT: u8 = 1;
+const CIRCLE: u8 = 2;
+const VER: u8 = 3;
+const HOR: u8 = 4;
+const CROSS: u8 = 5;
+const R_U: u8 = 6;
+const R_D: u8 = 7;
+const L_D: u8 = 8;
+const L_U: u8 = 9;
+const VER_L: u8 = 10;
+const VER_R: u8 = 11;
+const HOR_U: u8 = 12;
+[2025-09-21T16:56:24] tokens used: 16,146
+
+[2025-09-21T16:56:26] thinking
+
+**Investigating write_graph and write_post functions**
+[2025-09-21T16:56:26] exec bash -lc 'rg -n "write_post" src/print/unicode.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:56:26] bash -lc 'rg -n "write_post" src/print/unicode.rs' succeeded in 22ms:
+445:            write_post(&graph, index, color_enabled, is_head, out)?;
+460:            write_post(&graph, index, color_enabled, is_head, out)?;
+491:fn write_post(
+[2025-09-21T16:56:26] tokens used: 18,014
+
+[2025-09-21T16:56:30] thinking
+
+**Continuing file review**
+[2025-09-21T16:56:30] exec bash -lc "sed -n '400,600p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:56:30] bash -lc "sed -n '400,600p' src/print/unicode.rs" succeeded in 22ms:
+                                    }
+                                }
+                                Vacant(entry) => {
+                                    entry.insert(vec![vec![Occ::Range(
+                                        idx,
+                                        *par_idx,
+                                        column_range.0,
+                                        column_range.1,
+                                    )]]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    inserts
+}
+[2025-09-21T16:56:30] tokens used: 18,238
+
+[2025-09-21T16:57:27] thinking
+
+**Implementing HeadInfo for GitGraph and updating print logic**
+
+I’m working on replacing `GitGraph.head` from an `Oid` to a new `HeadInfo` struct holding the commit id, name, and branch status. This involves updating `GitGraph::new` to fetch and populate `HeadInfo` from the repository HEAD reference, handling symbolic and detached cases carefully. Then, I need to adjust printing functions like `write_post` and related logic to accept and use an `Option<&HeadInfo>`, deciding where and how to render the `HEAD ->` marker based on whether `HEAD` points to a branch or a detached commit, reordering branch lists as needed to reflect the current HEAD branch first. This will ensure the output faithfully replicates the updated commit’s intended behavior.
+**Adjusting HEAD marker placement and coloring within branches**
+
+I’m refining the logic so that when HEAD points to a branch, the `HEAD ->` marker appears inside the parentheses before the branch list, reordering branches to put the HEAD branch first and coloring the marker with that branch’s color. When HEAD is detached, the marker stays outside as before. This involves carefully computing branch colors, modifying printing calls to handle colors properly, and updating imports and usage of `HeadInfo` to align with the new design.
+[2025-09-21T16:57:36] codex
+**Adjusting HEAD marker placement and coloring within branches**
+
+I’m refining the logic so that when HEAD points to a branch, the `HEAD ->` marker appears inside the parentheses before the branch list, reordering branches to put the HEAD branch first and coloring the marker with that branch’s color. When HEAD is detached, the marker stays outside as before. This involves carefully computing branch colors, modifying printing calls to handle colors properly, and updating imports and usage of `HeadInfo` to align with the new design.
+[2025-09-21T16:57:36] exec bash -lc "rg -n \"\\.head\" -g\"*.rs\" src" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:57:36] bash -lc "rg -n \"\\.head\" -g\"*.rs\" src" succeeded in 24ms:
+src/print/unicode.rs:154:    let head_commit_index = graph.indices.get(&graph.head).copied();
+src/graph.rs:23:            .head()
+[2025-09-21T16:57:36] tokens used: 25,056
+
+[2025-09-21T16:58:54] thinking
+
+**Redesigning GitGraph head as HeadInfo struct**
+**Reworking HEAD label printing and branch sorting logic**
+
+I’m organizing how HEAD labels print around branches in `write_post`, carefully tracking when to show "HEAD ->" to avoid duplicates, sorting branches to put HEAD’s branch first, and handling fallback cases when branches are empty. I’m making sure to compute colors consistently and update function signatures to pass and use `HeadInfo` properly.
+[2025-09-21T16:58:54] codex
+**Reworking HEAD label printing and branch sorting logic**
+
+I’m organizing how HEAD labels print around branches in `write_post`, carefully tracking when to show "HEAD ->" to avoid duplicates, sorting branches to put HEAD’s branch first, and handling fallback cases when branches are empty. I’m making sure to compute colors consistently and update function signatures to pass and use `HeadInfo` properly.
+[2025-09-21T16:58:54] exec bash -lc "sed -n '1,200p' src/lib.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:58:54] bash -lc "sed -n '1,200p' src/lib.rs" succeeded in 19ms:
+pub mod graph;
+pub mod print;
+pub mod settings;
+pub mod text;
+[2025-09-21T16:58:54] tokens used: 31,374
+
+[2025-09-21T16:58:59] thinking
+
+**Verifying import usage**
+[2025-09-21T16:58:59] exec bash -lc 'rg "ObjectType" src/graph.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:58:59] bash -lc 'rg "ObjectType" src/graph.rs' succeeded in 12ms:
+use git2::{BranchType, Commit, Error, ObjectType, Oid, Repository};
+        if let Ok(object) = reference.peel(ObjectType::Commit) {
+[2025-09-21T16:58:59] tokens used: 31,629
+
+[2025-09-21T16:59:15] thinking
+
+**Preparing patch for HeadInfo addition**
+[2025-09-21T16:59:19] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/graph.rs
+@@ -10,5 +10,11 @@
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+@@ -21,7 +27,14 @@
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+[2025-09-21T16:59:19] apply_patch(auto_approved=true) exited 0 in 23ms:
+Success. Updated the following files:
+M src/graph.rs
+[2025-09-21T16:59:19] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+
+[2025-09-21T16:59:19] tokens used: 33,619
+[2025-09-21T16:59:19] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+
+
+[2025-09-21T16:59:26] thinking
+
+**Reviewing head field usage and cloning needs**
+[2025-09-21T16:59:26] exec bash -lc "rg \"\\.head\" src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:59:26] bash -lc "rg \"\\.head\" src/graph.rs" succeeded in 15ms:
+        let head_reference = repository.head().map_err(|err| err.to_string())?;
+[2025-09-21T16:59:26] tokens used: 34,549
+[2025-09-21T16:59:26] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+
+
+[2025-09-21T16:59:30] thinking
+
+**Checking usage of modified GitGraph head field**
+[2025-09-21T16:59:30] exec bash -lc "rg \"graph\\.head\" -n src" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:59:30] bash -lc "rg \"graph\\.head\" -n src" succeeded in 12ms:
+src/print/unicode.rs:154:    let head_commit_index = graph.indices.get(&graph.head).copied();
+[2025-09-21T16:59:30] tokens used: 34,753
+[2025-09-21T16:59:30] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+
+
+[2025-09-21T16:59:37] thinking
+
+**Updating print_unicode with HeadInfo changes**
+[2025-09-21T16:59:40] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/unicode.rs
+@@ -1,2 +1,2 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+@@ -153,3 +153,3 @@
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+@@ -433,5 +433,6 @@
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+@@ -444,3 +445,3 @@
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+@@ -450,5 +451,6 @@
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+@@ -459,3 +461,3 @@
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+[2025-09-21T16:59:40] apply_patch(auto_approved=true) exited 0 in 27ms:
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T16:59:40] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..edbc49a7ac0c47cf9620de9d7b9ecca30a3e5a5b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+
+[2025-09-21T16:59:40] tokens used: 35,892
+[2025-09-21T16:59:40] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..edbc49a7ac0c47cf9620de9d7b9ecca30a3e5a5b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+
+
+[2025-09-21T16:59:44] thinking
+
+**Preparing to refactor write_post function**
+[2025-09-21T16:59:44] exec bash -lc "sed -n '460,560p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T16:59:44] bash -lc "sed -n '460,560p' src/print/unicode.rs" succeeded in 8ms:
+                .collect::<String>();
+            out.push_str(&line);
+            write_post(&graph, index, color_enabled, head_info, out)?;
+            out.push('\n');
+        }
+    }
+    Ok(())
+}
+
+fn enable_color_output(requested: bool) -> bool {
+    let enabled =
+        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+
+    if enabled {
+        Paint::enable();
+        true
+    } else {
+        Paint::disable();
+        false
+    }
+[2025-09-21T16:59:44] tokens used: 36,701
+[2025-09-21T16:59:44] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..edbc49a7ac0c47cf9620de9d7b9ecca30a3e5a5b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+
+
+[2025-09-21T17:00:05] thinking
+
+**Reconstructing the write_post function**
+[2025-09-21T17:00:25] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/unicode.rs
+@@ -496,3 +496,3 @@
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+@@ -519,16 +519,42 @@
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name {
++            branch_indices.sort_by_key(|branch_index| {
++                graph.branches[*branch_index].name != head_branch_name
++            });
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name
++                    .map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+@@ -538,3 +564,3 @@
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+@@ -545,2 +571,23 @@
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+[2025-09-21T17:00:25] apply_patch(auto_approved=true) exited 0 in 40ms:
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T17:00:25] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..589912fea2e2f34fa7d9dae8ca3c750a1a549452
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,79 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name {
++            branch_indices.sort_by_key(|branch_index| {
++                graph.branches[*branch_index].name != head_branch_name
++            });
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name
++                    .map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+[2025-09-21T17:00:25] tokens used: 40,674
+[2025-09-21T17:00:25] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..589912fea2e2f34fa7d9dae8ca3c750a1a549452
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,79 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name {
++            branch_indices.sort_by_key(|branch_index| {
++                graph.branches[*branch_index].name != head_branch_name
++            });
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name
++                    .map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:00:36] thinking
+
+**Renaming variables to avoid shadowing**
+[2025-09-21T17:00:42] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/unicode.rs
+@@ -533,3 +533,3 @@
+         let mut branch_indices = info.branches.clone();
+-        let head_branch_name = head
++        let head_branch_name_opt = head
+             .filter(|head_info| head_info.is_branch)
+@@ -537,3 +537,3 @@
+ 
+-        if let Some(head_branch_name) = head_branch_name {
++        if let Some(head_branch_name) = head_branch_name_opt {
+             branch_indices.sort_by_key(|branch_index| {
+@@ -548,3 +548,3 @@
+                 let branch_color = branch.visual.term_color;
+-                let is_head_branch = head_branch_name
++                let is_head_branch = head_branch_name_opt
+                     .map_or(false, |name| branch.name == name);
+@@ -572,3 +572,3 @@
+         if head.is_some() && !head_written {
+-            let fallback_color = head_branch_name
++            let fallback_color = head_branch_name_opt
+                 .and_then(|name| {
+[2025-09-21T17:00:42] apply_patch(auto_approved=true) exited 0 in 40ms:
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T17:00:42] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..e1d987c97ffb70eb35c3bff7fba6d5cdc089621f
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,79 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices.sort_by_key(|branch_index| {
++                graph.branches[*branch_index].name != head_branch_name
++            });
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt
++                    .map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+[2025-09-21T17:00:42] tokens used: 43,105
+[2025-09-21T17:00:42] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..8f410e77a176b640dca710a4410bc8d6abbe6e06
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,18 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference
++            .resolve()
++            .map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..e1d987c97ffb70eb35c3bff7fba6d5cdc089621f
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,79 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices.sort_by_key(|branch_index| {
++                graph.branches[*branch_index].name != head_branch_name
++            });
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt
++                    .map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:00:48] thinking
+
+**Verifying variable usage and code formatting**
+[2025-09-21T17:00:48] exec bash -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:00:49] bash -lc 'cargo fmt' succeeded in 81ms:
+
+[2025-09-21T17:00:49] tokens used: 43,981
+[2025-09-21T17:00:49] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:00:53] thinking
+
+**Deciding between build and test commands**
+[2025-09-21T17:00:53] exec bash -lc 'cargo test' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:03] bash -lc 'cargo test' exited 124 in 10.01s:
+    Updating crates.io index
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+[2025-09-21T17:01:03] tokens used: 44,219
+[2025-09-21T17:01:03] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:07] thinking
+
+**Handling network restrictions for testing**
+[2025-09-21T17:01:07] exec bash -lc 'cargo test --offline' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:08] bash -lc 'cargo test --offline' exited -1 in 0ms:
+error: no matching package named `unicode-xid` found
+location searched: crates.io index
+required by package `proc-macro2 v1.0.24`
+    ... which satisfies dependency `proc-macro2 = "^1.0"` (locked to 1.0.24) of package `serde_derive v1.0.118`
+    ... which satisfies dependency `serde_derive = "^1.0"` (locked to 1.0.118) of package `git-graph v0.1.0 (/Users/jqwang/104-CommitLens-codex/.workspace/rust-project)`
+As a reminder, you're using offline mode (--offline) which can sometimes cause surprising resolution failures, if this error is too confusing you may wish to retry without `--offline`.
+[2025-09-21T17:01:08] tokens used: 44,866
+[2025-09-21T17:01:08] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:14] thinking
+
+**Evaluating offline build and test limits**
+[2025-09-21T17:01:14] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:14] bash -lc 'git status -sb' succeeded in 19ms:
+## main
+ M src/graph.rs
+ M src/print/unicode.rs
+[2025-09-21T17:01:14] tokens used: 45,503
+[2025-09-21T17:01:14] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:17] thinking
+
+**Preparing to commit changes**
+[2025-09-21T17:01:17] exec bash -lc 'git diff' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:17] bash -lc 'git diff' succeeded in 38ms:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383be..67a6d84 100644
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@ use std::collections::{HashMap, VecDeque};
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+[2025-09-21T17:01:17] tokens used: 45,722
+[2025-09-21T17:01:17] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:21] thinking
+
+**Preparing to stage modifications**
+[2025-09-21T17:01:21] exec bash -lc 'git add src/graph.rs src/print/unicode.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:21] bash -lc 'git add src/graph.rs src/print/unicode.rs' succeeded in 38ms:
+
+[2025-09-21T17:01:21] tokens used: 48,055
+[2025-09-21T17:01:21] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:26] thinking
+
+**Preparing to commit code**
+[2025-09-21T17:01:26] exec bash -lc 'git commit -m "043-f00943a：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:26] bash -lc 'git commit -m "043-f00943a：复现提交代码内容。"' succeeded in 33ms:
+[main 5e61949] 043-f00943a：复现提交代码内容。
+ 2 files changed, 82 insertions(+), 24 deletions(-)
+[2025-09-21T17:01:26] tokens used: 48,254
+[2025-09-21T17:01:26] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:31] thinking
+
+**Verifying clean git status**
+[2025-09-21T17:01:31] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:31] bash -lc 'git status -sb' succeeded in 36ms:
+## main
+[2025-09-21T17:01:31] tokens used: 48,434
+[2025-09-21T17:01:32] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:39] thinking
+
+**Preparing final response details**
+[2025-09-21T17:01:39] exec bash -lc "nl -ba src/graph.rs | sed -n '1,80p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:39] bash -lc "nl -ba src/graph.rs | sed -n '1,80p'" succeeded in 30ms:
+     1	use crate::print::colors::to_terminal_color;
+     2	use crate::settings::{BranchOrder, BranchSettings, Settings};
+     3	use crate::text;
+     4	use git2::{BranchType, Commit, Error, ObjectType, Oid, Repository};
+     5	use itertools::Itertools;
+     6	use regex::Regex;
+     7	use std::collections::{HashMap, VecDeque};
+     8	use std::str;
+     9	
+    10	/// Represents a git history graph.
+    11	pub struct HeadInfo {
+    12	    pub oid: Oid,
+    13	    pub name: Option<String>,
+    14	    pub is_branch: bool,
+    15	}
+    16	
+    17	pub struct GitGraph {
+    18	    pub repository: Repository,
+    19	    pub head: HeadInfo,
+    20	    pub commits: Vec<CommitInfo>,
+[2025-09-21T17:01:39] tokens used: 48,764
+[2025-09-21T17:01:39] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:44] thinking
+
+**Preparing to extract code snippet**
+[2025-09-21T17:01:45] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '140,260p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:45] bash -lc "nl -ba src/print/unicode.rs | sed -n '140,260p'" succeeded in 16ms:
+   140	                            }
+   141	                        }
+   142	                    }
+   143	                }
+   144	            }
+   145	        }
+   146	    }
+   147	
+   148	    let index_map_inv: HashMap<usize, usize> = index_map
+   149	        .iter()
+   150	        .enumerate()
+   151	        .map(|(idx, line)| (*line, idx))
+   152	        .collect();
+   153	
+   154	    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+   155	
+   156	    let mut out = String::new();
+   157	    write_graph(
+   158	        &graph,
+   159	        &index_map_inv,
+[2025-09-21T17:01:45] tokens used: 87,666
+[2025-09-21T17:01:45] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:48] thinking
+
+**Noting missing write_graph details**
+[2025-09-21T17:01:48] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '420,560p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:48] bash -lc "nl -ba src/print/unicode.rs | sed -n '420,560p'" succeeded in 17ms:
+   420	
+   421	fn write_graph(
+   422	    graph: &GitGraph,
+   423	    line_to_index: &HashMap<usize, usize>,
+   424	    head_index: Option<usize>,
+   425	    characters: &Characters,
+   426	    grid: &Grid,
+   427	    color: bool,
+   428	    out: &mut String,
+   429	) -> Result<(), String> {
+   430	    let color_enabled = enable_color_output(color);
+   431	    if color_enabled {
+   432	        for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+   433	            let index = line_to_index.get(&line_idx);
+   434	            let head_info = match (head_index, index) {
+   435	                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
+   436	                _ => None,
+   437	            };
+   438	            write_pre(&graph, index, out);
+   439	            for arr in row {
+[2025-09-21T17:01:48] tokens used: 122,156
+[2025-09-21T17:01:48] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:01:54] thinking
+
+**Capturing remaining lines**
+[2025-09-21T17:01:55] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '560,680p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T17:01:55] bash -lc "nl -ba src/print/unicode.rs | sed -n '560,680p'" succeeded in 30ms:
+   560	                } else {
+   561	                    out.push_str(&branch.name);
+   562	                }
+   563	                if idx < branch_indices.len() - 1 {
+   564	                    out.push_str(", ");
+   565	                }
+   566	            }
+   567	            out.push_str(") ");
+   568	        }
+   569	
+   570	        if head.is_some() && !head_written {
+   571	            let fallback_color = head_branch_name_opt
+   572	                .and_then(|name| {
+   573	                    branch_indices.iter().find_map(|branch_index| {
+   574	                        let branch = &graph.branches[*branch_index];
+   575	                        if branch.name == name {
+   576	                            Some(branch.visual.term_color)
+   577	                        } else {
+   578	                            None
+   579	                        }
+[2025-09-21T17:01:55] tokens used: 124,111
+[2025-09-21T17:01:55] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+[2025-09-21T17:02:06] thinking
+
+**Drafting final detailed summary**
+
+I'll prepare a concise final message outlining key code changes with file references and line ranges, explain assumptions like optional head names and branch fallback, note the failed test attempt due to network restrictions, mention the performed commit, and suggest natural next steps such as rerunning tests in a network-enabled environment. I'll structure this as a clear bullet list following the requested format.
+[2025-09-21T17:02:06] codex
+
+**复现结果**
+- 在 `src/graph.rs:11-37` 引入 `HeadInfo { oid, name, is_branch }` 并在构造函数解析 HEAD 引用，保留附着分支名称和状态，同时将 `GitGraph.head` 切换为该结构，吻合报告对数据层调整的描述。
+- 在 `src/print/unicode.rs:421-463,493-589` 让绘制流程传递 `Option<&HeadInfo>`，根据 `is_branch` 决定 `HEAD ->` 的渲染位置：附着分支时先对分支列表稳定排序并在首个分支前插入标记，否则维持旧的行前缀行为。
+- 关键假设：报告未给出 HEAD 非分支时的名称取值，故 `HeadInfo.name` 仅在 `HEAD` 绑定分支时保留（`Option<String>`），若分支信息缺失则回退到旧前缀渲染。
+- 构建验证：`cargo test` 在受限网络下无法更新 crates.io 索引而超时/失败；建议在联网或已缓存依赖的环境中重试。
+- 已执行 `git commit -m "043-f00943a：复现提交代码内容。"` 记录本次复现。
+
+后续可在具备依赖缓存的环境中运行 `cargo test`（或 `cargo test --offline` 若已预取依赖）以确认行为。
+[2025-09-21T17:02:10] tokens used: 126,485
+[2025-09-21T17:02:10] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 14383bef36ec8f0bc5b3642446db5b6b23128e1f..67a6d84579fbe426e4931bde504cff1cd85b5fdd
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -8,9 +8,15 @@
+ use std::str;
+ 
+ /// Represents a git history graph.
++pub struct HeadInfo {
++    pub oid: Oid,
++    pub name: Option<String>,
++    pub is_branch: bool,
++}
++
+ pub struct GitGraph {
+     pub repository: Repository,
+-    pub head: Oid,
++    pub head: HeadInfo,
+     pub commits: Vec<CommitInfo>,
+     pub indices: HashMap<Oid, usize>,
+     pub branches: Vec<BranchInfo>,
+@@ -19,11 +25,16 @@
+ impl GitGraph {
+     pub fn new(path: &str, settings: &Settings, max_count: Option<usize>) -> Result<Self, String> {
+         let repository = Repository::open(path).map_err(|err| err.to_string())?;
+-        let head = repository
+-            .head()
+-            .map_err(|err| err.to_string())?
++        let head_reference = repository.head().map_err(|err| err.to_string())?;
++        let resolved_head = head_reference.resolve().map_err(|err| err.to_string())?;
++        let head_oid = resolved_head
+             .target()
+             .ok_or_else(|| "Failed to resolve repository HEAD".to_string())?;
++        let head = HeadInfo {
++            oid: head_oid,
++            name: head_reference.shorthand().map(|name| name.to_string()),
++            is_branch: head_reference.is_branch(),
++        };
+         let mut walk = repository.revwalk().map_err(|err| err.to_string())?;
+ 
+         walk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::TIME)
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 1e4c09931f1b444bc6b00cf9f121dd0fb332c979..f4a63a45fa124a171a27a76fbebd0cfc53fcc93b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,4 +1,4 @@
+-use crate::graph::GitGraph;
++use crate::graph::{GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+ use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -151,7 +151,7 @@
+         .map(|(idx, line)| (*line, idx))
+         .collect();
+ 
+-    let head_commit_index = graph.indices.get(&graph.head).copied();
++    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+ 
+     let mut out = String::new();
+     write_graph(
+@@ -431,9 +431,10 @@
+     if color_enabled {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             for arr in row {
+                 if arr[0] == SPACE {
+@@ -442,22 +443,23 @@
+                     write_colored_char(out, characters.chars[arr[0] as usize], arr[1]);
+                 }
+             }
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     } else {
+         for (line_idx, row) in grid.data.chunks(grid.width).enumerate() {
+             let index = line_to_index.get(&line_idx);
+-            let is_head = head_index.map_or(false, |head_idx| {
+-                index.map_or(false, |idx| *idx == head_idx)
+-            });
++            let head_info = match (head_index, index) {
++                (Some(head_idx), Some(idx)) if *idx == head_idx => Some(&graph.head),
++                _ => None,
++            };
+             write_pre(&graph, index, out);
+             let line = row
+                 .iter()
+                 .map(|arr| characters.chars[arr[0] as usize])
+                 .collect::<String>();
+             out.push_str(&line);
+-            write_post(&graph, index, color_enabled, is_head, out)?;
++            write_post(&graph, index, color_enabled, head_info, out)?;
+             out.push('\n');
+         }
+     }
+@@ -492,7 +494,7 @@
+     graph: &GitGraph,
+     index: Option<&usize>,
+     color: bool,
+-    is_head: bool,
++    head: Option<&HeadInfo>,
+     out: &mut String,
+ ) -> Result<(), String> {
+     if let Some(index) = index {
+@@ -515,32 +517,77 @@
+             })
+             .unwrap_or(WHITE);
+ 
+-        if is_head {
+-            if color {
+-                write_colored_str(out, "HEAD ->", branch_color);
+-            } else {
+-                out.push_str("HEAD ->");
++        let mut head_written = false;
++        if let Some(head_info) = head {
++            if !head_info.is_branch {
++                if color {
++                    write_colored_str(out, "HEAD ->", branch_color);
++                } else {
++                    out.push_str("HEAD ->");
++                }
++                out.push(' ');
++                head_written = true;
+             }
+-            out.push(' ');
+         }
+ 
+-        if !info.branches.is_empty() {
++        let mut branch_indices = info.branches.clone();
++        let head_branch_name_opt = head
++            .filter(|head_info| head_info.is_branch)
++            .and_then(|head_info| head_info.name.as_deref());
++
++        if let Some(head_branch_name) = head_branch_name_opt {
++            branch_indices
++                .sort_by_key(|branch_index| graph.branches[*branch_index].name != head_branch_name);
++        }
++
++        if !branch_indices.is_empty() {
+             out.push('(');
+-            for (idx, branch_index) in info.branches.iter().enumerate() {
++            for (idx, branch_index) in branch_indices.iter().enumerate() {
+                 let branch = &graph.branches[*branch_index];
+                 let branch_color = branch.visual.term_color;
++                let is_head_branch = head_branch_name_opt.map_or(false, |name| branch.name == name);
++                if is_head_branch && !head_written {
++                    if color {
++                        write_colored_str(out, "HEAD ->", branch_color);
++                    } else {
++                        out.push_str("HEAD ->");
++                    }
++                    out.push(' ');
++                    head_written = true;
++                }
+                 if color {
+                     write_colored_str(out, &branch.name, branch_color);
+                 } else {
+                     out.push_str(&branch.name);
+                 }
+-                if idx < info.branches.len() - 1 {
++                if idx < branch_indices.len() - 1 {
+                     out.push_str(", ");
+                 }
+             }
+             out.push_str(") ");
+         }
+ 
++        if head.is_some() && !head_written {
++            let fallback_color = head_branch_name_opt
++                .and_then(|name| {
++                    branch_indices.iter().find_map(|branch_index| {
++                        let branch = &graph.branches[*branch_index];
++                        if branch.name == name {
++                            Some(branch.visual.term_color)
++                        } else {
++                            None
++                        }
++                    })
++                })
++                .unwrap_or(branch_color);
++            if color {
++                write_colored_str(out, "HEAD ->", fallback_color);
++            } else {
++                out.push_str("HEAD ->");
++            }
++            out.push(' ');
++        }
++
+         if !info.tags.is_empty() {
+             out.push('[');
+             for (idx, tag_index) in info.tags.iter().enumerate() {
+
+
+=== 错误 ===
+2025-09-21T16:55:46.780205Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

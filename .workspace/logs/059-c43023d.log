@@ -1,0 +1,4231 @@
+=== 任务 059-c43023d 执行日志 ===
+时间: 2025-09-22 03:12:45.506172
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-059-c43023d.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/059-c43023d/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："059-c43023d：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 059-c43023d
+
+=== 输出 ===
+[2025-09-21T18:55:11] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-21T18:55:11] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-059-c43023d.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/059-c43023d/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："059-c43023d：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 059-c43023d
+
+[2025-09-21T18:55:16] thinking
+
+**Preparing to inspect repository structure**
+[2025-09-21T18:55:16] exec zsh -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:55:16] zsh -lc 'ls -la' succeeded in 59ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+total 34840
+drwxr-xr-x@  9 jqwang  staff       288 Sep 21 15:57 .
+drwxr-xr-x@ 29 jqwang  staff       928 Sep 21 07:49 ..
+-rw-r--r--@  1 jqwang  staff         0 Sep 22 02:55 codex_error.txt
+-rw-r--r--@  1 jqwang  staff  17050416 Sep 22 02:55 codex_output.txt
+-rw-r--r--@  1 jqwang  staff         7 Sep 22 02:55 codex_status.txt
+drwxr-xr-x@ 60 jqwang  staff      1920 Sep 22 02:55 logs
+drwxr-xr-x@ 12 jqwang  staff       384 Sep 21 20:54 rust-project
+-rw-r--r--@  1 jqwang  staff      1244 Sep 22 02:55 task_status.json
+drwxr-xr-x@  5 jqwang  staff       160 Sep 22 02:55 todolist
+[2025-09-21T18:55:16] tokens used: 857
+
+[2025-09-21T18:55:19] thinking
+
+**Choosing method to read .tex file**
+[2025-09-21T18:55:19] exec zsh -lc "sed -n '1,160p' todolist/todolist-059-c43023d.tex" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:55:19] zsh -lc "sed -n '1,160p' todolist/todolist-059-c43023d.tex" succeeded in 48ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+\section{提交考古：059-c43023d}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：more formatting placeholders, merged predefined formatters into one function
+  \item 作者：Martin Lange \verb|<martin_lange_@gmx.net>|
+  \item 日期：2020-12-30T16:11:21+01:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+本次改动聚焦「提交信息格式化」能力与实现整合：在 CLI 增补占位符帮助（含作者/提交者、父提交、日期、正文等），在格式化实现中合并 \verb|short/medium/full| 到一个多级函数，支持自定义占位符与换行。影响范围：\verb|src/main.rs|、\verb|src/print/format.rs|、\verb|src/print/unicode.rs|（HEAD.diff 显示 4 files changed, 171 insertions, 140 deletions）。
+
+\subsection*{差异解读（证据）}
+\begin{itemize}
+  \item 改了什么（关键改动）
+  \begin{itemize}
+    \item 扩展占位符与实现：\verb|src/print/format.rs| 新增父提交、作者/提交者日期与邮件、正文等占位符；实现对应分支与 \verb|\%n| 换行。证据：\verb|src/print/format.rs| 中 \verb|PLACEHOLDERS| 扩充与 \verb|format_commit| 分支实现（b/src/print/format.rs\#L30, b/src/print/format.rs\#L93）。
+    \item 预定义格式整合：移除分散的 \verb|format_short/medium/full|，合并为 \verb|format_multiline(level)|，以 \verb|level| 控制细节层级与正文渲染。证据：\verb|src/print/format.rs|（b/src/print/format.rs\#L137, b/src/print/format.rs\#L245, b/src/print/format.rs\#L360）。
+    \item 调用侧适配：\verb|src/print/unicode.rs| 统一映射 \verb+Short|Medium|Full → format_multiline(level)+。证据：\verb|src/print/unicode.rs|（b/src/print/unicode.rs\#L1, b/src/print/unicode.rs\#L497）。
+[2025-09-21T18:55:19] tokens used: 1,442
+
+[2025-09-21T18:55:22] thinking
+
+**Checking if more lines are needed**
+[2025-09-21T18:55:22] exec zsh -lc "sed -n '160,320p' todolist/todolist-059-c43023d.tex" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:55:22] zsh -lc "sed -n '160,320p' todolist/todolist-059-c43023d.tex" succeeded in 34ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+[2025-09-21T18:55:22] tokens used: 3,617
+
+[2025-09-21T18:55:25] thinking
+
+**Examining Rust project structure**
+[2025-09-21T18:55:25] exec zsh -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:55:25] zsh -lc 'ls -la' succeeded in 31ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+total 112
+drwxr-xr-x@ 12 jqwang  staff    384 Sep 21 20:54 .
+drwxr-xr-x@  9 jqwang  staff    288 Sep 21 15:57 ..
+drwxr-xr-x@ 12 jqwang  staff    384 Sep 22 02:55 .git
+-rw-r--r--@  1 jqwang  staff     14 Sep 21 23:47 .gitignore
+-rw-r--r--@  1 jqwang  staff   1038 Sep 22 00:25 .travis.yml
+-rw-r--r--@  1 jqwang  staff  33357 Sep 22 02:50 Cargo.lock
+-rw-r--r--@  1 jqwang  staff    606 Sep 22 02:52 Cargo.toml
+-rw-r--r--@  1 jqwang  staff   1069 Sep 21 23:48 LICENSE
+-rw-r--r--@  1 jqwang  staff   2983 Sep 22 01:15 README.md
+drwxr-xr-x@  3 jqwang  staff     96 Sep 21 16:01 scripts
+drwxr-xr-x@  8 jqwang  staff    256 Sep 22 00:28 src
+drwxr-xr-x@  5 jqwang  staff    160 Sep 21 16:01 target
+[2025-09-21T18:55:25] tokens used: 3,928
+
+[2025-09-21T18:55:28] thinking
+
+**Examining relevant source files**
+[2025-09-21T18:55:28] exec zsh -lc 'ls src' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:55:28] zsh -lc 'ls src' succeeded in 34ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+graph.rs
+lib.rs
+main.rs
+print
+settings.rs
+text.rs
+[2025-09-21T18:55:28] tokens used: 4,478
+
+[2025-09-21T18:55:31] thinking
+
+**Checking print directory**
+[2025-09-21T18:55:31] exec zsh -lc 'ls src/print' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:55:31] zsh -lc 'ls src/print' succeeded in 44ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+colors.rs
+format.rs
+mod.rs
+svg.rs
+unicode.rs
+[2025-09-21T18:55:31] tokens used: 8,741
+
+[2025-09-21T18:55:34] thinking
+
+**Reviewing existing source file**
+[2025-09-21T18:55:36] exec zsh -lc "sed -n '1,200p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:55:36] zsh -lc "sed -n '1,200p' src/print/format.rs" succeeded in 52ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+use super::unicode::format_branches;
+use crate::graph::{GitGraph, HeadInfo};
+use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+use git2::Signature;
+use yansi::Paint;
+
+#[derive(Clone)]
+pub enum CommitFormat {
+    Oneline,
+    Short,
+    Medium,
+    Full,
+    Custom(FormatString),
+}
+
+#[derive(Clone)]
+pub(crate) struct FormatString {
+    items: Vec<FormatItem>,
+}
+[2025-09-21T18:55:36] tokens used: 9,110
+
+[2025-09-21T18:55:38] thinking
+
+**Continuing file exploration**
+[2025-09-21T18:55:39] exec zsh -lc "sed -n '200,400p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:55:39] zsh -lc "sed -n '200,400p' src/print/format.rs" succeeded in 51ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+        let trimmed_decorations = decorations.trim().to_string();
+        let colored_short_hash = hash_color
+            .map(|color_value| colored(&short_hash, color_value, color_enabled))
+            .unwrap_or_else(|| short_hash.clone());
+        let colored_full_hash = hash_color
+            .map(|color_value| colored(&full_hash, color_value, color_enabled))
+            .unwrap_or_else(|| full_hash.clone());
+
+        let message = commit.message().unwrap_or("");
+        let mut message_lines: Vec<&str> = message.split('\n').collect();
+        if message.ends_with('\n') {
+            message_lines.pop();
+        }
+
+        let body_lines = if message_lines.len() > 1 {
+            message_lines[1..].iter().map(|line| (*line).to_string()).collect()
+        } else {
+            Vec::new()
+        };
+[2025-09-21T18:55:39] tokens used: 10,915
+
+[2025-09-21T18:55:42] thinking
+
+**Preparing to update old file version**
+[2025-09-21T18:55:42] exec zsh -lc "sed -n '1,200p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:55:42] zsh -lc "sed -n '1,200p' src/main.rs" succeeded in 40ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+use clap::{crate_version, App, Arg, SubCommand};
+use git2::{ErrorCode, Repository};
+use git_graph::graph::GitGraph;
+use git_graph::print::format::CommitFormat;
+use git_graph::print::svg::print_svg;
+use git_graph::print::unicode::print_unicode;
+use git_graph::settings::{
+    BranchOrder, BranchSettings, BranchSettingsDef, Characters, MergePatterns, RepoSettings,
+    Settings,
+};
+use platform_dirs::AppDirs;
+use std::path::PathBuf;
+use std::str::FromStr;
+use std::time::Instant;
+
+fn main() {
+    std::process::exit(match from_args() {
+        Ok(_) => 0,
+        Err(err) => {
+[2025-09-21T18:55:42] tokens used: 12,773
+
+[2025-09-21T18:55:44] thinking
+
+**Continuing the process**
+[2025-09-21T18:55:44] exec zsh -lc "sed -n '200,400p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:55:44] zsh -lc "sed -n '200,400p' src/main.rs" succeeded in 52ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+    } else {
+        CommitFormat::default()
+    };
+
+    let settings = Settings {
+        debug,
+        compact,
+        colored,
+        format,
+        include_remote,
+        characters: style,
+        branch_order: BranchOrder::ShortestFirst(true),
+        branches: BranchSettings::from(model).map_err(|err| err.to_string())?,
+        merge_patterns: MergePatterns::default(),
+    };
+
+    run(&repository, &settings, svg, commit_limit, pager)
+}
+
+[2025-09-21T18:55:44] tokens used: 14,788
+
+[2025-09-21T18:55:52] thinking
+
+**Preparing to expand commit format help and replicate commit**
+[2025-09-21T18:55:53] exec zsh -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:55:53] zsh -lc 'git status -sb' succeeded in 31ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+## main
+[2025-09-21T18:55:53] tokens used: 16,962
+
+[2025-09-21T18:56:00] thinking
+
+**Analyzing format string redesign**
+[2025-09-21T18:56:02] exec zsh -lc 'ls todolist/figs/059-c43023d' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:56:02] zsh -lc 'ls todolist/figs/059-c43023d' exited -1 in 0ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+ls: todolist/figs/059-c43023d: No such file or directory
+[2025-09-21T18:56:02] tokens used: 25,370
+
+[2025-09-21T18:56:17] thinking
+
+**Analyzing commit formatting reconstruction**
+
+I'm gathering clues from the report and code references to rebuild commit formatting features, focusing on placeholders like `%P`, `%ad`, `%cn`, and how `format_commit` and `format_multiline` handle them. I'll consider new placeholder variants, support for multi-parent commits, and structure adjustments needed to replicate the final commit's behavior accurately. This involves inferring enum changes, context fields, and placeholder mappings to ensure the reconstructed code builds correctly and matches reported capabilities.
+[2025-09-21T18:56:18] exec zsh -lc "sed -n '1,200p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T18:56:18] zsh -lc "sed -n '1,200p' src/print/unicode.rs" succeeded in 51ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+use crate::settings::{Characters, Settings};
+use atty::Stream;
+use std::collections::hash_map::Entry::{Occupied, Vacant};
+use std::collections::HashMap;
+use yansi::Paint;
+use super::format::{self, CommitFormat, FormatContext};
+
+const SPACE: u8 = 0;
+const DOT: u8 = 1;
+const CIRCLE: u8 = 2;
+const VER: u8 = 3;
+const HOR: u8 = 4;
+const CROSS: u8 = 5;
+const R_U: u8 = 6;
+const R_D: u8 = 7;
+const L_D: u8 = 8;
+const L_U: u8 = 9;
+const VER_L: u8 = 10;
+[2025-09-21T18:56:18] tokens used: 26,447
+
+[2025-09-21T18:57:26] thinking
+
+**Designing extended format parsing and placeholders**
+
+I'm mapping out how to update format parsing to support new placeholders like `%P`, `%ad`, and `%b`, redesigning `FormatString`, `FormatContext`, and `format_multiline` to unify output levels, and crafting a comprehensive `PLACEHOLDERS` constant for help display and validation. I need to handle multi-character placeholders, color variants, and multiline body formatting carefully while planning integration with command-line help strings. Let's explore this parsing and formatting structure thoroughly!
+**Searching for format_multiline code**
+[2025-09-21T18:57:27] codex
+**Searching for format_multiline code**
+[2025-09-21T18:57:28] exec zsh -lc 'rg "format_multiline" -n' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:57:28] zsh -lc 'rg "format_multiline" -n' succeeded in 66ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+todolist/todolist-059-c43023d.tex:18:    \item 预定义格式整合：移除分散的 \verb|format_short/medium/full|，合并为 \verb|format_multiline(level)|，以 \verb|level| 控制细节层级与正文渲染。证据：\verb|src/print/format.rs|（b/src/print/format.rs\#L137, b/src/print/format.rs\#L245, b/src/print/format.rs\#L360）。
+todolist/todolist-059-c43023d.tex:19:    \item 调用侧适配：\verb|src/print/unicode.rs| 统一映射 \verb+Short|Medium|Full → format_multiline(level)+。证据：\verb|src/print/unicode.rs|（b/src/print/unicode.rs\#L1, b/src/print/unicode.rs\#L497）。
+todolist/todolist-059-c43023d.tex:50:  \item b/src/print/format.rs\#L137：\verb|format_oneline| 保留；其后新增 \verb|format_multiline(level)| 并以 \verb|level| 控制合并的 Short/Medium/Full。
+todolist/todolist-059-c43023d.tex:51:  \item b/src/print/unicode.rs\#L497：\verb|CommitFormat::{Short,Medium,Full}| → \verb|format_multiline(..., level)| 的统一分派。
+todolist/figs/architecture.puml:23:- Merges short/medium/full -> format_multiline(level)
+todolist/figs/architecture.puml:27:Unicode ..> Format : uses format_multiline(level)
+todolist/figs/algorithm_flow.puml:11:    :format_multiline(commit, branches, hash_color, level);
+codex_output.txt:489918:    \item 预定义格式整合：移除分散的 \verb|format_short/medium/full|，合并为 \verb|format_multiline(level)|，以 \verb|level| 控制细节层级与正文渲染。证据：\verb|src/print/format.rs|（b/src/print/format.rs\#L137, b/src/print/format.rs\#L245, b/src/print/format.rs\#L360）。
+codex_output.txt:489919:    \item 调用侧适配：\verb|src/print/unicode.rs| 统一映射 \verb+Short|Medium|Full → format_multiline(level)+。证据：\verb|src/print/unicode.rs|（b/src/print/unicode.rs\#L1, b/src/print/unicode.rs\#L497）。
+codex_output.txt:490108:I'm gathering clues from the report and code references to rebuild commit formatting features, focusing on placeholders like `%P`, `%ad`, `%cn`, and how `format_commit` and `format_multiline` handle them. I'll consider new placeholder variants, support for multi-parent commits, and structure adjustments needed to replicate the final commit's behavior accurately. This involves inferring enum changes, context fields, and placeholder mappings to ensure the reconstructed code builds correctly and matches reported capabilities.
+codex_output.txt:490137:I'm mapping out how to update format parsing to support new placeholders like `%P`, `%ad`, and `%b`, redesigning `FormatString`, `FormatContext`, and `format_multiline` to unify output levels, and crafting a comprehensive `PLACEHOLDERS` constant for help display and validation. I need to handle multi-character placeholders, color variants, and multiline body formatting carefully while planning integration with command-line help strings. Let's explore this parsing and formatting structure thoroughly!
+codex_output.txt:490138:**Searching for format_multiline code**
+codex_output.txt:490140:**Searching for format_multiline code**
+codex_output.txt:490141:[2025-09-21T18:57:28] exec zsh -lc 'rg "format_multiline" -n' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:57:28] tokens used: 34,137
+
+[2025-09-21T18:57:30] thinking
+
+**Opening PlantUML diagram**
+[2025-09-21T18:57:30] exec zsh -lc "sed -n '1,160p' todolist/figs/architecture.puml" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:57:31] zsh -lc "sed -n '1,160p' todolist/figs/architecture.puml" succeeded in 33ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+@startuml
+skinparam monochrome true
+skinparam defaultFontName Courier
+
+package "git-graph" {
+  [main.rs] as Main
+  package "print" {
+    [unicode.rs] as Unicode
+    [format.rs] as Format
+  }
+}
+
+Main -[#gray]-> Unicode : parse CLI\npass --format
+Unicode -[#gray]-> Format : format(commit, branches)
+
+note left of Main
+- Adds long_help for --format
+- Lists placeholders %H %h %P %p %d %s ...
+end note
+[2025-09-21T18:57:31] tokens used: 35,209
+
+[2025-09-21T18:57:34] thinking
+
+**Examining date formatting functions**
+[2025-09-21T18:57:34] exec zsh -lc "sed -n '1,160p' todolist/figs/algorithm_flow.puml" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:57:34] zsh -lc "sed -n '1,160p' todolist/figs/algorithm_flow.puml" succeeded in 27ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+@startuml
+skinparam monochrome true
+skinparam defaultFontName Courier
+start
+:parse CommitFormat from args;
+if (format == oneline) then (yes)
+  :format_oneline(commit, branches, hash_color);
+  stop
+else (no)
+  if (format is short/medium/full) then (yes)
+    :format_multiline(commit, branches, hash_color, level);
+  else
+    :format_commit(<string>, commit, branches, hash_color);
+  endif
+endif
+:within format_commit;
+while (has more placeholders?) is (yes)
+  if (%n) then (yes)
+    :flush current line; push to lines;
+[2025-09-21T18:57:34] tokens used: 35,661
+
+[2025-09-21T18:57:45] thinking
+
+**Analyzing commit formatting flow**
+[2025-09-21T18:57:45] exec zsh -lc 'rg "PLACEHOLDERS" codex_output.txt -n' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:57:45] zsh -lc 'rg "PLACEHOLDERS" codex_output.txt -n' succeeded in 34ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+489917:    \item 扩展占位符与实现：\verb|src/print/format.rs| 新增父提交、作者/提交者日期与邮件、正文等占位符；实现对应分支与 \verb|\%n| 换行。证据：\verb|src/print/format.rs| 中 \verb|PLACEHOLDERS| 扩充与 \verb|format_commit| 分支实现（b/src/print/format.rs\#L30, b/src/print/format.rs\#L93）。
+490137:I'm mapping out how to update format parsing to support new placeholders like `%P`, `%ad`, and `%b`, redesigning `FormatString`, `FormatContext`, and `format_multiline` to unify output levels, and crafting a comprehensive `PLACEHOLDERS` constant for help display and validation. I need to handle multi-character placeholders, color variants, and multiline body formatting carefully while planning integration with command-line help strings. Let's explore this parsing and formatting structure thoroughly!
+490154:codex_output.txt:490137:I'm mapping out how to update format parsing to support new placeholders like `%P`, `%ad`, and `%b`, redesigning `FormatString`, `FormatContext`, and `format_multiline` to unify output levels, and crafting a comprehensive `PLACEHOLDERS` constant for help display and validation. I need to handle multi-character placeholders, color variants, and multiline body formatting carefully while planning integration with command-line help strings. Let's explore this parsing and formatting structure thoroughly!
+490217:[2025-09-21T18:57:45] exec zsh -lc 'rg "PLACEHOLDERS" codex_output.txt -n' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T18:57:45] tokens used: 36,556
+
+[2025-09-21T18:58:52] thinking
+
+**Designing commit formatting enhancements**
+
+I’m sketching out how to expand commit formatting with new placeholders, a richer context struct, and improved multiline formatting—focusing on storing both colored and plain parent hashes, handling multiline bodies properly, and adding flexible date formatting, all while updating CLI help and integration points accordingly.
+**Refactoring commit formatting and multiline rendering**
+
+I’m planning to restructure commit formatting by implementing a central `format_commit` function that processes format items and formats commits accordingly, while unifying short/medium/full multiline outputs with a flexible `format_multiline` function using levels—with clear handling of placeholders, multi-line bodies, and date formatting, plus caching parsed format strings for efficiency.
+**Optimizing parent hashes storage and parsing placeholders**
+
+I’m improving FormatContext to precompute joined parent hash strings for efficiency and updating placeholder parsing to support these, carefully handling `%a` and `%c` sequences and ensuring body lines remain as vectors for multi-line formatting.
+**Reconstructing the format.rs module with enhanced structure**
+
+I’m planning a full rewrite of `src/print/format.rs` to cleanly implement the new placeholders, formatting logic, and FormatContext fields, using clear parsing, rendering helpers, and exposing a convenient format_commit API—all while preserving compatibility and maintainability.
+[2025-09-21T19:02:44] codex
+**Refactoring commit formatting and multiline rendering**
+
+I’m planning to restructure commit formatting by implementing a central `format_commit` function that processes format items and formats commits accordingly, while unifying short/medium/full multiline outputs with a flexible `format_multiline` function using levels—with clear handling of placeholders, multi-line bodies, and date formatting, plus caching parsed format strings for efficiency.
+[2025-09-21T19:02:44] codex
+**Optimizing parent hashes storage and parsing placeholders**
+
+I’m improving FormatContext to precompute joined parent hash strings for efficiency and updating placeholder parsing to support these, carefully handling `%a` and `%c` sequences and ensuring body lines remain as vectors for multi-line formatting.
+[2025-09-21T19:02:44] codex
+**Reconstructing the format.rs module with enhanced structure**
+
+I’m planning a full rewrite of `src/print/format.rs` to cleanly implement the new placeholders, formatting logic, and FormatContext fields, using clear parsing, rendering helpers, and exposing a convenient format_commit API—all while preserving compatibility and maintainability.
+[2025-09-21T19:02:44] exec zsh -lc "sed -n '1,160p' src/lib.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:02:44] zsh -lc "sed -n '1,160p' src/lib.rs" succeeded in 51ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+pub mod graph;
+pub mod print;
+pub mod settings;
+pub mod text;
+[2025-09-21T19:02:44] tokens used: 54,815
+
+[2025-09-21T19:02:48] thinking
+
+**Checking format module exports**
+[2025-09-21T19:02:48] exec zsh -lc "sed -n '1,200p' src/print/mod.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:02:48] zsh -lc "sed -n '1,200p' src/print/mod.rs" succeeded in 43ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+use crate::graph::GitGraph;
+use std::cmp::max;
+
+pub mod colors;
+pub mod format;
+pub mod svg;
+pub mod unicode;
+
+/// Find the index at which a between-branch connection
+/// has to deviate from the current branch's column.
+///
+/// Returns the last index on the current column.
+fn get_deviate_index(graph: &GitGraph, index: usize, par_index: usize) -> usize {
+    let info = &graph.commits[index];
+
+    let par_info = &graph.commits[par_index];
+    let par_branch = &graph.branches[par_info.branch_trace.unwrap()];
+
+    let mut min_split_idx = index;
+[2025-09-21T19:02:48] tokens used: 55,036
+
+[2025-09-21T19:03:28] thinking
+
+**Preparing comprehensive format.rs rewrite**
+
+I'm planning a detailed rewrite of `format.rs`, including adding `MultilineLevel` and updating `main.rs` to use `FORMAT_LONG_HELP`. I'll carefully craft the new file content offline to avoid mistakes before applying it wholesale.
+[2025-09-21T19:03:28] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Delete File: src/print/format.rs
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:03:28] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Delete File: src/print/format.rs
+*** End Patch
+PATCH" succeeded in 32ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+D src/print/format.rs
+[2025-09-21T19:03:28] tokens used: 59,048
+
+[2025-09-21T19:03:32] thinking
+
+**Adding new file with patch**
+[2025-09-21T19:04:20] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Add File: src/print/format.rs
++use super::unicode::format_branches;
++use crate::graph::{GitGraph, HeadInfo};
++use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
++use git2::Signature;
++use yansi::Paint;
++
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
++
++pub const PLACEHOLDERS: &[(&str, &str)] = &[
++    (\"%H\", \"full commit hash\"),
++    (\"%h\", \"abbreviated commit hash\"),
++    (\"%P\", \"parent commit hashes (space-separated)\"),
++    (\"%p\", \"abbreviated parent hashes (space-separated)\"),
++    (\"%d\", \"decorations (branch and tag refs)\"),
++    (\"%s\", \"subject\"),
++    (\"%b\", \"body\"),
++    (\"%n\", \"newline\"),
++    (\"%an\", \"author name\"),
++    (\"%ae\", \"author email\"),
++    (\"%ad\", \"author date (RFC2822)\"),
++    (\"%as\", \"author date (short)\"),
++    (\"%cn\", \"committer name\"),
++    (\"%ce\", \"committer email\"),
++    (\"%cd\", \"committer date (RFC2822)\"),
++    (\"%cs\", \"committer date (short)\"),
++];
++
++#[derive(Clone)]
++pub enum CommitFormat {
++    Oneline,
++    Short,
++    Medium,
++    Full,
++    Custom(FormatString),
++}
++
++#[derive(Clone)]
++pub(crate) struct FormatString {
++    items: Vec<FormatItem>,
++}
++
++#[derive(Clone)]
+enum FormatItem {
++    Literal(String),
++    Placeholder(Placeholder),
++}
++
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum Placeholder {
++    ShortHash,
++    FullHash,
++    ParentShortHashes,
++    ParentFullHashes,
++    Decorations,
++    Subject,
++    Body,
++    Newline,
++    AuthorName,
++    AuthorEmail,
++    AuthorDate,
++    AuthorDateShort,
++    CommitterName,
++    CommitterEmail,
++    CommitterDate,
++    CommitterDateShort,
++}
++
++#[derive(Clone)]
++struct PersonInfo {
++    name: String,
++    email: String,
++    date: Option<DateTime<FixedOffset>>,
++}
++
++pub(crate) struct FormatContext {
++    short_hash: String,
++    full_hash: String,
++    colored_short_hash: String,
++    colored_full_hash: String,
++    parent_short_hashes: String,
++    parent_full_hashes: String,
++    decorations: String,
++    trimmed_decorations: String,
++    subject: String,
++    body_lines: Vec<String>,
++    author: PersonInfo,
++    committer: PersonInfo,
++}
++
++#[derive(Clone, Copy)]
++pub(crate) enum MultilineLevel {
++    Short,
++    Medium,
++    Full,
++}
++
++#[derive(Clone, Copy)]
+enum DateFormatStyle {
++    Long,
++    Short,
++}
++
++impl Default for CommitFormat {
++    fn default() -> Self {
++        CommitFormat::Oneline
++    }
++}
++
++impl CommitFormat {
++    pub fn parse(spec: &str) -> Result<Self, String> {
++        match spec.to_ascii_lowercase().as_str() {
++            \"oneline\" => Ok(CommitFormat::Oneline),
++            \"short\" => Ok(CommitFormat::Short),
++            \"medium\" => Ok(CommitFormat::Medium),
++            \"full\" | \"long\" => Ok(CommitFormat::Full),
++            _ => Ok(CommitFormat::Custom(FormatString::parse(spec)?)),
++        }
++    }
++}
++
++impl FormatString {
++    fn parse(template: &str) -> Result<Self, String> {
++        let mut items = Vec::new();
++        let mut literal = String::new();
++        let mut chars = template.chars();
++
++        while let Some(ch) = chars.next() {
++            if ch == '%' {
++                let next = chars
++                    .next()
++                    .ok_or_else(|| \"Dangling '%' at end of format string\".to_string())?;
++                match next {
++                    '%' => literal.push('%'),
++                    'h' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::ShortHash));
++                    }
++                    'H' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::FullHash));
++                    }
++                    'p' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::ParentShortHashes));
++                    }
++                    'P' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::ParentFullHashes));
++                    }
++                    'd' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::Decorations));
++                    }
++                    's' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::Subject));
++                    }
++                    'b' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::Body));
++                    }
++                    'n' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::Newline));
++                    }
++                    'a' => {
++                        let spec = chars
++                            .next()
++                            .ok_or_else(|| \"Incomplete %a placeholder\".to_string())?;
++                        flush_literal(&mut literal, &mut items);
++                        match spec {
++                            'n' => items.push(FormatItem::Placeholder(Placeholder::AuthorName)),
++                            'e' => items.push(FormatItem::Placeholder(Placeholder::AuthorEmail)),
++                            'd' => items.push(FormatItem::Placeholder(Placeholder::AuthorDate)),
++                            's' => {
++                                items.push(FormatItem::Placeholder(Placeholder::AuthorDateShort));
++                            }
++                            other => {
++                                return Err(unsupported_placeholder(&format"'!("%a{}", other)));
++                            }
++                        }
++                    }
++                    '"'c' => {
++                        let spec = chars
++                            .next()
++                            .ok_or_else(|| \"Incomplete %c placeholder\".to_string())?;
++                        flush_literal(&mut literal, &mut items);
++                        match spec {
++                            'n' => items.push(FormatItem::Placeholder(Placeholder::CommitterName)),
++                            'e' => {
++                                items.push(FormatItem::Placeholder(Placeholder::CommitterEmail));
++                            }
++                            'd' => items.push(FormatItem::Placeholder(Placeholder::CommitterDate)),
++                            's' => {
++                                items.push(FormatItem::Placeholder(Placeholder::CommitterDateShort));
++                            }
++                            other => {
++                                return Err(unsupported_placeholder(&format"'!("%c{}", other)));
++                            }
++                        }
++                    }
++                    other => {
++                        return Err(unsupported_placeholder(&format!("%{}", other)));
++                    }
++                }
++            } else {
++                literal.push(ch);
++            }
++        }
++
++        flush_literal(&mut literal, &mut items);
++
++        Ok(FormatString { items })
++    }
++
++    pub(crate) fn format(&self, context: &FormatContext) -> Vec<String> {
++        render_format(&self.items, context)
++    }
++}
++
++pub(crate) fn format_commit(template: &FormatString, context: &FormatContext) -> Vec<String> {
++    render_format(&template.items, context)
++}
++
++fn render_format(items: &[FormatItem], context: &FormatContext) -> Vec<String> {
++    let mut lines = vec![String::new()];
++    let mut line_index = 0;
++
++    for item in items {
++        match item {
++            FormatItem::Literal(text) => lines[line_index].push_str(text),
++            FormatItem::Placeholder(placeholder) => match placeholder {
++                Placeholder::Newline => {
++                    lines.push(String::new());
++                    line_index += 1;
++                }
++                Placeholder::ShortHash => {
++                    lines[line_index].push_str(&context.colored_short_hash);
++                }
++                Placeholder::FullHash => {
++                    lines[line_index].push_str(&context.colored_full_hash);
++                }
++                Placeholder::ParentShortHashes => {
++                    if !context.parent_short_hashes.is_empty() {
++                        lines[line_index].push_str(&context.parent_short_hashes);
++                    }
++                }
++                Placeholder::ParentFullHashes => {
++                    if !context.parent_full_hashes.is_empty() {
++                        lines[line_index].push_str(&context.parent_full_hashes);
++                    }
++                }
++                Placeholder::Decorations => {
++                    lines[line_index].push_str(&context.decorations);
++                }
++                Placeholder::Subject => {
++                    lines[line_index].push_str(&context.subject);
++                }
++                Placeholder::Body => {
++                    append_body(&mut lines, &mut line_index, &context.body_lines);
++                }
++                Placeholder::AuthorName => {
++                    lines[line_index].push_str(&context.author.name);
++                }
++                Placeholder::AuthorEmail => {
++                    lines[line_index].push_str(&context.author.email);
++                }
++                Placeholder::AuthorDate => {
++                    if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
++                        lines[line_index].push_str(&date);
++                    }
++                }
++                Placeholder::AuthorDateShort => {
++                    if let Some(date) = format_date(context.author.date, DateFormatStyle::Short) {
++                        lines[line_index].push_str(&date);
++                    }
++                }
++                Placeholder::CommitterName => {
++                    lines[line_index].push_str(&context.committer.name);
++                }
++                Placeholder::CommitterEmail => {
++                    lines[line_index].push_str(&context.committer.email);
++                }
++                Placeholder::CommitterDate => {
++                    if let Some(date) = format_date(context.committer.date, DateFormatStyle::Long) {
++                        lines[line_index].push_str(&date);
++                    }
++                }
++                Placeholder::CommitterDateShort => {
++                    if let Some(date) = format_date(context.committer.date, DateFormatStyle::Short) {
++                        lines[line_index].push_str(&date);
++                    }
++                }
++            },
++        }
++    }
++
++    if lines.len() > 1 && lines.last().map_or(false, |line| line.is_empty()) {
++        lines.pop();
++    }
++
++    lines
++}
++
++impl FormatContext {
++    pub(crate) fn new(
++        graph: &GitGraph,
++        commit_index: usize,
++        head: Option<&HeadInfo>,
++        color_enabled: bool,
++        hash_color: Option<u8>,
++    ) -> Result<Self, String> {
++        let info = graph
++            .commits
++            .get(commit_index)
++            .ok_or_else(|| format!("Commit index {} out of bounds", commit_index))?;
++        let commit = graph
++            .repository
++            .find_commit(info.oid)
++            .map_err(|err| err.message().to_string())?;
++
++        let full_hash = commit.id().to_string();
++        let short_hash = full_hash.chars().take(7).collect::<String>();
++        let decorations = format_branches(graph, info, head, color_enabled);
++        let trimmed_decorations = decorations.trim().to_string();
++        let colored_short_hash = hash_color
++            .map(|color_value| colored(&short_hash, color_value, color_enabled))
++            .unwrap_or_else(|| short_hash.clone());
++        let colored_full_hash = hash_color
++            .map(|color_value| colored(&full_hash, color_value, color_enabled))
++            .unwrap_or_else(|| full_hash.clone());
++
++        let mut parent_full_hashes = Vec::new();
++        let mut parent_short_hashes = Vec::new();
++        for idx in 0..commit.parent_count() {
++            let hash = commit.parent_id(idx).to_string();
++            parent_short_hashes.push(hash.chars().take(7).collect::<String>());
++            parent_full_hashes.push(hash);
++        }
++
++        let message = commit.message().unwrap_or("");
++        let mut message_lines: Vec<&str> = message.split('"'\\n').collect();
++        if message.ends_with('\\n') {
++            message_lines.pop();
++        }
++
++        let body_lines = if message_lines.len() > 1 {
++            message_lines[1..].iter().map(|line| (*line).to_string()).collect()
++        } else {
++            Vec::new()
++        };
++
++        let author = signature_to_person(&commit.author());
++        let committer = signature_to_person(&commit.committer());
++
++        Ok(FormatContext {
++            short_hash,
++            full_hash,
++            colored_short_hash,
++            colored_full_hash,
++            parent_short_hashes: parent_short_hashes.join(\" \"),
++            parent_full_hashes: parent_full_hashes.join(\" \"),
++            decorations,
++            trimmed_decorations,
++            subject: commit.summary().unwrap_or(\"\").to_string(),
++            body_lines,
++            author,
++            committer,
++        })
++    }
++}
++
++pub(crate) fn format_oneline(context: &FormatContext) -> Vec<String> {
++    let mut line = context.colored_short_hash.clone();
++    let mut segments = Vec::new();
++
++    if "'!context.trimmed_decorations.is_empty() {
++        segments.push(context.trimmed_decorations.clone());
++    }
++    if !context.subject.is_empty() {
++        segments.push(context.subject.clone());
++    }
++
++    if !segments.is_empty() {
++        line.push('"' ');
++        line.push_str(&segments.join(\" \"));
++    }
++
++    vec"'![line]
++}
++
++pub(crate) fn format_multiline(context: &FormatContext, level: MultilineLevel) -> Vec<String> {
++    const LABEL_WIDTH: usize = 11;
++
++    let mut lines = Vec::new();
++    lines.push(commit_header(
++        &context.colored_full_hash,
++        &context.trimmed_decorations,
++    ));
++
++    match level {
++        MultilineLevel::Short => {
++            lines.push(format!("Author: {}", format_signature(&context.author)));
++        }
++        MultilineLevel::Medium => {
++            lines.push(format!("Author: {}", format_signature(&context.author)));
++            if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
++                lines.push(format!("Date:   {}", date));
++            }
++        }
++        MultilineLevel::Full => {
++            lines.push(format!(
++                "{:<width$}{}",
++                "Author:",
++                format_signature(&context.author),
++                width = LABEL_WIDTH,
++            ));
++            if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
++                lines.push(format!(
++                    "{:<width$}{}",
++                    "AuthorDate:",
++                    date,
++                    width = LABEL_WIDTH,
++                ));
++            }
++            lines.push(format!(
++                "{:<width$}{}",
++                "Commit:",
++                format_signature(&context.committer),
++                width = LABEL_WIDTH,
++            ));
++            if let Some(date) = format_date(context.committer.date, DateFormatStyle::Long) {
++                lines.push(format!(
++                    "{:<width$}{}",
++                    "CommitDate:",
++                    date,
++                    width = LABEL_WIDTH,
++                ));
++            }
++        }
++    }
++
++    lines.push(String::new());
++    lines.extend(format_message_lines(&context.subject, &context.body_lines));
++    lines
++}
++
++fn commit_header(hash: &str, decorations: &str) -> String {
++    if decorations.is_empty() {
++        format!("commit {}", hash)
++    } else {
++        format!("commit {} {}", hash, decorations)
++    }
++}
++
++fn format_signature(person: &PersonInfo) -> String {
++    match (person.name.is_empty(), person.email.is_empty()) {
++        (true, true) => "<unknown>".to_string(),
++        (false, true) => person.name.clone(),
++        (true, false) => format!("<{}>", person.email),
++        (false, false) => format!("{} <{}>", person.name, person.email),
++    }
++}
++
++fn format_message_lines(subject: &str, body_lines: &[String]) -> Vec<String> {
++    let mut message = Vec::new();
++
++    if !subject.is_empty() || !body_lines.is_empty() {
++        message.push(indent(subject));
++        for line in body_lines {
++            message.push(indent(line));
++        }
++    }
++
++    message
++}
++
++fn indent(text: &str) -> String {
++    let mut line = String::from("    ");
++    line.push_str(text);
++    line
++}
++
++fn signature_to_person(signature: &Signature<'"'_>) -> PersonInfo {
++    PersonInfo {
++        name: signature.name().unwrap_or(\"\").to_string(),
++        email: signature.email().unwrap_or(\"\").to_string(),
++        date: git_time_to_datetime(signature.when()),
++    }
++}
++
++fn git_time_to_datetime(time: git2::Time) -> Option<DateTime<FixedOffset>> {
++    let offset_seconds = time.offset_minutes().checked_mul(60)?;
++    let offset = FixedOffset::east_opt(offset_seconds)?;
++    match offset.timestamp_opt(time.seconds(), 0) {
++        LocalResult::None => None,
++        LocalResult::Single(dt) => Some(dt),
++        LocalResult::Ambiguous(first, _) => Some(first),
++    }
++}
++
++fn format_date(date: Option<DateTime<FixedOffset>>, style: DateFormatStyle) -> Option<String> {
++    let format = match style {
++        DateFormatStyle::Long => \"%a %b %e %H:%M:%S %Y %z\",
++        DateFormatStyle::Short => \"%Y-%m-%d\",
++    };
++    date.map(|dt| dt.format(format).to_string())
++}
++
++fn colored(text: &str, color: u8, color_enabled: bool) -> String {
++    if color_enabled {
++        Paint::fixed(color, text).to_string()
++    } else {
++        text.to_string()
++    }
++}
++
++fn flush_literal(literal: &mut String, items: &mut Vec<FormatItem>) {
++    if "'!literal.is_empty() {
++        items.push(FormatItem::Literal(literal.clone()));
++        literal.clear();
++    }
++}
++
++fn append_body(lines: &mut Vec<String>, line_index: &mut usize, body: &[String]) {
++    if body.is_empty() {
++        return;
++    }
++
++    let mut iter = body.iter();
++    if let Some(first) = iter.next() {
++        lines[*line_index].push_str(first);
++        for line in iter {
++            lines.push(String::new());
++            *line_index += 1;
++            lines[*line_index].push_str(line);
++        }
++    }
++}
++
++fn unsupported_placeholder(token: &str) -> String {
++    let supported = PLACEHOLDERS
++        .iter()
++        .map(|(placeholder, _)| *placeholder)
++        .collect::<Vec<_>>()
++        .join(", ");
++    format!(
++        "Unsupported placeholder '"'{}'. Supported placeholders: {}\",
++        token, supported
++    )
++}
++
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:04:20] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Add File: src/print/format.rs
++use super::unicode::format_branches;
++use crate::graph::{GitGraph, HeadInfo};
++use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
++use git2::Signature;
++use yansi::Paint;
++
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
++
++pub const PLACEHOLDERS: &[(&str, &str)] = &[
++    (\"%H\", \"full commit hash\"),
++    (\"%h\", \"abbreviated commit hash\"),
++    (\"%P\", \"parent commit hashes (space-separated)\"),
++    (\"%p\", \"abbreviated parent hashes (space-separated)\"),
++    (\"%d\", \"decorations (branch and tag refs)\"),
++    (\"%s\", \"subject\"),
++    (\"%b\", \"body\"),
++    (\"%n\", \"newline\"),
++    (\"%an\", \"author name\"),
++    (\"%ae\", \"author email\"),
++    (\"%ad\", \"author date (RFC2822)\"),
++    (\"%as\", \"author date (short)\"),
++    (\"%cn\", \"committer name\"),
++    (\"%ce\", \"committer email\"),
++    (\"%cd\", \"committer date (RFC2822)\"),
++    (\"%cs\", \"committer date (short)\"),
++];
++
++#[derive(Clone)]
++pub enum CommitFormat {
++    Oneline,
++    Short,
++    Medium,
++    Full,
++    Custom(FormatString),
++}
++
++#[derive(Clone)]
++pub(crate) struct FormatString {
++    items: Vec<FormatItem>,
++}
++
++#[derive(Clone)]
+enum FormatItem {
++    Literal(String),
++    Placeholder(Placeholder),
++}
++
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum Placeholder {
++    ShortHash,
++    FullHash,
++    ParentShortHashes,
++    ParentFullHashes,
++    Decorations,
++    Subject,
++    Body,
++    Newline,
++    AuthorName,
++    AuthorEmail,
++    AuthorDate,
++    AuthorDateShort,
++    CommitterName,
++    CommitterEmail,
++    CommitterDate,
++    CommitterDateShort,
++}
++
++#[derive(Clone)]
++struct PersonInfo {
++    name: String,
++    email: String,
++    date: Option<DateTime<FixedOffset>>,
++}
++
++pub(crate) struct FormatContext {
++    short_hash: String,
++    full_hash: String,
++    colored_short_hash: String,
++    colored_full_hash: String,
++    parent_short_hashes: String,
++    parent_full_hashes: String,
++    decorations: String,
++    trimmed_decorations: String,
++    subject: String,
++    body_lines: Vec<String>,
++    author: PersonInfo,
++    committer: PersonInfo,
++}
++
++#[derive(Clone, Copy)]
++pub(crate) enum MultilineLevel {
++    Short,
++    Medium,
++    Full,
++}
++
++#[derive(Clone, Copy)]
+enum DateFormatStyle {
++    Long,
++    Short,
++}
++
++impl Default for CommitFormat {
++    fn default() -> Self {
++        CommitFormat::Oneline
++    }
++}
++
++impl CommitFormat {
++    pub fn parse(spec: &str) -> Result<Self, String> {
++        match spec.to_ascii_lowercase().as_str() {
++            \"oneline\" => Ok(CommitFormat::Oneline),
++            \"short\" => Ok(CommitFormat::Short),
++            \"medium\" => Ok(CommitFormat::Medium),
++            \"full\" | \"long\" => Ok(CommitFormat::Full),
++            _ => Ok(CommitFormat::Custom(FormatString::parse(spec)?)),
++        }
++    }
++}
++
++impl FormatString {
++    fn parse(template: &str) -> Result<Self, String> {
++        let mut items = Vec::new();
++        let mut literal = String::new();
++        let mut chars = template.chars();
++
++        while let Some(ch) = chars.next() {
++            if ch == '%' {
++                let next = chars
++                    .next()
++                    .ok_or_else(|| \"Dangling '%' at end of format string\".to_string())?;
++                match next {
++                    '%' => literal.push('%'),
++                    'h' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::ShortHash));
++                    }
++                    'H' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::FullHash));
++                    }
++                    'p' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::ParentShortHashes));
++                    }
++                    'P' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::ParentFullHashes));
++                    }
++                    'd' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::Decorations));
++                    }
++                    's' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::Subject));
++                    }
++                    'b' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::Body));
++                    }
++                    'n' => {
++                        flush_literal(&mut literal, &mut items);
++                        items.push(FormatItem::Placeholder(Placeholder::Newline));
++                    }
++                    'a' => {
++                        let spec = chars
++                            .next()
++                            .ok_or_else(|| \"Incomplete %a placeholder\".to_string())?;
++                        flush_literal(&mut literal, &mut items);
++                        match spec {
++                            'n' => items.push(FormatItem::Placeholder(Placeholder::AuthorName)),
++                            'e' => items.push(FormatItem::Placeholder(Placeholder::AuthorEmail)),
++                            'd' => items.push(FormatItem::Placeholder(Placeholder::AuthorDate)),
++                            's' => {
++                                items.push(FormatItem::Placeholder(Placeholder::AuthorDateShort));
++                            }
++                            other => {
++                                return Err(unsupported_placeholder(&format"'!("%a{}", other)));
++                            }
++                        }
++                    }
++                    '"'c' => {
++                        let spec = chars
++                            .next()
++                            .ok_or_else(|| \"Incomplete %c placeholder\".to_string())?;
++                        flush_literal(&mut literal, &mut items);
++                        match spec {
++                            'n' => items.push(FormatItem::Placeholder(Placeholder::CommitterName)),
++                            'e' => {
++                                items.push(FormatItem::Placeholder(Placeholder::CommitterEmail));
++                            }
++                            'd' => items.push(FormatItem::Placeholder(Placeholder::CommitterDate)),
++                            's' => {
++                                items.push(FormatItem::Placeholder(Placeholder::CommitterDateShort));
++                            }
++                            other => {
++                                return Err(unsupported_placeholder(&format"'!("%c{}", other)));
++                            }
++                        }
++                    }
++                    other => {
++                        return Err(unsupported_placeholder(&format!("%{}", other)));
++                    }
++                }
++            } else {
++                literal.push(ch);
++            }
++        }
++
++        flush_literal(&mut literal, &mut items);
++
++        Ok(FormatString { items })
++    }
++
++    pub(crate) fn format(&self, context: &FormatContext) -> Vec<String> {
++        render_format(&self.items, context)
++    }
++}
++
++pub(crate) fn format_commit(template: &FormatString, context: &FormatContext) -> Vec<String> {
++    render_format(&template.items, context)
++}
++
++fn render_format(items: &[FormatItem], context: &FormatContext) -> Vec<String> {
++    let mut lines = vec![String::new()];
++    let mut line_index = 0;
++
++    for item in items {
++        match item {
++            FormatItem::Literal(text) => lines[line_index].push_str(text),
++            FormatItem::Placeholder(placeholder) => match placeholder {
++                Placeholder::Newline => {
++                    lines.push(String::new());
++                    line_index += 1;
++                }
++                Placeholder::ShortHash => {
++                    lines[line_index].push_str(&context.colored_short_hash);
++                }
++                Placeholder::FullHash => {
++                    lines[line_index].push_str(&context.colored_full_hash);
++                }
++                Placeholder::ParentShortHashes => {
++                    if !context.parent_short_hashes.is_empty() {
++                        lines[line_index].push_str(&context.parent_short_hashes);
++                    }
++                }
++                Placeholder::ParentFullHashes => {
++                    if !context.parent_full_hashes.is_empty() {
++                        lines[line_index].push_str(&context.parent_full_hashes);
++                    }
++                }
++                Placeholder::Decorations => {
++                    lines[line_index].push_str(&context.decorations);
++                }
++                Placeholder::Subject => {
++                    lines[line_index].push_str(&context.subject);
++                }
++                Placeholder::Body => {
++                    append_body(&mut lines, &mut line_index, &context.body_lines);
++                }
++                Placeholder::AuthorName => {
++                    lines[line_index].push_str(&context.author.name);
++                }
++                Placeholder::AuthorEmail => {
++                    lines[line_index].push_str(&context.author.email);
++                }
++                Placeholder::AuthorDate => {
++                    if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
++                        lines[line_index].push_str(&date);
++                    }
++                }
++                Placeholder::AuthorDateShort => {
++                    if let Some(date) = format_date(context.author.date, DateFormatStyle::Short) {
++                        lines[line_index].push_str(&date);
++                    }
++                }
++                Placeholder::CommitterName => {
++                    lines[line_index].push_str(&context.committer.name);
++                }
++                Placeholder::CommitterEmail => {
++                    lines[line_index].push_str(&context.committer.email);
++                }
++                Placeholder::CommitterDate => {
++                    if let Some(date) = format_date(context.committer.date, DateFormatStyle::Long) {
++                        lines[line_index].push_str(&date);
++                    }
++                }
++                Placeholder::CommitterDateShort => {
++                    if let Some(date) = format_date(context.committer.date, DateFormatStyle::Short) {
++                        lines[line_index].push_str(&date);
++                    }
++                }
++            },
++        }
++    }
++
++    if lines.len() > 1 && lines.last().map_or(false, |line| line.is_empty()) {
++        lines.pop();
++    }
++
++    lines
++}
++
++impl FormatContext {
++    pub(crate) fn new(
++        graph: &GitGraph,
++        commit_index: usize,
++        head: Option<&HeadInfo>,
++        color_enabled: bool,
++        hash_color: Option<u8>,
++    ) -> Result<Self, String> {
++        let info = graph
++            .commits
++            .get(commit_index)
++            .ok_or_else(|| format!("Commit index {} out of bounds", commit_index))?;
++        let commit = graph
++            .repository
++            .find_commit(info.oid)
++            .map_err(|err| err.message().to_string())?;
++
++        let full_hash = commit.id().to_string();
++        let short_hash = full_hash.chars().take(7).collect::<String>();
++        let decorations = format_branches(graph, info, head, color_enabled);
++        let trimmed_decorations = decorations.trim().to_string();
++        let colored_short_hash = hash_color
++            .map(|color_value| colored(&short_hash, color_value, color_enabled))
++            .unwrap_or_else(|| short_hash.clone());
++        let colored_full_hash = hash_color
++            .map(|color_value| colored(&full_hash, color_value, color_enabled))
++            .unwrap_or_else(|| full_hash.clone());
++
++        let mut parent_full_hashes = Vec::new();
++        let mut parent_short_hashes = Vec::new();
++        for idx in 0..commit.parent_count() {
++            let hash = commit.parent_id(idx).to_string();
++            parent_short_hashes.push(hash.chars().take(7).collect::<String>());
++            parent_full_hashes.push(hash);
++        }
++
++        let message = commit.message().unwrap_or("");
++        let mut message_lines: Vec<&str> = message.split('"'\\n').collect();
++        if message.ends_with('\\n') {
++            message_lines.pop();
++        }
++
++        let body_lines = if message_lines.len() > 1 {
++            message_lines[1..].iter().map(|line| (*line).to_string()).collect()
++        } else {
++            Vec::new()
++        };
++
++        let author = signature_to_person(&commit.author());
++        let committer = signature_to_person(&commit.committer());
++
++        Ok(FormatContext {
++            short_hash,
++            full_hash,
++            colored_short_hash,
++            colored_full_hash,
++            parent_short_hashes: parent_short_hashes.join(\" \"),
++            parent_full_hashes: parent_full_hashes.join(\" \"),
++            decorations,
++            trimmed_decorations,
++            subject: commit.summary().unwrap_or(\"\").to_string(),
++            body_lines,
++            author,
++            committer,
++        })
++    }
++}
++
++pub(crate) fn format_oneline(context: &FormatContext) -> Vec<String> {
++    let mut line = context.colored_short_hash.clone();
++    let mut segments = Vec::new();
++
++    if "'!context.trimmed_decorations.is_empty() {
++        segments.push(context.trimmed_decorations.clone());
++    }
++    if !context.subject.is_empty() {
++        segments.push(context.subject.clone());
++    }
++
++    if !segments.is_empty() {
++        line.push('"' ');
++        line.push_str(&segments.join(\" \"));
++    }
++
++    vec"'![line]
++}
++
++pub(crate) fn format_multiline(context: &FormatContext, level: MultilineLevel) -> Vec<String> {
++    const LABEL_WIDTH: usize = 11;
++
++    let mut lines = Vec::new();
++    lines.push(commit_header(
++        &context.colored_full_hash,
++        &context.trimmed_decorations,
++    ));
++
++    match level {
++        MultilineLevel::Short => {
++            lines.push(format!("Author: {}", format_signature(&context.author)));
++        }
++        MultilineLevel::Medium => {
++            lines.push(format!("Author: {}", format_signature(&context.author)));
++            if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
++                lines.push(format!("Date:   {}", date));
++            }
++        }
++        MultilineLevel::Full => {
++            lines.push(format!(
++                "{:<width$}{}",
++                "Author:",
++                format_signature(&context.author),
++                width = LABEL_WIDTH,
++            ));
++            if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
++                lines.push(format!(
++                    "{:<width$}{}",
++                    "AuthorDate:",
++                    date,
++                    width = LABEL_WIDTH,
++                ));
++            }
++            lines.push(format!(
++                "{:<width$}{}",
++                "Commit:",
++                format_signature(&context.committer),
++                width = LABEL_WIDTH,
++            ));
++            if let Some(date) = format_date(context.committer.date, DateFormatStyle::Long) {
++                lines.push(format!(
++                    "{:<width$}{}",
++                    "CommitDate:",
++                    date,
++                    width = LABEL_WIDTH,
++                ));
++            }
++        }
++    }
++
++    lines.push(String::new());
++    lines.extend(format_message_lines(&context.subject, &context.body_lines));
++    lines
++}
++
++fn commit_header(hash: &str, decorations: &str) -> String {
++    if decorations.is_empty() {
++        format!("commit {}", hash)
++    } else {
++        format!("commit {} {}", hash, decorations)
++    }
++}
++
++fn format_signature(person: &PersonInfo) -> String {
++    match (person.name.is_empty(), person.email.is_empty()) {
++        (true, true) => "<unknown>".to_string(),
++        (false, true) => person.name.clone(),
++        (true, false) => format!("<{}>", person.email),
++        (false, false) => format!("{} <{}>", person.name, person.email),
++    }
++}
++
++fn format_message_lines(subject: &str, body_lines: &[String]) -> Vec<String> {
++    let mut message = Vec::new();
++
++    if !subject.is_empty() || !body_lines.is_empty() {
++        message.push(indent(subject));
++        for line in body_lines {
++            message.push(indent(line));
++        }
++    }
++
++    message
++}
++
++fn indent(text: &str) -> String {
++    let mut line = String::from("    ");
++    line.push_str(text);
++    line
++}
++
++fn signature_to_person(signature: &Signature<'"'_>) -> PersonInfo {
++    PersonInfo {
++        name: signature.name().unwrap_or(\"\").to_string(),
++        email: signature.email().unwrap_or(\"\").to_string(),
++        date: git_time_to_datetime(signature.when()),
++    }
++}
++
++fn git_time_to_datetime(time: git2::Time) -> Option<DateTime<FixedOffset>> {
++    let offset_seconds = time.offset_minutes().checked_mul(60)?;
++    let offset = FixedOffset::east_opt(offset_seconds)?;
++    match offset.timestamp_opt(time.seconds(), 0) {
++        LocalResult::None => None,
++        LocalResult::Single(dt) => Some(dt),
++        LocalResult::Ambiguous(first, _) => Some(first),
++    }
++}
++
++fn format_date(date: Option<DateTime<FixedOffset>>, style: DateFormatStyle) -> Option<String> {
++    let format = match style {
++        DateFormatStyle::Long => \"%a %b %e %H:%M:%S %Y %z\",
++        DateFormatStyle::Short => \"%Y-%m-%d\",
++    };
++    date.map(|dt| dt.format(format).to_string())
++}
++
++fn colored(text: &str, color: u8, color_enabled: bool) -> String {
++    if color_enabled {
++        Paint::fixed(color, text).to_string()
++    } else {
++        text.to_string()
++    }
++}
++
++fn flush_literal(literal: &mut String, items: &mut Vec<FormatItem>) {
++    if "'!literal.is_empty() {
++        items.push(FormatItem::Literal(literal.clone()));
++        literal.clear();
++    }
++}
++
++fn append_body(lines: &mut Vec<String>, line_index: &mut usize, body: &[String]) {
++    if body.is_empty() {
++        return;
++    }
++
++    let mut iter = body.iter();
++    if let Some(first) = iter.next() {
++        lines[*line_index].push_str(first);
++        for line in iter {
++            lines.push(String::new());
++            *line_index += 1;
++            lines[*line_index].push_str(line);
++        }
++    }
++}
++
++fn unsupported_placeholder(token: &str) -> String {
++    let supported = PLACEHOLDERS
++        .iter()
++        .map(|(placeholder, _)| *placeholder)
++        .collect::<Vec<_>>()
++        .join(", ");
++    format!(
++        "Unsupported placeholder '"'{}'. Supported placeholders: {}\",
++        token, supported
++    )
++}
++
+*** End Patch
+PATCH" exited -1 in 0ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Invalid patch hunk on line 63: 'enum FormatItem {' is not a valid hunk header. Valid hunk headers: '*** Add File: {path}', '*** Delete File: {path}', '*** Update File: {path}'
+[2025-09-21T19:04:20] tokens used: 64,670
+
+[2025-09-21T19:04:29] thinking
+
+**Revising patch format for new files**
+[2025-09-21T19:05:52] exec zsh -lc "cat <<'EOF' > src/print/format.rs
+use super::unicode::format_branches;
+use crate::graph::{GitGraph, HeadInfo};
+use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+use git2::Signature;
+use yansi::Paint;
+
+pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+Presets: oneline|short|medium|full.\\n\\
+Supported placeholders:\\n\\
+  %H  full commit hash\\n\\
+  %h  abbreviated commit hash\\n\\
+  %P  parent commit hashes (space-separated)\\n\\
+  %p  abbreviated parent hashes (space-separated)\\n\\
+  %d  decorations (branch and tag refs)\\n\\
+  %s  subject\\n\\
+  %b  body\\n\\
+  %n  newline\\n\\
+  %an author name\\n\\
+  %ae author email\\n\\
+  %ad author date (RFC2822)\\n\\
+  %as author date (short)\\n\\
+  %cn committer name\\n\\
+  %ce committer email\\n\\
+  %cd committer date (RFC2822)\\n\\
+  %cs committer date (short)\\n\";
+
+pub const PLACEHOLDERS: &[(&str, &str)] = &[
+    (\"%H\", \"full commit hash\"),
+    (\"%h\", \"abbreviated commit hash\"),
+    (\"%P\", \"parent commit hashes (space-separated)\"),
+    (\"%p\", \"abbreviated parent hashes (space-separated)\"),
+    (\"%d\", \"decorations (branch and tag refs)\"),
+    (\"%s\", \"subject\"),
+    (\"%b\", \"body\"),
+    (\"%n\", \"newline\"),
+    (\"%an\", \"author name\"),
+    (\"%ae\", \"author email\"),
+    (\"%ad\", \"author date (RFC2822)\"),
+    (\"%as\", \"author date (short)\"),
+    (\"%cn\", \"committer name\"),
+    (\"%ce\", \"committer email\"),
+    (\"%cd\", \"committer date (RFC2822)\"),
+    (\"%cs\", \"committer date (short)\"),
+];
+
+#[derive(Clone)]
+pub enum CommitFormat {
+    Oneline,
+    Short,
+    Medium,
+    Full,
+    Custom(FormatString),
+}
+
+#[derive(Clone)]
+pub(crate) struct FormatString {
+    items: Vec<FormatItem>,
+}
+
+#[derive(Clone)]
+enum FormatItem {
+    Literal(String),
+    Placeholder(Placeholder),
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum Placeholder {
+    ShortHash,
+    FullHash,
+    ParentShortHashes,
+    ParentFullHashes,
+    Decorations,
+    Subject,
+    Body,
+    Newline,
+    AuthorName,
+    AuthorEmail,
+    AuthorDate,
+    AuthorDateShort,
+    CommitterName,
+    CommitterEmail,
+    CommitterDate,
+    CommitterDateShort,
+}
+
+#[derive(Clone)]
+struct PersonInfo {
+    name: String,
+    email: String,
+    date: Option<DateTime<FixedOffset>>,
+}
+
+pub(crate) struct FormatContext {
+    short_hash: String,
+    full_hash: String,
+    colored_short_hash: String,
+    colored_full_hash: String,
+    parent_short_hashes: String,
+    parent_full_hashes: String,
+    decorations: String,
+    trimmed_decorations: String,
+    subject: String,
+    body_lines: Vec<String>,
+    author: PersonInfo,
+    committer: PersonInfo,
+}
+
+#[derive(Clone, Copy)]
+pub(crate) enum MultilineLevel {
+    Short,
+    Medium,
+    Full,
+}
+
+#[derive(Clone, Copy)]
+enum DateFormatStyle {
+    Long,
+    Short,
+}
+
+impl Default for CommitFormat {
+    fn default() -> Self {
+        CommitFormat::Oneline
+    }
+}
+
+impl CommitFormat {
+    pub fn parse(spec: &str) -> Result<Self, String> {
+        match spec.to_ascii_lowercase().as_str() {
+            \"oneline\" => Ok(CommitFormat::Oneline),
+            \"short\" => Ok(CommitFormat::Short),
+            \"medium\" => Ok(CommitFormat::Medium),
+            \"full\" | \"long\" => Ok(CommitFormat::Full),
+            _ => Ok(CommitFormat::Custom(FormatString::parse(spec)?)),
+        }
+    }
+}
+
+impl FormatString {
+    fn parse(template: &str) -> Result<Self, String> {
+        let mut items = Vec::new();
+        let mut literal = String::new();
+        let mut chars = template.chars();
+
+        while let Some(ch) = chars.next() {
+            if ch == '%' {
+                let next = chars
+                    .next()
+                    .ok_or_else(|| \"Dangling '%' at end of format string\".to_string())?;
+                match next {
+                    '%' => literal.push('%'),
+                    'h' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::ShortHash));
+                    }
+                    'H' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::FullHash));
+                    }
+                    'p' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::ParentShortHashes));
+                    }
+                    'P' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::ParentFullHashes));
+                    }
+                    'd' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::Decorations));
+                    }
+                    's' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::Subject));
+                    }
+                    'b' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::Body));
+                    }
+                    'n' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::Newline));
+                    }
+                    'a' => {
+                        let spec = chars
+                            .next()
+                            .ok_or_else(|| \"Incomplete %a placeholder\".to_string())?;
+                        flush_literal(&mut literal, &mut items);
+                        match spec {
+                            'n' => items.push(FormatItem::Placeholder(Placeholder::AuthorName)),
+                            'e' => items.push(FormatItem::Placeholder(Placeholder::AuthorEmail)),
+                            'd' => items.push(FormatItem::Placeholder(Placeholder::AuthorDate)),
+                            's' => {
+                                items.push(FormatItem::Placeholder(Placeholder::AuthorDateShort));
+                            }
+                            other => {
+                                return Err(unsupported_placeholder(&format"'!("%a{}", other)));
+                            }
+                        }
+                    }
+                    '"'c' => {
+                        let spec = chars
+                            .next()
+                            .ok_or_else(|| \"Incomplete %c placeholder\".to_string())?;
+                        flush_literal(&mut literal, &mut items);
+                        match spec {
+                            'n' => items.push(FormatItem::Placeholder(Placeholder::CommitterName)),
+                            'e' => {
+                                items.push(FormatItem::Placeholder(Placeholder::CommitterEmail));
+                            }
+                            'd' => items.push(FormatItem::Placeholder(Placeholder::CommitterDate)),
+                            's' => {
+                                items.push(FormatItem::Placeholder(Placeholder::CommitterDateShort));
+                            }
+                            other => {
+                                return Err(unsupported_placeholder(&format"'!("%c{}", other)));
+                            }
+                        }
+                    }
+                    other => {
+                        return Err(unsupported_placeholder(&format!("%{}", other)));
+                    }
+                }
+            } else {
+                literal.push(ch);
+            }
+        }
+
+        flush_literal(&mut literal, &mut items);
+
+        Ok(FormatString { items })
+    }
+
+    pub(crate) fn format(&self, context: &FormatContext) -> Vec<String> {
+        render_format(&self.items, context)
+    }
+}
+
+pub(crate) fn format_commit(template: &FormatString, context: &FormatContext) -> Vec<String> {
+    render_format(&template.items, context)
+}
+
+fn render_format(items: &[FormatItem], context: &FormatContext) -> Vec<String> {
+    let mut lines = vec![String::new()];
+    let mut line_index = 0;
+
+    for item in items {
+        match item {
+            FormatItem::Literal(text) => lines[line_index].push_str(text),
+            FormatItem::Placeholder(placeholder) => match placeholder {
+                Placeholder::Newline => {
+                    lines.push(String::new());
+                    line_index += 1;
+                }
+                Placeholder::ShortHash => {
+                    lines[line_index].push_str(&context.colored_short_hash);
+                }
+                Placeholder::FullHash => {
+                    lines[line_index].push_str(&context.colored_full_hash);
+                }
+                Placeholder::ParentShortHashes => {
+                    if !context.parent_short_hashes.is_empty() {
+                        lines[line_index].push_str(&context.parent_short_hashes);
+                    }
+                }
+                Placeholder::ParentFullHashes => {
+                    if !context.parent_full_hashes.is_empty() {
+                        lines[line_index].push_str(&context.parent_full_hashes);
+                    }
+                }
+                Placeholder::Decorations => {
+                    lines[line_index].push_str(&context.decorations);
+                }
+                Placeholder::Subject => {
+                    lines[line_index].push_str(&context.subject);
+                }
+                Placeholder::Body => {
+                    append_body(&mut lines, &mut line_index, &context.body_lines);
+                }
+                Placeholder::AuthorName => {
+                    lines[line_index].push_str(&context.author.name);
+                }
+                Placeholder::AuthorEmail => {
+                    lines[line_index].push_str(&context.author.email);
+                }
+                Placeholder::AuthorDate => {
+                    if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
+                        lines[line_index].push_str(&date);
+                    }
+                }
+                Placeholder::AuthorDateShort => {
+                    if let Some(date) = format_date(context.author.date, DateFormatStyle::Short) {
+                        lines[line_index].push_str(&date);
+                    }
+                }
+                Placeholder::CommitterName => {
+                    lines[line_index].push_str(&context.committer.name);
+                }
+                Placeholder::CommitterEmail => {
+                    lines[line_index].push_str(&context.committer.email);
+                }
+                Placeholder::CommitterDate => {
+                    if let Some(date) = format_date(context.committer.date, DateFormatStyle::Long) {
+                        lines[line_index].push_str(&date);
+                    }
+                }
+                Placeholder::CommitterDateShort => {
+                    if let Some(date) = format_date(context.committer.date, DateFormatStyle::Short) {
+                        lines[line_index].push_str(&date);
+                    }
+                }
+            },
+        }
+    }
+
+    if lines.len() > 1 && lines.last().map_or(false, |line| line.is_empty()) {
+        lines.pop();
+    }
+
+    lines
+}
+
+impl FormatContext {
+    pub(crate) fn new(
+        graph: &GitGraph,
+        commit_index: usize,
+        head: Option<&HeadInfo>,
+        color_enabled: bool,
+        hash_color: Option<u8>,
+    ) -> Result<Self, String> {
+        let info = graph
+            .commits
+            .get(commit_index)
+            .ok_or_else(|| format!("Commit index {} out of bounds", commit_index))?;
+        let commit = graph
+            .repository
+            .find_commit(info.oid)
+            .map_err(|err| err.message().to_string())?;
+
+        let full_hash = commit.id().to_string();
+        let short_hash = full_hash.chars().take(7).collect::<String>();
+        let decorations = format_branches(graph, info, head, color_enabled);
+        let trimmed_decorations = decorations.trim().to_string();
+        let colored_short_hash = hash_color
+            .map(|color_value| colored(&short_hash, color_value, color_enabled))
+            .unwrap_or_else(|| short_hash.clone());
+        let colored_full_hash = hash_color
+            .map(|color_value| colored(&full_hash, color_value, color_enabled))
+            .unwrap_or_else(|| full_hash.clone());
+
+        let mut parent_full_hashes = Vec::new();
+        let mut parent_short_hashes = Vec::new();
+        for idx in 0..commit.parent_count() {
+            let hash = commit.parent_id(idx).to_string();
+            parent_short_hashes.push(hash.chars().take(7).collect::<String>());
+            parent_full_hashes.push(hash);
+        }
+
+        let message = commit.message().unwrap_or("");
+        let mut message_lines: Vec<&str> = message.split('"'\\n').collect();
+        if message.ends_with('\\n') {
+            message_lines.pop();
+        }
+
+        let body_lines = if message_lines.len() > 1 {
+            message_lines[1..].iter().map(|line| (*line).to_string()).collect()
+        } else {
+            Vec::new()
+        };
+
+        let author = signature_to_person(&commit.author());
+        let committer = signature_to_person(&commit.committer());
+
+        Ok(FormatContext {
+            short_hash,
+            full_hash,
+            colored_short_hash,
+            colored_full_hash,
+            parent_short_hashes: parent_short_hashes.join(\" \"),
+            parent_full_hashes: parent_full_hashes.join(\" \"),
+            decorations,
+            trimmed_decorations,
+            subject: commit.summary().unwrap_or(\"\").to_string(),
+            body_lines,
+            author,
+            committer,
+        })
+    }
+}
+
+pub(crate) fn format_oneline(context: &FormatContext) -> Vec<String> {
+    let mut line = context.colored_short_hash.clone();
+    let mut segments = Vec::new();
+
+    if "'!context.trimmed_decorations.is_empty() {
+        segments.push(context.trimmed_decorations.clone());
+    }
+    if !context.subject.is_empty() {
+        segments.push(context.subject.clone());
+    }
+
+    if !segments.is_empty() {
+        line.push('"' ');
+        line.push_str(&segments.join(\" \"));
+    }
+
+    vec"'![line]
+}
+
+pub(crate) fn format_multiline(context: &FormatContext, level: MultilineLevel) -> Vec<String> {
+    const LABEL_WIDTH: usize = 11;
+
+    let mut lines = Vec::new();
+    lines.push(commit_header(
+        &context.colored_full_hash,
+        &context.trimmed_decorations,
+    ));
+
+    match level {
+        MultilineLevel::Short => {
+            lines.push(format!("Author: {}", format_signature(&context.author)));
+        }
+        MultilineLevel::Medium => {
+            lines.push(format!("Author: {}", format_signature(&context.author)));
+            if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
+                lines.push(format!("Date:   {}", date));
+            }
+        }
+        MultilineLevel::Full => {
+            lines.push(format!(
+                "{:<width$}{}",
+                "Author:",
+                format_signature(&context.author),
+                width = LABEL_WIDTH,
+            ));
+            if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
+                lines.push(format!(
+                    "{:<width$}{}",
+                    "AuthorDate:",
+                    date,
+                    width = LABEL_WIDTH,
+                ));
+            }
+            lines.push(format!(
+                "{:<width$}{}",
+                "Commit:",
+                format_signature(&context.committer),
+                width = LABEL_WIDTH,
+            ));
+            if let Some(date) = format_date(context.committer.date, DateFormatStyle::Long) {
+                lines.push(format!(
+                    "{:<width$}{}",
+                    "CommitDate:",
+                    date,
+                    width = LABEL_WIDTH,
+                ));
+            }
+        }
+    }
+
+    lines.push(String::new());
+    lines.extend(format_message_lines(&context.subject, &context.body_lines));
+    lines
+}
+
+fn commit_header(hash: &str, decorations: &str) -> String {
+    if decorations.is_empty() {
+        format!("commit {}", hash)
+    } else {
+        format!("commit {} {}", hash, decorations)
+    }
+}
+
+fn format_signature(person: &PersonInfo) -> String {
+    match (person.name.is_empty(), person.email.is_empty()) {
+        (true, true) => "<unknown>".to_string(),
+        (false, true) => person.name.clone(),
+        (true, false) => format!("<{}>", person.email),
+        (false, false) => format!("{} <{}>", person.name, person.email),
+    }
+}
+
+fn format_message_lines(subject: &str, body_lines: &[String]) -> Vec<String> {
+    let mut message = Vec::new();
+
+    if !subject.is_empty() || !body_lines.is_empty() {
+        message.push(indent(subject));
+        for line in body_lines {
+            message.push(indent(line));
+        }
+    }
+
+    message
+}
+
+fn indent(text: &str) -> String {
+    let mut line = String::from("    ");
+    line.push_str(text);
+    line
+}
+
+fn signature_to_person(signature: &Signature<'"'_>) -> PersonInfo {
+    PersonInfo {
+        name: signature.name().unwrap_or(\"\").to_string(),
+        email: signature.email().unwrap_or(\"\").to_string(),
+        date: git_time_to_datetime(signature.when()),
+    }
+}
+
+fn git_time_to_datetime(time: git2::Time) -> Option<DateTime<FixedOffset>> {
+    let offset_seconds = time.offset_minutes().checked_mul(60)?;
+    let offset = FixedOffset::east_opt(offset_seconds)?;
+    match offset.timestamp_opt(time.seconds(), 0) {
+        LocalResult::None => None,
+        LocalResult::Single(dt) => Some(dt),
+        LocalResult::Ambiguous(first, _) => Some(first),
+    }
+}
+
+fn format_date(date: Option<DateTime<FixedOffset>>, style: DateFormatStyle) -> Option<String> {
+    let format = match style {
+        DateFormatStyle::Long => \"%a %b %e %H:%M:%S %Y %z\",
+        DateFormatStyle::Short => \"%Y-%m-%d\",
+    };
+    date.map(|dt| dt.format(format).to_string())
+}
+
+fn colored(text: &str, color: u8, color_enabled: bool) -> String {
+    if color_enabled {
+        Paint::fixed(color, text).to_string()
+    } else {
+        text.to_string()
+    }
+}
+
+fn flush_literal(literal: &mut String, items: &mut Vec<FormatItem>) {
+    if "'!literal.is_empty() {
+        items.push(FormatItem::Literal(literal.clone()));
+        literal.clear();
+    }
+}
+
+fn append_body(lines: &mut Vec<String>, line_index: &mut usize, body: &[String]) {
+    if body.is_empty() {
+        return;
+    }
+
+    let mut iter = body.iter();
+    if let Some(first) = iter.next() {
+        lines[*line_index].push_str(first);
+        for line in iter {
+            lines.push(String::new());
+            *line_index += 1;
+            lines[*line_index].push_str(line);
+        }
+    }
+}
+
+fn unsupported_placeholder(token: &str) -> String {
+    let supported = PLACEHOLDERS
+        .iter()
+        .map(|(placeholder, _)| *placeholder)
+        .collect::<Vec<_>>()
+        .join(", ");
+    format!(
+        "Unsupported placeholder '"'{}'. Supported placeholders: {}\",
+        token, supported
+    )
+}
+EOF" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:05:52] zsh -lc "cat <<'EOF' > src/print/format.rs
+use super::unicode::format_branches;
+use crate::graph::{GitGraph, HeadInfo};
+use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+use git2::Signature;
+use yansi::Paint;
+
+pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+Presets: oneline|short|medium|full.\\n\\
+Supported placeholders:\\n\\
+  %H  full commit hash\\n\\
+  %h  abbreviated commit hash\\n\\
+  %P  parent commit hashes (space-separated)\\n\\
+  %p  abbreviated parent hashes (space-separated)\\n\\
+  %d  decorations (branch and tag refs)\\n\\
+  %s  subject\\n\\
+  %b  body\\n\\
+  %n  newline\\n\\
+  %an author name\\n\\
+  %ae author email\\n\\
+  %ad author date (RFC2822)\\n\\
+  %as author date (short)\\n\\
+  %cn committer name\\n\\
+  %ce committer email\\n\\
+  %cd committer date (RFC2822)\\n\\
+  %cs committer date (short)\\n\";
+
+pub const PLACEHOLDERS: &[(&str, &str)] = &[
+    (\"%H\", \"full commit hash\"),
+    (\"%h\", \"abbreviated commit hash\"),
+    (\"%P\", \"parent commit hashes (space-separated)\"),
+    (\"%p\", \"abbreviated parent hashes (space-separated)\"),
+    (\"%d\", \"decorations (branch and tag refs)\"),
+    (\"%s\", \"subject\"),
+    (\"%b\", \"body\"),
+    (\"%n\", \"newline\"),
+    (\"%an\", \"author name\"),
+    (\"%ae\", \"author email\"),
+    (\"%ad\", \"author date (RFC2822)\"),
+    (\"%as\", \"author date (short)\"),
+    (\"%cn\", \"committer name\"),
+    (\"%ce\", \"committer email\"),
+    (\"%cd\", \"committer date (RFC2822)\"),
+    (\"%cs\", \"committer date (short)\"),
+];
+
+#[derive(Clone)]
+pub enum CommitFormat {
+    Oneline,
+    Short,
+    Medium,
+    Full,
+    Custom(FormatString),
+}
+
+#[derive(Clone)]
+pub(crate) struct FormatString {
+    items: Vec<FormatItem>,
+}
+
+#[derive(Clone)]
+enum FormatItem {
+    Literal(String),
+    Placeholder(Placeholder),
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum Placeholder {
+    ShortHash,
+    FullHash,
+    ParentShortHashes,
+    ParentFullHashes,
+    Decorations,
+    Subject,
+    Body,
+    Newline,
+    AuthorName,
+    AuthorEmail,
+    AuthorDate,
+    AuthorDateShort,
+    CommitterName,
+    CommitterEmail,
+    CommitterDate,
+    CommitterDateShort,
+}
+
+#[derive(Clone)]
+struct PersonInfo {
+    name: String,
+    email: String,
+    date: Option<DateTime<FixedOffset>>,
+}
+
+pub(crate) struct FormatContext {
+    short_hash: String,
+    full_hash: String,
+    colored_short_hash: String,
+    colored_full_hash: String,
+    parent_short_hashes: String,
+    parent_full_hashes: String,
+    decorations: String,
+    trimmed_decorations: String,
+    subject: String,
+    body_lines: Vec<String>,
+    author: PersonInfo,
+    committer: PersonInfo,
+}
+
+#[derive(Clone, Copy)]
+pub(crate) enum MultilineLevel {
+    Short,
+    Medium,
+    Full,
+}
+
+#[derive(Clone, Copy)]
+enum DateFormatStyle {
+    Long,
+    Short,
+}
+
+impl Default for CommitFormat {
+    fn default() -> Self {
+        CommitFormat::Oneline
+    }
+}
+
+impl CommitFormat {
+    pub fn parse(spec: &str) -> Result<Self, String> {
+        match spec.to_ascii_lowercase().as_str() {
+            \"oneline\" => Ok(CommitFormat::Oneline),
+            \"short\" => Ok(CommitFormat::Short),
+            \"medium\" => Ok(CommitFormat::Medium),
+            \"full\" | \"long\" => Ok(CommitFormat::Full),
+            _ => Ok(CommitFormat::Custom(FormatString::parse(spec)?)),
+        }
+    }
+}
+
+impl FormatString {
+    fn parse(template: &str) -> Result<Self, String> {
+        let mut items = Vec::new();
+        let mut literal = String::new();
+        let mut chars = template.chars();
+
+        while let Some(ch) = chars.next() {
+            if ch == '%' {
+                let next = chars
+                    .next()
+                    .ok_or_else(|| \"Dangling '%' at end of format string\".to_string())?;
+                match next {
+                    '%' => literal.push('%'),
+                    'h' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::ShortHash));
+                    }
+                    'H' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::FullHash));
+                    }
+                    'p' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::ParentShortHashes));
+                    }
+                    'P' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::ParentFullHashes));
+                    }
+                    'd' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::Decorations));
+                    }
+                    's' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::Subject));
+                    }
+                    'b' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::Body));
+                    }
+                    'n' => {
+                        flush_literal(&mut literal, &mut items);
+                        items.push(FormatItem::Placeholder(Placeholder::Newline));
+                    }
+                    'a' => {
+                        let spec = chars
+                            .next()
+                            .ok_or_else(|| \"Incomplete %a placeholder\".to_string())?;
+                        flush_literal(&mut literal, &mut items);
+                        match spec {
+                            'n' => items.push(FormatItem::Placeholder(Placeholder::AuthorName)),
+                            'e' => items.push(FormatItem::Placeholder(Placeholder::AuthorEmail)),
+                            'd' => items.push(FormatItem::Placeholder(Placeholder::AuthorDate)),
+                            's' => {
+                                items.push(FormatItem::Placeholder(Placeholder::AuthorDateShort));
+                            }
+                            other => {
+                                return Err(unsupported_placeholder(&format"'!("%a{}", other)));
+                            }
+                        }
+                    }
+                    '"'c' => {
+                        let spec = chars
+                            .next()
+                            .ok_or_else(|| \"Incomplete %c placeholder\".to_string())?;
+                        flush_literal(&mut literal, &mut items);
+                        match spec {
+                            'n' => items.push(FormatItem::Placeholder(Placeholder::CommitterName)),
+                            'e' => {
+                                items.push(FormatItem::Placeholder(Placeholder::CommitterEmail));
+                            }
+                            'd' => items.push(FormatItem::Placeholder(Placeholder::CommitterDate)),
+                            's' => {
+                                items.push(FormatItem::Placeholder(Placeholder::CommitterDateShort));
+                            }
+                            other => {
+                                return Err(unsupported_placeholder(&format"'!("%c{}", other)));
+                            }
+                        }
+                    }
+                    other => {
+                        return Err(unsupported_placeholder(&format!("%{}", other)));
+                    }
+                }
+            } else {
+                literal.push(ch);
+            }
+        }
+
+        flush_literal(&mut literal, &mut items);
+
+        Ok(FormatString { items })
+    }
+
+    pub(crate) fn format(&self, context: &FormatContext) -> Vec<String> {
+        render_format(&self.items, context)
+    }
+}
+
+pub(crate) fn format_commit(template: &FormatString, context: &FormatContext) -> Vec<String> {
+    render_format(&template.items, context)
+}
+
+fn render_format(items: &[FormatItem], context: &FormatContext) -> Vec<String> {
+    let mut lines = vec![String::new()];
+    let mut line_index = 0;
+
+    for item in items {
+        match item {
+            FormatItem::Literal(text) => lines[line_index].push_str(text),
+            FormatItem::Placeholder(placeholder) => match placeholder {
+                Placeholder::Newline => {
+                    lines.push(String::new());
+                    line_index += 1;
+                }
+                Placeholder::ShortHash => {
+                    lines[line_index].push_str(&context.colored_short_hash);
+                }
+                Placeholder::FullHash => {
+                    lines[line_index].push_str(&context.colored_full_hash);
+                }
+                Placeholder::ParentShortHashes => {
+                    if !context.parent_short_hashes.is_empty() {
+                        lines[line_index].push_str(&context.parent_short_hashes);
+                    }
+                }
+                Placeholder::ParentFullHashes => {
+                    if !context.parent_full_hashes.is_empty() {
+                        lines[line_index].push_str(&context.parent_full_hashes);
+                    }
+                }
+                Placeholder::Decorations => {
+                    lines[line_index].push_str(&context.decorations);
+                }
+                Placeholder::Subject => {
+                    lines[line_index].push_str(&context.subject);
+                }
+                Placeholder::Body => {
+                    append_body(&mut lines, &mut line_index, &context.body_lines);
+                }
+                Placeholder::AuthorName => {
+                    lines[line_index].push_str(&context.author.name);
+                }
+                Placeholder::AuthorEmail => {
+                    lines[line_index].push_str(&context.author.email);
+                }
+                Placeholder::AuthorDate => {
+                    if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
+                        lines[line_index].push_str(&date);
+                    }
+                }
+                Placeholder::AuthorDateShort => {
+                    if let Some(date) = format_date(context.author.date, DateFormatStyle::Short) {
+                        lines[line_index].push_str(&date);
+                    }
+                }
+                Placeholder::CommitterName => {
+                    lines[line_index].push_str(&context.committer.name);
+                }
+                Placeholder::CommitterEmail => {
+                    lines[line_index].push_str(&context.committer.email);
+                }
+                Placeholder::CommitterDate => {
+                    if let Some(date) = format_date(context.committer.date, DateFormatStyle::Long) {
+                        lines[line_index].push_str(&date);
+                    }
+                }
+                Placeholder::CommitterDateShort => {
+                    if let Some(date) = format_date(context.committer.date, DateFormatStyle::Short) {
+                        lines[line_index].push_str(&date);
+                    }
+                }
+            },
+        }
+    }
+
+    if lines.len() > 1 && lines.last().map_or(false, |line| line.is_empty()) {
+        lines.pop();
+    }
+
+    lines
+}
+
+impl FormatContext {
+    pub(crate) fn new(
+        graph: &GitGraph,
+        commit_index: usize,
+        head: Option<&HeadInfo>,
+        color_enabled: bool,
+        hash_color: Option<u8>,
+    ) -> Result<Self, String> {
+        let info = graph
+            .commits
+            .get(commit_index)
+            .ok_or_else(|| format!("Commit index {} out of bounds", commit_index))?;
+        let commit = graph
+            .repository
+            .find_commit(info.oid)
+            .map_err(|err| err.message().to_string())?;
+
+        let full_hash = commit.id().to_string();
+        let short_hash = full_hash.chars().take(7).collect::<String>();
+        let decorations = format_branches(graph, info, head, color_enabled);
+        let trimmed_decorations = decorations.trim().to_string();
+        let colored_short_hash = hash_color
+            .map(|color_value| colored(&short_hash, color_value, color_enabled))
+            .unwrap_or_else(|| short_hash.clone());
+        let colored_full_hash = hash_color
+            .map(|color_value| colored(&full_hash, color_value, color_enabled))
+            .unwrap_or_else(|| full_hash.clone());
+
+        let mut parent_full_hashes = Vec::new();
+        let mut parent_short_hashes = Vec::new();
+        for idx in 0..commit.parent_count() {
+            let hash = commit.parent_id(idx).to_string();
+            parent_short_hashes.push(hash.chars().take(7).collect::<String>());
+            parent_full_hashes.push(hash);
+        }
+
+        let message = commit.message().unwrap_or("");
+        let mut message_lines: Vec<&str> = message.split('"'\\n').collect();
+        if message.ends_with('\\n') {
+            message_lines.pop();
+        }
+
+        let body_lines = if message_lines.len() > 1 {
+            message_lines[1..].iter().map(|line| (*line).to_string()).collect()
+        } else {
+            Vec::new()
+        };
+
+        let author = signature_to_person(&commit.author());
+        let committer = signature_to_person(&commit.committer());
+
+        Ok(FormatContext {
+            short_hash,
+            full_hash,
+            colored_short_hash,
+            colored_full_hash,
+            parent_short_hashes: parent_short_hashes.join(\" \"),
+            parent_full_hashes: parent_full_hashes.join(\" \"),
+            decorations,
+            trimmed_decorations,
+            subject: commit.summary().unwrap_or(\"\").to_string(),
+            body_lines,
+            author,
+            committer,
+        })
+    }
+}
+
+pub(crate) fn format_oneline(context: &FormatContext) -> Vec<String> {
+    let mut line = context.colored_short_hash.clone();
+    let mut segments = Vec::new();
+
+    if "'!context.trimmed_decorations.is_empty() {
+        segments.push(context.trimmed_decorations.clone());
+    }
+    if !context.subject.is_empty() {
+        segments.push(context.subject.clone());
+    }
+
+    if !segments.is_empty() {
+        line.push('"' ');
+        line.push_str(&segments.join(\" \"));
+    }
+
+    vec"'![line]
+}
+
+pub(crate) fn format_multiline(context: &FormatContext, level: MultilineLevel) -> Vec<String> {
+    const LABEL_WIDTH: usize = 11;
+
+    let mut lines = Vec::new();
+    lines.push(commit_header(
+        &context.colored_full_hash,
+        &context.trimmed_decorations,
+    ));
+
+    match level {
+        MultilineLevel::Short => {
+            lines.push(format!("Author: {}", format_signature(&context.author)));
+        }
+        MultilineLevel::Medium => {
+            lines.push(format!("Author: {}", format_signature(&context.author)));
+            if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
+                lines.push(format!("Date:   {}", date));
+            }
+        }
+        MultilineLevel::Full => {
+            lines.push(format!(
+                "{:<width$}{}",
+                "Author:",
+                format_signature(&context.author),
+                width = LABEL_WIDTH,
+            ));
+            if let Some(date) = format_date(context.author.date, DateFormatStyle::Long) {
+                lines.push(format!(
+                    "{:<width$}{}",
+                    "AuthorDate:",
+                    date,
+                    width = LABEL_WIDTH,
+                ));
+            }
+            lines.push(format!(
+                "{:<width$}{}",
+                "Commit:",
+                format_signature(&context.committer),
+                width = LABEL_WIDTH,
+            ));
+            if let Some(date) = format_date(context.committer.date, DateFormatStyle::Long) {
+                lines.push(format!(
+                    "{:<width$}{}",
+                    "CommitDate:",
+                    date,
+                    width = LABEL_WIDTH,
+                ));
+            }
+        }
+    }
+
+    lines.push(String::new());
+    lines.extend(format_message_lines(&context.subject, &context.body_lines));
+    lines
+}
+
+fn commit_header(hash: &str, decorations: &str) -> String {
+    if decorations.is_empty() {
+        format!("commit {}", hash)
+    } else {
+        format!("commit {} {}", hash, decorations)
+    }
+}
+
+fn format_signature(person: &PersonInfo) -> String {
+    match (person.name.is_empty(), person.email.is_empty()) {
+        (true, true) => "<unknown>".to_string(),
+        (false, true) => person.name.clone(),
+        (true, false) => format!("<{}>", person.email),
+        (false, false) => format!("{} <{}>", person.name, person.email),
+    }
+}
+
+fn format_message_lines(subject: &str, body_lines: &[String]) -> Vec<String> {
+    let mut message = Vec::new();
+
+    if !subject.is_empty() || !body_lines.is_empty() {
+        message.push(indent(subject));
+        for line in body_lines {
+            message.push(indent(line));
+        }
+    }
+
+    message
+}
+
+fn indent(text: &str) -> String {
+    let mut line = String::from("    ");
+    line.push_str(text);
+    line
+}
+
+fn signature_to_person(signature: &Signature<'"'_>) -> PersonInfo {
+    PersonInfo {
+        name: signature.name().unwrap_or(\"\").to_string(),
+        email: signature.email().unwrap_or(\"\").to_string(),
+        date: git_time_to_datetime(signature.when()),
+    }
+}
+
+fn git_time_to_datetime(time: git2::Time) -> Option<DateTime<FixedOffset>> {
+    let offset_seconds = time.offset_minutes().checked_mul(60)?;
+    let offset = FixedOffset::east_opt(offset_seconds)?;
+    match offset.timestamp_opt(time.seconds(), 0) {
+        LocalResult::None => None,
+        LocalResult::Single(dt) => Some(dt),
+        LocalResult::Ambiguous(first, _) => Some(first),
+    }
+}
+
+fn format_date(date: Option<DateTime<FixedOffset>>, style: DateFormatStyle) -> Option<String> {
+    let format = match style {
+        DateFormatStyle::Long => \"%a %b %e %H:%M:%S %Y %z\",
+        DateFormatStyle::Short => \"%Y-%m-%d\",
+    };
+    date.map(|dt| dt.format(format).to_string())
+}
+
+fn colored(text: &str, color: u8, color_enabled: bool) -> String {
+    if color_enabled {
+        Paint::fixed(color, text).to_string()
+    } else {
+        text.to_string()
+    }
+}
+
+fn flush_literal(literal: &mut String, items: &mut Vec<FormatItem>) {
+    if "'!literal.is_empty() {
+        items.push(FormatItem::Literal(literal.clone()));
+        literal.clear();
+    }
+}
+
+fn append_body(lines: &mut Vec<String>, line_index: &mut usize, body: &[String]) {
+    if body.is_empty() {
+        return;
+    }
+
+    let mut iter = body.iter();
+    if let Some(first) = iter.next() {
+        lines[*line_index].push_str(first);
+        for line in iter {
+            lines.push(String::new());
+            *line_index += 1;
+            lines[*line_index].push_str(line);
+        }
+    }
+}
+
+fn unsupported_placeholder(token: &str) -> String {
+    let supported = PLACEHOLDERS
+        .iter()
+        .map(|(placeholder, _)| *placeholder)
+        .collect::<Vec<_>>()
+        .join(", ");
+    format!(
+        "Unsupported placeholder '"'{}'. Supported placeholders: {}\",
+        token, supported
+    )
+}
+EOF" succeeded in 36ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+[2025-09-21T19:05:52] tokens used: 75,317
+
+[2025-09-21T19:06:06] thinking
+
+**Updating imports and match arms for multiline formatting**
+[2025-09-21T19:06:07] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/unicode.rs
+@@
+-use super::format::{self, CommitFormat, FormatContext};
++use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:06:07] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/unicode.rs
+@@
+-use super::format::{self, CommitFormat, FormatContext};
++use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+*** End Patch
+PATCH" succeeded in 34ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T19:06:07] tokens used: 130,548
+
+[2025-09-21T19:06:11] thinking
+
+**Updating match block with patches**
+[2025-09-21T19:06:14] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/unicode.rs
+@@
+-        let lines = match &settings.format {
+-            CommitFormat::Oneline => format::format_oneline(&context),
+-            CommitFormat::Short => format::format_short(&context),
+-            CommitFormat::Medium => format::format_medium(&context),
+-            CommitFormat::Full => format::format_full(&context),
+-            CommitFormat::Custom(template) => template.format(&context),
+-        };
++        let lines = match &settings.format {
++            CommitFormat::Oneline => format::format_oneline(&context),
++            CommitFormat::Short => {
++                format::format_multiline(&context, MultilineLevel::Short)
++            }
++            CommitFormat::Medium => {
++                format::format_multiline(&context, MultilineLevel::Medium)
++            }
++            CommitFormat::Full => {
++                format::format_multiline(&context, MultilineLevel::Full)
++            }
++            CommitFormat::Custom(template) => format::format_commit(template, &context),
++        };
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:06:14] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/unicode.rs
+@@
+-        let lines = match &settings.format {
+-            CommitFormat::Oneline => format::format_oneline(&context),
+-            CommitFormat::Short => format::format_short(&context),
+-            CommitFormat::Medium => format::format_medium(&context),
+-            CommitFormat::Full => format::format_full(&context),
+-            CommitFormat::Custom(template) => template.format(&context),
+-        };
++        let lines = match &settings.format {
++            CommitFormat::Oneline => format::format_oneline(&context),
++            CommitFormat::Short => {
++                format::format_multiline(&context, MultilineLevel::Short)
++            }
++            CommitFormat::Medium => {
++                format::format_multiline(&context, MultilineLevel::Medium)
++            }
++            CommitFormat::Full => {
++                format::format_multiline(&context, MultilineLevel::Full)
++            }
++            CommitFormat::Custom(template) => format::format_commit(template, &context),
++        };
+*** End Patch
+PATCH" succeeded in 53ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T19:06:14] tokens used: 131,135
+
+[2025-09-21T19:06:26] thinking
+
+**Removing deprecated format functions and updating CLI help**
+[2025-09-21T19:06:27] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/main.rs
+@@
+-use git_graph::print::format::CommitFormat;
++use git_graph::print::format::{CommitFormat, FORMAT_LONG_HELP};
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:06:27] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/main.rs
+@@
+-use git_graph::print::format::CommitFormat;
++use git_graph::print::format::{CommitFormat, FORMAT_LONG_HELP};
+*** End Patch
+PATCH" succeeded in 40ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/main.rs
+[2025-09-21T19:06:27] tokens used: 132,150
+
+[2025-09-21T19:06:33] thinking
+
+**Modifying help text for format argument**
+[2025-09-21T19:06:35] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/main.rs
+@@
+         .arg(
+             Arg::with_name(\"format\")
+                 .long(\"format\")
+-                .help(
+-                    \"Commit text format or preset (oneline|short|medium|full|<string>). Supports %h, %H, %d, %s, %n, %an, %ae.\"
+-                )
++                .help(\"Commit text format or preset (default: oneline).\")
++                .long_help(FORMAT_LONG_HELP)
+                 .required(false)
+                 .takes_value(true),
+         )
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:06:35] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/main.rs
+@@
+         .arg(
+             Arg::with_name(\"format\")
+                 .long(\"format\")
+-                .help(
+-                    \"Commit text format or preset (oneline|short|medium|full|<string>). Supports %h, %H, %d, %s, %n, %an, %ae.\"
+-                )
++                .help(\"Commit text format or preset (default: oneline).\")
++                .long_help(FORMAT_LONG_HELP)
+                 .required(false)
+                 .takes_value(true),
+         )
+*** End Patch
+PATCH" succeeded in 38ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/main.rs
+[2025-09-21T19:06:35] tokens used: 132,787
+
+[2025-09-21T19:06:45] thinking
+
+**Verifying code consistency and preparing formatting**
+[2025-09-21T19:06:45] exec zsh -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:06:45] zsh -lc 'cargo fmt' succeeded in 100ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+[2025-09-21T19:06:45] tokens used: 133,566
+
+[2025-09-21T19:06:50] thinking
+
+**Verifying code formatting and testing**
+[2025-09-21T19:06:51] exec zsh -lc 'cargo test' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:06:55] zsh -lc 'cargo test' exited -1 in 0ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+   Compiling stable_deref_trait v1.2.0
+   Compiling writeable v0.6.1
+   Compiling smallvec v1.15.1
+   Compiling litemap v0.8.0
+   Compiling cfg-if v1.0.0
+   Compiling libc v0.2.175
+   Compiling log v0.4.28
+   Compiling icu_normalizer_data v2.0.0
+   Compiling icu_properties_data v2.0.1
+   Compiling serde_core v1.0.225
+   Compiling memchr v2.7.5
+   Compiling percent-encoding v2.3.2
+   Compiling bitflags v1.3.2
+   Compiling utf8_iter v1.0.4
+   Compiling scopeguard v1.2.0
+   Compiling zerofrom v0.1.6
+   Compiling unicode-width v0.1.14
+   Compiling core-foundation-sys v0.8.7
+   Compiling regex-syntax v0.8.6
+[2025-09-21T19:06:55] tokens used: 133,842
+
+[2025-09-21T19:07:02] thinking
+
+**Investigating git2 parent_id return type**
+[2025-09-21T19:07:03] exec zsh -lc "sed -n '320,380p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:07:03] zsh -lc "sed -n '320,380p' src/print/format.rs" succeeded in 43ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+    }
+
+    lines
+}
+
+impl FormatContext {
+    pub(crate) fn new(
+        graph: &GitGraph,
+        commit_index: usize,
+        head: Option<&HeadInfo>,
+        color_enabled: bool,
+        hash_color: Option<u8>,
+    ) -> Result<Self, String> {
+        let info = graph
+            .commits
+            .get(commit_index)
+            .ok_or_else(|| format!("Commit index {} out of bounds", commit_index))?;
+        let commit = graph
+            .repository
+[2025-09-21T19:07:03] tokens used: 135,784
+
+[2025-09-21T19:07:28] thinking
+
+**Investigating parent_id and compile errors**
+[2025-09-21T19:07:28] exec zsh -lc 'rg "parent_id" -n src' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:07:28] zsh -lc 'rg "parent_id" -n src' succeeded in 40ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+src/print/format.rs:356:            let hash = commit.parent_id(idx).to_string();
+src/graph.rs:172:            parents: [commit.parent_id(0).ok(), commit.parent_id(1).ok()],
+src/graph.rs:431:                    .parent_id(1)
+src/graph.rs:656:                    curr_oid = commit.parent_id(0)?;
+src/graph.rs:690:                curr_oid = commit.parent_id(0)?;
+[2025-09-21T19:07:28] tokens used: 137,869
+
+[2025-09-21T19:07:42] thinking
+
+**Adapting commit parent_id handling**
+
+I'm updating the code to handle `commit.parent_id(idx)` returning a `Result` instead of an `Option`, adjusting the loop to collect both full and short parent hashes from the successful results. I’m also noting existing compile errors in `graph.rs` likely predate my changes and may not need fixing now, but I’ll patch our new compile issue carefully to keep tests runnable.
+[2025-09-21T19:07:43] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-        let mut parent_full_hashes = Vec::new();
+-        let mut parent_short_hashes = Vec::new();
+-        for idx in 0..commit.parent_count() {
+-            let hash = commit.parent_id(idx).to_string();
+-            parent_short_hashes.push(hash.chars().take(7).collect::<String>());
+-            parent_full_hashes.push(hash);
+-        }
++        let mut parent_full_hashes = Vec::new();
++        let mut parent_short_hashes = Vec::new();
++        for idx in 0..commit.parent_count() {
++            if let Ok(parent_oid) = commit.parent_id(idx) {
++                let full = parent_oid.to_string();
++                let short = full.chars().take(7).collect::<String>();
++                parent_full_hashes.push(full);
++                parent_short_hashes.push(short);
++            }
++        }
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:07:43] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-        let mut parent_full_hashes = Vec::new();
+-        let mut parent_short_hashes = Vec::new();
+-        for idx in 0..commit.parent_count() {
+-            let hash = commit.parent_id(idx).to_string();
+-            parent_short_hashes.push(hash.chars().take(7).collect::<String>());
+-            parent_full_hashes.push(hash);
+-        }
++        let mut parent_full_hashes = Vec::new();
++        let mut parent_short_hashes = Vec::new();
++        for idx in 0..commit.parent_count() {
++            if let Ok(parent_oid) = commit.parent_id(idx) {
++                let full = parent_oid.to_string();
++                let short = full.chars().take(7).collect::<String>();
++                parent_full_hashes.push(full);
++                parent_short_hashes.push(short);
++            }
++        }
+*** End Patch
+PATCH" succeeded in 40ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-21T19:07:43] tokens used: 138,970
+
+[2025-09-21T19:07:48] thinking
+
+**Reformatting code with cargo fmt**
+[2025-09-21T19:07:48] exec zsh -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:07:48] zsh -lc 'cargo fmt' succeeded in 74ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+[2025-09-21T19:07:48] tokens used: 139,439
+
+[2025-09-21T19:07:58] thinking
+
+**Assessing existing build errors**
+[2025-09-21T19:07:58] exec zsh -lc 'cargo test' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:07:59] zsh -lc 'cargo test' exited -1 in 0ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+   Compiling git-graph v0.1.3 (/Users/jqwang/104-CommitLens-codex/.workspace/rust-project)
+error[E0308]: mismatched types
+  --> src/graph.rs:97:17
+   |
+97 |                 repository,
+   |                 ^^^^^^^^^^ expected `Repository`, found `&Repository`
+   |
+note: `git2::Repository` does not implement `Clone`, so `&git2::Repository` was cloned instead
+  --> src/graph.rs:33:26
+   |
+33 |         let repository = repo.clone();
+   |                          ^^^^
+
+error[E0308]: mismatched types
+   --> src/graph.rs:140:17
+    |
+140 |                 repository,
+    |                 ^^^^^^^^^^ expected `Repository`, found `&Repository`
+    |
+[2025-09-21T19:07:59] tokens used: 139,897
+
+[2025-09-21T19:08:04] thinking
+
+**Preparing to commit changes**
+[2025-09-21T19:08:04] exec zsh -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:08:04] zsh -lc 'git status -sb' succeeded in 35ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+## main
+ M src/main.rs
+ M src/print/format.rs
+ M src/print/unicode.rs
+[2025-09-21T19:08:04] tokens used: 153,521
+
+[2025-09-21T19:08:09] thinking
+
+**Reviewing code changes**
+[2025-09-21T19:08:09] exec zsh -lc 'git diff src/print/format.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:08:09] zsh -lc 'git diff src/print/format.rs' succeeded in 54ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+diff --git a/src/print/format.rs b/src/print/format.rs
+index b1bf362..b6904b3 100644
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -4,6 +4,45 @@ use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+ use git2::Signature;
+ use yansi::Paint;
+ 
++pub const FORMAT_LONG_HELP: &str = "Commit text format or preset (default: oneline).\n\
++Presets: oneline|short|medium|full.\n\
++Supported placeholders:\n\
++  %H  full commit hash\n\
++  %h  abbreviated commit hash\n\
++  %P  parent commit hashes (space-separated)\n\
++  %p  abbreviated parent hashes (space-separated)\n\
++  %d  decorations (branch and tag refs)\n\
++  %s  subject\n\
++  %b  body\n\
++  %n  newline\n\
+[2025-09-21T19:08:09] tokens used: 153,755
+
+[2025-09-21T19:08:20] thinking
+
+**Reviewing multi-line help string format**
+
+I’m checking how the `FORMAT_LONG_HELP` string currently includes blank lines due to the use of `\\n\\\n` sequences, which might add unintended spacing between entries. It seems better to remove those blank lines so the help text appears contiguous and cleaner, matching the expected formatting conventions. I’ll plan to adjust the string to have no blank lines between entries for a clearer display.
+[2025-09-21T19:08:23] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T19:08:23] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
+*** End Patch
+PATCH" exited -1 in 0ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Failed to read file to update src/print/format.rs: No such file or directory (os error 2)
+[2025-09-21T19:08:23] tokens used: 158,201
+
+[2025-09-21T19:08:34] thinking
+
+**Adding missing workdir setting**
+[2025-09-21T19:08:37] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:08:37] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
+*** End Patch
+PATCH" succeeded in 54ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-21T19:08:37] tokens used: 159,529
+
+[2025-09-21T19:08:46] thinking
+
+**Examining blank lines in patch**
+[2025-09-21T19:08:46] exec zsh -lc "sed -n '1,60p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:08:46] zsh -lc "sed -n '1,60p' src/print/format.rs" succeeded in 47ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+use super::unicode::format_branches;
+use crate::graph::{GitGraph, HeadInfo};
+use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+use git2::Signature;
+use yansi::Paint;
+
+pub const FORMAT_LONG_HELP: &str = "Commit text format or preset (default: oneline).\n\
+Presets: oneline|short|medium|full.\n\
+Supported placeholders:\n\
+  %H  full commit hash\n\
+  %h  abbreviated commit hash\n\
+  %P  parent commit hashes (space-separated)\n\
+  %p  abbreviated parent hashes (space-separated)\n\
+  %d  decorations (branch and tag refs)\n\
+  %s  subject\n\
+  %b  body\n\
+  %n  newline\n\
+  %an author name\n\
+  %ae author email\n\
+[2025-09-21T19:08:46] tokens used: 160,563
+
+[2025-09-21T19:08:55] thinking
+
+**Removing blank lines in format string**
+[2025-09-21T19:08:58] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:08:58] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
+*** End Patch
+PATCH" succeeded in 42ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-21T19:08:58] tokens used: 162,365
+
+[2025-09-21T19:09:02] thinking
+
+**Rechecking blank line issue**
+[2025-09-21T19:09:03] exec zsh -lc "sed -n '1,60p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:09:03] zsh -lc "sed -n '1,60p' src/print/format.rs" succeeded in 52ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+use super::unicode::format_branches;
+use crate::graph::{GitGraph, HeadInfo};
+use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+use git2::Signature;
+use yansi::Paint;
+
+pub const FORMAT_LONG_HELP: &str = "Commit text format or preset (default: oneline).\n\
+Presets: oneline|short|medium|full.\n\
+Supported placeholders:\n\
+  %H  full commit hash\n\
+  %h  abbreviated commit hash\n\
+  %P  parent commit hashes (space-separated)\n\
+  %p  abbreviated parent hashes (space-separated)\n\
+  %d  decorations (branch and tag refs)\n\
+  %s  subject\n\
+  %b  body\n\
+  %n  newline\n\
+  %an author name\n\
+  %ae author email\n\
+[2025-09-21T19:09:03] tokens used: 163,183
+
+[2025-09-21T19:09:12] thinking
+
+**Removing unwanted blank lines from string constant**
+[2025-09-21T19:09:15] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:09:15] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
++Presets: oneline|short|medium|full.\\n\\
++Supported placeholders:\\n\\
++  %H  full commit hash\\n\\
++  %h  abbreviated commit hash\\n\\
++  %P  parent commit hashes (space-separated)\\n\\
++  %p  abbreviated parent hashes (space-separated)\\n\\
++  %d  decorations (branch and tag refs)\\n\\
++  %s  subject\\n\\
++  %b  body\\n\\
++  %n  newline\\n\\
++  %an author name\\n\\
++  %ae author email\\n\\
++  %ad author date (RFC2822)\\n\\
++  %as author date (short)\\n\\
++  %cn committer name\\n\\
++  %ce committer email\\n\\
++  %cd committer date (RFC2822)\\n\\
++  %cs committer date (short)\\n\";
+*** End Patch
+PATCH" succeeded in 53ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-21T19:09:15] tokens used: 165,045
+
+[2025-09-21T19:09:38] thinking
+
+**Removing blank lines in string constant**
+[2025-09-21T19:09:39] exec zsh -lc "python3 - <<'PY'
+from pathlib import Path
+path = Path('src/print/format.rs')
+text = path.read_text()
+text = text.replace(\"\\\\n\\\\\\n\\n\", \"\\\\n\\\\\\n\")
+path.write_text(text)
+PY" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:09:39] zsh -lc "python3 - <<'PY'
+from pathlib import Path
+path = Path('src/print/format.rs')
+text = path.read_text()
+text = text.replace(\"\\\\n\\\\\\n\\n\", \"\\\\n\\\\\\n\")
+path.write_text(text)
+PY" succeeded in 184ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+[2025-09-21T19:09:39] tokens used: 166,838
+
+[2025-09-21T19:09:43] thinking
+
+**Checking file start**
+[2025-09-21T19:09:43] exec zsh -lc "sed -n '1,40p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:09:43] zsh -lc "sed -n '1,40p' src/print/format.rs" succeeded in 37ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+use super::unicode::format_branches;
+use crate::graph::{GitGraph, HeadInfo};
+use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+use git2::Signature;
+use yansi::Paint;
+
+pub const FORMAT_LONG_HELP: &str = "Commit text format or preset (default: oneline).\n\
+Presets: oneline|short|medium|full.\n\
+Supported placeholders:\n\
+  %H  full commit hash\n\
+  %h  abbreviated commit hash\n\
+  %P  parent commit hashes (space-separated)\n\
+  %p  abbreviated parent hashes (space-separated)\n\
+  %d  decorations (branch and tag refs)\n\
+  %s  subject\n\
+  %b  body\n\
+  %n  newline\n\
+  %an author name\n\
+  %ae author email\n\
+[2025-09-21T19:09:43] tokens used: 167,092
+
+[2025-09-21T19:09:55] thinking
+
+**Investigating blank line causes**
+[2025-09-21T19:09:55] exec zsh -lc "nl -ba src/print/format.rs | sed -n '1,40p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:09:55] zsh -lc "nl -ba src/print/format.rs | sed -n '1,40p'" succeeded in 29ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+     1	use super::unicode::format_branches;
+     2	use crate::graph::{GitGraph, HeadInfo};
+     3	use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+     4	use git2::Signature;
+     5	use yansi::Paint;
+     6	
+     7	pub const FORMAT_LONG_HELP: &str = "Commit text format or preset (default: oneline).\n\
+     8	Presets: oneline|short|medium|full.\n\
+     9	Supported placeholders:\n\
+    10	  %H  full commit hash\n\
+    11	  %h  abbreviated commit hash\n\
+    12	  %P  parent commit hashes (space-separated)\n\
+    13	  %p  abbreviated parent hashes (space-separated)\n\
+    14	  %d  decorations (branch and tag refs)\n\
+    15	  %s  subject\n\
+    16	  %b  body\n\
+    17	  %n  newline\n\
+    18	  %an author name\n\
+    19	  %ae author email\n\
+[2025-09-21T19:09:55] tokens used: 168,126
+
+[2025-09-21T19:10:11] thinking
+
+**Refactoring multiline string constant**
+
+I’m thinking it’s clearer and less error-prone to rewrite the multiline string constant using Rust’s `concat!` macro, which concatenates multiple string literals without tricky escape sequences or unintended blank lines. This should make the commit format help text easier to read and maintain, so I’ll replace the current escaped string with a `concat!` call listing each line separately.
+[2025-09-21T19:10:14] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = concat"'!(
++    "Commit text format or preset (default: oneline).'"\\n\",
++    \"Presets: oneline|short|medium|full.\\n\",
++    \"Supported placeholders:\\n\",
++    \"  %H  full commit hash\\n\",
++    \"  %h  abbreviated commit hash\\n\",
++    \"  %P  parent commit hashes (space-separated)\\n\",
++    \"  %p  abbreviated parent hashes (space-separated)\\n\",
++    \"  %d  decorations (branch and tag refs)\\n\",
++    \"  %s  subject\\n\",
++    \"  %b  body\\n\",
++    \"  %n  newline\\n\",
++    \"  %an author name\\n\",
++    \"  %ae author email\\n\",
++    \"  %ad author date (RFC2822)\\n\",
++    \"  %as author date (short)\\n\",
++    \"  %cn committer name\\n\",
++    \"  %ce committer email\\n\",
++    \"  %cd committer date (RFC2822)\\n\",
++    \"  %cs committer date (short)\\n\",
++);
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T19:10:14] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = concat"'!(
++    "Commit text format or preset (default: oneline).'"\\n\",
++    \"Presets: oneline|short|medium|full.\\n\",
++    \"Supported placeholders:\\n\",
++    \"  %H  full commit hash\\n\",
++    \"  %h  abbreviated commit hash\\n\",
++    \"  %P  parent commit hashes (space-separated)\\n\",
++    \"  %p  abbreviated parent hashes (space-separated)\\n\",
++    \"  %d  decorations (branch and tag refs)\\n\",
++    \"  %s  subject\\n\",
++    \"  %b  body\\n\",
++    \"  %n  newline\\n\",
++    \"  %an author name\\n\",
++    \"  %ae author email\\n\",
++    \"  %ad author date (RFC2822)\\n\",
++    \"  %as author date (short)\\n\",
++    \"  %cn committer name\\n\",
++    \"  %ce committer email\\n\",
++    \"  %cd committer date (RFC2822)\\n\",
++    \"  %cs committer date (short)\\n\",
++);
+*** End Patch
+PATCH" exited -1 in 0ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Failed to read file to update src/print/format.rs: No such file or directory (os error 2)
+[2025-09-21T19:10:15] tokens used: 170,222
+
+[2025-09-21T19:10:20] thinking
+
+**Correcting command to include workdir**
+[2025-09-21T19:10:24] exec zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = concat"'!(
++    "Commit text format or preset (default: oneline).'"\\n\",
++    \"Presets: oneline|short|medium|full.\\n\",
++    \"Supported placeholders:\\n\",
++    \"  %H  full commit hash\\n\",
++    \"  %h  abbreviated commit hash\\n\",
++    \"  %P  parent commit hashes (space-separated)\\n\",
++    \"  %p  abbreviated parent hashes (space-separated)\\n\",
++    \"  %d  decorations (branch and tag refs)\\n\",
++    \"  %s  subject\\n\",
++    \"  %b  body\\n\",
++    \"  %n  newline\\n\",
++    \"  %an author name\\n\",
++    \"  %ae author email\\n\",
++    \"  %ad author date (RFC2822)\\n\",
++    \"  %as author date (short)\\n\",
++    \"  %cn committer name\\n\",
++    \"  %ce committer email\\n\",
++    \"  %cd committer date (RFC2822)\\n\",
++    \"  %cs committer date (short)\\n\",
++);
+*** End Patch
+PATCH" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:10:24] zsh -lc "apply_patch <<'PATCH'
+*** Begin Patch
+*** Update File: src/print/format.rs
+@@
+-pub const FORMAT_LONG_HELP: &str = \"Commit text format or preset (default: oneline).\\n\\
+-Presets: oneline|short|medium|full.\\n\\
+-Supported placeholders:\\n\\
+-  %H  full commit hash\\n\\
+-  %h  abbreviated commit hash\\n\\
+-  %P  parent commit hashes (space-separated)\\n\\
+-  %p  abbreviated parent hashes (space-separated)\\n\\
+-  %d  decorations (branch and tag refs)\\n\\
+-  %s  subject\\n\\
+-  %b  body\\n\\
+-  %n  newline\\n\\
+-  %an author name\\n\\
+-  %ae author email\\n\\
+-  %ad author date (RFC2822)\\n\\
+-  %as author date (short)\\n\\
+-  %cn committer name\\n\\
+-  %ce committer email\\n\\
+-  %cd committer date (RFC2822)\\n\\
+-  %cs committer date (short)\\n\";
++pub const FORMAT_LONG_HELP: &str = concat"'!(
++    "Commit text format or preset (default: oneline).'"\\n\",
++    \"Presets: oneline|short|medium|full.\\n\",
++    \"Supported placeholders:\\n\",
++    \"  %H  full commit hash\\n\",
++    \"  %h  abbreviated commit hash\\n\",
++    \"  %P  parent commit hashes (space-separated)\\n\",
++    \"  %p  abbreviated parent hashes (space-separated)\\n\",
++    \"  %d  decorations (branch and tag refs)\\n\",
++    \"  %s  subject\\n\",
++    \"  %b  body\\n\",
++    \"  %n  newline\\n\",
++    \"  %an author name\\n\",
++    \"  %ae author email\\n\",
++    \"  %ad author date (RFC2822)\\n\",
++    \"  %as author date (short)\\n\",
++    \"  %cn committer name\\n\",
++    \"  %ce committer email\\n\",
++    \"  %cd committer date (RFC2822)\\n\",
++    \"  %cs committer date (short)\\n\",
++);
+*** End Patch
+PATCH" succeeded in 54ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-21T19:10:24] tokens used: 171,640
+
+[2025-09-21T19:10:28] thinking
+
+**Checking file start**
+[2025-09-21T19:10:28] exec zsh -lc "sed -n '1,40p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:10:28] zsh -lc "sed -n '1,40p' src/print/format.rs" succeeded in 33ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+use super::unicode::format_branches;
+use crate::graph::{GitGraph, HeadInfo};
+use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+use git2::Signature;
+use yansi::Paint;
+
+pub const FORMAT_LONG_HELP: &str = concat!(
+    "Commit text format or preset (default: oneline).\n",
+    "Presets: oneline|short|medium|full.\n",
+    "Supported placeholders:\n",
+    "  %H  full commit hash\n",
+    "  %h  abbreviated commit hash\n",
+    "  %P  parent commit hashes (space-separated)\n",
+    "  %p  abbreviated parent hashes (space-separated)\n",
+    "  %d  decorations (branch and tag refs)\n",
+    "  %s  subject\n",
+    "  %b  body\n",
+    "  %n  newline\n",
+    "  %an author name\n",
+[2025-09-21T19:10:28] tokens used: 172,437
+
+[2025-09-21T19:10:34] thinking
+
+**Formatting Rust code**
+[2025-09-21T19:10:34] exec zsh -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:10:34] zsh -lc 'cargo fmt' succeeded in 91ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+[2025-09-21T19:10:34] tokens used: 173,223
+
+[2025-09-21T19:10:39] thinking
+
+**Checking git status**
+[2025-09-21T19:10:39] exec zsh -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:10:39] zsh -lc 'git status -sb' succeeded in 58ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+## main
+ M src/main.rs
+ M src/print/format.rs
+ M src/print/unicode.rs
+[2025-09-21T19:10:39] tokens used: 173,488
+
+[2025-09-21T19:10:46] thinking
+
+**Staging changes for commit**
+[2025-09-21T19:10:47] exec zsh -lc 'git add -A' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:10:47] zsh -lc 'git add -A' succeeded in 42ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+[2025-09-21T19:10:47] tokens used: 173,833
+
+[2025-09-21T19:10:51] thinking
+
+**Committing changes**
+[2025-09-21T19:10:51] exec zsh -lc 'git commit -m "059-c43023d：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:10:51] zsh -lc 'git commit -m "059-c43023d：复现提交代码内容。"' succeeded in 40ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+[main 240ff45] 059-c43023d：复现提交代码内容。
+ 3 files changed, 276 insertions(+), 74 deletions(-)
+[2025-09-21T19:10:51] tokens used: 174,067
+
+[2025-09-21T19:11:00] thinking
+
+**Checking repository status**
+[2025-09-21T19:11:00] exec zsh -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:11:00] zsh -lc 'git status -sb' succeeded in 49ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+## main
+[2025-09-21T19:11:00] tokens used: 174,323
+
+[2025-09-21T19:11:11] thinking
+
+**Compiling detailed change summary**
+[2025-09-21T19:11:12] exec zsh -lc "nl -ba src/print/format.rs | sed -n '1,160p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:11:12] zsh -lc "nl -ba src/print/format.rs | sed -n '1,160p'" succeeded in 38ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+     1	use super::unicode::format_branches;
+     2	use crate::graph::{GitGraph, HeadInfo};
+     3	use chrono::{DateTime, FixedOffset, LocalResult, TimeZone};
+     4	use git2::Signature;
+     5	use yansi::Paint;
+     6	
+     7	pub const FORMAT_LONG_HELP: &str = concat!(
+     8	    "Commit text format or preset (default: oneline).\n",
+     9	    "Presets: oneline|short|medium|full.\n",
+    10	    "Supported placeholders:\n",
+    11	    "  %H  full commit hash\n",
+    12	    "  %h  abbreviated commit hash\n",
+    13	    "  %P  parent commit hashes (space-separated)\n",
+    14	    "  %p  abbreviated parent hashes (space-separated)\n",
+    15	    "  %d  decorations (branch and tag refs)\n",
+    16	    "  %s  subject\n",
+    17	    "  %b  body\n",
+    18	    "  %n  newline\n",
+    19	    "  %an author name\n",
+[2025-09-21T19:11:12] tokens used: 174,967
+
+[2025-09-21T19:11:20] thinking
+
+**Gathering relevant code sections**
+[2025-09-21T19:11:21] exec zsh -lc "nl -ba src/print/format.rs | sed -n '200,360p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:11:21] zsh -lc "nl -ba src/print/format.rs | sed -n '200,360p'" succeeded in 58ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+   200	                            }
+   201	                        }
+   202	                    }
+   203	                    'c' => {
+   204	                        let spec = chars
+   205	                            .next()
+   206	                            .ok_or_else(|| "Incomplete %c placeholder".to_string())?;
+   207	                        flush_literal(&mut literal, &mut items);
+   208	                        match spec {
+   209	                            'n' => items.push(FormatItem::Placeholder(Placeholder::CommitterName)),
+   210	                            'e' => {
+   211	                                items.push(FormatItem::Placeholder(Placeholder::CommitterEmail));
+   212	                            }
+   213	                            'd' => items.push(FormatItem::Placeholder(Placeholder::CommitterDate)),
+   214	                            's' => {
+   215	                                items
+   216	                                    .push(FormatItem::Placeholder(Placeholder::CommitterDateShort));
+   217	                            }
+   218	                            other => {
+[2025-09-21T19:11:21] tokens used: 177,307
+
+[2025-09-21T19:11:30] thinking
+
+**Listing key code references**
+[2025-09-21T19:11:31] exec zsh -lc "nl -ba src/print/format.rs | sed -n '360,520p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:11:31] zsh -lc "nl -ba src/print/format.rs | sed -n '360,520p'" succeeded in 47ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+   360	                let short = full.chars().take(7).collect::<String>();
+   361	                parent_full_hashes.push(full);
+   362	                parent_short_hashes.push(short);
+   363	            }
+   364	        }
+   365	
+   366	        let message = commit.message().unwrap_or("");
+   367	        let mut message_lines: Vec<&str> = message.split('\n').collect();
+   368	        if message.ends_with('\n') {
+   369	            message_lines.pop();
+   370	        }
+   371	
+   372	        let body_lines = if message_lines.len() > 1 {
+   373	            message_lines[1..]
+   374	                .iter()
+   375	                .map(|line| (*line).to_string())
+   376	                .collect()
+   377	        } else {
+   378	            Vec::new()
+[2025-09-21T19:11:31] tokens used: 179,759
+
+[2025-09-21T19:11:39] thinking
+
+**Checking for append_body addition**
+[2025-09-21T19:11:39] exec zsh -lc "nl -ba src/print/format.rs | sed -n '520,620p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:11:39] zsh -lc "nl -ba src/print/format.rs | sed -n '520,620p'" succeeded in 35ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+   520	fn git_time_to_datetime(time: git2::Time) -> Option<DateTime<FixedOffset>> {
+   521	    let offset_seconds = time.offset_minutes().checked_mul(60)?;
+   522	    let offset = FixedOffset::east_opt(offset_seconds)?;
+   523	    match offset.timestamp_opt(time.seconds(), 0) {
+   524	        LocalResult::None => None,
+   525	        LocalResult::Single(dt) => Some(dt),
+   526	        LocalResult::Ambiguous(first, _) => Some(first),
+   527	    }
+   528	}
+   529	
+   530	fn format_date(date: Option<DateTime<FixedOffset>>, style: DateFormatStyle) -> Option<String> {
+   531	    let format = match style {
+   532	        DateFormatStyle::Long => "%a %b %e %H:%M:%S %Y %z",
+   533	        DateFormatStyle::Short => "%Y-%m-%d",
+   534	    };
+   535	    date.map(|dt| dt.format(format).to_string())
+   536	}
+   537	
+   538	fn colored(text: &str, color: u8, color_enabled: bool) -> String {
+[2025-09-21T19:11:39] tokens used: 181,948
+
+[2025-09-21T19:11:47] thinking
+
+**Collecting modification line numbers**
+[2025-09-21T19:11:47] exec zsh -lc "nl -ba src/print/unicode.rs | sed -n '1,80p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:11:47] zsh -lc "nl -ba src/print/unicode.rs | sed -n '1,80p'" succeeded in 30ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+     1	use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+     2	use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+     3	use crate::settings::{Characters, Settings};
+     4	use atty::Stream;
+     5	use std::collections::hash_map::Entry::{Occupied, Vacant};
+     6	use std::collections::HashMap;
+     7	use yansi::Paint;
+     8	
+     9	const SPACE: u8 = 0;
+    10	const DOT: u8 = 1;
+    11	const CIRCLE: u8 = 2;
+    12	const VER: u8 = 3;
+    13	const HOR: u8 = 4;
+    14	const CROSS: u8 = 5;
+    15	const R_U: u8 = 6;
+    16	const R_D: u8 = 7;
+    17	const L_D: u8 = 8;
+    18	const L_U: u8 = 9;
+    19	const VER_L: u8 = 10;
+[2025-09-21T19:11:47] tokens used: 182,987
+
+[2025-09-21T19:11:53] thinking
+
+**Capturing context around matches**
+[2025-09-21T19:11:53] exec zsh -lc "nl -ba src/print/unicode.rs | sed -n '260,340p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:11:53] zsh -lc "nl -ba src/print/unicode.rs | sed -n '260,340p'" succeeded in 30ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+   260	                if is_head_branch && !head_written {
+   261	                    out.push_str(&colored("HEAD ->", HEAD_COLOR, color_enabled));
+   262	                    out.push(' ');
+   263	                    head_written = true;
+   264	                }
+   265	                out.push_str(&colored(&branch.name, branch_color, color_enabled));
+   266	                if idx < branch_indices.len() - 1 {
+   267	                    out.push_str(", ");
+   268	                }
+   269	            }
+   270	        }
+   271	        out.push_str(") ");
+   272	    }
+   273	
+   274	    if head.is_some() && !head_written {
+   275	        out.push_str(&colored("HEAD ->", HEAD_COLOR, color_enabled));
+   276	        out.push(' ');
+   277	    }
+   278	
+[2025-09-21T19:11:53] tokens used: 184,306
+
+[2025-09-21T19:11:59] thinking
+
+**Searching for format_multiline usage**
+[2025-09-21T19:11:59] exec zsh -lc 'rg -n "format_multiline" src/print/unicode.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:11:59] zsh -lc 'rg -n "format_multiline" src/print/unicode.rs' succeeded in 40ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+182:            CommitFormat::Short => format::format_multiline(&context, MultilineLevel::Short),
+183:            CommitFormat::Medium => format::format_multiline(&context, MultilineLevel::Medium),
+184:            CommitFormat::Full => format::format_multiline(&context, MultilineLevel::Full),
+[2025-09-21T19:11:59] tokens used: 185,639
+
+[2025-09-21T19:12:05] thinking
+
+**Grabbing code snippet for reference**
+[2025-09-21T19:12:06] exec zsh -lc "nl -ba src/print/unicode.rs | sed -n '172,200p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:12:06] zsh -lc "nl -ba src/print/unicode.rs | sed -n '172,200p'" succeeded in 45ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+   172	    let mut formatted_commits = Vec::with_capacity(graph.commits.len());
+   173	    for idx in 0..graph.commits.len() {
+   174	        let head_ref = if Some(idx) == head_commit_index {
+   175	            Some(&graph.head)
+   176	        } else {
+   177	            None
+   178	        };
+   179	        let context = FormatContext::new(graph, idx, head_ref, color_enabled, hash_color)?;
+   180	        let lines = match &settings.format {
+   181	            CommitFormat::Oneline => format::format_oneline(&context),
+   182	            CommitFormat::Short => format::format_multiline(&context, MultilineLevel::Short),
+   183	            CommitFormat::Medium => format::format_multiline(&context, MultilineLevel::Medium),
+   184	            CommitFormat::Full => format::format_multiline(&context, MultilineLevel::Full),
+   185	            CommitFormat::Custom(template) => format::format_commit(template, &context),
+   186	        };
+   187	        formatted_commits.push(lines);
+   188	    }
+   189	
+   190	    let mut consumed_text = vec![0usize; graph.commits.len()];
+[2025-09-21T19:12:06] tokens used: 185,938
+
+[2025-09-21T19:12:11] thinking
+
+**Preparing to number lines in src/main.rs**
+[2025-09-21T19:12:11] exec zsh -lc 'rg -n "FORMAT_LONG_HELP" src/main.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:12:11] zsh -lc 'rg -n "FORMAT_LONG_HELP" src/main.rs' succeeded in 32ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+4:use git_graph::print::format::{CommitFormat, FORMAT_LONG_HELP};
+107:                .long_help(FORMAT_LONG_HELP)
+[2025-09-21T19:12:11] tokens used: 186,693
+
+[2025-09-21T19:12:19] thinking
+
+**Reviewing Arg definitions**
+[2025-09-21T19:12:19] exec zsh -lc "nl -ba src/main.rs | sed -n '1,140p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:12:19] zsh -lc "nl -ba src/main.rs | sed -n '1,140p'" succeeded in 32ms:
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
+     1	use clap::{crate_version, App, Arg, SubCommand};
+     2	use git2::{ErrorCode, Repository};
+     3	use git_graph::graph::GitGraph;
+     4	use git_graph::print::format::{CommitFormat, FORMAT_LONG_HELP};
+     5	use git_graph::print::svg::print_svg;
+     6	use git_graph::print::unicode::print_unicode;
+     7	use git_graph::settings::{
+     8	    BranchOrder, BranchSettings, BranchSettingsDef, Characters, MergePatterns, RepoSettings,
+     9	    Settings,
+    10	};
+    11	use platform_dirs::AppDirs;
+    12	use std::path::PathBuf;
+    13	use std::str::FromStr;
+    14	use std::time::Instant;
+    15	
+    16	fn main() {
+    17	    std::process::exit(match from_args() {
+    18	        Ok(_) => 0,
+    19	        Err(err) => {
+[2025-09-21T19:12:19] tokens used: 186,979
+
+[2025-09-21T19:12:37] thinking
+
+**Summarizing code changes and test results**
+
+I'll outline the key code modifications with file paths and line references, highlight the failed test results caused by pre-existing compile errors in `src/graph.rs` around line 97, and clarify assumptions made about formatting and placeholders. I'll also include logical next steps regarding fixing those compile errors before tests can pass.
+[2025-09-21T19:12:38] codex
+
+- Exposed the new formatter help in CLI by importing `FORMAT_LONG_HELP` and wiring `--format` to show the default plus the full placeholder table (src/main.rs:4, src/main.rs:104).
+- Rebuilt the formatting core to match the report: published the help/placeholder constants, extended `FormatString` parsing, expanded `FormatContext` with parent/date/body data, and routed both presets and custom specs through the shared `render_format` engine (src/print/format.rs:7, src/print/format.rs:29, src/print/format.rs:246, src/print/format.rs:327).
+- Collapsed the short/medium/full presets into `format_multiline` with a level flag while keeping the oneline path intact (src/print/format.rs:420).
+- Pointed the unicode renderer at the new API so it selects the right level and reuses the common formatter entry point (src/print/unicode.rs:1, src/print/unicode.rs:172).
+
+假设与取舍：
+- `%ad/%cd` use the long Git log format and `%as/%cs` use `%Y-%m-%d`; parent hashes remain uncoloured to mirror git-log defaults.
+
+验证：
+- `cargo fmt`
+- `cargo test`（失败：现有代码在 src/graph.rs:97,140 继续尝试 clone `Repository` 并在 486 解引用 `Oid`，非本次改动造成）
+
+建议下一步：
+1. 修复 `src/graph.rs` 中的 `Repository` clone/`Oid` 报错以恢复测试可用。
+[2025-09-21T19:12:45] tokens used: 189,998
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

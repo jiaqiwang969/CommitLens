@@ -1,0 +1,1562 @@
+=== 任务 091-2f4cadb 执行日志 ===
+时间: 2025-09-22 09:12:16.963293
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-091-2f4cadb.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/091-2f4cadb/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："091-2f4cadb：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 091-2f4cadb
+
+=== 输出 ===
+[2025-09-22T01:09:55] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-22T01:09:55] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-091-2f4cadb.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/091-2f4cadb/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："091-2f4cadb：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 091-2f4cadb
+
+[2025-09-22T01:10:03] thinking
+
+**Deciding on planning approach**
+[2025-09-22T01:10:03] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-22T01:10:03] bash -lc 'ls -la' exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-22T01:10:03] tokens used: 1,043
+
+[2025-09-22T01:10:06] thinking
+
+**Clarifying working directory path usage**
+[2025-09-22T01:10:06] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-22T01:10:06] bash -lc 'ls -la' succeeded in 24ms:
+total 47136
+drwxr-xr-x@  9 jqwang  staff       288 Sep 21 15:57 .
+drwxr-xr-x@ 29 jqwang  staff       928 Sep 21 07:49 ..
+-rw-r--r--@  1 jqwang  staff       103 Sep 22 09:10 codex_error.txt
+-rw-r--r--@  1 jqwang  staff  23098884 Sep 22 09:10 codex_output.txt
+-rw-r--r--@  1 jqwang  staff         7 Sep 22 09:09 codex_status.txt
+drwxr-xr-x@ 92 jqwang  staff      2944 Sep 22 06:24 logs
+drwxr-xr-x@ 13 jqwang  staff       416 Sep 22 09:08 rust-project
+-rw-r--r--@  1 jqwang  staff      1905 Sep 22 09:09 task_status.json
+drwxr-xr-x@  5 jqwang  staff       160 Sep 22 09:09 todolist
+[2025-09-22T01:10:06] tokens used: 2,165
+
+[2025-09-22T01:10:08] thinking
+
+**Choosing method to view LaTeX report**
+[2025-09-22T01:10:09] exec bash -lc 'cat todolist/todolist-091-2f4cadb.tex' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-22T01:10:09] bash -lc 'cat todolist/todolist-091-2f4cadb.tex' succeeded in 16ms:
+\section{提交考古：091-2f4cadb}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：assign source and target branches
+  \item 作者：Martin Lange <\url{martin_lange_@gmx.net}>
+  \item 日期：2021-01-13T13:36:17+01:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+\begin{verbatim}
+HEAD:   src/graph.rs | 28 ++++++++++++++++++++++++----
+       1 file changed, 24 insertions(+), 4 deletions(-)
+HEAD-1: docs/manual.md  |  5 +++--
+        src/graph.rs    | 47 +++++++++++++++++++++++++++++++++++++++++++++--
+        src/settings.rs |  4 ++--
+        3 files changed, 50 insertions(+), 6 deletions(-)
+HEAD-2: Cargo.lock | 2 +-
+        Cargo.toml | 2 +-
+        2 files changed, 2 insertions(+), 2 deletions(-)
+[2025-09-22T01:10:09] tokens used: 2,657
+
+[2025-09-22T01:10:18] thinking
+
+**Preparing to reconstruct src/graph.rs file**
+[2025-09-22T01:10:18] exec bash -lc ls in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:18] bash -lc ls succeeded in 10ms:
+Cargo.lock
+Cargo.toml
+docs
+LICENSE
+README.md
+scripts
+src
+target
+[2025-09-22T01:10:18] tokens used: 4,788
+
+[2025-09-22T01:10:21] thinking
+
+**Inspecting BranchInfo definition**
+[2025-09-22T01:10:24] exec bash -lc "sed -n '1,200p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:24] bash -lc "sed -n '1,200p' src/graph.rs" succeeded in 13ms:
+//! A graph structure representing the history of a Git repository.
+
+use crate::print::colors::to_terminal_color;
+use crate::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+use git2::{BranchType, Commit, Error, Oid, Reference, Repository};
+use itertools::Itertools;
+use regex::Regex;
+use std::cmp;
+use std::collections::{HashMap, HashSet};
+
+const ORIGIN: &str = "origin/";
+const FORK: &str = "fork/";
+
+/// Represents a git history graph.
+pub struct GitGraph {
+    pub repository: Repository,
+    pub commits: Vec<CommitInfo>,
+    pub indices: HashMap<Oid, usize>,
+    pub all_branches: Vec<BranchInfo>,
+    pub branches: Vec<usize>,
+[2025-09-22T01:10:24] tokens used: 10,761
+
+[2025-09-22T01:10:26] thinking
+
+**Searching for BranchInfo struct**
+[2025-09-22T01:10:26] exec bash -lc 'rg "struct BranchInfo" -n src/graph.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:26] bash -lc 'rg "struct BranchInfo" -n src/graph.rs' succeeded in 21ms:
+214:pub struct BranchInfo {
+[2025-09-22T01:10:26] tokens used: 12,562
+[2025-09-22T01:10:28] exec bash -lc "sed -n '214,340p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:29] bash -lc "sed -n '214,340p' src/graph.rs" succeeded in 20ms:
+pub struct BranchInfo {
+    pub target: Oid,
+    pub merge_target: Option<Oid>,
+    pub name: String,
+    pub persistence: u8,
+    pub is_remote: bool,
+    pub is_merged: bool,
+    pub is_tag: bool,
+    pub visual: BranchVis,
+    pub range: (Option<usize>, Option<usize>),
+}
+impl BranchInfo {
+    #[allow(clippy::too_many_arguments)]
+    fn new(
+        target: Oid,
+        merge_target: Option<Oid>,
+        name: String,
+        persistence: u8,
+        is_remote: bool,
+        is_merged: bool,
+[2025-09-22T01:10:29] tokens used: 12,803
+
+[2025-09-22T01:10:30] thinking
+
+**Continuing to locate assign_sources_targets**
+[2025-09-22T01:10:30] exec bash -lc 'rg "assign_sources_targets" -n -n src/graph.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:30] bash -lc 'rg "assign_sources_targets" -n -n src/graph.rs' succeeded in 11ms:
+76:        assign_sources_targets(&commits, &indices, &mut all_branches);
+727:fn assign_sources_targets(
+[2025-09-22T01:10:30] tokens used: 14,051
+[2025-09-22T01:10:33] exec bash -lc "sed -n '660,780p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:33] bash -lc "sed -n '660,780p' src/graph.rs" succeeded in 16ms:
+                    old_branch.range = (Some(*index), old_branch.range.1);
+                }
+            } else {
+                let branch = &mut branches[branch_index];
+                if branch.name.starts_with(ORIGIN) && branch.name[7..] == old_name[..] {
+                    branch.visual.term_color = old_term;
+                    branch.visual.svg_color = old_svg;
+                }
+                match prev_index {
+                    None => start_index = Some(*index as i32 - 1),
+                    Some(prev_index) => {
+                        // TODO: in cases where no crossings occur, the rule for merge commits can also be applied to normal commits
+                        // see also print::get_deviate_index()
+                        if commits[prev_index].is_merge {
+                            let mut temp_index = prev_index;
+                            for sibling_oid in &commits[*index].children {
+                                if sibling_oid != &curr_oid {
+                                    let sibling_index = indices[&sibling_oid];
+                                    if sibling_index > temp_index {
+                                        temp_index = sibling_index;
+[2025-09-22T01:10:33] tokens used: 14,273
+
+[2025-09-22T01:10:34] thinking
+
+**Continuing analysis**
+[2025-09-22T01:10:34] exec bash -lc "sed -n '780,920p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:34] bash -lc "sed -n '780,920p' src/graph.rs" succeeded in 20ms:
+
+        branches[branch_idx].visual.source_order_group = match source_group {
+            Some(Some(order)) => Some(order),
+            _ => None,
+        };
+
+        branches[branch_idx].visual.target_order_group = match target_group {
+            Some(Some(order)) => Some(order),
+            _ => None,
+        };
+    }
+}
+
+/// Sorts branches into columns for visualization without overlaps.
+fn assign_branch_columns(
+    commits: &[CommitInfo],
+    indices: &HashMap<Oid, usize>,
+    branches: &mut [BranchInfo],
+    settings: &BranchSettings,
+    shortest_first: bool,
+[2025-09-22T01:10:34] tokens used: 15,539
+
+[2025-09-22T01:10:41] thinking
+
+**Planning BranchInfo struct update**
+[2025-09-22T01:10:41] exec bash -lc 'rg "source_branch" -n' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:41] bash -lc 'rg "source_branch" -n' exited 1 in 24ms:
+
+[2025-09-22T01:10:41] tokens used: 21,506
+
+[2025-09-22T01:10:44] thinking
+
+**Examining BranchInfo usage**
+[2025-09-22T01:10:45] exec bash -lc 'rg "BranchInfo" -n src' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:10:45] bash -lc 'rg "BranchInfo" -n src' succeeded in 18ms:
+src/graph.rs:19:    pub all_branches: Vec<BranchInfo>,
+src/graph.rs:214:pub struct BranchInfo {
+src/graph.rs:225:impl BranchInfo {
+src/graph.rs:238:        BranchInfo {
+src/graph.rs:307:) -> Result<Vec<BranchInfo>, String> {
+src/graph.rs:392:    branches: &mut [BranchInfo],
+src/graph.rs:458:) -> Result<Vec<BranchInfo>, String> {
+src/graph.rs:497:                    Ok(BranchInfo::new(
+src/graph.rs:555:                let branch_info = BranchInfo::new(
+src/graph.rs:603:                let tag_info = BranchInfo::new(
+src/graph.rs:628:    branches: &mut [BranchInfo],
+src/graph.rs:730:    branches: &mut [BranchInfo],
+src/graph.rs:797:    branches: &mut [BranchInfo],
+[2025-09-22T01:10:45] tokens used: 21,703
+
+[2025-09-22T01:11:30] thinking
+
+**Updating BranchInfo with new source and target fields**
+[2025-09-22T01:11:39] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/graph.rs
+@@ -221,2 +221,4 @@
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+@@ -245,2 +247,4 @@
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+@@ -741,18 +745,19 @@
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+@@ -760,31 +765,29 @@
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+[2025-09-22T01:11:39] apply_patch(auto_approved=true) exited 0 in 35ms:
+Success. Updated the following files:
+M src/graph.rs
+[2025-09-22T01:11:39] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+[2025-09-22T01:11:39] tokens used: 26,902
+[2025-09-22T01:11:39] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+
+[2025-09-22T01:11:44] thinking
+
+**Preparing to run cargo fmt**
+[2025-09-22T01:11:44] exec bash -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:11:44] bash -lc 'cargo fmt' succeeded in 78ms:
+
+[2025-09-22T01:11:44] tokens used: 28,423
+[2025-09-22T01:11:44] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+
+[2025-09-22T01:11:48] thinking
+
+**Preparing to run tests**
+[2025-09-22T01:11:49] exec bash -lc 'cargo test' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:11:49] bash -lc 'cargo test' exited -1 in 0ms:
+   Compiling git-graph v0.3.0 (/Users/jqwang/104-CommitLens-codex/.workspace/rust-project)
+error[E0106]: missing lifetime specifier
+   --> src/print/unicode.rs:506:27
+    |
+504 |     indent1: &str,
+    |              ----
+505 |     indent2: &str,
+    |              ----
+506 | ) -> Result<Option<Options<HyphenSplitter>>, String> {
+    |                           ^ expected named lifetime parameter
+    |
+    = help: this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `indent1` or `indent2`
+help: consider introducing a named lifetime parameter
+    |
+501 ~ fn create_wrapping_options<'a>(
+502 |     wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
+503 |     num_cols: usize,
+504 ~     indent1: &'a str,
+505 ~     indent2: &'a str,
+506 ~ ) -> Result<Option<Options<'a, HyphenSplitter>>, String> {
+[2025-09-22T01:11:49] tokens used: 28,637
+[2025-09-22T01:11:49] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+
+[2025-09-22T01:11:56] thinking
+
+**Evaluating pre-existing test failures**
+
+I see the tests are failing due to a missing lifetime spec in a separate file, which suggests the original commit might not build cleanly. Since instructions emphasize replicating the commit state exactly—even if tests fail—I won’t try to fix unrelated files but will check `cargo fmt` changes and use `git status` to understand any uncommitted modifications. I plan to note these test failures in the final summary as pre-existing issues.
+[2025-09-22T01:11:57] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:11:57] bash -lc 'git status -sb' succeeded in 39ms:
+## main
+ M src/graph.rs
+[2025-09-22T01:11:57] tokens used: 29,425
+[2025-09-22T01:11:57] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+
+[2025-09-22T01:11:58] thinking
+
+**Checking git diff for summary**
+[2025-09-22T01:11:59] exec bash -lc 'git diff' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:11:59] bash -lc 'git diff' succeeded in 48ms:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01e..57114a7 100644
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@ pub struct BranchInfo {
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@ impl BranchInfo {
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+[2025-09-22T01:11:59] tokens used: 29,666
+[2025-09-22T01:11:59] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+
+[2025-09-22T01:12:06] thinking
+
+**Preparing to commit changes**
+[2025-09-22T01:12:06] exec bash -lc 'git add -A' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:12:06] bash -lc 'git add -A' succeeded in 49ms:
+
+[2025-09-22T01:12:06] tokens used: 49,007
+[2025-09-22T01:12:06] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+[2025-09-22T01:12:09] exec bash -lc 'git commit -m "091-2f4cadb：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T01:12:09] bash -lc 'git commit -m "091-2f4cadb：复现提交代码内容。"' succeeded in 62ms:
+[main 951d2bc] 091-2f4cadb：复现提交代码内容。
+ 1 file changed, 41 insertions(+), 38 deletions(-)
+[2025-09-22T01:12:09] tokens used: 50,565
+[2025-09-22T01:12:09] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+
+[2025-09-22T01:12:15] thinking
+
+**Preparing final summary message**
+
+I'm organizing a concise final response that references key file changes with line numbers, highlights the update to assign_sources_targets and new fields, notes the unrelated test failure in `src/print/unicode.rs:506` linked to lifetime specs, and includes the recent commit. I'll also suggest natural next steps like addressing the failing tests to keep things clear and actionable.
+[2025-09-22T01:12:16] codex
+
+Added branch linkage: `src/graph.rs:219` now tracks `source_branch`/`target_branch` on `BranchInfo`, initialised in `BranchInfo::new` (`src/graph.rs:245`). `assign_sources_targets` (`src/graph.rs:739`) now records the concrete branch indices alongside the existing order-group hints so the visual metadata stays in sync.
+
+`cargo test` failed (pre-existing): lifetime annotation missing in `src/print/unicode.rs:506`.
+
+Next steps:
+1. Bail out the test failure by adding the lifetime to `create_wrapping_options` as suggested by rustc.
+
+Commit `091-2f4cadb：复现提交代码内容。` is in place.
+[2025-09-22T01:12:16] tokens used: 51,153
+[2025-09-22T01:12:16] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index 47ff01ec0cf34813a9ba2e6549199a43e239d98d..57114a7558ea6471a7755176ead7dd574e13db6c
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -219,6 +219,8 @@
+     pub is_remote: bool,
+     pub is_merged: bool,
+     pub is_tag: bool,
++    pub source_branch: Option<usize>,
++    pub target_branch: Option<usize>,
+     pub visual: BranchVis,
+     pub range: (Option<usize>, Option<usize>),
+ }
+@@ -243,6 +245,8 @@
+             is_remote,
+             is_merged,
+             is_tag,
++            source_branch: None,
++            target_branch: None,
+             visual,
+             range: (end_index, None),
+         }
+@@ -739,54 +743,53 @@
+     }
+ 
+     for branch_idx in 0..branches.len() {
+-        let source_group = branch_commits.get(branch_idx).map(|indices_for_branch| {
+-            indices_for_branch.iter().rev().find_map(|commit_idx| {
+-                let info = &commits[*commit_idx];
+-                info.parents.iter().flatten().find_map(|parent_oid| {
+-                    indices
+-                        .get(parent_oid)
+-                        .and_then(|parent_idx| commits[*parent_idx].branch_trace)
+-                        .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
+-                        .map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group)
++        let source_branch = branch_commits
++            .get(branch_idx)
++            .and_then(|indices_for_branch| {
++                indices_for_branch.iter().rev().find_map(|commit_idx| {
++                    let info = &commits[*commit_idx];
++                    info.parents.iter().flatten().find_map(|parent_oid| {
++                        indices
++                            .get(parent_oid)
++                            .and_then(|parent_idx| commits[*parent_idx].branch_trace)
++                            .filter(|parent_branch_idx| *parent_branch_idx != branch_idx)
++                    })
+                 })
+-            })
+-        });
++            });
+ 
+-        let target_group = branches[branch_idx]
++        let mut target_branch = branches[branch_idx]
+             .merge_target
+-            .map(|target_oid| {
++            .and_then(|target_oid| {
+                 indices
+                     .get(&target_oid)
+                     .and_then(|target_idx| commits[*target_idx].branch_trace)
+-                    .filter(|target_branch_idx| *target_branch_idx != branch_idx)
+-                    .map(|target_branch_idx| branches[target_branch_idx].visual.order_group)
+             })
+-            .or_else(|| {
+-                branch_commits
+-                    .get(branch_idx)
+-                    .and_then(|indices_for_branch| indices_for_branch.first())
+-                    .map(|head_idx| {
+-                        commits[*head_idx].children.iter().find_map(|child| {
+-                            indices
+-                                .get(child)
+-                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+-                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+-                                .map(|child_branch_idx| {
+-                                    branches[child_branch_idx].visual.order_group
+-                                })
+-                        })
++            .filter(|target_branch_idx| *target_branch_idx != branch_idx);
++
++        if target_branch.is_none() {
++            target_branch = branch_commits
++                .get(branch_idx)
++                .and_then(|indices_for_branch| indices_for_branch.first())
++                .and_then(|head_idx| {
++                    commits[*head_idx].children.iter().find_map(|child| {
++                        indices
++                            .get(child)
++                            .and_then(|child_idx| commits[*child_idx].branch_trace)
++                            .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                     })
+-            });
++                });
++        }
+ 
+-        branches[branch_idx].visual.source_order_group = match source_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let source_group =
++            source_branch.map(|parent_branch_idx| branches[parent_branch_idx].visual.order_group);
++        let target_group =
++            target_branch.map(|child_branch_idx| branches[child_branch_idx].visual.order_group);
+ 
+-        branches[branch_idx].visual.target_order_group = match target_group {
+-            Some(Some(order)) => Some(order),
+-            _ => None,
+-        };
++        let branch = &mut branches[branch_idx];
++        branch.source_branch = source_branch;
++        branch.target_branch = target_branch;
++        branch.visual.source_order_group = source_group;
++        branch.visual.target_order_group = target_group;
+     }
+ }
+ 
+
+
+=== 错误 ===
+2025-09-22T01:10:03.586668Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

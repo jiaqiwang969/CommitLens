@@ -1,0 +1,2748 @@
+=== 任务 081-ab7e85a 执行日志 ===
+时间: 2025-09-22 05:46:49.350256
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-081-ab7e85a.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/081-ab7e85a/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："081-ab7e85a：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 081-ab7e85a
+
+=== 输出 ===
+[2025-09-21T21:44:33] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-21T21:44:33] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-081-ab7e85a.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/081-ab7e85a/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："081-ab7e85a：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 081-ab7e85a
+
+[2025-09-21T21:44:40] thinking
+
+**Preparing to read LaTeX file in workspace**
+[2025-09-21T21:44:40] exec bash -lc "sed -n '1,160p' .workspace/todolist/todolist-081-ab7e85a.tex" in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-21T21:44:40] bash -lc "sed -n '1,160p' .workspace/todolist/todolist-081-ab7e85a.tex" exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-21T21:44:40] tokens used: 995
+
+[2025-09-21T21:44:44] thinking
+
+**Correcting file path usage**
+[2025-09-21T21:44:44] exec bash -lc "sed -n '1,160p' todolist/todolist-081-ab7e85a.tex" in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-21T21:44:44] bash -lc "sed -n '1,160p' todolist/todolist-081-ab7e85a.tex" exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-21T21:44:44] tokens used: 2,182
+
+[2025-09-21T21:44:46] thinking
+
+**Listing directories to confirm path**
+[2025-09-21T21:44:46] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-21T21:44:46] bash -lc 'ls -la' exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-21T21:44:46] tokens used: 2,406
+
+[2025-09-21T21:44:49] thinking
+
+**Determining correct working directory path**
+[2025-09-21T21:44:49] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T21:44:49] bash -lc 'ls -la' succeeded in 18ms:
+total 43040
+drwxr-xr-x@  9 jqwang  staff       288 Sep 21 15:57 .
+drwxr-xr-x@ 29 jqwang  staff       928 Sep 21 07:49 ..
+-rw-r--r--@  1 jqwang  staff       309 Sep 22 05:44 codex_error.txt
+-rw-r--r--@  1 jqwang  staff  21330078 Sep 22 05:44 codex_output.txt
+-rw-r--r--@  1 jqwang  staff         7 Sep 22 05:44 codex_status.txt
+drwxr-xr-x@ 82 jqwang  staff      2624 Sep 22 05:44 logs
+drwxr-xr-x@ 12 jqwang  staff       384 Sep 18 13:06 rust-project
+-rw-r--r--@  1 jqwang  staff      1667 Sep 22 05:44 task_status.json
+drwxr-xr-x@  5 jqwang  staff       160 Sep 22 05:44 todolist
+[2025-09-21T21:44:49] tokens used: 2,652
+
+[2025-09-21T21:44:51] thinking
+
+**Preparing to read LaTeX file**
+[2025-09-21T21:44:52] exec bash -lc "sed -n '1,160p' todolist/todolist-081-ab7e85a.tex" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T21:44:52] bash -lc "sed -n '1,160p' todolist/todolist-081-ab7e85a.tex" succeeded in 20ms:
+% 注意：本片段必须以 \section 开头；不得包含 \begin{document}
+\section{提交考古：081-ab7e85a}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：removed section on performance
+  \item 作者：Martin Lange <martin\_lange\_@gmx.net>
+  \item 日期：2021-01-03T02:56:27+01:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+\begin{verbatim}
+HEAD:   README.md | 21 ++++-----------------
+        docs/manual.md | 10 +++++-----
+        2 files changed, 9 insertions(+), 22 deletions(-)
+HEAD-1: README.md | 22 ++++++++++++----------
+        docs/manual.md | 34 ++++++++++++++++++++++------------
+        2 files changed, 34 insertions(+), 22 deletions(-)
+HEAD-2: README.md | 9 +++++++--
+        docs/manual.md | 64 ++++++++++++++++++++++++++++++++++++++--------
+[2025-09-21T21:44:52] tokens used: 6,724
+
+[2025-09-21T21:45:00] thinking
+
+**Preparing to reconstruct final commit state**
+[2025-09-21T21:45:00] exec bash -lc 'ls -R' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:00] bash -lc 'ls -R' succeeded in 8ms:
+Cargo.lock
+Cargo.toml
+docs
+LICENSE
+README.md
+scripts
+src
+
+./docs:
+manual.md
+
+./scripts:
+linearize-history.sh
+
+./src:
+graph.rs
+lib.rs
+main.rs
+print
+settings.rs
+[2025-09-21T21:45:00] tokens used: 8,912
+
+[2025-09-21T21:45:03] thinking
+
+**Checking README for updates**
+[2025-09-21T21:45:03] exec bash -lc "sed -n '1,200p' README.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:03] bash -lc "sed -n '1,200p' README.md" succeeded in 20ms:
+# git-graph
+
+[![Build Status](https://travis-ci.com/mlange-42/git-graph.svg?branch=master)](https://travis-ci.com/mlange-42/git-graph)
+
+A command line tool to visualize Git history graphs in a comprehensible way, following different branching models.
+
+The image below shows an example using the [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/) branching model for a comparison between graphs generated by git-graph (far left) versus other tools and Git clients. 
+
+> GitFlow was chosen for its complexity, while any other branching model is supported, including user-defined ones.
+
+![Graph comparison between tools](https://user-images.githubusercontent.com/44003176/103466403-36a81780-4d45-11eb-90cc-167d210d7a52.png)
+
+Decide for yourself which graph is the most comprehensible. :sunglasses:
+
+## Features
+
+* View structured graphs directly in the terminal
+* Pre-defined and custom branching models and coloring
+* Different styles, including ASCII-only (i.e. no "special characters")
+* Custom commit formatting, like with `git log --format="..."`
+[2025-09-21T21:45:03] tokens used: 9,228
+
+[2025-09-21T21:45:06] thinking
+
+**Reviewing README heading styles**
+[2025-09-21T21:45:06] exec bash -lc "sed -n '1,200p' docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:06] bash -lc "sed -n '1,200p' docs/manual.md" succeeded in 8ms:
+# git-graph manual
+
+**Content**
+
+* [Overview](#overview)
+* [Options](#options)
+* [Formatting](#formatting)
+* [Custom branching models](#custom-branching-models)
+
+## Overview
+
+The most basic usage is to simply call git-graph from inside a Git repository:
+
+```
+git-graph
+```
+
+This works also deeper down the directory tree, so no need to be in the repository's root folder.
+
+Alternatively, the path to the repository to visualize can be specified with option `--path`:
+[2025-09-21T21:45:06] tokens used: 14,601
+
+[2025-09-21T21:45:08] thinking
+
+**Continuing to review MANUAL file**
+[2025-09-21T21:45:09] exec bash -lc "sed -n '200,400p' docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:09] bash -lc "sed -n '200,400p' docs/manual.md" succeeded in 15ms:
+If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+
+If you add a '-' (minus sign) after % of a placeholder, all consecutive line-feeds immediately preceding the expansion are deleted if and only if the placeholder expands to an empty string.
+
+If you add a ' ' (space) after % of a placeholder, a space is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+
+See also the [Git documentation](https://git-scm.com/docs/pretty-formats).
+
+More formatting placeholders are planned for later releases.
+
+**Examples**
+
+Format recreating `oneline`:
+
+```
+git-graph --format "%h%d %s"
+```
+
+Format similar to `short`:
+
+[2025-09-21T21:45:09] tokens used: 17,898
+
+[2025-09-21T21:45:11] thinking
+
+**Continuing process**
+[2025-09-21T21:45:11] exec bash -lc "sed -n '400,800p' docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:11] bash -lc "sed -n '400,800p' docs/manual.md" succeeded in 8ms:
+
+[2025-09-21T21:45:11] tokens used: 21,269
+
+[2025-09-21T21:45:34] thinking
+
+**Preparing README and manual heading updates**
+[2025-09-21T21:45:37] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/README.md
+@@ -23,3 +23,3 @@
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+@@ -29,3 +29,3 @@
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+@@ -53,3 +53,3 @@
+ 
+-### Branching models
++**Branching models**
+ 
+@@ -67,3 +67,3 @@
+ 
+-### Get help
++**Get help**
+ 
+@@ -93,15 +93,2 @@
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+[2025-09-21T21:45:37] apply_patch(auto_approved=true) exited 0 in 16ms:
+Success. Updated the following files:
+M README.md
+[2025-09-21T21:45:37] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+
+[2025-09-21T21:45:37] tokens used: 24,591
+[2025-09-21T21:45:37] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+
+
+[2025-09-21T21:45:39] thinking
+
+**Verifying blank lines after bold text**
+[2025-09-21T21:45:39] exec bash -lc "sed -n '20,120p' README.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:39] bash -lc "sed -n '20,120p' README.md" succeeded in 10ms:
+* Custom commit formatting, like with `git log --format="..."`
+
+## Installation
+
+**Pre-compiled binaries**
+
+1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+2. Unzip somewhere
+3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+
+**Using `cargo`**
+
+In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+
+```
+cargo install --git https://github.com/mlange-42/git-graph
+```
+
+## Usage
+
+[2025-09-21T21:45:39] tokens used: 26,743
+[2025-09-21T21:45:39] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+
+
+[2025-09-21T21:45:42] thinking
+
+**Replacing markdown headings with bold lines**
+[2025-09-21T21:45:42] exec bash -lc "rg '###' -n docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:42] bash -lc "rg '###' -n docs/manual.md" succeeded in 12ms:
+26:### Branching models
+54:### Styles
+66:### Formatting
+176:### Custom formatting
+315:### Tags
+319:### Colors
+[2025-09-21T21:45:42] tokens used: 27,679
+[2025-09-21T21:45:42] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+
+
+[2025-09-21T21:45:45] thinking
+
+**Converting markdown headings to bold**
+[2025-09-21T21:45:46] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/docs/manual.md
+@@ -25,3 +25,3 @@
+ 
+-### Branching models
++**Branching models**
+ 
+@@ -53,3 +53,3 @@
+ 
+-### Styles
++**Styles**
+ 
+@@ -65,3 +65,3 @@
+ 
+-### Formatting
++**Formatting**
+ 
+@@ -175,3 +175,3 @@
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+@@ -314,3 +314,3 @@
+ 
+-### Tags
++**Tags**
+ 
+@@ -318,3 +318,3 @@
+ 
+-### Colors
++**Colors**
+ 
+[2025-09-21T21:45:46] apply_patch(auto_approved=true) exited 0 in 22ms:
+Success. Updated the following files:
+M docs/manual.md
+[2025-09-21T21:45:46] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+[2025-09-21T21:45:46] tokens used: 27,971
+[2025-09-21T21:45:46] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:45:47] thinking
+
+**Verifying code snippet formatting**
+[2025-09-21T21:45:48] exec bash -lc "sed -n '20,120p' docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:48] bash -lc "sed -n '20,120p' docs/manual.md" succeeded in 12ms:
+Alternatively, the path to the repository to visualize can be specified with option `--path`:
+
+```
+git-graph --path "path/to/repo"
+```
+
+**Branching models**
+
+The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+
+```
+git-graph --model simple
+```
+
+To *permanently* set the branching model for a repository, use subcommand `model`, like
+
+```
+git-graph model simple
+```
+
+[2025-09-21T21:45:48] tokens used: 29,691
+[2025-09-21T21:45:48] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:45:50] thinking
+
+**Checking additional sections**
+[2025-09-21T21:45:50] exec bash -lc "sed -n '160,240p' docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:50] bash -lc "sed -n '160,240p' docs/manual.md" succeeded in 7ms:
+<full commit message>
+```
+
+**full**
+
+```
+commit <hash> [<refs>]
+Author: <author>
+Commit: <committer>
+Date:   <author date>
+
+<title line>
+
+<full commit message>
+```
+
+**Custom formatting**
+
+Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+
+[2025-09-21T21:45:50] tokens used: 31,180
+[2025-09-21T21:45:50] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:45:52] thinking
+
+**Checking for Tags and Colors sections**
+[2025-09-21T21:45:52] exec bash -lc "sed -n '300,340p' docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:45:52] bash -lc "sed -n '300,340p' docs/manual.md" succeeded in 14ms:
+# Same structure as terminal_colors. 
+# For supported colors, see section Colors (below this listing).
+[svg_colors]
+matches = [
+    [
+        '^(master|main)$',
+        ['blue'],
+    ],
+    [ 
+        '...',
+    ]
+]
+unknown = ['gray']
+```
+
+**Tags**
+
+Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+
+**Colors**
+[2025-09-21T21:45:52] tokens used: 33,245
+[2025-09-21T21:45:52] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:45:55] thinking
+
+**Preparing to build project**
+[2025-09-21T21:45:56] exec bash -lc 'cargo build' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:06] bash -lc 'cargo build' exited 124 in 10.01s:
+    Updating crates.io index
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+[2025-09-21T21:46:06] tokens used: 33,771
+[2025-09-21T21:46:06] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:10] thinking
+
+**Handling cargo build network failure**
+[2025-09-21T21:46:10] exec bash -lc 'cargo build --offline' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:10] bash -lc 'cargo build --offline' exited -1 in 0ms:
+error: no matching package named `matches` found
+location searched: crates.io index
+required by package `url v2.2.0`
+    ... which satisfies dependency `url = "^2.0"` (locked to 2.2.0) of package `git2 v0.13.12`
+    ... which satisfies dependency `git2 = "^0.13"` (locked to 0.13.12) of package `git-graph v0.1.7 (/Users/jqwang/104-CommitLens-codex/.workspace/rust-project)`
+As a reminder, you're using offline mode (--offline) which can sometimes cause surprising resolution failures, if this error is too confusing you may wish to retry without `--offline`.
+[2025-09-21T21:46:10] tokens used: 34,506
+[2025-09-21T21:46:10] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:12] thinking
+
+**Checking git status before commit**
+[2025-09-21T21:46:13] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:13] bash -lc 'git status -sb' succeeded in 25ms:
+## main
+ M README.md
+ M docs/manual.md
+[2025-09-21T21:46:13] tokens used: 34,894
+[2025-09-21T21:46:13] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:16] thinking
+
+**Staging all changes**
+[2025-09-21T21:46:16] exec bash -lc 'git add -A' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:16] bash -lc 'git add -A' succeeded in 28ms:
+
+[2025-09-21T21:46:16] tokens used: 35,153
+[2025-09-21T21:46:16] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:18] thinking
+
+**Committing changes**
+[2025-09-21T21:46:18] exec bash -lc 'git commit -m "081-ab7e85a：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:18] bash -lc 'git commit -m "081-ab7e85a：复现提交代码内容。"' succeeded in 35ms:
+[main 7f93817] 081-ab7e85a：复现提交代码内容。
+ 2 files changed, 10 insertions(+), 23 deletions(-)
+[2025-09-21T21:46:18] tokens used: 35,388
+[2025-09-21T21:46:18] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:22] thinking
+
+**Preparing final response details**
+[2025-09-21T21:46:22] exec bash -lc "nl -ba README.md | sed -n '20,160p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:22] bash -lc "nl -ba README.md | sed -n '20,160p'" succeeded in 24ms:
+    20	* Custom commit formatting, like with `git log --format="..."`
+    21	
+    22	## Installation
+    23	
+    24	**Pre-compiled binaries**
+    25	
+    26	1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+    27	2. Unzip somewhere
+    28	3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+    29	
+    30	**Using `cargo`**
+    31	
+    32	In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+    33	
+    34	```
+    35	cargo install --git https://github.com/mlange-42/git-graph
+    36	```
+    37	
+    38	## Usage
+    39	
+[2025-09-21T21:46:22] tokens used: 35,759
+[2025-09-21T21:46:22] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:28] thinking
+
+**Describing removal of performance section**
+[2025-09-21T21:46:28] exec bash -lc "nl -ba docs/manual.md | sed -n '20,120p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:28] bash -lc "nl -ba docs/manual.md | sed -n '20,120p'" succeeded in 16ms:
+    20	Alternatively, the path to the repository to visualize can be specified with option `--path`:
+    21	
+    22	```
+    23	git-graph --path "path/to/repo"
+    24	```
+    25	
+    26	**Branching models**
+    27	
+    28	The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+    29	
+    30	```
+    31	git-graph --model simple
+    32	```
+    33	
+    34	To *permanently* set the branching model for a repository, use subcommand `model`, like
+    35	
+    36	```
+    37	git-graph model simple
+    38	```
+    39	
+[2025-09-21T21:46:28] tokens used: 39,893
+[2025-09-21T21:46:28] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:31] thinking
+
+**Adding line number references**
+[2025-09-21T21:46:31] exec bash -lc "nl -ba docs/manual.md | sed -n '160,220p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:31] bash -lc "nl -ba docs/manual.md | sed -n '160,220p'" succeeded in 17ms:
+   160	<full commit message>
+   161	```
+   162	
+   163	**full**
+   164	
+   165	```
+   166	commit <hash> [<refs>]
+   167	Author: <author>
+   168	Commit: <committer>
+   169	Date:   <author date>
+   170	
+   171	<title line>
+   172	
+   173	<full commit message>
+   174	```
+   175	
+   176	**Custom formatting**
+   177	
+   178	Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+   179	
+[2025-09-21T21:46:31] tokens used: 42,939
+[2025-09-21T21:46:31] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:33] thinking
+
+**Scanning bottom lines for tags**
+[2025-09-21T21:46:34] exec bash -lc "nl -ba docs/manual.md | sed -n '300,340p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:34] bash -lc "nl -ba docs/manual.md | sed -n '300,340p'" succeeded in 20ms:
+   300	# Same structure as terminal_colors. 
+   301	# For supported colors, see section Colors (below this listing).
+   302	[svg_colors]
+   303	matches = [
+   304	    [
+   305	        '^(master|main)$',
+   306	        ['blue'],
+   307	    ],
+   308	    [ 
+   309	        '...',
+   310	    ]
+   311	]
+   312	unknown = ['gray']
+   313	```
+   314	
+   315	**Tags**
+   316	
+   317	Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+   318	
+   319	**Colors**
+[2025-09-21T21:46:34] tokens used: 43,901
+[2025-09-21T21:46:34] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:38] thinking
+
+**Checking build status and cleaning working tree**
+[2025-09-21T21:46:38] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:46:38] bash -lc 'git status -sb' succeeded in 18ms:
+## main
+[2025-09-21T21:46:38] tokens used: 46,883
+[2025-09-21T21:46:38] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+[2025-09-21T21:46:47] thinking
+
+**Composing final message**
+
+I'll explain the bolding of third-level headings in README and manual files with line references, note removal of the performance section at README.md:95, and summarize manual changes similarly. I’ll also mention the `cargo build` failure due to network restrictions and suggest re-running it once crates are available, wrapping up with verification advice.
+[2025-09-21T21:46:47] codex
+
+Converted remaining third-level headings to bold and removed the obsolete performance blurb so the documentation matches the referenced commit.
+
+- **README Updates** – switched installer/usage subsections to bold labels and dropped the performance table so `## Limitations` now follows directly after the custom models section (`README.md:24`, `README.md:30`, `README.md:54`, `README.md:68`, `README.md:95`).
+- **Manual Updates** – flattened the tertiary headings for branching models, styles, formatting, custom formatting, tags, and colors to bold paragraphs for consistent styling (`docs/manual.md:26`, `docs/manual.md:54`, `docs/manual.md:66`, `docs/manual.md:176`, `docs/manual.md:315`, `docs/manual.md:319`).
+
+Validation: `cargo build` (fails – crates.io index cannot be reached due to restricted network); `cargo build --offline` (fails – dependency `matches` missing locally).
+
+Next step: 1. Re-run `cargo build` once the crates.io index is accessible or dependencies are cached locally.
+[2025-09-21T21:46:49] tokens used: 47,659
+[2025-09-21T21:46:49] turn diff:
+diff --git a/README.md b/README.md
+index cac2fc9bea74626e037865c82d8116c63deee508..831236f4a005ae0ae27dbe0936fd8c49a31c3cbc
+--- a/README.md
++++ b/README.md
+@@ -21,13 +21,13 @@
+ 
+ ## Installation
+ 
+-### Pre-compiled binaries
++**Pre-compiled binaries**
+ 
+ 1. Download the [latest binaries](https://github.com/mlange-42/git-graph/releases) for your platform
+ 2. Unzip somewhere
+ 3. *Optional:* add directory `git-graph` to your `PATH` environmental variable
+ 
+-### Using `cargo`
++**Using `cargo`**
+ 
+ In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
+ 
+@@ -51,7 +51,7 @@
+ > C:/path/to/git-graph/git-graph
+ > ```
+ 
+-### Branching models
++**Branching models**
+ 
+ Run git-graph with a specific model, e.g. `simple`:
+ 
+@@ -65,7 +65,7 @@
+ git-graph model simple
+ ```
+ 
+-### Get help
++**Get help**
+ 
+ For the full CLI help describing all options, use:
+ 
+@@ -91,19 +91,6 @@
+ ```
+ 
+ **For details on how to create your own branching models see the manual, section [Custom branching models](docs/manual.md#custom-branching-models).**
+-
+-## Performance
+-
+-Although doing some heavy lifting when determining the layout of a graph, git-graph is fast and memory-efficient (also thanks to being written in Rust). 
+-
+-As a benchmarking example, the repository of the the Rust package manager `cargo` is used. It has over 10.000 commits and 50 active branches. Parsing (i.e. determining arrangement and colors of branches) takes approx. 750ms, and printing the entire graph with commit summaries, piped to a file, takes approx. 400ms. Required memory is about 30 MB.
+-
+-For an average repository with a few hundred commits, parsing takes a few tens to 100 milliseconds and memory usage is below 5 MB.
+-
+-| Repo (commits)      | Parsing | RAM  |
+-| ------------------- | -------:| ----:|
+-| cargo (10k)         | 750ms   | 30MB |
+-| avg (a few hundred) | ≈100ms  | <5MB |
+ 
+ ## Limitations
+ 
+diff --git a/docs/manual.md b/docs/manual.md
+index 430ee2957ed1e1792ff2e2dab0d5383ec8c55cc0..55683b231db672c69278de75a41f152bff7495fb
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -23,7 +23,7 @@
+ git-graph --path "path/to/repo"
+ ```
+ 
+-### Branching models
++**Branching models**
+ 
+ The above call assumes the GitFlow branching model (the default). Different branching models can be used with the option `--model` or `-m`:
+ 
+@@ -51,7 +51,7 @@
+ 
+ For **defining your own models**, see section [Custom branching models](#custom-branching-models).
+ 
+-### Styles
++**Styles**
+ 
+ Git-graph supports different styles. Besides the default `normal` (alias `thin`), supported styles are `round`, `bold`, `double` and `ascii`. Use a style with option `--style` or `-s`:
+ 
+@@ -63,7 +63,7 @@
+ 
+ Style `ascii` can be used for devices and media that do not support Unicode/UTF-8 characters. 
+ 
+-### Formatting
++**Formatting**
+ 
+ Git-graph supports predefined as well as custom commit formatting through option `--format`. Available presets follow Git: `oneline` (the default), `short`, `medium` and `full`. For details and custom formatting, see section [Formatting](#formatting).
+ 
+@@ -173,7 +173,7 @@
+ <full commit message>
+ ```
+ 
+-### Custom formatting
++**Custom formatting**
+ 
+ Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+ 
+@@ -312,11 +312,11 @@
+ unknown = ['gray']
+ ```
+ 
+-### Tags
++**Tags**
+ 
+ Internally, all tags start with `tag/`. To match Git tags, use RegEx patterns like `^tags/.*$`. However, only tags that are not on any branch are ordered and colored separately.
+ 
+-### Colors
++**Colors**
+ 
+ **Terminal colors** support the 8 system color names `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`, as well as each of them prefixed with `bright_` (e.g. `bright_blue`).
+ 
+
+
+=== 错误 ===
+2025-09-21T21:44:40.606987Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+2025-09-21T21:44:44.280459Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+2025-09-21T21:44:46.727061Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

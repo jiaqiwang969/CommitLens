@@ -1,0 +1,4726 @@
+=== 任务 118-571f97a 执行日志 ===
+时间: 2025-09-22 11:26:29.971332
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-118-571f97a.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/118-571f97a/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："118-571f97a：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 118-571f97a
+
+=== 输出 ===
+[2025-09-22T03:20:23] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-22T03:20:23] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-118-571f97a.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/118-571f97a/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："118-571f97a：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 118-571f97a
+
+[2025-09-22T03:20:33] thinking
+
+**Preparing to explore workspace**
+[2025-09-22T03:20:33] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-22T03:20:33] bash -lc 'ls -la' exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-22T03:20:33] tokens used: 847
+
+[2025-09-22T03:20:36] thinking
+
+**Diagnosing incorrect working directory usage**
+[2025-09-22T03:20:36] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.
+[2025-09-22T03:20:36] bash -lc 'ls -la' succeeded in 15ms:
+total 53280
+drwxr-xr-x@  10 jqwang  staff       320 Sep 22 10:11 .
+drwxr-xr-x@  30 jqwang  staff       960 Sep 22 09:38 ..
+drwxr-xr-x@   9 jqwang  staff       288 Sep 22 11:08 .graph_cache
+-rw-r--r--@   1 jqwang  staff       103 Sep 22 11:20 codex_error.txt
+-rw-r--r--@   1 jqwang  staff  26924172 Sep 22 11:20 codex_output.txt
+-rw-r--r--@   1 jqwang  staff         7 Sep 22 11:20 codex_status.txt
+drwxr-xr-x@ 119 jqwang  staff      3808 Sep 22 11:20 logs
+drwxr-xr-x@  14 jqwang  staff       448 Sep 22 11:08 rust-project
+-rw-r--r--@   1 jqwang  staff      2466 Sep 22 11:20 task_status.json
+drwxr-xr-x@   5 jqwang  staff       160 Sep 22 11:20 todolist
+[2025-09-22T03:20:36] tokens used: 2,006
+
+[2025-09-22T03:20:39] thinking
+
+**Preparing to read todolist file**
+[2025-09-22T03:20:39] exec bash -lc 'cat todolist/todolist-118-571f97a.tex' in /Users/jqwang/104-CommitLens-codex/.workspace/.
+[2025-09-22T03:20:39] bash -lc 'cat todolist/todolist-118-571f97a.tex' succeeded in 10ms:
+\section{提交考古：118-571f97a}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：Add a relative format similar to git graph (\#103)
+  \item 作者：drspx <76571284+drspx@users.noreply.github.com>
+  \item 日期：2025-06-05T14:47:03+02:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+\begin{verbatim}
+HEAD: docs/manual.md |  2 ++
+      src/print/format.rs | 66 +++++++++++++++++++++ ...  (60 insertions, 8 deletions)
+HEAD-1: src/config.rs | 2 -- ; src/lib.rs | 4 +++- ; src/main.rs | 7 ++++++-
+HEAD-2: src/main.rs | 80 +++++++++++++++++ ... (scrolling UX)
+\end{verbatim}
+
+\subsection*{差异解读（证据）}
+\begin{itemize}
+  \item 改了什么：在 \texttt{src/print/format.rs} 增加相对时间占位符 \verb|\%ar/\%cr| 的常量与处理分支，并实现 \texttt{format\_relative\_time()}；在 \texttt{docs/manual.md} 补文档。
+[2025-09-22T03:20:39] tokens used: 2,504
+
+[2025-09-22T03:20:42] thinking
+
+**Checking rust-project directory contents**
+[2025-09-22T03:20:42] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:20:42] bash -lc 'ls -la' succeeded in 12ms:
+total 120
+drwxr-xr-x@ 14 jqwang  staff    448 Sep 22 11:08 .
+drwxr-xr-x@ 10 jqwang  staff    320 Sep 22 10:11 ..
+drwxr-xr-x@ 12 jqwang  staff    384 Sep 22 11:20 .git
+drwxr-xr-x@  3 jqwang  staff     96 Sep 22 09:46 .github
+-rw-r--r--@  1 jqwang  staff     22 Sep 22 11:10 .gitignore
+-rw-r--r--@  1 jqwang  staff  37203 Sep 22 11:04 Cargo.lock
+-rw-r--r--@  1 jqwang  staff   1076 Sep 22 11:04 Cargo.toml
+drwxr-xr-x@  3 jqwang  staff     96 Sep 18 13:06 docs
+-rw-r--r--@  1 jqwang  staff    551 Sep 22 11:08 Justfile
+-rw-r--r--@  1 jqwang  staff   1069 Sep 18 08:01 LICENSE
+-rw-r--r--@  1 jqwang  staff   4073 Sep 22 10:10 README.md
+drwxr-xr-x@  3 jqwang  staff     96 Sep 18 13:06 scripts
+drwxr-xr-x@  8 jqwang  staff    256 Sep 22 05:53 src
+drwxr-xr-x@  7 jqwang  staff    224 Sep 22 10:46 target
+[2025-09-22T03:20:42] tokens used: 3,961
+
+[2025-09-22T03:20:46] thinking
+
+**Comparing docs/manual.md with commit HEAD**
+[2025-09-22T03:20:46] exec bash -lc "sed -n '1,220p' docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:20:46] bash -lc "sed -n '1,220p' docs/manual.md" succeeded in 16ms:
+# git-graph manual
+
+**Content**
+
+* [Overview](#overview)
+* [Options](#options)
+* [Formatting](#formatting)
+* [Custom branching models](#custom-branching-models)
+
+## Overview
+
+The most basic usage is to simply call git-graph from inside a Git repository:
+
+```
+git-graph
+```
+
+This works also deeper down the directory tree, so no need to be in the repository's root folder.
+
+Alternatively, the path to the repository to visualize can be specified with option `--path`:
+[2025-09-22T03:20:46] tokens used: 4,460
+
+[2025-09-22T03:20:49] thinking
+
+**Reviewing code near line 195**
+[2025-09-22T03:20:49] exec bash -lc "sed -n '160,240p' docs/manual.md" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:20:49] bash -lc "sed -n '160,240p' docs/manual.md" succeeded in 12ms:
+<full commit message>
+```
+
+**full**
+
+```
+commit <hash> [<refs>]
+Author: <author>
+Commit: <committer>
+Date:   <author date>
+
+<title line>
+
+<full commit message>
+```
+
+**Custom formatting**
+
+Formatting strings use a subset of the placeholders available in `git log --format="..."`:
+
+[2025-09-22T03:20:49] tokens used: 6,635
+
+[2025-09-22T03:21:03] thinking
+
+**Preparing to update documentation table**
+[2025-09-22T03:21:03] exec bash -lc "sed -n '1,200p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:21:03] bash -lc "sed -n '1,200p' src/print/format.rs" succeeded in 7ms:
+//! Formatting of commits.
+
+use chrono::{FixedOffset, Local, TimeZone};
+use git2::{Commit, Time};
+use lazy_static::lazy_static;
+use std::fmt::Write;
+use std::str::FromStr;
+use textwrap::Options;
+use yansi::Paint;
+
+/// Commit formatting options.
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
+pub enum CommitFormat {
+    OneLine,
+    Short,
+    Medium,
+    Full,
+    Format(String),
+}
+
+[2025-09-22T03:21:03] tokens used: 15,267
+
+[2025-09-22T03:21:06] thinking
+
+**Searching for relative time implementation**
+[2025-09-22T03:21:06] exec bash -lc 'rg "format_relative_time" -n src/print/format.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:21:06] bash -lc 'rg "format_relative_time" -n src/print/format.rs' exited 1 in 16ms:
+
+[2025-09-22T03:21:06] tokens used: 17,167
+
+[2025-09-22T03:21:14] thinking
+
+**Preparing to add new functionality**
+[2025-09-22T03:21:14] exec bash -lc "sed -n '200,460p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:21:14] bash -lc "sed -n '200,460p' src/print/format.rs" succeeded in 19ms:
+                            if i < commit.parent_count() - 1 {
+                                write!(out, " ").unwrap();
+                            }
+                        }
+                    }
+                    REFS => {
+                        match mode {
+                            MODE_SPACE => {
+                                if !branches.is_empty() {
+                                    write!(out, " ").unwrap();
+                                }
+                            }
+                            MODE_PLUS => {
+                                if !branches.is_empty() {
+                                    add_line(&mut lines, &mut out, wrapping)
+                                }
+                            }
+                            MODE_MINUS => {
+                                if branches.is_empty() {
+                                    out = remove_empty_lines(&mut lines, out)
+[2025-09-22T03:21:14] tokens used: 17,373
+
+[2025-09-22T03:21:19] thinking
+
+**Locating file end for helpers**
+[2025-09-22T03:21:19] exec bash -lc "sed -n '460,760p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:21:19] bash -lc "sed -n '460,760p' src/print/format.rs" succeeded in 7ms:
+    write!(out, "{}", branches).unwrap();
+    append_wrapped(&mut out_vec, out, wrapping);
+
+    if commit.parent_count() > 1 {
+        out = String::new();
+        write!(
+            out,
+            "Merge: {} {}",
+            &commit.parent_id(0).unwrap().to_string()[..7],
+            &commit.parent_id(1).unwrap().to_string()[..7]
+        )
+        .unwrap();
+        append_wrapped(&mut out_vec, out, wrapping);
+    }
+
+    out = String::new();
+    write!(
+        out,
+        "Author: {} <{}>",
+        commit.author().name().unwrap_or(""),
+[2025-09-22T03:21:19] tokens used: 19,461
+
+[2025-09-22T03:21:53] thinking
+
+**Adding relative date placeholders and formatting**
+[2025-09-22T03:21:53] exec bash -lc 'rg "relative" -n' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:21:53] bash -lc 'rg "relative" -n' exited 1 in 15ms:
+
+[2025-09-22T03:21:53] tokens used: 22,870
+
+[2025-09-22T03:22:10] thinking
+
+**Outlining implementation and testing steps**
+[2025-09-22T03:22:10] exec bash -lc 'git log --oneline | head' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:22:10] bash -lc 'git log --oneline | head' succeeded in 23ms:
+b514500 117-b6cf162：复现提交代码内容。
+0bdfdd8 116-fa66171：复现提交代码内容。
+b4ef768 115-1b387fc：复现提交代码内容。
+dd9429c 114-095bdae：复现提交代码内容。
+ee4aed0 112-c7345cc：复现提交代码内容。
+201f8c1 111-6c805d2：复现提交代码内容。
+2abf8b5 110-5ae47ad：复现提交代码内容。
+100f21f 109-dd563c5：复现提交代码内容。
+f550664 108-b7fadb4：复现提交代码内容。
+fd1ddbb 107-750083a：复现提交代码内容。
+[2025-09-22T03:22:10] tokens used: 23,937
+
+[2025-09-22T03:23:02] thinking
+
+**Updating constants and placeholders with relative dates**
+
+I'm working through aligning new constants and placeholder vector indexes to add relative author and committer date support in `format.rs`. This involves shifting existing constants to keep the proper order and updating match arms accordingly.
+[2025-09-22T03:23:02] exec bash -lc 'rg "Time::new" -n' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:23:02] bash -lc 'rg "Time::new" -n' exited 1 in 13ms:
+
+[2025-09-22T03:23:02] tokens used: 27,936
+
+[2025-09-22T03:23:38] thinking
+
+**Analyzing time handling and testing strategy**
+
+I'm working through how to create and test the `format_relative_time` function using `git2::Time` and `chrono` types, considering timezone offsets and ensuring coverage of all time units like seconds, minutes, days, and years. I’m planning to write tests verifying output strings for past and future times and carefully handling edge cases around pluralization and zero durations. Next, I’ll modify imports and apply the necessary code changes.
+[2025-09-22T03:23:39] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/format.rs
+@@ -2,3 +2,3 @@
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+[2025-09-22T03:23:39] apply_patch(auto_approved=true) exited 0 in 21ms:
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-22T03:23:39] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..ee1d0ab500f7a606afbe76f356e6de66b9e65b03
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+
+[2025-09-22T03:23:39] tokens used: 30,459
+[2025-09-22T03:23:39] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..ee1d0ab500f7a606afbe76f356e6de66b9e65b03
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+
+
+[2025-09-22T03:23:45] thinking
+
+**Updating constants block**
+[2025-09-22T03:23:46] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/format.rs
+@@ -45,8 +45,10 @@
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+[2025-09-22T03:23:46] apply_patch(auto_approved=true) exited 0 in 20ms:
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-22T03:23:46] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..1ca910628a45e88372727ce234d72dc789c6b887
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+
+[2025-09-22T03:23:46] tokens used: 30,961
+[2025-09-22T03:23:46] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..1ca910628a45e88372727ce234d72dc789c6b887
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+
+
+[2025-09-22T03:23:50] thinking
+
+**Updating PLACEHOLDERS vector**
+[2025-09-22T03:23:51] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/format.rs
+@@ -61,4 +61,4 @@
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+[2025-09-22T03:23:51] apply_patch(auto_approved=true) exited 0 in 31ms:
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-22T03:23:51] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..190fe251bf0be27877574d69281488a88ad79ed8
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+
+[2025-09-22T03:23:51] tokens used: 31,600
+[2025-09-22T03:23:51] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..190fe251bf0be27877574d69281488a88ad79ed8
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+
+
+[2025-09-22T03:24:04] thinking
+
+**Extending format_commit match arms**
+[2025-09-22T03:24:07] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/format.rs
+@@ -291,2 +291,13 @@
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+@@ -334,2 +345,13 @@
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+[2025-09-22T03:24:07] apply_patch(auto_approved=true) exited 0 in 17ms:
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-22T03:24:07] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..b723b0b3b9511e0ae4edf3f69510e83574fadb72
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+
+[2025-09-22T03:24:07] tokens used: 32,841
+[2025-09-22T03:24:07] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..b723b0b3b9511e0ae4edf3f69510e83574fadb72
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+
+
+[2025-09-22T03:24:27] thinking
+
+**Adding format_relative_time function**
+[2025-09-22T03:24:31] tokens used: 52,318
+[2025-09-22T03:24:31] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..b723b0b3b9511e0ae4edf3f69510e83574fadb72
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+
+
+[2025-09-22T03:24:36] thinking
+
+**Correcting working directory setting**
+[2025-09-22T03:24:41] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/format.rs
+@@ -564,2 +564,42 @@
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+[2025-09-22T03:24:41] apply_patch(auto_approved=true) exited 0 in 19ms:
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-22T03:24:41] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..71b1b404cd6cdaab5d0fb804710b309dbef56b86
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+
+[2025-09-22T03:24:41] tokens used: 53,743
+[2025-09-22T03:24:41] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..71b1b404cd6cdaab5d0fb804710b309dbef56b86
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+
+
+[2025-09-22T03:24:57] thinking
+
+**Adding detailed relative time tests**
+[2025-09-22T03:25:02] tokens used: 55,938
+[2025-09-22T03:25:02] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..71b1b404cd6cdaab5d0fb804710b309dbef56b86
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+
+
+[2025-09-22T03:25:04] thinking
+
+**Correcting working directory**
+[2025-09-22T03:25:06] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/format.rs
+@@ -665,2 +665,24 @@
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+[2025-09-22T03:25:06] apply_patch(auto_approved=true) exited 0 in 37ms:
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-22T03:25:06] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..626e0ab9267c272c8989a50e2d08af7442b6294c
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+[2025-09-22T03:25:06] tokens used: 56,796
+[2025-09-22T03:25:06] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..626e0ab9267c272c8989a50e2d08af7442b6294c
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:11] thinking
+
+**Ensuring test functions and updating docs**
+
+I’m double-checking that all test functions like `Time::new` and `Local.timestamp_opt` exist and work with the right traits. Then, I’ll add new placeholder rows `%ar` and `%cr` to the documentation table around line 191, fitting them properly after `%as` and `%cs`. This will keep the docs clear on new relative date placeholders!
+[2025-09-22T03:25:12] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/docs/manual.md
+@@ -194,2 +194,3 @@
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+@@ -198,2 +199,3 @@
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+[2025-09-22T03:25:12] apply_patch(auto_approved=true) exited 0 in 37ms:
+Success. Updated the following files:
+M docs/manual.md
+[2025-09-22T03:25:12] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..626e0ab9267c272c8989a50e2d08af7442b6294c
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+[2025-09-22T03:25:12] tokens used: 57,618
+[2025-09-22T03:25:12] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..626e0ab9267c272c8989a50e2d08af7442b6294c
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd", "cs",
++            "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:17] thinking
+
+**Preparing formatted output**
+[2025-09-22T03:25:17] exec bash -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:25:17] bash -lc 'cargo fmt' succeeded in 102ms:
+
+[2025-09-22T03:25:17] tokens used: 57,929
+[2025-09-22T03:25:17] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:22] thinking
+
+**Running tests**
+[2025-09-22T03:25:22] exec bash -lc 'cargo test' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:25:24] bash -lc 'cargo test' succeeded in 1.67s:
+   Compiling git-graph v0.6.0 (/Users/jqwang/104-CommitLens-codex/.workspace/rust-project)
+warning: use of deprecated associated function `chrono::FixedOffset::east`: use `east_opt()` instead
+   --> src/print/format.rs:561:42
+    |
+561 |         Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+    |                                          ^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `chrono::TimeZone::timestamp`: use `timestamp_opt()` instead
+   --> src/print/format.rs:561:71
+    |
+561 |         Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+    |                                                                       ^^^^^^^^^
+
+warning: use of deprecated associated function `chrono::FixedOffset::east`: use `east_opt()` instead
+   --> src/print/format.rs:567:42
+    |
+567 |         Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+    |                                          ^^^^
+[2025-09-22T03:25:24] tokens used: 58,096
+[2025-09-22T03:25:24] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:30] thinking
+
+**Verifying tests and preparing commit**
+[2025-09-22T03:25:30] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:25:30] bash -lc 'git status -sb' succeeded in 37ms:
+## main
+ M docs/manual.md
+ M src/print/format.rs
+[2025-09-22T03:25:30] tokens used: 58,931
+[2025-09-22T03:25:30] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:32] thinking
+
+**Preparing to commit changes**
+[2025-09-22T03:25:32] exec bash -lc 'git diff src/print/format.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:25:32] bash -lc 'git diff src/print/format.rs' succeeded in 29ms:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697..da997b3 100644
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@ const AUTHOR: usize = 7;
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+[2025-09-22T03:25:32] tokens used: 59,130
+[2025-09-22T03:25:32] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:35] thinking
+
+**Reviewing documentation changes**
+[2025-09-22T03:25:35] exec bash -lc 'git diff docs/manual.md' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:25:35] bash -lc 'git diff docs/manual.md' succeeded in 21ms:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf8..9b66cc9 100644
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@ Formatting strings use a subset of the placeholders available in `git log --form
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+[2025-09-22T03:25:35] tokens used: 67,843
+[2025-09-22T03:25:35] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:41] thinking
+
+**Staging files**
+[2025-09-22T03:25:41] exec bash -lc 'git add docs/manual.md src/print/format.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:25:41] bash -lc 'git add docs/manual.md src/print/format.rs' succeeded in 24ms:
+
+[2025-09-22T03:25:41] tokens used: 68,288
+[2025-09-22T03:25:41] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:45] thinking
+
+**Committing code changes**
+[2025-09-22T03:25:45] exec bash -lc "git commit -m '118-571f97a：复现提交代码内容。'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:25:45] bash -lc "git commit -m '118-571f97a：复现提交代码内容。'" succeeded in 61ms:
+[main 4422de2] 118-571f97a：复现提交代码内容。
+ 2 files changed, 97 insertions(+), 9 deletions(-)
+[2025-09-22T03:25:45] tokens used: 68,433
+[2025-09-22T03:25:45] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:25:51] thinking
+
+**Checking git status**
+[2025-09-22T03:25:51] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:25:51] bash -lc 'git status -sb' succeeded in 50ms:
+## main
+[2025-09-22T03:25:51] tokens used: 68,701
+[2025-09-22T03:25:51] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:26:00] thinking
+
+**Organizing final message and line references**
+[2025-09-22T03:26:01] exec bash -lc "nl -ba src/print/format.rs | sed -n '1,140p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:26:01] bash -lc "nl -ba src/print/format.rs | sed -n '1,140p'" succeeded in 16ms:
+     1	//! Formatting of commits.
+     2	
+     3	use chrono::{DateTime, FixedOffset, Local, TimeZone};
+     4	use git2::{Commit, Time};
+     5	use lazy_static::lazy_static;
+     6	use std::fmt::Write;
+     7	use std::str::FromStr;
+     8	use textwrap::Options;
+     9	use yansi::Paint;
+    10	
+    11	/// Commit formatting options.
+    12	#[derive(PartialEq, Eq, PartialOrd, Ord)]
+    13	pub enum CommitFormat {
+    14	    OneLine,
+    15	    Short,
+    16	    Medium,
+    17	    Full,
+    18	    Format(String),
+    19	}
+    20	
+[2025-09-22T03:26:01] tokens used: 69,253
+[2025-09-22T03:26:01] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:26:05] thinking
+
+**Adding line numbers around new cases**
+[2025-09-22T03:26:05] exec bash -lc "nl -ba src/print/format.rs | sed -n '260,360p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:26:05] bash -lc "nl -ba src/print/format.rs | sed -n '260,360p'" succeeded in 11ms:
+   260	                    AUTHOR_EMAIL => {
+   261	                        match mode {
+   262	                            MODE_SPACE => {
+   263	                                write!(out, " ").unwrap();
+   264	                            }
+   265	                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
+   266	                            _ => {}
+   267	                        }
+   268	                        write!(out, "{}", &commit.author().email().unwrap_or("")).unwrap();
+   269	                    }
+   270	                    AUTHOR_DATE => {
+   271	                        match mode {
+   272	                            MODE_SPACE => {
+   273	                                write!(out, " ").unwrap();
+   274	                            }
+   275	                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
+   276	                            _ => {}
+   277	                        }
+   278	                        let date = format_date(commit.author().when(), "%a %b %e %H:%M:%S %Y %z");
+   279	                        write!(out, "{}", date).unwrap();
+[2025-09-22T03:26:05] tokens used: 71,186
+[2025-09-22T03:26:05] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:26:08] thinking
+
+**Tracking line numbers for changes**
+[2025-09-22T03:26:08] exec bash -lc "nl -ba src/print/format.rs | sed -n '540,680p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:26:08] bash -lc "nl -ba src/print/format.rs | sed -n '540,680p'" succeeded in 15ms:
+   540	    } else {
+   541	        out_vec.push("".to_string());
+   542	        let mut add_line = true;
+   543	        for line in commit.message().unwrap_or("").lines() {
+   544	            if line.is_empty() {
+   545	                out_vec.push(line.to_string());
+   546	            } else {
+   547	                append_wrapped(&mut out_vec, format!("    {}", line), wrapping);
+   548	            }
+   549	            add_line = !line.trim().is_empty();
+   550	        }
+   551	        if add_line {
+   552	            out_vec.push("".to_string());
+   553	        }
+   554	    }
+   555	
+   556	    Ok(out_vec)
+   557	}
+   558	
+   559	pub fn format_date(time: Time, format: &str) -> String {
+[2025-09-22T03:26:08] tokens used: 72,715
+[2025-09-22T03:26:08] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:26:11] thinking
+
+**Checking end of test file**
+[2025-09-22T03:26:12] exec bash -lc "nl -ba src/print/format.rs | sed -n '680,720p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:26:12] bash -lc "nl -ba src/print/format.rs | sed -n '680,720p'" succeeded in 13ms:
+   680	        for (delta, expected) in cases {
+   681	            let authored = Time::new(now.timestamp() - delta, 0);
+   682	            assert_eq!(format_relative_time(authored, now), expected);
+   683	        }
+   684	
+   685	        let future = Time::new(now.timestamp() + 3_600, 0);
+   686	        assert_eq!(format_relative_time(future, now), "in 1 hour");
+   687	    }
+   688	}
+[2025-09-22T03:26:12] tokens used: 74,773
+[2025-09-22T03:26:12] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:26:15] thinking
+
+**Annotating documentation line numbers**
+[2025-09-22T03:26:16] exec bash -lc "nl -ba docs/manual.md | sed -n '180,215p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:26:16] bash -lc "nl -ba docs/manual.md | sed -n '180,215p'" succeeded in 19ms:
+   180	| Placeholder | Replaced with                               |
+   181	| ----------- | ------------------------------------------- |
+   182	| %n          | newline                                     |
+   183	| %H          | commit hash                                 |
+   184	| %h          | abbreviated commit hash                     |
+   185	| %P          | parent commit hashes                        |
+   186	| %p          | abbreviated parent commit hashes            |
+   187	| %d          | refs (branches, tags)                       |
+   188	| %s          | commit summary                              |
+   189	| %b          | commit message body                         |
+   190	| %B          | raw body (subject and body)                 |
+   191	| %an         | author name                                 |
+   192	| %ae         | author email                                |
+   193	| %ad         | author date                                 |
+   194	| %as         | author date in short format `YYYY-MM-DD`    |
+   195	| %ar         | author date relative to now                 |
+   196	| %cn         | committer name                              |
+   197	| %ce         | committer email                             |
+   198	| %cd         | committer date                              |
+   199	| %cs         | committer date in short format `YYYY-MM-DD` |
+[2025-09-22T03:26:16] tokens used: 75,123
+[2025-09-22T03:26:16] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+[2025-09-22T03:26:27] thinking
+
+**Preparing final message content**
+[2025-09-22T03:26:27] codex
+
+- Added `%ar`/`%cr` mapping with new constants, placeholder entries, formatting branches, helper, and unit coverage so custom formats show Git-style relative author/committer dates (`src/print/format.rs:46`, `src/print/format.rs:60`, `src/print/format.rs:292`, `src/print/format.rs:346`, `src/print/format.rs:565`, `src/print/format.rs:667`).
+- Documented the new placeholders in the manual’s formatting table so users see the relative-time options (`docs/manual.md:195`).
+
+Tests: `cargo test` (emits existing chrono deprecation warnings only).
+
+All git changes committed (`118-571f97a：复现提交代码内容。`). Optional next step: exercise `git-graph --format "%h %ar %cr %s"` to visually confirm runtime output.
+[2025-09-22T03:26:29] tokens used: 76,459
+[2025-09-22T03:26:29] turn diff:
+diff --git a/docs/manual.md b/docs/manual.md
+index 3f5dcf814664dc27f1369f9b615d2e13d4eb2d6d..9b66cc93411093c9a4c5dcae77791c0e746d7e48
+--- a/docs/manual.md
++++ b/docs/manual.md
+@@ -192,10 +192,12 @@
+ | %ae         | author email                                |
+ | %ad         | author date                                 |
+ | %as         | author date in short format `YYYY-MM-DD`    |
++| %ar         | author date relative to now                 |
+ | %cn         | committer name                              |
+ | %ce         | committer email                             |
+ | %cd         | committer date                              |
+ | %cs         | committer date in short format `YYYY-MM-DD` |
++| %cr         | committer date relative to now              |
+ 
+ If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
+ 
+diff --git a/src/print/format.rs b/src/print/format.rs
+index 1992697dac6b49d51302dbf5c21dd51e5310df6e..da997b3431888bc0f97fc62a627f792a08a1b3d4
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -1,6 +1,6 @@
+ //! Formatting of commits.
+ 
+-use chrono::{FixedOffset, Local, TimeZone};
++use chrono::{DateTime, FixedOffset, Local, TimeZone};
+ use git2::{Commit, Time};
+ use lazy_static::lazy_static;
+ use std::fmt::Write;
+@@ -43,12 +43,14 @@
+ const AUTHOR_EMAIL: usize = 8;
+ const AUTHOR_DATE: usize = 9;
+ const AUTHOR_DATE_SHORT: usize = 10;
+-const COMMITTER: usize = 11;
+-const COMMITTER_EMAIL: usize = 12;
+-const COMMITTER_DATE: usize = 13;
+-const COMMITTER_DATE_SHORT: usize = 14;
+-const BODY: usize = 15;
+-const BODY_RAW: usize = 16;
++const AUTHOR_DATE_RELATIVE: usize = 11;
++const COMMITTER: usize = 12;
++const COMMITTER_EMAIL: usize = 13;
++const COMMITTER_DATE: usize = 14;
++const COMMITTER_DATE_SHORT: usize = 15;
++const COMMITTER_DATE_RELATIVE: usize = 16;
++const BODY: usize = 17;
++const BODY_RAW: usize = 18;
+ 
+ const MODE_SPACE: usize = 1;
+ const MODE_PLUS: usize = 2;
+@@ -57,8 +59,8 @@
+ lazy_static! {
+     pub static ref PLACEHOLDERS: Vec<[String; 4]> = {
+         let base = vec![
+-            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "cn", "ce", "cd", "cs", "b",
+-            "B",
++            "n", "H", "h", "P", "p", "d", "s", "an", "ae", "ad", "as", "ar", "cn", "ce", "cd",
++            "cs", "cr", "b", "B",
+         ];
+         base.iter()
+             .map(|b| {
+@@ -287,6 +289,17 @@
+                         let date = format_date(commit.author().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    AUTHOR_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.author().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     COMMITTER => {
+                         match mode {
+                             MODE_SPACE => {
+@@ -330,6 +343,17 @@
+                         let date = format_date(commit.committer().when(), "%F");
+                         write!(out, "{}", date).unwrap();
+                     }
++                    COMMITTER_DATE_RELATIVE => {
++                        match mode {
++                            MODE_SPACE => {
++                                write!(out, " ").unwrap();
++                            }
++                            MODE_PLUS => add_line(&mut lines, &mut out, wrapping),
++                            _ => {}
++                        }
++                        let date = format_relative_time(commit.committer().when(), Local::now());
++                        write!(out, "{}", date).unwrap();
++                    }
+                     BODY => {
+                         let message = commit
+                             .message()
+@@ -538,6 +562,46 @@
+     format!("{}", date.format(format))
+ }
+ 
++fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
++    let commit_time =
++        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
++    let mut diff = now.signed_duration_since(commit_time);
++    let future = diff.num_seconds() < 0;
++
++    if future {
++        diff = commit_time.signed_duration_since(now);
++    }
++
++    let seconds = diff.num_seconds();
++    let (value, unit) = if seconds < 60 {
++        (seconds, "second")
++    } else if seconds < 60 * 60 {
++        (seconds / 60, "minute")
++    } else if seconds < 60 * 60 * 24 {
++        (seconds / (60 * 60), "hour")
++    } else if seconds < 60 * 60 * 24 * 7 {
++        (seconds / (60 * 60 * 24), "day")
++    } else if seconds < 60 * 60 * 24 * 30 {
++        (seconds / (60 * 60 * 24 * 7), "week")
++    } else if seconds < 60 * 60 * 24 * 365 {
++        (seconds / (60 * 60 * 24 * 30), "month")
++    } else {
++        (seconds / (60 * 60 * 24 * 365), "year")
++    };
++
++    let unit = if value == 1 {
++        unit.to_string()
++    } else {
++        format!("{}s", unit)
++    };
++
++    if future {
++        format!("in {} {}", value, unit)
++    } else {
++        format!("{} {} ago", value, unit)
++    }
++}
++
+ fn append_wrapped(vec: &mut Vec<String>, str: String, wrapping: &Option<Options>) {
+     if str.is_empty() {
+         vec.push(str);
+@@ -599,4 +663,26 @@
+             _ => panic!("custom format should remain a string"),
+         }
+     }
++
++    #[test]
++    fn formats_relative_time_ranges() {
++        let now = Local.timestamp_opt(1_700_000_000, 0).unwrap();
++        let cases = [
++            (5, "5 seconds ago"),
++            (65, "1 minute ago"),
++            (7_200, "2 hours ago"),
++            (86_400 * 3, "3 days ago"),
++            (86_400 * 14, "2 weeks ago"),
++            (86_400 * 45, "1 month ago"),
++            (86_400 * 800, "2 years ago"),
++        ];
++
++        for (delta, expected) in cases {
++            let authored = Time::new(now.timestamp() - delta, 0);
++            assert_eq!(format_relative_time(authored, now), expected);
++        }
++
++        let future = Time::new(now.timestamp() + 3_600, 0);
++        assert_eq!(format_relative_time(future, now), "in 1 hour");
++    }
+ }
+
+
+=== 错误 ===
+2025-09-22T03:20:33.267316Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

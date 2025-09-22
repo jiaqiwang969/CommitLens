@@ -1,0 +1,3559 @@
+=== 任务 076-80ecf3d 执行日志 ===
+时间: 2025-09-22 05:21:54.864341
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-076-80ecf3d.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/076-80ecf3d/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："076-80ecf3d：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 076-80ecf3d
+
+=== 输出 ===
+[2025-09-21T21:16:16] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-21T21:16:16] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-076-80ecf3d.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/076-80ecf3d/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："076-80ecf3d：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 076-80ecf3d
+
+[2025-09-21T21:16:20] thinking
+
+**Preparing to gather workspace info**
+[2025-09-21T21:16:20] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T21:16:20] bash -lc 'ls -la' succeeded in 10ms:
+total 40984
+drwxr-xr-x@  9 jqwang  staff       288 Sep 21 15:57 .
+drwxr-xr-x@ 29 jqwang  staff       928 Sep 21 07:49 ..
+-rw-r--r--@  1 jqwang  staff         0 Sep 22 05:16 codex_error.txt
+-rw-r--r--@  1 jqwang  staff  20265695 Sep 22 05:16 codex_output.txt
+-rw-r--r--@  1 jqwang  staff         7 Sep 22 05:16 codex_status.txt
+drwxr-xr-x@ 77 jqwang  staff      2464 Sep 22 05:16 logs
+drwxr-xr-x@ 12 jqwang  staff       384 Sep 18 13:06 rust-project
+-rw-r--r--@  1 jqwang  staff      1572 Sep 22 05:16 task_status.json
+drwxr-xr-x@  5 jqwang  staff       160 Sep 22 05:16 todolist
+[2025-09-21T21:16:20] tokens used: 672
+
+[2025-09-21T21:16:22] thinking
+
+**Opening LaTeX file**
+[2025-09-21T21:16:23] exec bash -lc "sed -n '1,160p' todolist/todolist-076-80ecf3d.tex" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T21:16:23] bash -lc "sed -n '1,160p' todolist/todolist-076-80ecf3d.tex" succeeded in 20ms:
+\section{提交考古：076-80ecf3d}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：code simplifications without effect
+  \item 作者：Martin Lange \texttt{<martin\_lange\_@gmx.net>}
+  \item 日期：2021-01-02T18:58:28+01:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+\begin{verbatim}
+HEAD:
+ src/graph.rs         | 32 +++++++++++----------
+ src/print/unicode.rs | 78 +++++++++++++++++++++++++++-------------------------
+ 2 files changed, 58 insertions(+), 52 deletions(-)
+
+HEAD-1:
+ src/graph.rs        | 198 ++++++++++++++++++++--------------------------------
+ src/main.rs         |   6 +-
+ src/print/format.rs |   1 -
+[2025-09-21T21:16:23] tokens used: 1,110
+
+[2025-09-21T21:16:25] thinking
+
+**Assessing completeness of code snippets**
+[2025-09-21T21:16:25] exec bash -lc "sed -n '160,320p' todolist/todolist-076-80ecf3d.tex" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T21:16:25] bash -lc "sed -n '160,320p' todolist/todolist-076-80ecf3d.tex" succeeded in 17ms:
+
+[2025-09-21T21:16:25] tokens used: 2,997
+
+[2025-09-21T21:16:30] thinking
+
+**Determining how to reconstruct code from report**
+[2025-09-21T21:16:31] exec bash -lc 'ls -R' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:16:31] bash -lc 'ls -R' succeeded in 19ms:
+Cargo.lock
+Cargo.toml
+docs
+LICENSE
+README.md
+scripts
+src
+
+./docs:
+manual.md
+
+./scripts:
+linearize-history.sh
+
+./src:
+graph.rs
+lib.rs
+main.rs
+print
+settings.rs
+[2025-09-21T21:16:31] tokens used: 8,625
+
+[2025-09-21T21:16:36] thinking
+
+**Reviewing existing source files**
+[2025-09-21T21:16:36] exec bash -lc "sed -n '1,200p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:16:36] bash -lc "sed -n '1,200p' src/graph.rs" succeeded in 10ms:
+//! A graph structure representing the history of a Git repository.
+
+use crate::print::colors::to_terminal_color;
+use crate::settings::{BranchOrder, BranchSettings, MergePatterns, Settings};
+use git2::{BranchType, Commit, Error, Oid, Reference, Repository};
+use itertools::Itertools;
+use regex::Regex;
+use std::cmp;
+use std::collections::{HashMap, HashSet};
+
+const ORIGIN: &str = "origin/";
+
+/// Represents a git history graph.
+pub struct GitGraph {
+    pub repository: Repository,
+    pub commits: Vec<CommitInfo>,
+    pub indices: HashMap<Oid, usize>,
+    pub branches: Vec<BranchInfo>,
+    pub head: HeadInfo,
+}
+[2025-09-21T21:16:36] tokens used: 9,023
+
+[2025-09-21T21:16:39] thinking
+
+**Searching for assign_children references**
+[2025-09-21T21:16:40] exec bash -lc 'rg -n "assign_children" -n src/graph.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:16:40] bash -lc 'rg -n "assign_children" -n src/graph.rs' succeeded in 11ms:
+67:        assign_children(&mut commits, &indices);
+259:fn assign_children(commits: &mut [CommitInfo], indices: &HashMap<Oid, usize>) {
+[2025-09-21T21:16:40] tokens used: 16,658
+
+[2025-09-21T21:16:42] thinking
+
+**Checking line 259 area**
+[2025-09-21T21:16:42] exec bash -lc "sed -n '240,320p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:16:42] bash -lc "sed -n '240,320p' src/graph.rs" succeeded in 12ms:
+    pub svg_color: String,
+    /// The column the branch is located in
+    pub column: Option<usize>,
+}
+
+impl BranchVis {
+    fn new(order_group: usize, term_color: u8, svg_color: String) -> Self {
+        BranchVis {
+            order_group,
+            target_order_group: None,
+            source_order_group: None,
+            term_color,
+            svg_color,
+            column: None,
+        }
+    }
+}
+
+/// Walks through the commits and adds each commit's Oid to the children of its parents.
+fn assign_children(commits: &mut [CommitInfo], indices: &HashMap<Oid, usize>) {
+[2025-09-21T21:16:42] tokens used: 19,196
+
+[2025-09-21T21:16:47] thinking
+
+**Reviewing and updating Option chaining and assign_branch_columns**
+[2025-09-21T21:16:47] exec bash -lc 'rg -n "assign_branch_columns" src/graph.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:16:47] bash -lc 'rg -n "assign_branch_columns" src/graph.rs' succeeded in 8ms:
+74:            BranchOrder::ShortestFirst(forward) => assign_branch_columns(
+82:            BranchOrder::LongestFirst(forward) => assign_branch_columns(
+704:fn assign_branch_columns(
+[2025-09-21T21:16:47] tokens used: 21,996
+[2025-09-21T21:16:51] exec bash -lc "sed -n '680,760p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:16:51] bash -lc "sed -n '680,760p' src/graph.rs" succeeded in 13ms:
+            })
+            .or_else(|| {
+                branch_commits
+                    .get(branch_idx)
+                    .and_then(|indices_for_branch| indices_for_branch.first())
+                    .and_then(|head_idx| {
+                        commits[*head_idx].children.iter().find_map(|child| {
+                            indices
+                                .get(child)
+                                .and_then(|child_idx| commits[*child_idx].branch_trace)
+                                .filter(|child_branch_idx| *child_branch_idx != branch_idx)
+                                .map(|child_branch_idx| {
+                                    branches[child_branch_idx].visual.order_group
+                                })
+                        })
+                    })
+            });
+
+        branches[branch_idx].visual.source_order_group = source_group;
+        branches[branch_idx].visual.target_order_group = target_group;
+[2025-09-21T21:16:51] tokens used: 22,248
+
+[2025-09-21T21:16:54] thinking
+
+**Continuing exploration**
+[2025-09-21T21:16:54] exec bash -lc "sed -n '760,880p' src/graph.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:16:54] bash -lc "sed -n '760,880p' src/graph.rs" succeeded in 9ms:
+
+            for (i, column_occ) in group_occ.iter().enumerate() {
+                let mut conflict = column_occ.iter().any(|(s, e)| start <= *e && end >= *s);
+
+                if !conflict {
+                    if let Some(target_oid) = merge_target {
+                        if let Some(conflict_column) = indices
+                            .get(&target_oid)
+                            .and_then(|target_idx| commits[*target_idx].branch_trace)
+                            .and_then(|target_branch_idx| {
+                                let merge_branch = &branches[target_branch_idx];
+                                if merge_branch.visual.order_group == branch_group {
+                                    merge_branch.visual.column
+                                } else {
+                                    None
+                                }
+                            })
+                        {
+                            if conflict_column == i {
+                                conflict = true;
+[2025-09-21T21:16:54] tokens used: 24,234
+
+[2025-09-21T21:16:56] thinking
+
+**Checking branch_order and branch_color usage**
+[2025-09-21T21:16:57] exec bash -lc "sed -n '1,200p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:16:57] bash -lc "sed -n '1,200p' src/print/unicode.rs" succeeded in 9ms:
+//! Create graphs in SVG format (Scalable Vector Graphics).
+
+use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+use crate::print::format::{format_commit, format_multiline, format_oneline, CommitFormat};
+use crate::settings::{Characters, Settings};
+use itertools::Itertools;
+use std::cmp::max;
+use std::collections::hash_map::Entry::{Occupied, Vacant};
+use std::collections::HashMap;
+use std::fmt::Write;
+use textwrap::{HyphenSplitter, Options};
+use yansi::Paint;
+
+const SPACE: u8 = 0;
+const DOT: u8 = 1;
+const CIRCLE: u8 = 2;
+const VER: u8 = 3;
+const HOR: u8 = 4;
+const CROSS: u8 = 5;
+const R_U: u8 = 6;
+[2025-09-21T21:16:57] tokens used: 25,418
+
+[2025-09-21T21:17:03] thinking
+
+**Reviewing code for indentation and wrapping updates**
+[2025-09-21T21:17:04] exec bash -lc 'rg -n "fn format" -n src/print/unicode.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:17:04] bash -lc 'rg -n "fn format" -n src/print/unicode.rs' succeeded in 10ms:
+528:fn format(
+556:fn format_branches(
+[2025-09-21T21:17:04] tokens used: 29,482
+[2025-09-21T21:17:07] exec bash -lc "sed -n '520,640p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:17:07] bash -lc "sed -n '520,640p' src/print/unicode.rs" succeeded in 7ms:
+
+        lines.push(out);
+    }
+
+    Ok(lines)
+}
+
+/// Format a commit.
+fn format(
+    format: &CommitFormat,
+    graph: &GitGraph,
+    info: &CommitInfo,
+    head: Option<&HeadInfo>,
+    color: bool,
+    wrapping: &Option<Options<HyphenSplitter>>,
+) -> Result<Vec<String>, String> {
+    let commit = graph
+        .repository
+        .find_commit(info.oid)
+        .map_err(|err| err.message().to_string())?;
+[2025-09-21T21:17:07] tokens used: 29,739
+
+[2025-09-21T21:17:41] thinking
+
+**Refactoring wrapping options and graph sorting logic**
+
+I’m reorganizing indent computations into one tuple and introducing a create_wrapping_options function to centralize wrapping setups. I’ll simplify text line padding with extend and map, reorder branch matching boolean checks to prioritize prefix tests, refactor assign_children to use Option chaining, and update branch column sorting to use sort_by_cached_key for efficient key calculation caching. Overall, I’m streamlining nested conditionals and improving functional style throughout.
+[2025-09-21T21:17:42] exec bash -lc 'rg "indent1" -n src/print/unicode.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:17:42] bash -lc 'rg "indent1" -n src/print/unicode.rs' succeeded in 17ms:
+50:    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+64:                    .initial_indent(&indent1)
+78:                    .initial_indent(&indent1)
+[2025-09-21T21:17:42] tokens used: 35,717
+
+[2025-09-21T21:18:11] thinking
+
+**Analyzing wrapping options refactor**
+[2025-09-21T21:18:11] exec bash -lc 'rg -n "wrapping" src/settings.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:18:11] bash -lc 'rg -n "wrapping" src/settings.rs' succeeded in 9ms:
+42:    /// Text wrapping options
+43:    pub wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
+[2025-09-21T21:18:11] tokens used: 38,159
+
+[2025-09-21T21:19:14] thinking
+
+**Analyzing Rust code refactors and wrapping logic**
+**Refining string matching and sorting approaches**
+[2025-09-21T21:19:14] codex
+**Refining string matching and sorting approaches**
+[2025-09-21T21:19:36] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/graph.rs
+@@ -265,6 +265,4 @@
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+@@ -745,7 +743,3 @@
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+@@ -824,3 +818,6 @@
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+@@ -838,3 +835,4 @@
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
+         })
+[2025-09-21T21:19:36] apply_patch(auto_approved=true) exited 0 in 24ms:
+Success. Updated the following files:
+M src/graph.rs
+[2025-09-21T21:19:36] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..d43c396a5843eafdf7961407dc38ae7fe668c5e2
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,10 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +833,8 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+
+[2025-09-21T21:19:36] tokens used: 44,267
+[2025-09-21T21:19:36] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..d43c396a5843eafdf7961407dc38ae7fe668c5e2
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,10 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +833,8 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+
+
+[2025-09-21T21:19:59] thinking
+
+**Updating text wrapping logic in unicode printer**
+
+I'm updating the `print_unicode` function to use a new helper, `create_wrapping_options`, which computes wrapping options with proper indentation and width, handling errors via `Result`. This involves restructuring the indent and wrap logic, extending text line loops, and ensuring the helper returns the appropriate `Option<Options<HyphenSplitter>>` type while integrating with existing imports and error handling.
+[2025-09-21T21:20:10] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/unicode.rs
+@@ -49,39 +49,12 @@
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+@@ -124,8 +97,4 @@
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+[2025-09-21T21:20:11] apply_patch(auto_approved=true) exited 0 in 27ms:
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T21:20:11] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..d43c396a5843eafdf7961407dc38ae7fe668c5e2
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,10 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +833,8 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..8a5f42975d8bdee770e28b3606e638d07abb769b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+
+[2025-09-21T21:20:11] tokens used: 58,348
+[2025-09-21T21:20:11] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..d43c396a5843eafdf7961407dc38ae7fe668c5e2
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,10 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +833,8 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..8a5f42975d8bdee770e28b3606e638d07abb769b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+
+
+[2025-09-21T21:20:17] thinking
+
+**Deciding insertion point for helper**
+[2025-09-21T21:20:18] exec bash -lc "sed -n '480,560p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:20:18] bash -lc "sed -n '480,560p' src/print/unicode.rs" succeeded in 22ms:
+                .iter()
+                .map(|arr| characters.chars[arr[0] as usize])
+                .collect::<String>();
+            write!(out, "{}", str).map_err(|err| err.to_string())?;
+        }
+
+        if let Some(line) = line {
+            write!(out, "  {}", line).map_err(|err| err.to_string())?;
+        }
+
+        lines.push(out);
+    }
+
+    Ok(lines)
+}
+
+/// Format a commit.
+fn format(
+    format: &CommitFormat,
+    graph: &GitGraph,
+[2025-09-21T21:20:18] tokens used: 61,704
+[2025-09-21T21:20:18] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..d43c396a5843eafdf7961407dc38ae7fe668c5e2
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,10 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +833,8 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..8a5f42975d8bdee770e28b3606e638d07abb769b
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+
+
+[2025-09-21T21:20:27] thinking
+
+**Adding new helper function above commit formatter**
+[2025-09-21T21:20:29] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/unicode.rs
+@@ -495,2 +495,34 @@
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+[2025-09-21T21:20:29] apply_patch(auto_approved=true) exited 0 in 38ms:
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T21:20:29] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..d43c396a5843eafdf7961407dc38ae7fe668c5e2
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,10 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +833,8 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+[2025-09-21T21:20:29] tokens used: 63,484
+[2025-09-21T21:20:29] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..d43c396a5843eafdf7961407dc38ae7fe668c5e2
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,10 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +833,8 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..]))
++                || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:20:35] thinking
+
+**Reviewing code imports and formatting**
+[2025-09-21T21:20:35] exec bash -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:20:35] bash -lc 'cargo fmt' succeeded in 90ms:
+
+[2025-09-21T21:20:35] tokens used: 66,585
+[2025-09-21T21:20:35] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:20:39] thinking
+
+**Building the project**
+[2025-09-21T21:20:39] exec bash -lc 'cargo build' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:20:49] bash -lc 'cargo build' exited 124 in 10.01s:
+    Updating crates.io index
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (3 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (2 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+warning: spurious network error (1 tries remaining): [6] Couldn't resolve host name (Could not resolve host: index.crates.io)
+[2025-09-21T21:20:49] tokens used: 66,708
+[2025-09-21T21:20:49] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:20:52] thinking
+
+**Handling build timeout and retry**
+[2025-09-21T21:20:52] exec bash -lc 'cargo build --offline' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:20:52] bash -lc 'cargo build --offline' exited -1 in 0ms:
+error: no matching package named `matches` found
+location searched: crates.io index
+required by package `url v2.2.0`
+    ... which satisfies dependency `url = "^2.0"` (locked to 2.2.0) of package `git2 v0.13.12`
+    ... which satisfies dependency `git2 = "^0.13"` (locked to 0.13.12) of package `git-graph v0.1.6 (/Users/jqwang/104-CommitLens-codex/.workspace/rust-project)`
+As a reminder, you're using offline mode (--offline) which can sometimes cause surprising resolution failures, if this error is too confusing you may wish to retry without `--offline`.
+[2025-09-21T21:20:52] tokens used: 68,099
+[2025-09-21T21:20:52] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:20:57] thinking
+
+**Verifying build failure and preparing commit**
+[2025-09-21T21:20:57] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:20:57] bash -lc 'git status -sb' succeeded in 18ms:
+## main
+ M src/graph.rs
+ M src/print/unicode.rs
+[2025-09-21T21:20:57] tokens used: 69,251
+[2025-09-21T21:20:57] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:21:02] thinking
+
+**Checking formatting changes with git diff**
+[2025-09-21T21:21:02] exec bash -lc 'git diff' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:21:02] bash -lc 'git diff' succeeded in 36ms:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb..62558df 100644
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@ fn assign_children(commits: &mut [CommitInfo], indices: &HashMap<Oid, usize>) {
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@ fn assign_branch_columns(
+         })
+         .collect();
+[2025-09-21T21:21:02] tokens used: 92,284
+[2025-09-21T21:21:02] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:21:09] thinking
+
+**Verifying code insertion and staging changes**
+[2025-09-21T21:21:09] exec bash -lc 'git add -A' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:21:09] bash -lc 'git add -A' succeeded in 25ms:
+
+[2025-09-21T21:21:09] tokens used: 94,970
+[2025-09-21T21:21:09] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:21:12] thinking
+
+**Committing with specific message**
+[2025-09-21T21:21:13] exec bash -lc 'git commit -m "076-80ecf3d：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:21:13] bash -lc 'git commit -m "076-80ecf3d：复现提交代码内容。"' succeeded in 32ms:
+[main b3a67a4] 076-80ecf3d：复现提交代码内容。
+ 2 files changed, 50 insertions(+), 53 deletions(-)
+[2025-09-21T21:21:13] tokens used: 95,194
+[2025-09-21T21:21:13] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:21:20] thinking
+
+**Preparing final summary and references**
+[2025-09-21T21:21:20] exec bash -lc "nl -ba src/graph.rs | sed -n '250,290p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:21:20] bash -lc "nl -ba src/graph.rs | sed -n '250,290p'" succeeded in 13ms:
+   250	            source_order_group: None,
+   251	            term_color,
+   252	            svg_color,
+   253	            column: None,
+   254	        }
+   255	    }
+   256	}
+   257	
+   258	/// Walks through the commits and adds each commit's Oid to the children of its parents.
+   259	fn assign_children(commits: &mut [CommitInfo], indices: &HashMap<Oid, usize>) {
+   260	    for idx in 0..commits.len() {
+   261	        let (oid, parents) = {
+   262	            let info = &commits[idx];
+   263	            (info.oid, info.parents)
+   264	        };
+   265	        for par_oid in &parents {
+   266	            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
+   267	                commits[par_idx].children.push(oid);
+   268	            }
+   269	        }
+[2025-09-21T21:21:20] tokens used: 95,737
+[2025-09-21T21:21:20] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:21:25] thinking
+
+**Getting line numbers for functions**
+[2025-09-21T21:21:26] exec bash -lc "nl -ba src/graph.rs | sed -n '700,860p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:21:26] bash -lc "nl -ba src/graph.rs | sed -n '700,860p'" succeeded in 31ms:
+   700	
+   701	/// Sorts branches into columns for visualization without overlaps.
+   702	fn assign_branch_columns(
+   703	    commits: &[CommitInfo],
+   704	    indices: &HashMap<Oid, usize>,
+   705	    branches: &mut [BranchInfo],
+   706	    settings: &BranchSettings,
+   707	    shortest_first: bool,
+   708	    forward: bool,
+   709	) {
+   710	    let mut occupied: Vec<Vec<Vec<(usize, usize)>>> = vec![vec![]; settings.order.len() + 1];
+   711	
+   712	    let length_sort_factor = if shortest_first { 1 } else { -1 };
+   713	    let start_sort_factor = if forward { 1 } else { -1 };
+   714	    let default_end = commits.len().saturating_sub(1);
+   715	
+   716	    let mut branches_sort: Vec<(usize, usize, usize, usize, i32, i32)> = branches
+   717	        .iter()
+   718	        .enumerate()
+   719	        .filter_map(|(idx, br)| {
+[2025-09-21T21:21:26] tokens used: 99,225
+[2025-09-21T21:21:26] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:21:30] thinking
+
+**Reviewing unicode.rs file lines**
+[2025-09-21T21:21:31] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '40,140p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:21:31] bash -lc "nl -ba src/print/unicode.rs | sed -n '40,140p'" succeeded in 12ms:
+    40	        .iter()
+    41	        .map(|b| b.visual.column.unwrap_or(0))
+    42	        .max()
+    43	        .unwrap()
+    44	        + 1;
+    45	
+    46	    let head_idx = graph.indices[&graph.head.oid];
+    47	
+    48	    let inserts = get_inserts(graph, settings.compact);
+    49	
+    50	    let wrapping = settings.wrapping;
+    51	    let (indent1, indent2) = wrapping
+    52	        .map(|(_, indent1, indent2)| {
+    53	            (
+    54	                " ".repeat(indent1.unwrap_or(0)),
+    55	                " ".repeat(indent2.unwrap_or(0)),
+    56	            )
+    57	        })
+    58	        .unwrap_or_else(|| (String::new(), String::new()));
+    59	    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+[2025-09-21T21:21:31] tokens used: 104,709
+[2025-09-21T21:21:31] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:21:34] thinking
+
+**Locating function line numbers**
+[2025-09-21T21:21:35] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '480,560p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T21:21:35] bash -lc "nl -ba src/print/unicode.rs | sed -n '480,560p'" succeeded in 22ms:
+   480	                .iter()
+   481	                .map(|arr| characters.chars[arr[0] as usize])
+   482	                .collect::<String>();
+   483	            write!(out, "{}", str).map_err(|err| err.to_string())?;
+   484	        }
+   485	
+   486	        if let Some(line) = line {
+   487	            write!(out, "  {}", line).map_err(|err| err.to_string())?;
+   488	        }
+   489	
+   490	        lines.push(out);
+   491	    }
+   492	
+   493	    Ok(lines)
+   494	}
+   495	
+   496	fn create_wrapping_options(
+   497	    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
+   498	    num_cols: usize,
+   499	    indent1: &str,
+[2025-09-21T21:21:35] tokens used: 108,999
+[2025-09-21T21:21:35] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+[2025-09-21T21:21:50] thinking
+
+**Preparing detailed final summary**
+
+I’m putting together a structured final message that explains the changes made based on the report, including file-specific modifications with line references and evidence quotes. I’ll also document the `cargo build` attempts failing offline, note assumptions about missing report details like `create_wrapping_options`, and add a verification section. Finally, I’ll suggest natural next steps like rebuilding once dependencies are available.
+[2025-09-21T21:21:51] codex
+
+- `src/graph.rs:259` 合并父指针查找链路并直接复用 `Option::and_then` + `copied`，对应报告中“assign_children 用 and_then 合并两级 if let”的描述（参见 `todolist/todolist-076-80ecf3d.tex` 证据摘录）。
+- `src/graph.rs:716` 改用收集后的 `Vec` 配合 `sort_by_cached_key` 计算排序键，保持与报告所述的缓存键排序一致，并在 `src/graph.rs:815` / `832` 调整 `ORIGIN` 前缀判断顺序以匹配提交说明。
+- `src/print/unicode.rs:50` 按报告统一计算缩进并抽出 `create_wrapping_options`；`src/print/unicode.rs:496` 新增该函数封装终端宽度探测逻辑；`src/print/unicode.rs:98` 改用 `extend(map)` 简化文本行填充，与报告“统一缩进 + 提取换行构造”的记载相符。
+
+**验证**
+- `cargo fmt`
+- `cargo build` 因沙箱无法访问 crates.io 超时；改用 `cargo build --offline` 后仍因缺少缓存依赖失败（限制：当前环境网络受限）。
+
+后续可 1) 在具备依赖缓存或开放网络的环境中重新执行 `cargo build`/`cargo test` 以确认行为一致。
+[2025-09-21T21:21:54] tokens used: 111,247
+[2025-09-21T21:21:54] turn diff:
+diff --git a/src/graph.rs b/src/graph.rs
+index df21cbb684356a38c3e52d9737bd195033529b65..62558df5a379506bd18d72787868491a6a17ee59
+--- a/src/graph.rs
++++ b/src/graph.rs
+@@ -263,10 +263,8 @@
+             (info.oid, info.parents)
+         };
+         for par_oid in &parents {
+-            if let Some(par_oid) = par_oid {
+-                if let Some(par_idx) = indices.get(par_oid) {
+-                    commits[*par_idx].children.push(oid);
+-                }
++            if let Some(par_idx) = par_oid.and_then(|parent| indices.get(&parent).copied()) {
++                commits[par_idx].children.push(oid);
+             }
+         }
+     }
+@@ -743,11 +741,7 @@
+         })
+         .collect();
+ 
+-    branches_sort.sort_by(|a, b| {
+-        a.3.cmp(&b.3)
+-            .then_with(|| a.4.cmp(&b.4))
+-            .then_with(|| a.5.cmp(&b.5))
+-    });
++    branches_sort.sort_by_cached_key(|entry| (entry.3, entry.4, entry.5));
+ 
+     for (branch_idx, start, end, _, _, _) in branches_sort {
+         let branch_group = branches[branch_idx].visual.order_group;
+@@ -822,7 +816,9 @@
+ fn branch_order(name: &str, order: &[Regex]) -> usize {
+     order
+         .iter()
+-        .position(|b| b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..])))
++        .position(|b| {
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
++        })
+         .unwrap_or(order.len())
+ }
+ 
+@@ -836,7 +832,7 @@
+     let color = order
+         .iter()
+         .find_position(|(b, _)| {
+-            b.is_match(name) || (name.starts_with(ORIGIN) && b.is_match(&name[7..]))
++            (name.starts_with(ORIGIN) && b.is_match(&name[ORIGIN.len()..])) || b.is_match(name)
+         })
+         .map(|(_pos, col)| &col.1[counter % col.1.len()])
+         .unwrap_or_else(|| &unknown[counter % unknown.len()]);
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 4fdd1186de4c7fd07bdc5656010df0fa390915bf..d5147063d829bb2e76d451d18e85a1714ee83aff
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -47,43 +47,16 @@
+ 
+     let inserts = get_inserts(graph, settings.compact);
+ 
+-    let indent1 = if let Some((_, ind, _)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let indent2 = if let Some((_, _, ind)) = settings.wrapping {
+-        " ".repeat(ind.unwrap_or(0))
+-    } else {
+-        "".to_string()
+-    };
+-    let wrap_options = if let Some((width, _, _)) = settings.wrapping {
+-        if let Some(width) = width {
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
+-            )
+-        } else if atty::is(atty::Stream::Stdout) {
+-            let width = crossterm::terminal::size()
+-                .map_err(|err| err.to_string())?
+-                .0;
+-            let width = if width as usize > num_cols + 4 {
+-                width as usize - (num_cols + 4)
+-            } else {
+-                1
+-            };
+-            Some(
+-                textwrap::Options::new(width)
+-                    .initial_indent(&indent1)
+-                    .subsequent_indent(&indent2),
++    let wrapping = settings.wrapping;
++    let (indent1, indent2) = wrapping
++        .map(|(_, indent1, indent2)| {
++            (
++                " ".repeat(indent1.unwrap_or(0)),
++                " ".repeat(indent2.unwrap_or(0)),
+             )
+-        } else {
+-            None
+-        }
+-    } else {
+-        None
+-    };
++        })
++        .unwrap_or_else(|| (String::new(), String::new()));
++    let wrap_options = create_wrapping_options(wrapping, num_cols, &indent1, &indent2)?;
+ 
+     let mut index_map = vec![];
+     let mut text_lines = vec![];
+@@ -122,12 +95,8 @@
+         let max_inserts = max(cnt_inserts, num_lines);
+         let add_lines = max_inserts - num_lines;
+ 
+-        for line in lines.into_iter() {
+-            text_lines.push(Some(line));
+-        }
+-        for _ in 0..add_lines {
+-            text_lines.push(None);
+-        }
++        text_lines.extend(lines.into_iter().map(Some));
++        text_lines.extend((0..add_lines).map(|_| None));
+ 
+         offset += max_inserts;
+     }
+@@ -524,6 +493,38 @@
+     Ok(lines)
+ }
+ 
++fn create_wrapping_options(
++    wrapping: Option<(Option<usize>, Option<usize>, Option<usize>)>,
++    num_cols: usize,
++    indent1: &str,
++    indent2: &str,
++) -> Result<Option<Options<HyphenSplitter>>, String> {
++    let width = match wrapping {
++        Some((Some(width), _, _)) => Some(width),
++        Some((None, _, _)) => {
++            if atty::is(atty::Stream::Stdout) {
++                let width = crossterm::terminal::size()
++                    .map_err(|err| err.to_string())?
++                    .0 as usize;
++                Some(if width > num_cols + 4 {
++                    width - (num_cols + 4)
++                } else {
++                    1
++                })
++            } else {
++                None
++            }
++        }
++        None => None,
++    };
++
++    Ok(width.map(|width| {
++        Options::new(width)
++            .initial_indent(indent1)
++            .subsequent_indent(indent2)
++    }))
++}
++
+ /// Format a commit.
+ fn format(
+     format: &CommitFormat,
+
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

@@ -1,0 +1,1268 @@
+=== 任务 119-2d15d7b 执行日志 ===
+时间: 2025-09-22 11:30:23.819824
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-119-2d15d7b.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/119-2d15d7b/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："119-2d15d7b：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 119-2d15d7b
+
+=== 输出 ===
+[2025-09-22T03:26:35] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-22T03:26:35] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-119-2d15d7b.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/119-2d15d7b/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："119-2d15d7b：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 119-2d15d7b
+
+[2025-09-22T03:26:40] thinking
+
+**Preparing to inspect workspace directories**
+[2025-09-22T03:26:40] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-22T03:26:40] bash -lc 'ls -la' exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-22T03:26:40] tokens used: 919
+
+[2025-09-22T03:26:43] thinking
+
+**Ensuring absolute workdir for shell**
+[2025-09-22T03:26:43] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-22T03:26:43] bash -lc 'ls -la' succeeded in 12ms:
+total 53280
+drwxr-xr-x@  10 jqwang  staff       320 Sep 22 10:11 .
+drwxr-xr-x@  30 jqwang  staff       960 Sep 22 09:38 ..
+drwxr-xr-x@   9 jqwang  staff       288 Sep 22 11:08 .graph_cache
+-rw-r--r--@   1 jqwang  staff       103 Sep 22 11:26 codex_error.txt
+-rw-r--r--@   1 jqwang  staff  27101776 Sep 22 11:26 codex_output.txt
+-rw-r--r--@   1 jqwang  staff         7 Sep 22 11:26 codex_status.txt
+drwxr-xr-x@ 120 jqwang  staff      3840 Sep 22 11:26 logs
+drwxr-xr-x@  14 jqwang  staff       448 Sep 22 11:08 rust-project
+-rw-r--r--@   1 jqwang  staff      2485 Sep 22 11:26 task_status.json
+drwxr-xr-x@   5 jqwang  staff       160 Sep 22 11:26 todolist
+[2025-09-22T03:26:43] tokens used: 1,034
+
+[2025-09-22T03:26:48] thinking
+
+**Preparing to review TeX report**
+[2025-09-22T03:26:48] exec bash -lc "sed -n '1,160p' todolist/todolist-119-2d15d7b.tex" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-22T03:26:48] bash -lc "sed -n '1,160p' todolist/todolist-119-2d15d7b.tex" succeeded in 11ms:
+\section{提交考古：119-2d15d7b}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：Fix crash on -n with low limit (\#104)
+  \item 作者：Peer Sommerlund <peer.sommerlund@gmail.com>
+  \item 日期：2025-06-12T10:57:02+02:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+两处核心修复：
+\begin{itemize}
+  \item 边界保护：\texttt{print\_unicode()} 在 \texttt{all\_branches} 为空时直接返回空结果，避免 \texttt{max().unwrap()} 崩溃。
+  \item 时间稳健：\texttt{format\_date()} 由 \texttt{east()/timestamp()} 迁移到 \texttt{east\_opt()/timestamp\_opt().single()}，显式处理本地时间的折叠/缺口，避免 panic。
+\end{itemize}
+
+\subsection*{差异解读（证据）}
+\begin{itemize}
+  \item 改了什么：
+    \begin{itemize}
+[2025-09-22T03:26:48] tokens used: 1,582
+
+[2025-09-22T03:26:50] thinking
+
+**Continuing to review file**
+[2025-09-22T03:26:50] exec bash -lc "sed -n '160,320p' todolist/todolist-119-2d15d7b.tex" in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-22T03:26:50] bash -lc "sed -n '160,320p' todolist/todolist-119-2d15d7b.tex" succeeded in 7ms:
+
+[2025-09-22T03:26:50] tokens used: 2,502
+
+[2025-09-22T03:26:56] thinking
+
+**Analyzing commit structure and references**
+[2025-09-22T03:26:56] exec bash -lc 'ls todolist/figs/119-2d15d7b' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-22T03:26:56] bash -lc 'ls todolist/figs/119-2d15d7b' exited 1 in 12ms:
+ls: todolist/figs/119-2d15d7b: No such file or directory
+[2025-09-22T03:26:56] tokens used: 3,135
+
+[2025-09-22T03:26:59] thinking
+
+**Investigating missing directory and project structure**
+[2025-09-22T03:26:59] exec bash -lc 'ls -R rust-project' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-22T03:26:59] bash -lc 'ls -R rust-project' succeeded in 48ms:
+Cargo.lock
+Cargo.toml
+docs
+Justfile
+LICENSE
+README.md
+scripts
+src
+target
+
+rust-project/docs:
+manual.md
+
+rust-project/scripts:
+linearize-history.sh
+
+rust-project/src:
+config.rs
+graph.rs
+lib.rs
+[2025-09-22T03:26:59] tokens used: 3,418
+
+[2025-09-22T03:27:05] thinking
+
+**Reviewing target files before edits**
+[2025-09-22T03:27:06] exec bash -lc "sed -n '1,160p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:27:06] bash -lc "sed -n '1,160p' src/print/unicode.rs" succeeded in 32ms:
+//! Create graphs in SVG format (Scalable Vector Graphics).
+
+use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+use crate::print::format::CommitFormat;
+use crate::settings::{Characters, Settings};
+use itertools::Itertools;
+use std::cmp::max;
+use std::collections::hash_map::Entry::{Occupied, Vacant};
+use std::collections::HashMap;
+use std::fmt::Write;
+use textwrap::Options;
+use yansi::Paint;
+
+const SPACE: u8 = 0;
+const DOT: u8 = 1;
+const CIRCLE: u8 = 2;
+const VER: u8 = 3;
+const HOR: u8 = 4;
+const CROSS: u8 = 5;
+const R_U: u8 = 6;
+[2025-09-22T03:27:06] tokens used: 9,934
+
+[2025-09-22T03:27:11] thinking
+
+**Handling empty branches gracefully**
+[2025-09-22T03:27:11] exec bash -lc "sed -n '500,620p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:27:11] bash -lc "sed -n '500,620p' src/print/format.rs" succeeded in 8ms:
+    write!(
+        out,
+        "Author: {} <{}>",
+        commit.author().name().unwrap_or(""),
+        commit.author().email().unwrap_or("")
+    )
+    .unwrap();
+    append_wrapped(&mut out_vec, out, wrapping);
+
+    if format > &CommitFormat::Medium {
+        out = String::new();
+        write!(
+            out,
+            "Commit: {} <{}>",
+            commit.committer().name().unwrap_or(""),
+            commit.committer().email().unwrap_or("")
+        )
+        .unwrap();
+        append_wrapped(&mut out_vec, out, wrapping);
+    }
+[2025-09-22T03:27:11] tokens used: 11,872
+
+[2025-09-22T03:27:19] thinking
+
+**Analyzing date formatting changes**
+
+I'm checking how `format_date` switches from using `Local::from_offset(...).timestamp(...)` to the safer `east_opt()/timestamp_opt().single()` approach for DST handling. I’m also verifying if `format_relative_time` needs the same update or if it’s already covered by earlier commits, focusing mainly on `format_date` per instructions. I’m looking into format strings like `%ar` to confirm if relative time formatting is fully in place.
+[2025-09-22T03:27:20] exec bash -lc "rg \"\\\\%a[rRcC]\" -n src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:27:20] bash -lc "rg \"\\\\%a[rRcC]\" -n src/print/format.rs" exited 2 in 13ms:
+regex parse error:
+    \%a[rRcC]
+    ^^
+error: unrecognized escape sequence
+[2025-09-22T03:27:20] tokens used: 13,592
+
+[2025-09-22T03:27:22] thinking
+
+**Adjusting string for ripgrep compatibility**
+[2025-09-22T03:27:23] exec bash -lc 'rg "%ar" -n src/print/format.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:27:23] bash -lc 'rg "%ar" -n src/print/format.rs' exited 1 in 10ms:
+
+[2025-09-22T03:27:23] tokens used: 13,818
+
+[2025-09-22T03:27:30] thinking
+
+**Examining relative time formatting context**
+[2025-09-22T03:27:30] exec bash -lc 'rg "format_relative_time" -n src/print/format.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:27:30] bash -lc 'rg "format_relative_time" -n src/print/format.rs' succeeded in 8ms:
+300:                        let date = format_relative_time(commit.author().when(), Local::now());
+354:                        let date = format_relative_time(commit.committer().when(), Local::now());
+565:fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+682:            assert_eq!(format_relative_time(authored, now), expected);
+686:        assert_eq!(format_relative_time(future, now), "in 1 hour");
+[2025-09-22T03:27:30] tokens used: 14,595
+
+[2025-09-22T03:27:44] thinking
+
+**Analyzing format_date and panic guards**
+[2025-09-22T03:27:44] exec bash -lc 'rg "print_unicode" -n -g"*.rs"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:27:45] bash -lc 'rg "print_unicode" -n -g"*.rs"' succeeded in 18ms:
+src/main.rs:17:use git_graph::print::unicode::print_unicode;
+src/main.rs:471:        let (graph_lines, text_lines, _indices) = print_unicode(&graph, &settings)?;
+src/print/unicode.rs:37:pub fn print_unicode(
+[2025-09-22T03:27:45] tokens used: 16,150
+
+[2025-09-22T03:27:48] thinking
+
+**Checking usage of Vec arguments**
+[2025-09-22T03:27:48] exec bash -lc "sed -n '440,520p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:27:48] bash -lc "sed -n '440,520p' src/main.rs" succeeded in 20ms:
+    let duration_graph = now.elapsed().as_micros();
+
+    if settings.debug {
+        for branch in &graph.all_branches {
+            let source_hint = branch
+                .visual
+                .source_order_group
+                .map(|group| group.to_string())
+                .unwrap_or_else(|| "-".to_string());
+            let target_hint = branch
+                .visual
+                .target_order_group
+                .map(|group| group.to_string())
+                .unwrap_or_else(|| "-".to_string());
+            eprintln!(
+                "{} (col {}) ({:?}) {} s:{} t:{}",
+                branch.name,
+                branch.visual.column.unwrap_or(99),
+                branch.range,
+                if branch.is_merged { "m" } else { "" },
+[2025-09-22T03:27:48] tokens used: 16,464
+
+[2025-09-22T03:28:15] thinking
+
+**Reviewing date formatting adjustments**
+[2025-09-22T03:28:15] exec bash -lc 'rg "invalid" src/print/format.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:28:15] bash -lc 'rg "invalid" src/print/format.rs' exited 1 in 10ms:
+
+[2025-09-22T03:28:15] tokens used: 19,476
+
+[2025-09-22T03:28:17] thinking
+
+**Checking for existing tests**
+[2025-09-22T03:28:18] exec bash -lc "sed -n '620,760p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:28:18] bash -lc "sed -n '620,760p' src/print/format.rs" succeeded in 9ms:
+    let mut temp = String::new();
+    std::mem::swap(&mut temp, line);
+    append_wrapped(lines, temp, wrapping);
+}
+
+fn remove_empty_lines(lines: &mut Vec<String>, mut line: String) -> String {
+    while !lines.is_empty() && lines.last().unwrap().is_empty() {
+        line = lines.remove(lines.len() - 1);
+    }
+    if !lines.is_empty() {
+        line = lines.remove(lines.len() - 1);
+    }
+    line
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+[2025-09-22T03:28:18] tokens used: 19,745
+
+[2025-09-22T03:28:21] thinking
+
+**Verifying imports for format_date updates**
+[2025-09-22T03:28:22] exec bash -lc "sed -n '1,80p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:28:22] bash -lc "sed -n '1,80p' src/print/format.rs" succeeded in 7ms:
+//! Formatting of commits.
+
+use chrono::{DateTime, FixedOffset, Local, TimeZone};
+use git2::{Commit, Time};
+use lazy_static::lazy_static;
+use std::fmt::Write;
+use std::str::FromStr;
+use textwrap::Options;
+use yansi::Paint;
+
+/// Commit formatting options.
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
+pub enum CommitFormat {
+    OneLine,
+    Short,
+    Medium,
+    Full,
+    Format(String),
+}
+
+[2025-09-22T03:28:22] tokens used: 20,647
+
+[2025-09-22T03:28:48] thinking
+
+**Refining date formatting and branch guarding**
+
+I’m updating `format_date` to use `FixedOffset::east_opt` with a fallback returning empty strings on invalid times, adding TODO comments for missing spec details. For `print_unicode`, I’ll insert a guard that returns early if `graph.all_branches` is empty, ensuring safe handling. I’ll keep timezone offset usage consistent with existing code, use `.single()` from `timestamp_opt`, and ensure code formatting and tests run smoothly after changes.
+[2025-09-22T03:28:49] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/unicode.rs
+@@ -40,2 +40,6 @@
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+[2025-09-22T03:28:50] apply_patch(auto_approved=true) exited 0 in 23ms:
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-22T03:28:50] turn diff:
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+[2025-09-22T03:28:50] tokens used: 23,869
+[2025-09-22T03:28:50] turn diff:
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:28:55] thinking
+
+**Updating format_date function**
+[2025-09-22T03:28:57] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/format.rs
+@@ -559,5 +559,18 @@
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+[2025-09-22T03:28:57] apply_patch(auto_approved=true) exited 0 in 19ms:
+Success. Updated the following files:
+M src/print/format.rs
+[2025-09-22T03:28:57] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+[2025-09-22T03:28:57] tokens used: 24,585
+[2025-09-22T03:28:57] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:29:01] thinking
+
+**Verifying chrono imports and method usage**
+[2025-09-22T03:29:01] exec bash -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:29:01] bash -lc 'cargo fmt' succeeded in 102ms:
+
+[2025-09-22T03:29:01] tokens used: 25,220
+[2025-09-22T03:29:01] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:29:10] thinking
+
+**Verifying comment formatting in format.rs**
+[2025-09-22T03:29:10] exec bash -lc "sed -n '520,620p' src/print/format.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:29:10] bash -lc "sed -n '520,620p' src/print/format.rs" succeeded in 11ms:
+
+    if format > &CommitFormat::Short {
+        out = String::new();
+        write!(
+            out,
+            "Date:   {}",
+            format_date(commit.author().when(), "%a %b %e %H:%M:%S %Y %z")
+        )
+        .unwrap();
+        append_wrapped(&mut out_vec, out, wrapping);
+    }
+
+    if format == &CommitFormat::Short {
+        out_vec.push("".to_string());
+        append_wrapped(
+            &mut out_vec,
+            format!("    {}", commit.summary().unwrap_or("")),
+            wrapping,
+        );
+        out_vec.push("".to_string());
+[2025-09-22T03:29:10] tokens used: 25,475
+[2025-09-22T03:29:10] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:29:19] thinking
+
+**Reviewing time formatting and print_unicode checks**
+[2025-09-22T03:29:19] exec bash -lc "sed -n '30,80p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:29:19] bash -lc "sed -n '30,80p' src/print/unicode.rs" succeeded in 7ms:
+const ARR_R: u8 = 15;
+
+const WHITE: u8 = 7;
+const HEAD_COLOR: u8 = 14;
+const HASH_COLOR: u8 = 11;
+
+/// Creates a text-based visual representation of a graph.
+pub fn print_unicode(
+    graph: &GitGraph,
+    settings: &Settings,
+) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
+    if graph.all_branches.is_empty() {
+        return Ok((Vec::new(), Vec::new(), Vec::new()));
+    }
+
+    let num_cols = 2 * graph
+        .branches
+        .iter()
+        .map(|&idx| graph.all_branches[idx].visual.column.unwrap_or(0))
+        .max()
+[2025-09-22T03:29:19] tokens used: 26,632
+[2025-09-22T03:29:19] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:29:23] thinking
+
+**Verifying build and tests**
+[2025-09-22T03:29:23] exec bash -lc 'cargo test' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:29:27] bash -lc 'cargo test' succeeded in 3.74s:
+   Compiling git-graph v0.6.0 (/Users/jqwang/104-CommitLens-codex/.workspace/rust-project)
+warning: use of deprecated associated function `chrono::FixedOffset::east`: use `east_opt()` instead
+   --> src/print/format.rs:580:42
+    |
+580 |         Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+    |                                          ^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `chrono::TimeZone::timestamp`: use `timestamp_opt()` instead
+   --> src/print/format.rs:580:71
+    |
+580 |         Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+    |                                                                       ^^^^^^^^^
+
+warning: `git-graph` (lib test) generated 2 warnings
+warning: `git-graph` (lib) generated 2 warnings (2 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.48s
+warning: the following packages contain code that will be rejected by a future version of Rust: svg v0.8.2
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
+[2025-09-22T03:29:27] tokens used: 27,416
+[2025-09-22T03:29:27] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:29:35] thinking
+
+**Analyzing deprecated FixedOffset warnings**
+[2025-09-22T03:29:35] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:29:35] bash -lc 'git status -sb' succeeded in 25ms:
+## main
+ M src/print/format.rs
+ M src/print/unicode.rs
+[2025-09-22T03:29:35] tokens used: 28,472
+[2025-09-22T03:29:35] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:29:40] thinking
+
+**Preparing to commit changes**
+[2025-09-22T03:29:40] exec bash -lc 'git add -A' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:29:40] bash -lc 'git add -A' succeeded in 34ms:
+
+[2025-09-22T03:29:40] tokens used: 28,780
+[2025-09-22T03:29:40] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:29:48] thinking
+
+**Committing with specified message**
+[2025-09-22T03:29:48] exec bash -lc 'git commit -m "119-2d15d7b：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:29:48] bash -lc 'git commit -m "119-2d15d7b：复现提交代码内容。"' succeeded in 32ms:
+[main 539f25a] 119-2d15d7b：复现提交代码内容。
+ 2 files changed, 20 insertions(+), 3 deletions(-)
+[2025-09-22T03:29:48] tokens used: 54,443
+[2025-09-22T03:29:48] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:29:53] thinking
+
+**Preparing summary with code references**
+[2025-09-22T03:29:54] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '30,70p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:29:54] bash -lc "nl -ba src/print/unicode.rs | sed -n '30,70p'" succeeded in 37ms:
+    30	const ARR_R: u8 = 15;
+    31	
+    32	const WHITE: u8 = 7;
+    33	const HEAD_COLOR: u8 = 14;
+    34	const HASH_COLOR: u8 = 11;
+    35	
+    36	/// Creates a text-based visual representation of a graph.
+    37	pub fn print_unicode(
+    38	    graph: &GitGraph,
+    39	    settings: &Settings,
+    40	) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
+    41	    if graph.all_branches.is_empty() {
+    42	        return Ok((Vec::new(), Vec::new(), Vec::new()));
+    43	    }
+    44	
+    45	    let num_cols = 2 * graph
+    46	        .branches
+    47	        .iter()
+    48	        .map(|&idx| graph.all_branches[idx].visual.column.unwrap_or(0))
+    49	        .max()
+[2025-09-22T03:29:54] tokens used: 54,886
+[2025-09-22T03:29:54] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:30:03] thinking
+
+**Requesting line numbers for changes**
+[2025-09-22T03:30:03] exec bash -lc "nl -ba src/print/format.rs | sed -n '548,620p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:30:04] bash -lc "nl -ba src/print/format.rs | sed -n '548,620p'" succeeded in 14ms:
+   548	            }
+   549	            add_line = !line.trim().is_empty();
+   550	        }
+   551	        if add_line {
+   552	            out_vec.push("".to_string());
+   553	        }
+   554	    }
+   555	
+   556	    Ok(out_vec)
+   557	}
+   558	
+   559	pub fn format_date(time: Time, format: &str) -> String {
+   560	    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
+   561	        Some(offset) => offset,
+   562	        None => {
+   563	            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
+   564	            return String::new();
+   565	        }
+   566	    };
+   567	
+[2025-09-22T03:30:04] tokens used: 55,585
+[2025-09-22T03:30:04] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:30:07] thinking
+
+**Reviewing test outcomes**
+[2025-09-22T03:30:08] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-22T03:30:08] bash -lc 'git status -sb' succeeded in 43ms:
+## main
+[2025-09-22T03:30:08] tokens used: 56,698
+[2025-09-22T03:30:08] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+[2025-09-22T03:30:21] thinking
+
+**Summarizing final modifications and next steps**
+
+I'll outline the main changes referencing specific lines: the guard in `src/print/unicode.rs:41` to prevent panic, the safe Option update with a TODO comment at `src/print/format.rs:560` and following lines, and the assumption behind the TODO. I'll mention running `cargo test`, noting that warnings remain from unrelated functions but no test failures occurred. I'll also confirm the commit was performed and suggest running `git-graph -n 1` as a natural next verification step.
+[2025-09-22T03:30:22] codex
+
+**复现结果**
+- 更新 `src/print/unicode.rs:41` 在分支集合为空时直接返回空结果，避免 `max().unwrap()` 在 `-n` 下崩溃。
+- 重写 `src/print/format.rs:560` 的 `format_date`，改用 `FixedOffset::east_opt` 与 `timestamp_opt().single()`，落地报告中的 DST 防护；缺失的回退策略先以空字符串占位，并在 `src/print/format.rs:563` 标注 TODO 说明。
+- 执行 `cargo test` 验证通过（仍有历史遗留的 chrono 弃用告警，未在本次提交内处理）。
+- 已提交：`119-2d15d7b：复现提交代码内容。`
+
+**后续建议**
+1. 依报告再跑一次 `cargo run -- -n 1` 或等效命令，实测新版输出。
+[2025-09-22T03:30:23] tokens used: 57,853
+[2025-09-22T03:30:23] turn diff:
+diff --git a/src/print/format.rs b/src/print/format.rs
+index da997b3431888bc0f97fc62a627f792a08a1b3d4..e844ce717ee6cb8d31e9d2df1321d2d4ed8b2c60
+--- a/src/print/format.rs
++++ b/src/print/format.rs
+@@ -557,9 +557,22 @@
+ }
+ 
+ pub fn format_date(time: Time, format: &str) -> String {
+-    let date =
+-        Local::from_offset(&FixedOffset::east(time.offset_minutes())).timestamp(time.seconds(), 0);
+-    format!("{}", date.format(format))
++    let offset = match FixedOffset::east_opt(time.offset_minutes()) {
++        Some(offset) => offset,
++        None => {
++            // TODO(119-2d15d7b): Report omits exact fallback for invalid offsets; return empty output.
++            return String::new();
++        }
++    };
++
++    offset
++        .timestamp_opt(time.seconds(), 0)
++        .single()
++        .map(|date| date.format(format).to_string())
++        .unwrap_or_else(|| {
++            // TODO(119-2d15d7b): Report does not define behaviour for invalid local timestamps.
++            String::new()
++        })
+ }
+ 
+ fn format_relative_time(time: Time, now: DateTime<Local>) -> String {
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index 49db6b7608a25c82fa05fc95336b714fc0f981c7..a6390d21cd7f0f70b0f9d0ba75e999a3097622b0
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -38,6 +38,10 @@
+     graph: &GitGraph,
+     settings: &Settings,
+ ) -> Result<(Vec<String>, Vec<Option<String>>, Vec<usize>), String> {
++    if graph.all_branches.is_empty() {
++        return Ok((Vec::new(), Vec::new(), Vec::new()));
++    }
++
+     let num_cols = 2 * graph
+         .branches
+         .iter()
+
+
+=== 错误 ===
+2025-09-22T03:26:40.102817Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

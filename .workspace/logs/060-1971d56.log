@@ -1,0 +1,3142 @@
+=== 任务 060-1971d56 执行日志 ===
+时间: 2025-09-22 03:17:31.029164
+Prompt:
+请在 .workspace 内，依据 .workspace/todolist/todolist-060-1971d56.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/060-1971d56/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："060-1971d56：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 060-1971d56
+
+=== 输出 ===
+[2025-09-21T19:12:51] OpenAI Codex v0.39.0 (research preview)
+--------
+workdir: /Users/jqwang/104-CommitLens-codex/.workspace
+model: gpt-5-codex-high
+provider: codex
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-21T19:12:51] User instructions:
+请在 .workspace 内，依据 .workspace/todolist/todolist-060-1971d56.tex 的提交报告，忠实复现该提交（以 HEAD 为准）的代码内容，并将结果写入固定目录 .workspace/rust-project。
+
+提示：当前已在 .workspace（通常为 .workspace）。可先执行 `ls -la` 查看顶层目录，确认存在 .workspace/todolist 与 .workspace/rust-project。
+
+一、信息收集
+- 打开 tex 报告；如有，参考 .workspace/todolist/figs/060-1971d56/ 下的图示（类图/序列图/流程图/状态图）
+- 提取报告中出现的文件路径、模块/类名、代码片段、配置与命令；识别应新增/修改/删除的文件集合
+
+二、代码复现
+- 在 .workspace/rust-project 内按报告还原最终文件内容：逐项创建/修改/删除文件；代码以报告中的完整片段为准
+- 若片段缺失或上下文不全，填充最小可行的占位内容，并以 TODO 标注依据与缺失
+- 若报告包含非 Rust 片段且已明确语言/框架，则按原语言复现；否则以 Rust 项目做最小演示，并将非 Rust 片段以资源/注释方式保存
+
+三、构建校验
+- 优先使用报告中给出的构建/运行命令；否则（若为 Rust 项目）执行 cargo build/test，并补齐必要样例
+
+四、提交
+- 在 .workspace/rust-project 中 `git add -A` 并提交，提交信息格式："060-1971d56：复现提交代码内容。"
+
+五、复现说明
+- 输出简要说明：列出复现的文件、依据的片段或图示、关键假设/妥协与验证结果
+
+注意
+- 目标是“复现报告中的代码状态”，避免超出报告范围的重构或新增设计
+
+限制（禁止修改）
+- 禁止修改以下路径/文件（它们由系统管理）：
+  - .workspace/codex_error.txt
+  - .workspace/codex_status.txt
+  - .workspace/codex_output.txt
+  - .workspace/logs/
+  - .workspace/task_status.json
+  - .workspace/todolist/
+- 仅允许在 .workspace/rust-project/ 目录内创建/修改/删除代码与配置。
+
+任务ID: 060-1971d56
+
+[2025-09-21T19:12:57] thinking
+
+**Preparing to list directory contents**
+[2025-09-21T19:12:57] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace/.workspace
+[2025-09-21T19:12:57] bash -lc 'ls -la' exited -1 in 0ms:
+No such file or directory (os error 2)
+[2025-09-21T19:12:57] tokens used: 975
+
+[2025-09-21T19:13:02] thinking
+
+**Determining working directory path**
+[2025-09-21T19:13:03] exec bash -lc pwd in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T19:13:03] bash -lc pwd succeeded in 19ms:
+/Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T19:13:03] tokens used: 1,262
+
+[2025-09-21T19:13:07] thinking
+
+**Listing items**
+[2025-09-21T19:13:07] exec bash -lc 'ls -la' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T19:13:07] bash -lc 'ls -la' succeeded in 24ms:
+total 34848
+drwxr-xr-x@  9 jqwang  staff       288 Sep 21 15:57 .
+drwxr-xr-x@ 29 jqwang  staff       928 Sep 21 07:49 ..
+-rw-r--r--@  1 jqwang  staff       103 Sep 22 03:12 codex_error.txt
+-rw-r--r--@  1 jqwang  staff  17214947 Sep 22 03:13 codex_output.txt
+-rw-r--r--@  1 jqwang  staff         7 Sep 22 03:12 codex_status.txt
+drwxr-xr-x@ 61 jqwang  staff      1952 Sep 22 03:12 logs
+drwxr-xr-x@ 12 jqwang  staff       384 Sep 21 20:54 rust-project
+-rw-r--r--@  1 jqwang  staff      1263 Sep 22 03:12 task_status.json
+drwxr-xr-x@  5 jqwang  staff       160 Sep 22 03:12 todolist
+[2025-09-21T19:13:07] tokens used: 1,406
+
+[2025-09-21T19:13:09] thinking
+
+**Opening LaTeX file**
+[2025-09-21T19:13:09] exec bash -lc 'cat todolist/todolist-060-1971d56.tex' in /Users/jqwang/104-CommitLens-codex/.workspace
+[2025-09-21T19:13:09] bash -lc 'cat todolist/todolist-060-1971d56.tex' succeeded in 14ms:
+% 注意：tex必须以\section开头，不能有其他内容，不能使用 begin{document}
+\section{提交考古：060-1971d56}
+
+\subsection*{Commit 元信息}
+\begin{itemize}
+  \item 标题：added option --color with [auto|always|never]
+  \item 作者：Martin Lange \verb|<martin_lange_@gmx.net>|
+  \item 日期：2020-12-30T16:54:24+01:00
+\end{itemize}
+
+\subsection*{变更摘要（阅读提示）}
+从 HEAD.diff 可见：\verb|src/main.rs| 与 \verb|src/print/unicode.rs| 两处改动（37 插入, 11 删除）。新增 \verb+--color [auto|always|never]+ 选项，并将“是否着色”的判定集中到 \verb|main.rs| 里（优先级：\verb|--no-color| > \verb|--color=<mode>| > 自动检测），\verb|unicode.rs| 不再重复进行 TTY/Windows 检测，改为直接信任 \verb|Settings.colored|。
+
+\subsection*{差异解读（证据）}
+\paragraph{改了什么}
+\begin{itemize}
+  \item CLI 增加 \verb|--color| 选项与长帮助：\verb|src/main.rs| 中 \texttt{from\_args()} 添加 clap 参数定义（约 \#L105--\#L120），并更新 \verb|--no-color| 文案指出会覆盖 \verb|--color|。
+  \item 统一“是否着色”的计算：\verb|src/main.rs| 新增 \verb|colored| 计算分支（约 \#L241 起），支持 \verb+auto|always|never+ 与 Windows 兼容性处理（\verb|yansi::Paint::enable_windows_ascii()|）。
+  \item 输出路径去除重复检测：\verb|src/print/unicode.rs| 中删除本地的 TTY/Windows 判断（约 \#L39--\#L76、\#L432 起若干行），并将 \verb|format(..., color)| 实参改为 \verb|settings.colored|。
+\end{itemize}
+[2025-09-21T19:13:09] tokens used: 3,045
+
+[2025-09-21T19:13:12] thinking
+
+**Inspecting rust-project directory**
+[2025-09-21T19:13:12] exec bash -lc 'ls -R' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:12] bash -lc 'ls -R' succeeded in 14ms:
+Cargo.lock
+Cargo.toml
+LICENSE
+README.md
+scripts
+src
+target
+
+./scripts:
+linearize-history.sh
+
+./src:
+graph.rs
+lib.rs
+main.rs
+print
+settings.rs
+text.rs
+
+./src/print:
+[2025-09-21T19:13:12] tokens used: 4,679
+
+[2025-09-21T19:13:17] thinking
+
+**Examining key source files**
+[2025-09-21T19:13:17] exec bash -lc "sed -n '1,200p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:17] bash -lc "sed -n '1,200p' src/main.rs" succeeded in 20ms:
+use clap::{crate_version, App, Arg, SubCommand};
+use git2::{ErrorCode, Repository};
+use git_graph::graph::GitGraph;
+use git_graph::print::format::{CommitFormat, FORMAT_LONG_HELP};
+use git_graph::print::svg::print_svg;
+use git_graph::print::unicode::print_unicode;
+use git_graph::settings::{
+    BranchOrder, BranchSettings, BranchSettingsDef, Characters, MergePatterns, RepoSettings,
+    Settings,
+};
+use platform_dirs::AppDirs;
+use std::path::PathBuf;
+use std::str::FromStr;
+use std::time::Instant;
+
+fn main() {
+    std::process::exit(match from_args() {
+        Ok(_) => 0,
+        Err(err) => {
+            eprintln!("{}", err);
+[2025-09-21T19:13:17] tokens used: 8,480
+
+[2025-09-21T19:13:20] thinking
+
+**Continuing exploration**
+[2025-09-21T19:13:20] exec bash -lc "sed -n '200,400p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:20] bash -lc "sed -n '200,400p' src/main.rs" succeeded in 15ms:
+        CommitFormat::default()
+    };
+
+    let settings = Settings {
+        debug,
+        compact,
+        colored,
+        format,
+        include_remote,
+        characters: style,
+        branch_order: BranchOrder::ShortestFirst(true),
+        branches: BranchSettings::from(model).map_err(|err| err.to_string())?,
+        merge_patterns: MergePatterns::default(),
+    };
+
+    run(&repository, &settings, svg, commit_limit, pager)
+}
+
+fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+    let mut config_path = PathBuf::from(repository.path());
+[2025-09-21T19:13:20] tokens used: 10,484
+
+[2025-09-21T19:13:22] thinking
+
+**Continuing exploration**
+[2025-09-21T19:13:22] exec bash -lc "sed -n '400,800p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:22] bash -lc "sed -n '400,800p' src/main.rs" succeeded in 19ms:
+        let lines = print_unicode(&graph, &settings)?;
+        if pager && atty::is(atty::Stream::Stdout) {
+            print_paged(&lines).map_err(|err| err.to_string())?;
+        } else {
+            print_unpaged(&lines);
+        }
+    };
+
+    let duration_print = now.elapsed().as_micros();
+
+    if settings.debug {
+        eprintln!(
+            "Graph construction: {:.1} ms, printing: {:.1} ms ({} commits)",
+            duration_graph as f32 / 1000.0,
+            duration_print as f32 / 1000.0,
+            graph.commits.len()
+        );
+    }
+    Ok(())
+}
+[2025-09-21T19:13:22] tokens used: 12,379
+
+[2025-09-21T19:13:25] thinking
+
+**Reviewing main.rs and unicode.rs for updates**
+[2025-09-21T19:13:26] exec bash -lc "sed -n '1,200p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:26] bash -lc "sed -n '1,200p' src/print/unicode.rs" succeeded in 8ms:
+use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+use crate::settings::{Characters, Settings};
+use atty::Stream;
+use std::collections::hash_map::Entry::{Occupied, Vacant};
+use std::collections::HashMap;
+use yansi::Paint;
+
+const SPACE: u8 = 0;
+const DOT: u8 = 1;
+const CIRCLE: u8 = 2;
+const VER: u8 = 3;
+const HOR: u8 = 4;
+const CROSS: u8 = 5;
+const R_U: u8 = 6;
+const R_D: u8 = 7;
+const L_D: u8 = 8;
+const L_U: u8 = 9;
+const VER_L: u8 = 10;
+const VER_R: u8 = 11;
+[2025-09-21T19:13:26] tokens used: 14,127
+
+[2025-09-21T19:13:27] thinking
+
+**Proceeding with task**
+[2025-09-21T19:13:27] exec bash -lc "sed -n '200,400p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:27] bash -lc "sed -n '200,400p' src/print/unicode.rs" succeeded in 21ms:
+            if let Some(text) = formatted_commits[commit_idx].get(consumed_text[commit_idx]) {
+                if !text.is_empty() {
+                    graph_segment.push_str("  ");
+                    graph_segment.push_str(text);
+                }
+                consumed_text[commit_idx] += 1;
+            }
+            output.push(graph_segment);
+
+            while consumed_text[commit_idx] < formatted_commits[commit_idx].len() {
+                let mut extra_line = blank_graph_line.clone();
+                let text = &formatted_commits[commit_idx][consumed_text[commit_idx]];
+                if !text.is_empty() {
+                    extra_line.push_str("  ");
+                    extra_line.push_str(text);
+                }
+                consumed_text[commit_idx] += 1;
+                output.push(extra_line);
+            }
+        } else {
+[2025-09-21T19:13:27] tokens used: 16,128
+
+[2025-09-21T19:13:31] thinking
+
+**Searching for color enabling functions**
+[2025-09-21T19:13:31] exec bash -lc 'rg "enable_color_output" -n src' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:31] bash -lc 'rg "enable_color_output" -n src' succeeded in 25ms:
+src/print/unicode.rs:161:    let color_enabled = enable_color_output(settings.colored);
+src/print/unicode.rs:577:fn enable_color_output(requested: bool) -> bool {
+[2025-09-21T19:13:31] tokens used: 18,224
+
+[2025-09-21T19:13:33] thinking
+
+**Scrolling to the bottom**
+[2025-09-21T19:13:34] exec bash -lc "sed -n '560,660p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:34] bash -lc "sed -n '560,660p' src/print/unicode.rs" succeeded in 21ms:
+        let mut line = String::new();
+        for cell in row {
+            if color_enabled && cell[0] != SPACE {
+                write_colored_char(&mut line, characters.chars[cell[0] as usize], cell[1]);
+            } else {
+                line.push(characters.chars[cell[0] as usize]);
+            }
+        }
+        lines.push(line);
+    }
+    lines
+}
+
+fn write_colored_char(out: &mut String, character: char, color: u8) {
+    out.push_str(&Paint::fixed(color, character).to_string());
+}
+
+fn enable_color_output(requested: bool) -> bool {
+    let enabled =
+        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+[2025-09-21T19:13:34] tokens used: 18,458
+
+[2025-09-21T19:13:37] thinking
+
+**Reviewing Settings struct for color flag**
+[2025-09-21T19:13:37] exec bash -lc "sed -n '1,200p' src/settings.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:37] bash -lc "sed -n '1,200p' src/settings.rs" succeeded in 20ms:
+use crate::print::format::CommitFormat;
+use regex::{Error, Regex};
+use serde_derive::{Deserialize, Serialize};
+use std::str::FromStr;
+
+#[derive(Serialize, Deserialize)]
+pub struct RepoSettings {
+    /// The repository's branching model
+    pub model: String,
+}
+
+/// Ordering policy for branches in visual columns.
+pub enum BranchOrder {
+    /// Recommended! Shortest branches are inserted left-most.
+    ///
+    /// For branches with equal length, branches ending last are inserted first.
+    /// Reverse (arg = false): Branches ending first are inserted first.
+    ShortestFirst(bool),
+    /// Longest branches are inserted left-most.
+    ///
+[2025-09-21T19:13:37] tokens used: 19,597
+
+[2025-09-21T19:13:49] thinking
+
+**Planning color option integration**
+[2025-09-21T19:13:49] exec bash -lc 'rg "Stream" src/print/unicode.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:49] bash -lc 'rg "Stream" src/print/unicode.rs' succeeded in 9ms:
+use atty::Stream;
+        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+[2025-09-21T19:13:49] tokens used: 22,333
+
+[2025-09-21T19:13:57] thinking
+
+**Planning color output adjustments**
+[2025-09-21T19:13:58] exec bash -lc 'rg "Paint::enable" -n' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:13:58] bash -lc 'rg "Paint::enable" -n' succeeded in 25ms:
+src/print/unicode.rs:579:        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+src/print/unicode.rs:582:        Paint::enable();
+[2025-09-21T19:13:58] tokens used: 22,740
+
+[2025-09-21T19:14:56] thinking
+
+**Planning color flag integration**
+
+I’m mapping out how to unify color enabling logic in `main.rs` by adding a Clap `--color` argument with options auto/always/never, while respecting `--no-color` as highest priority. The plan includes computing a final `colored` bool based on these flags and environment detection, then enabling or disabling `yansi::Paint` accordingly with Windows compatibility handled carefully.
+**Detailing implementation and testing steps**
+
+I’m outlining updates to help texts for `--color` and `--no-color`, cleaning up color logic in `unicode.rs` to rely on main’s final decision, adding a helper function in `main.rs` that reads Clap matches and sets `Paint` appropriately for color enabling, and planning to run `cargo check` and formatting before committing changes.
+[2025-09-21T19:15:43] codex
+**Detailing implementation and testing steps**
+
+I’m outlining updates to help texts for `--color` and `--no-color`, cleaning up color logic in `unicode.rs` to rely on main’s final decision, adding a helper function in `main.rs` that reads Clap matches and sets `Paint` appropriately for color enabling, and planning to run `cargo check` and formatting before committing changes.
+[2025-09-21T19:15:54] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/main.rs
+@@ -14,2 +14,3 @@
+ use std::time::Instant;
++use yansi::Paint;
+ 
+@@ -81,5 +82,14 @@
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+@@ -188,3 +198,3 @@
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+@@ -217,2 +227,32 @@
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+[2025-09-21T19:15:54] apply_patch(auto_approved=true) exited 0 in 28ms:
+Success. Updated the following files:
+M src/main.rs
+[2025-09-21T19:15:54] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+
+[2025-09-21T19:15:54] tokens used: 31,878
+[2025-09-21T19:15:54] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+
+
+[2025-09-21T19:16:04] thinking
+
+**Reviewing color handling and cleanup**
+[2025-09-21T19:16:05] apply_patch auto_approved=true:
+M /Users/jqwang/104-CommitLens-codex/.workspace/rust-project/src/print/unicode.rs
+@@ -3,3 +3,2 @@
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+@@ -160,3 +159,3 @@
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+@@ -574,15 +573,2 @@
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+[2025-09-21T19:16:05] apply_patch(auto_approved=true) exited 0 in 23ms:
+Success. Updated the following files:
+M src/print/unicode.rs
+[2025-09-21T19:16:05] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+[2025-09-21T19:16:05] tokens used: 33,569
+[2025-09-21T19:16:05] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:12] thinking
+
+**Verifying color handling logic**
+[2025-09-21T19:16:12] exec bash -lc 'rg "atty" -n src/print/unicode.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:12] bash -lc 'rg "atty" -n src/print/unicode.rs' exited 1 in 12ms:
+
+[2025-09-21T19:16:12] tokens used: 34,238
+[2025-09-21T19:16:12] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:16] thinking
+
+**Preparing to run cargo fmt**
+[2025-09-21T19:16:16] exec bash -lc 'cargo fmt' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:16] bash -lc 'cargo fmt' succeeded in 85ms:
+
+[2025-09-21T19:16:16] tokens used: 34,397
+[2025-09-21T19:16:16] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:20] thinking
+
+**Running cargo fmt and checking formatting**
+[2025-09-21T19:16:20] exec bash -lc "sed -n '1,200p' src/main.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:20] bash -lc "sed -n '1,200p' src/main.rs" succeeded in 10ms:
+use clap::{crate_version, App, Arg, SubCommand};
+use git2::{ErrorCode, Repository};
+use git_graph::graph::GitGraph;
+use git_graph::print::format::{CommitFormat, FORMAT_LONG_HELP};
+use git_graph::print::svg::print_svg;
+use git_graph::print::unicode::print_unicode;
+use git_graph::settings::{
+    BranchOrder, BranchSettings, BranchSettingsDef, Characters, MergePatterns, RepoSettings,
+    Settings,
+};
+use platform_dirs::AppDirs;
+use std::path::PathBuf;
+use std::str::FromStr;
+use std::time::Instant;
+use yansi::Paint;
+
+fn main() {
+    std::process::exit(match from_args() {
+        Ok(_) => 0,
+        Err(err) => {
+[2025-09-21T19:16:20] tokens used: 34,570
+[2025-09-21T19:16:20] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:24] thinking
+
+**Verifying resolve_colored definition**
+[2025-09-21T19:16:24] exec bash -lc 'rg "fn resolve_colored" -n src/main.rs' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:24] bash -lc 'rg "fn resolve_colored" -n src/main.rs' succeeded in 22ms:
+228:fn resolve_colored(matches: &clap::ArgMatches) -> bool {
+[2025-09-21T19:16:24] tokens used: 36,488
+[2025-09-21T19:16:25] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:30] thinking
+
+**Verifying dependency and usage updates**
+[2025-09-21T19:16:30] exec bash -lc "sed -n '140,220p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:30] bash -lc "sed -n '140,220p' src/print/unicode.rs" succeeded in 10ms:
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    let height = grid.height();
+    let mut line_commits = vec![None; height];
+    for (commit_idx, line) in index_map.iter().enumerate() {
+        if *line < height {
+            line_commits[*line] = Some(commit_idx);
+        }
+    }
+
+    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+[2025-09-21T19:16:30] tokens used: 36,930
+[2025-09-21T19:16:30] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:33] thinking
+
+**Cleaning up after function removal**
+[2025-09-21T19:16:34] exec bash -lc "sed -n '540,620p' src/print/unicode.rs" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:34] bash -lc "sed -n '540,620p' src/print/unicode.rs" succeeded in 8ms:
+                                        column_range.0,
+                                        column_range.1,
+                                    )]]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    inserts
+}
+
+fn render_graph(grid: &Grid, characters: &Characters, color_enabled: bool) -> Vec<String> {
+    let height = grid.height();
+    let mut lines = Vec::with_capacity(height);
+    for row in grid.data.chunks(grid.width) {
+        let mut line = String::new();
+[2025-09-21T19:16:34] tokens used: 37,827
+[2025-09-21T19:16:34] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:39] thinking
+
+**Preparing to run tests**
+[2025-09-21T19:16:39] exec bash -lc 'cargo test' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:39] bash -lc 'cargo test' exited -1 in 0ms:
+   Compiling git-graph v0.1.3 (/Users/jqwang/104-CommitLens-codex/.workspace/rust-project)
+error[E0308]: mismatched types
+  --> src/graph.rs:97:17
+   |
+97 |                 repository,
+   |                 ^^^^^^^^^^ expected `Repository`, found `&Repository`
+   |
+note: `git2::Repository` does not implement `Clone`, so `&git2::Repository` was cloned instead
+  --> src/graph.rs:33:26
+   |
+33 |         let repository = repo.clone();
+   |                          ^^^^
+
+error[E0308]: mismatched types
+   --> src/graph.rs:140:17
+    |
+140 |                 repository,
+    |                 ^^^^^^^^^^ expected `Repository`, found `&Repository`
+    |
+note: `git2::Repository` does not implement `Clone`, so `&git2::Repository` was cloned instead
+[2025-09-21T19:16:39] tokens used: 38,749
+[2025-09-21T19:16:39] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:45] thinking
+
+**Noting preexisting test failures**
+[2025-09-21T19:16:45] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:45] bash -lc 'git status -sb' succeeded in 34ms:
+## main
+ M src/main.rs
+ M src/print/unicode.rs
+[2025-09-21T19:16:45] tokens used: 39,349
+[2025-09-21T19:16:45] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:51] thinking
+
+**Preparing final commit**
+[2025-09-21T19:16:51] exec bash -lc 'git diff' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:51] bash -lc 'git diff' succeeded in 16ms:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb92..0b0ec9c 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@ use platform_dirs::AppDirs;
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -78,10 +79,19 @@ fn from_args() -> Result<(), String> {
+                 .required(false)
+                 .takes_value(false),
+         )
++        .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
+[2025-09-21T19:16:51] tokens used: 39,715
+[2025-09-21T19:16:51] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:54] thinking
+
+**Committing code changes**
+[2025-09-21T19:16:54] exec bash -lc 'git add -A' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:54] bash -lc 'git add -A' succeeded in 44ms:
+
+[2025-09-21T19:16:54] tokens used: 41,086
+[2025-09-21T19:16:54] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:16:57] thinking
+
+**Committing changes**
+[2025-09-21T19:16:58] exec bash -lc 'git commit -m "060-1971d56：复现提交代码内容。"' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:16:58] bash -lc 'git commit -m "060-1971d56：复现提交代码内容。"' succeeded in 47ms:
+[main 1f4f3a3] 060-1971d56：复现提交代码内容。
+ 2 files changed, 43 insertions(+), 17 deletions(-)
+[2025-09-21T19:16:58] tokens used: 41,322
+[2025-09-21T19:16:58] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:17:02] thinking
+
+**Checking git status for cleanliness**
+[2025-09-21T19:17:02] exec bash -lc 'git status -sb' in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:17:02] bash -lc 'git status -sb' succeeded in 18ms:
+## main
+[2025-09-21T19:17:02] tokens used: 41,558
+[2025-09-21T19:17:02] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:17:09] thinking
+
+**Preparing final summary details**
+[2025-09-21T19:17:09] exec bash -lc "nl -ba src/main.rs | sed -n '70,130p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:17:09] bash -lc "nl -ba src/main.rs | sed -n '70,130p'" succeeded in 19ms:
+    70	                .takes_value(false),
+    71	        )
+    72	        .arg(
+    73	            Arg::with_name("sparse")
+    74	                .long("sparse")
+    75	                .short("S")
+    76	                .help(
+    77	                    "Render a sparse graph: merges connect to branch lines rather than merge commits."
+    78	                )
+    79	                .required(false)
+    80	                .takes_value(false),
+    81	        )
+    82	        .arg(
+    83	            Arg::with_name("color")
+    84	                .long("color")
+    85	                .value_name("when")
+    86	                .possible_values(&["auto", "always", "never"])
+    87	                .help("When to use colors: auto (default), always, or never.")
+    88	                .required(false)
+    89	                .takes_value(true),
+[2025-09-21T19:17:09] tokens used: 41,960
+[2025-09-21T19:17:09] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:17:12] thinking
+
+**Preparing to write resolve_colored function**
+[2025-09-21T19:17:12] exec bash -lc "nl -ba src/main.rs | sed -n '200,260p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:17:12] bash -lc "nl -ba src/main.rs | sed -n '200,260p'" succeeded in 31ms:
+   200	    let compact = !matches.is_present("sparse");
+   201	    let debug = matches.is_present("debug");
+   202	    let style = matches
+   203	        .value_of("style")
+   204	        .map(|s| Characters::from_str(s))
+   205	        .unwrap_or_else(|| Ok(Characters::thin()))?;
+   206	    let include_remote = !matches.is_present("local");
+   207	    let format = if let Some(spec) = matches.value_of("format") {
+   208	        CommitFormat::parse(spec)?
+   209	    } else {
+   210	        CommitFormat::default()
+   211	    };
+   212	
+   213	    let settings = Settings {
+   214	        debug,
+   215	        compact,
+   216	        colored,
+   217	        format,
+   218	        include_remote,
+   219	        characters: style,
+[2025-09-21T19:17:12] tokens used: 42,994
+[2025-09-21T19:17:12] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:17:16] thinking
+
+**Reviewing unicode file lines**
+[2025-09-21T19:17:16] exec bash -lc "nl -ba src/print/unicode.rs | sed -n '150,220p'" in /Users/jqwang/104-CommitLens-codex/.workspace/rust-project
+[2025-09-21T19:17:16] bash -lc "nl -ba src/print/unicode.rs | sed -n '150,220p'" succeeded in 18ms:
+   150	
+   151	    let height = grid.height();
+   152	    let mut line_commits = vec![None; height];
+   153	    for (commit_idx, line) in index_map.iter().enumerate() {
+   154	        if *line < height {
+   155	            line_commits[*line] = Some(commit_idx);
+   156	        }
+   157	    }
+   158	
+   159	    let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+   160	    let color_enabled = settings.colored;
+   161	    let hash_color = if color_enabled {
+   162	        Some(HASH_COLOR)
+   163	    } else {
+   164	        None
+   165	    };
+   166	    let graph_lines = render_graph(&grid, &settings.characters, color_enabled);
+   167	    let blank_graph_line: String = (0..grid.width)
+   168	        .map(|_| settings.characters.chars[SPACE as usize])
+   169	        .collect();
+[2025-09-21T19:17:16] tokens used: 43,950
+[2025-09-21T19:17:16] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+[2025-09-21T19:17:27] thinking
+
+**Organizing summary and test notes**
+
+I’m preparing a clear summary with key file references, highlighting removal of `enable_color_output` and its effect now relying on `Settings.colored` at `src/print/unicode.rs:160`. I’ll report that `cargo test` fails due to compile errors in `src/graph.rs`, and note the assumption about how color settings work on Windows. The summary will use grouped bullet points under a concise header, balancing reproduction details, test results, and key explanations, following friendly and clear guidelines.
+[2025-09-21T19:17:28] codex
+
+**复现内容**
+- 在 `src/main.rs:83` 增加 `--color [auto|always|never]` CLI 选项，并更新 `--no-color` 说明以体现覆盖关系。
+- 在 `src/main.rs:228` 新增 `resolve_colored`，按照报告描述的优先级统一处理着色判定，同时在此处启用/禁用 `yansi::Paint` 及 Windows ASCII 支持。
+- 将 `src/print/unicode.rs:160` 调整为直接信任 `Settings.colored`，移除重复的 TTY/Windows 判断逻辑，与提交报告保持一致。
+
+**测试**
+- `cargo test`（失败）：现有源码在 `src/graph.rs:97` 等处存在未复现提交前的编译错误（Repository 借用与 Oid 解引用），导致构建中断。
+
+**说明**
+- 假设 `--color=always` 仍需 `yansi::Paint::enable_windows_ascii()` 成功方可输出颜色；若该假设与原提交不同，可依据实际行为再行微调。
+[2025-09-21T19:17:30] tokens used: 45,924
+[2025-09-21T19:17:30] turn diff:
+diff --git a/src/main.rs b/src/main.rs
+index c28cb923218b800ab288c0beda3260082fa8d49f..0b0ec9cde72220505ee7077c3aa56e300d0364b4
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,6 +12,7 @@
+ use std::path::PathBuf;
+ use std::str::FromStr;
+ use std::time::Instant;
++use yansi::Paint;
+ 
+ fn main() {
+     std::process::exit(match from_args() {
+@@ -79,9 +80,18 @@
+                 .takes_value(false),
+         )
+         .arg(
++            Arg::with_name("color")
++                .long("color")
++                .value_name("when")
++                .possible_values(&["auto", "always", "never"])
++                .help("When to use colors: auto (default), always, or never.")
++                .required(false)
++                .takes_value(true),
++        )
++        .arg(
+             Arg::with_name("no-color")
+                 .long("no-color")
+-                .help("Disable colors (auto-detected when unsupported).")
++                .help("Disable colors (overrides --color).")
+                 .required(false)
+                 .takes_value(false),
+         )
+@@ -186,7 +196,7 @@
+     };
+     let svg = matches.is_present("svg");
+     let pager = !matches.is_present("no-pager");
+-    let colored = !matches.is_present("no-color");
++    let colored = resolve_colored(&matches);
+     let compact = !matches.is_present("sparse");
+     let debug = matches.is_present("debug");
+     let style = matches
+@@ -215,6 +225,36 @@
+     run(&repository, &settings, svg, commit_limit, pager)
+ }
+ 
++fn resolve_colored(matches: &clap::ArgMatches) -> bool {
++    if matches.is_present("no-color") {
++        Paint::disable();
++        return false;
++    }
++
++    let choice = matches.value_of("color").unwrap_or("auto");
++    let windows_ready = || {
++        if cfg!(windows) {
++            Paint::enable_windows_ascii()
++        } else {
++            true
++        }
++    };
++
++    let colored = match choice {
++        "always" => windows_ready(),
++        "never" => false,
++        _ => atty::is(atty::Stream::Stdout) && windows_ready(),
++    };
++
++    if colored {
++        Paint::enable();
++    } else {
++        Paint::disable();
++    }
++
++    colored
++}
++
+ fn get_model_name(repository: &Repository) -> Result<Option<String>, String> {
+     let mut config_path = PathBuf::from(repository.path());
+     config_path.push("git-graph.toml");
+diff --git a/src/print/unicode.rs b/src/print/unicode.rs
+index f6934bf3e6ec007e16d20dacfc9738ebce32f3b8..8f23919fd7a0f73d1b3bb72bf1f1132b3f139eb5
+--- a/src/print/unicode.rs
++++ b/src/print/unicode.rs
+@@ -1,7 +1,6 @@
+ use super::format::{self, CommitFormat, FormatContext, MultilineLevel};
+ use crate::graph::{CommitInfo, GitGraph, HeadInfo};
+ use crate::settings::{Characters, Settings};
+-use atty::Stream;
+ use std::collections::hash_map::Entry::{Occupied, Vacant};
+ use std::collections::HashMap;
+ use yansi::Paint;
+@@ -158,7 +157,7 @@
+     }
+ 
+     let head_commit_index = graph.indices.get(&graph.head.oid).copied();
+-    let color_enabled = enable_color_output(settings.colored);
++    let color_enabled = settings.colored;
+     let hash_color = if color_enabled {
+         Some(HASH_COLOR)
+     } else {
+@@ -572,19 +571,6 @@
+ 
+ fn write_colored_char(out: &mut String, character: char, color: u8) {
+     out.push_str(&Paint::fixed(color, character).to_string());
+-}
+-
+-fn enable_color_output(requested: bool) -> bool {
+-    let enabled =
+-        requested && atty::is(Stream::Stdout) && (!cfg!(windows) || Paint::enable_windows_ascii());
+-
+-    if enabled {
+-        Paint::enable();
+-        true
+-    } else {
+-        Paint::disable();
+-        false
+-    }
+ }
+ 
+ enum Occ {
+
+
+=== 错误 ===
+2025-09-21T19:12:57.746727Z ERROR codex_core::exec: exec error: No such file or directory (os error 2)
+
+=== 最终状态 ===
+返回码: 0
+状态: ✅ 执行成功

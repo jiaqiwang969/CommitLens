@@ -3988,49 +3988,13 @@ class SboxgenGUI:
                 self._draw_interactive_graph_fallback(canvas, data)
 
     def _draw_interactive_graph_perfect(self, canvas: tk.Canvas, data: dict):
-        """完美渲染方案 - 通过 SVG 实现 git-graph 的线条效果"""
-        import subprocess
-        import xml.etree.ElementTree as ET
-        import re
+        """完美渲染方案 - 直接使用 fallback (含曲线渲染)
 
-        print("[DEBUG] Entering _draw_interactive_graph_perfect")
-        canvas.delete('all')
-        nodes = data.get('nodes', [])
-
-        if not nodes:
-            print("[DEBUG] No nodes, returning")
-            return
-
-        # 获取仓库路径和限制数量
-        workspace = self._resolve_workspace_dir()
-        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
-        repo = workspace / project
-
-        print(f"[DEBUG] Using repo: {repo}")
-
-        # 尝试生成 SVG
-        try:
-            bin_path = self._ensure_git_graph_bin()
-            limit = len(nodes)
-
-            # 生成 SVG
-            result = subprocess.run(
-                [bin_path, "--svg", "-n", str(limit)],
-                cwd=str(repo),
-                capture_output=True,
-                text=True,
-                env=self._spawn_env()
-            )
-
-            if result.returncode == 0 and result.stdout:
-                # 解析并渲染 SVG
-                self._render_svg_to_canvas(canvas, result.stdout, nodes)
-                return
-        except Exception as e:
-            print(f"[igraph] SVG generation failed: {e}")
-
-        # 如果 SVG 失败，使用增强的原有方法
-        self._draw_interactive_graph_safe_enhanced(canvas, data)
+        注：新版 git-graph 不支持 --svg，直接使用 fallback 渲染
+        fallback 已经包含贝塞尔曲线渲染功能
+        """
+        # 直接使用 fallback，它已经有完整的曲线渲染功能
+        self._draw_interactive_graph_fallback(canvas, data)
 
     def _render_svg_to_canvas(self, canvas: tk.Canvas, svg_content: str, nodes_data: list):
         """将 SVG 内容渲染到 Canvas，实现完美的线条效果"""
@@ -4393,62 +4357,90 @@ class SboxgenGUI:
         canvas.bind('<Motion>', _on_motion)
 
     def _draw_interactive_graph_fallback(self, canvas: tk.Canvas, data: dict):
-        """原始的渲染实现（备份）"""
+        """原始的渲染实现（备份）- 改进版"""
         canvas.delete('all')
         nodes = data.get('nodes', [])
         edges = data.get('edges', [])
         n = len(nodes)
         if n == 0:
             return
-        # Layout params
+
+        # Layout params - 缩小列距离
         y_step = 28
-        lane_dx = 90
+        lane_dx = 20  # 从 50 减小到 20，进一步缩小列之间的距离
         x_offset = 80
         y_offset = 24
+
         # Dark theme colors (aligned with existing palette)
         text_color = '#E0E0E0'
         grid_color = '#3a3f44'
-        # Build dict idx->node
-        idx_map = {nd['idx']: nd for nd in nodes}
+
+        # Git-graph 风格的颜色列表（按列分配）
+        branch_colors = [
+            '#2196F3',  # Blue (main branch)
+            '#4CAF50',  # Green
+            '#FF9800',  # Orange
+            '#9C27B0',  # Purple
+            '#F44336',  # Red
+            '#795548',  # Brown
+            '#607D8B',  # Blue Grey
+            '#E91E63',  # Pink
+            '#00BCD4',  # Cyan
+            '#FFC107',  # Amber
+        ]
+
+        # Build dict idx->node and assign colors by column
+        idx_map = {}
+        column_colors = {}  # 记录每列的颜色
+
+        for nd in nodes:
+            idx_map[nd['idx']] = nd
+            col = nd.get('column', 0)
+            # 为每个列分配颜色
+            if col not in column_colors:
+                column_colors[col] = branch_colors[col % len(branch_colors)]
+            # 给节点分配颜色
+            nd['branch_color'] = column_colors[col]
+
         # compute max column
         max_col = max((nd.get('column',0) for nd in nodes), default=0)
+
         # faint row guides
         for i in range(n):
-            y = y_offset + (n-1-i)*y_step
+            # nodes现在已经是从最早开始的顺序（因为使用了--reverse）
+            y = y_offset + i * y_step
             canvas.create_line(0, y, x_offset + (max_col+1)*lane_dx + 800, y, fill=grid_color)
+
         # Draw edges with curves for branch/merge
         for e in edges:
             a = idx_map.get(e['from'])
             b = idx_map.get(e['to'])
             if not a or not b:
                 continue
+
             x1 = x_offset + a.get('column',0)*lane_dx
-            y1 = y_offset + (n-1-a['idx'])*y_step
+            # 正向时间线：直接使用索引
+            y1 = y_offset + a['idx']*y_step
             x2 = x_offset + b.get('column',0)*lane_dx
-            y2 = y_offset + (n-1-b['idx'])*y_step
-            color = e.get('color') or '#90a4ae'
+            y2 = y_offset + b['idx']*y_step
+
+            # 使用源节点的分支颜色
+            color = a.get('branch_color', '#90a4ae')
 
             # Check if columns are different (branch/merge)
             col1 = a.get('column', 0)
             col2 = b.get('column', 0)
 
-            # DEBUG: Print edge information
-            print(f"[DEBUG] Edge from {a['idx']} to {b['idx']}: col1={col1}, col2={col2}, color={color}")
-
             if col1 == col2:
                 # Same column - straight line
-                print(f"  -> Drawing straight line")
                 canvas.create_line(x1, y1, x2, y2, fill=color, width=2)
             else:
-                # Different columns - draw smooth curve with BRIGHT COLOR
-                print(f"  -> Drawing CURVE with bright color!")
-                # Use bright color for curves so they're visible
-                curve_color = '#FF5722'  # Bright orange-red for curves
+                # Different columns - draw smooth curve
                 # Create bezier curve points
                 points = []
 
                 # Control point for smooth curve
-                if y1 < y2:  # Going down (newer to older in reversed display)
+                if y1 < y2:  # Going down (parent to child in normal order)
                     # Branch out curve
                     ctrl_x = x1
                     ctrl_y = y1 + (y2 - y1) * 0.3
@@ -4481,18 +4473,17 @@ class SboxgenGUI:
                         py = (1-t2)**2 * mid_y + 2*(1-t2)*t2 * ctrl2_y + t2**2 * y2
                     points.extend([px, py])
 
-                # Draw the curve with BRIGHT COLOR
+                # Draw the curve with branch color
                 if len(points) >= 4:
                     canvas.create_line(
                         points,
-                        fill=curve_color,  # Use bright curve color
-                        width=3,  # Thicker line for visibility
+                        fill=color,  # Use branch color for curve
+                        width=2,  # Standard width
                         smooth=True,
                         splinesteps=10,
                         capstyle=tk.ROUND,
-                        tags="curve"  # Tag for debugging
+                        tags="curve"
                     )
-                    print(f"  -> CURVE DRAWN with color {curve_color}")
         # Draw nodes
         self._igraph_hitboxes = []
         self._igraph_nodes_xy = []
@@ -4507,11 +4498,14 @@ class SboxgenGUI:
         self._igraph_clear_label(canvas)
         for nd in nodes:
             x = x_offset + nd.get('column',0)*lane_dx
-            y = y_offset + (n-1-nd['idx'])*y_step
+            # 正向时间线：直接使用索引
+            y = y_offset + nd['idx']*y_step
             r = 5
-            fill = nd.get('fill') or (nd.get('color') or '#007acc')
-            outline = nd.get('outline') or (nd.get('color') or '#007acc')
-            canvas.create_oval(x-r, y-r, x+r, y+r, fill=fill, outline=outline)
+            # 使用分支颜色
+            branch_color = nd.get('branch_color', '#007acc')
+            fill = nd.get('fill') or branch_color
+            outline = nd.get('outline') or branch_color
+            canvas.create_oval(x-r, y-r, x+r, y+r, fill=fill, outline=outline, width=2)
             bbox = (x-8, y-8, x+300, y+12)
             self._igraph_hitboxes.append((bbox, nd))
             self._igraph_nodes_xy.append((x, y, r, nd))
@@ -4590,24 +4584,28 @@ class SboxgenGUI:
         import subprocess, re, hashlib
         # resolve binary first
         bin_path = self._ensure_git_graph_bin()
-        # derive limit
-        lim = 150
+        # 获取足够多的commits以确保从第一个commit开始
+        lim = 10000  # 默认获取大量commits
         if effective_limit is not None:
             try:
-                lim = int(effective_limit)
+                # 使用用户指定的限制，但确保至少1000个
+                lim = max(int(effective_limit), 1000)
             except Exception:
-                lim = 150
+                lim = 10000
         else:
             try:
-                lim = int(self.limit_var.get()) if hasattr(self, 'limit_var') else 150
+                # 从UI获取，但至少1000个
+                ui_lim = int(self.limit_var.get()) if hasattr(self, 'limit_var') else 150
+                lim = max(ui_lim, 1000)
             except Exception:
-                lim = 150
+                lim = 10000
         if max_commits is not None:
+            # max_commits用作最大值限制
             lim = min(lim, int(max_commits))
 
-        # run ascii output
+        # run ascii output - 使用 --reverse 从最早的commit开始
         proc = subprocess.run(
-            [bin_path, "--style", "ascii", "--no-color", "--no-pager", "-n", str(lim)],
+            [bin_path, "--style", "ascii", "--no-color", "--no-pager", "--reverse", "-n", str(lim)],
             cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env()
         )
         out = proc.stdout or ""
@@ -4768,12 +4766,10 @@ class SboxgenGUI:
         id_to_idx = {nd["id"]: i for i, nd in enumerate(nodes)}
         edges: list[dict] = []
 
-        # DEBUG: Print parent relationships
-        print(f"[DEBUG] Building edges for {len(nodes)} nodes")
+        # Build edges by parent indices
 
         for i, parents in enumerate(parent_lists):
             child_node = nodes[i]
-            print(f"[DEBUG] Node {i} ({child_node['short']}) has parents: {parents[:2] if parents else 'none'}")
 
             for p in parents:
                 j = id_to_idx.get(p)
@@ -4789,17 +4785,13 @@ class SboxgenGUI:
                     edge = {"from": i, "to": j, "color": edge_color or "#90a4ae"}
                     edges.append(edge)
 
-                    if from_col != to_col:
-                        print(f"  -> CURVE EDGE: {child_node['short']} (col {from_col}) -> {parent_node['short']} (col {to_col})")
-                    else:
-                        print(f"  -> straight edge: {child_node['short']} -> {parent_node['short']}")
+                    # Edge created between columns
                 else:
-                    # Parent not in displayed nodes - this breaks the connection!
-                    print(f"  -> WARNING: Parent {p[:7]} not found in nodes!")
+                    # Parent not in displayed nodes
+                    pass
 
-        # CRITICAL FIX: Find and add missing branch-to-main connections
+        # Find and add missing branch-to-main connections
         # Look for the specific pattern where branches need to connect to main line
-        print(f"[DEBUG] Checking for branch-to-main connections...")
 
         # Special case: If we have commits in column 1 (branch) that need to connect to column 0 (main)
         # This happens at merge/branch points
@@ -4821,7 +4813,6 @@ class SboxgenGUI:
                         has_outgoing = any(e["from"] == i for e in edges)
 
                         if not has_outgoing and not edge_exists:
-                            print(f"  -> Adding branch-to-main connection: {node['short']} (col 1) -> {next_node['short']} (col 0)")
                             edges.append({
                                 "from": i,
                                 "to": j,
@@ -4829,7 +4820,6 @@ class SboxgenGUI:
                             })
                         break  # Only connect to the first main line commit
 
-        print(f"[DEBUG] Total edges created: {len(edges)}")
         meta = {
             "produced_by": "ascii",
             "repo": str(repo),

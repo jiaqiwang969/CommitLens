@@ -3405,6 +3405,7 @@ class SboxgenGUI:
         toolbar.grid(row=0, column=0, sticky="ew")
 
         ttk.Button(toolbar, text="刷新", command=self._graph_refresh_threaded).pack(side=tk.LEFT)
+        ttk.Button(toolbar, text="用Rust生成", command=self._graph_render_via_rust_threaded).pack(side=tk.LEFT, padx=(8, 0))
         ttk.Button(toolbar, text="放大", command=lambda: self._graph_zoom(1.1)).pack(side=tk.LEFT, padx=(8, 0))
         ttk.Button(toolbar, text="缩小", command=lambda: self._graph_zoom(1/1.1)).pack(side=tk.LEFT)
         ttk.Button(toolbar, text="适配", command=self._graph_fit).pack(side=tk.LEFT)
@@ -3440,6 +3441,87 @@ class SboxgenGUI:
 
         # initial draw a bit later
         self.root.after(300, self._graph_refresh_threaded)
+
+    def _graph_render_via_rust_threaded(self):
+        threading.Thread(target=self._graph_render_via_rust, daemon=True).start()
+
+    def _graph_render_via_rust(self):
+        """Use Rust cdylib to render SVG, convert to PNG, and display in canvas."""
+        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+        repo = workspace / project
+        if not (repo / ".git").exists():
+            self._append_log(f"[graph] 未找到项目仓库: {repo}")
+            return
+        # Locate dylib
+        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        if not Path(dylib).exists():
+            # try build
+            try:
+                self._append_log("[graph] 构建 Rust FFI…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+            except Exception as e:
+                self._append_log(f"[graph] 构建失败: {e}")
+        if not Path(dylib).exists():
+            self._append_log(f"[graph] 未找到动态库: {dylib}")
+            return
+        # Call FFI
+        import ctypes as C
+        try:
+            lib = C.CDLL(dylib)
+            lib.gg_render_svg.argtypes = [C.c_char_p, C.c_size_t, C.c_bool]
+            lib.gg_render_svg.restype = C.c_void_p
+            lib.gg_free_string.argtypes = [C.c_void_p]
+            lib.gg_free_string.restype = None
+        except Exception as e:
+            self._append_log(f"[graph] 加载 FFI 失败: {e}")
+            return
+        path_b = str(repo).encode("utf-8")
+        ptr = lib.gg_render_svg(path_b, C.c_size_t(0), C.c_bool(False))
+        if not ptr:
+            self._append_log("[graph] FFI 返回空 SVG（失败）")
+            return
+        try:
+            svg_bytes = C.string_at(ptr)
+        finally:
+            lib.gg_free_string(ptr)
+        try:
+            cache = workspace / ".graph_cache"
+            cache.mkdir(parents=True, exist_ok=True)
+            svg_path = cache / "graph.svg"
+            png_path = cache / "graph.png"
+            with open(svg_path, "wb") as f:
+                f.write(svg_bytes)
+        except Exception as e:
+            self._append_log(f"[graph] 写入 SVG 失败: {e}")
+            return
+        # Convert SVG -> PNG (prefer sips on macOS; else try rsvg-convert)
+        try:
+            if sys.platform == "darwin":
+                subprocess.run(["sips", "-s", "format", "png", str(svg_path), "--out", str(png_path)], check=True)
+            else:
+                subprocess.run(["rsvg-convert", "-f", "png", "-o", str(png_path), str(svg_path)], check=True)
+        except Exception as e:
+            self._append_log(f"[graph] SVG 转 PNG 失败: {e}")
+            return
+        # Display on canvas
+        try:
+            from PIL import Image, ImageTk  # optional; fallback to tk.PhotoImage if not present
+            img = Image.open(png_path)
+            self._graph_imgtk = ImageTk.PhotoImage(img)
+            self.graph_canvas.delete("all")
+            self.graph_canvas.create_image(0, 0, image=self._graph_imgtk, anchor="nw")
+            self.graph_canvas.configure(scrollregion=(0, 0, img.width, img.height))
+            self._append_log(f"[graph] 已生成并显示 Rust 图：{png_path}")
+        except Exception:
+            try:
+                self._graph_imgtk = tk.PhotoImage(file=str(png_path))
+                self.graph_canvas.delete("all")
+                self.graph_canvas.create_image(0, 0, image=self._graph_imgtk, anchor="nw")
+                self.graph_canvas.configure(scrollregion=(0, 0, self._graph_imgtk.width(), self._graph_imgtk.height()))
+                self._append_log(f"[graph] 已显示 Rust 图：{png_path}")
+            except Exception as e2:
+                self._append_log(f"[graph] 显示 PNG 失败: {e2}")
 
     def _graph_zoom(self, factor: float):
         self._graph_scale = max(0.2, min(3.0, self._graph_scale * factor))

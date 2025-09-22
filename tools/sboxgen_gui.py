@@ -394,6 +394,26 @@ class SboxgenGUI:
         self.repo_var.trace_add("write", lambda *_: self._refresh_branches_threaded(update=False))
         self.mirror_var.trace_add("write", lambda *_: self._refresh_branches_threaded(update=False))
 
+    def _resolve_workspace_dir(self) -> Path:
+        """Resolve workspace directory with graceful fallbacks.
+        Order: user-provided -> .workspace -> workspace.
+        """
+        try:
+            candidates = []
+            raw = (self.task_workspace_var.get() if hasattr(self, 'task_workspace_var') else '') or ''
+            if raw.strip():
+                candidates.append(Path(raw.strip()))
+            candidates.extend([Path('.workspace'), Path('workspace')])
+            for c in candidates:
+                try:
+                    if c.exists():
+                        return c.resolve()
+                except Exception:
+                    pass
+            return Path('.workspace').resolve()
+        except Exception:
+            return Path('.workspace')
+
     # ---------------- settings ----------------
     def _load_settings(self):
         try:
@@ -7179,22 +7199,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    def _resolve_workspace_dir(self) -> Path:
-        """Resolve workspace directory with graceful fallbacks.
-        Order: user-provided -> .workspace -> workspace.
-        """
-        try:
-            candidates = []
-            raw = (self.task_workspace_var.get() if hasattr(self, 'task_workspace_var') else '') or ''
-            if raw.strip():
-                candidates.append(Path(raw.strip()))
-            candidates.extend([Path('.workspace'), Path('workspace')])
-            for c in candidates:
-                try:
-                    if c.exists():
-                        return c.resolve()
-                except Exception:
-                    pass
-            return Path('.workspace').resolve()
-        except Exception:
-            return Path('.workspace')

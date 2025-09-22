@@ -19,6 +19,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, scrolledtext, messagebox
 import queue
 from typing import Optional, List, Dict
+import re
 import platform as _plat
 
 # Import the isolated task executor
@@ -159,12 +160,14 @@ class SboxgenGUI:
         tab_run = ttk.Frame(nb, padding=12)
         tab_codex_output = ttk.Frame(nb, padding=12)
         tab_task_executor = ttk.Frame(nb, padding=12)  # 新增任务执行标签页
+        tab_graph = ttk.Frame(nb, padding=12)  # 新增 Graph 标签页（原生绘制）
         nb.add(tab_basic, text="基本设置")
         nb.add(tab_codex, text="Codex 与参数")
         nb.add(tab_readme, text="README 模板")
         nb.add(tab_run, text="执行与日志")
         nb.add(tab_codex_output, text="Codex Output")
         nb.add(tab_task_executor, text="任务执行")  # 添加到标签栏
+        nb.add(tab_graph, text="Graph")  # 任务图（原生绘制）
 
         # --- basic tab ---
         for i in range(8):
@@ -376,6 +379,7 @@ class SboxgenGUI:
 
         # --- task executor tab ---
         self._build_task_executor_tab(tab_task_executor)
+        self._build_graph_tab(tab_graph)
 
     def _bind_events(self):
         self.repo_var.trace_add("write", lambda *_: self._maybe_update_mirror())
@@ -3327,6 +3331,270 @@ class SboxgenGUI:
                 subprocess.run(["xdg-open", str(svg)])
         except Exception as e:
             messagebox.showerror("错误", f"无法打开: {e}")
+
+    # ---------------- Graph Tab (Native Tk Canvas) ----------------
+    def _build_graph_tab(self, tab):
+        tab.rowconfigure(1, weight=1)
+        tab.columnconfigure(0, weight=1)
+
+        toolbar = ttk.Frame(tab)
+        toolbar.grid(row=0, column=0, sticky="ew")
+
+        ttk.Button(toolbar, text="刷新", command=self._graph_refresh_threaded).pack(side=tk.LEFT)
+        ttk.Button(toolbar, text="放大", command=lambda: self._graph_zoom(1.1)).pack(side=tk.LEFT, padx=(8, 0))
+        ttk.Button(toolbar, text="缩小", command=lambda: self._graph_zoom(1/1.1)).pack(side=tk.LEFT)
+        ttk.Button(toolbar, text="适配", command=self._graph_fit).pack(side=tk.LEFT)
+        self.graph_show_tags = tk.BooleanVar(value=True)
+        self.graph_show_branches = tk.BooleanVar(value=True)
+        ttk.Checkbutton(toolbar, text="显示分支", variable=self.graph_show_branches, command=self._graph_refresh_threaded).pack(side=tk.LEFT, padx=(12, 0))
+        ttk.Checkbutton(toolbar, text="显示标签", variable=self.graph_show_tags, command=self._graph_refresh_threaded).pack(side=tk.LEFT)
+
+        container = ttk.Frame(tab)
+        container.grid(row=1, column=0, sticky="nsew")
+        container.rowconfigure(0, weight=1)
+        container.columnconfigure(0, weight=1)
+
+        self.graph_canvas = tk.Canvas(container, background="#ffffff")
+        self.graph_canvas.grid(row=0, column=0, sticky="nsew")
+        yscroll = ttk.Scrollbar(container, orient="vertical", command=self.graph_canvas.yview)
+        yscroll.grid(row=0, column=1, sticky="ns")
+        xscroll = ttk.Scrollbar(container, orient="horizontal", command=self.graph_canvas.xview)
+        xscroll.grid(row=1, column=0, sticky="ew")
+        self.graph_canvas.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
+
+        # basic zoom/pan state
+        self._graph_scale = 1.0
+        self._graph_origin = (0, 0)
+        self._graph_nodes = []  # list of dicts with coords+metadata
+        self._graph_selected_sha = None
+
+        self.graph_canvas.bind("<Button-1>", self._graph_on_click)
+        self.graph_canvas.bind("<ButtonPress-2>", self._graph_on_pan_start)
+        self.graph_canvas.bind("<B2-Motion>", self._graph_on_pan_move)
+        # wheel zoom
+        self.graph_canvas.bind("<MouseWheel>", self._graph_on_wheel)
+
+        # initial draw a bit later
+        self.root.after(300, self._graph_refresh_threaded)
+
+    def _graph_zoom(self, factor: float):
+        self._graph_scale = max(0.2, min(3.0, self._graph_scale * factor))
+        self._graph_redraw()
+
+    def _graph_fit(self):
+        self._graph_scale = 1.0
+        self._graph_origin = (0, 0)
+        self._graph_redraw()
+
+    def _graph_on_wheel(self, event):
+        try:
+            if event.delta > 0:
+                self._graph_zoom(1.1)
+            else:
+                self._graph_zoom(1/1.1)
+        except Exception:
+            pass
+
+    def _graph_on_pan_start(self, event):
+        self._pan_start = (event.x, event.y)
+        self._pan_origin = self._graph_origin
+
+    def _graph_on_pan_move(self, event):
+        try:
+            dx = (event.x - self._pan_start[0])
+            dy = (event.y - self._pan_start[1])
+            self._graph_origin = (self._pan_origin[0] + dx, self._pan_origin[1] + dy)
+            self._graph_redraw()
+        except Exception:
+            pass
+
+    def _graph_on_click(self, event):
+        x = (event.x - self._graph_origin[0]) / self._graph_scale
+        y = (event.y - self._graph_origin[1]) / self._graph_scale
+        for n in self._graph_nodes:
+            bx0, by0, bx1, by1 = n.get("bbox", (0, 0, 0, 0))
+            if bx0 <= x <= bx1 and by0 <= y <= by1:
+                # select in task list if possible
+                tid = n.get("task_id")
+                if tid:
+                    self._select_task_in_list(tid)
+                # highlight and redraw
+                self._graph_selected_sha = n.get("sha")
+                self._graph_redraw()
+                break
+
+    def _select_task_in_list(self, task_id: str):
+        try:
+            for item in self.task_tree.get_children():
+                if self.task_tree.item(item, "text") == task_id:
+                    self.task_tree.selection_set(item)
+                    self.task_tree.see(item)
+                    break
+        except Exception:
+            pass
+
+    def _graph_refresh_threaded(self):
+        threading.Thread(target=self._graph_refresh, daemon=True).start()
+
+    def _graph_refresh(self):
+        # Build commit list from .workspace/<project>
+        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+        repo = workspace / project
+        if not (repo / ".git").exists():
+            self._append_log(f"[graph] 未找到项目仓库: {repo}")
+            return
+        # branch prefer main
+        branch = "main"
+        try:
+            rc = subprocess.run(["git", "show-ref", "--verify", "refs/heads/main"], cwd=str(repo))
+            if rc.returncode != 0:
+                cp = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True)
+                b = (cp.stdout or "").strip() or "HEAD"
+                branch = b
+        except Exception:
+            pass
+
+        # Get list of commits first-parent reversed (oldest->newest)
+        try:
+            cp = subprocess.run(["git", "rev-list", "--first-parent", "--reverse", branch], cwd=str(repo), capture_output=True, text=True, check=True)
+            shas = [ln.strip() for ln in cp.stdout.splitlines() if ln.strip()]
+        except subprocess.CalledProcessError as e:
+            self._append_log(f"[graph] 获取提交失败: {e}")
+            return
+
+        # Build ref maps (branches/tags pointing exactly to sha)
+        heads_map = {}
+        tags_map = {}
+        try:
+            cp = subprocess.run(["git", "show-ref", "--heads", "--tags"], cwd=str(repo), capture_output=True, text=True, check=True)
+            for ln in cp.stdout.splitlines():
+                parts = ln.strip().split()
+                if len(parts) != 2:
+                    continue
+                sha, ref = parts
+                if ref.startswith("refs/heads/"):
+                    heads_map.setdefault(sha, []).append(ref[len("refs/heads/"):])
+                elif ref.startswith("refs/tags/"):
+                    tags_map.setdefault(sha, []).append(ref[len("refs/tags/"):])
+        except Exception:
+            pass
+
+        # Prepare per-commit info
+        nodes = []
+        tasks = self.task_executor.get_all_tasks()
+        id_set = {t["id"] for t in tasks}
+        pat = re.compile(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?")
+        for idx, sha in enumerate(shas, start=1):
+            try:
+                cp = subprocess.run(["git", "show", "-s", f"--format=%h%x01%H%x01%as%x01%s", sha], cwd=str(repo), capture_output=True, text=True, check=True)
+                short, full, date, subject = (cp.stdout.strip().split("\x01", 3) + [""]*4)[:4]
+            except Exception:
+                short, full, date, subject = sha[:7], sha, "", ""
+            task_id = None
+            m = pat.match(subject or "")
+            if m:
+                tid = m.group(1)
+                if tid in id_set:
+                    task_id = tid
+            brs = heads_map.get(sha, [])
+            tgs = tags_map.get(sha, [])
+            nodes.append({
+                "sha": full,
+                "short": short,
+                "date": date,
+                "subject": subject,
+                "branches": brs,
+                "tags": tgs,
+                "task_id": task_id,
+                "index": idx,
+            })
+
+        self._graph_data = {"repo": str(repo), "branch": branch, "nodes": nodes}
+        self.root.after(0, self._graph_redraw)
+
+    def _graph_redraw(self):
+        c = self.graph_canvas
+        c.delete("all")
+        data = getattr(self, '_graph_data', None)
+        if not data:
+            c.create_text(20, 20, anchor="nw", text="未加载图（点击刷新）", fill="#666")
+            return
+        nodes = data["nodes"]
+        show_br = bool(self.graph_show_branches.get())
+        show_tag = bool(self.graph_show_tags.get())
+
+        margin_top = 30
+        x_line = 120
+        y_step = 40
+        r = 6
+        scale = self._graph_scale
+        ox, oy = self._graph_origin
+
+        # title
+        c.create_text(10+ox, 8+oy, anchor="nw", text=f"branch: {data['branch']}  commits: {len(nodes)}", fill="#444")
+
+        # main line
+        y0 = margin_top
+        y1 = margin_top + y_step * max(0, len(nodes)-1)
+        c.create_line(x_line*scale+ox, y0*scale+oy, x_line*scale+ox, y1*scale+oy, fill="#999", width=max(1, int(2*scale)))
+
+        # nodes
+        self._graph_nodes = []
+        sel_sha = getattr(self, '_graph_selected_sha', None)
+
+        for i, n in enumerate(nodes):
+            y = margin_top + i * y_step
+            x = x_line
+            fill = "#007acc" if n.get("sha") == sel_sha else "#222222"
+            c.create_oval((x-r)*scale+ox, (y-r)*scale+oy, (x+r)*scale+ox, (y+r)*scale+oy, fill=fill, outline="")
+
+            # text line
+            idx = n.get("index")
+            short = n.get("short", "")
+            subj = (n.get("subject", "") or "").splitlines()[0]
+            subj = (subj[:80] + "…") if len(subj) > 80 else subj
+            date = n.get("date", "")
+            tid = n.get("task_id") or ""
+            left = x + 16
+            text = f"[{idx:03d}] {short} {subj} {date}"
+            if tid:
+                text = f"{tid} | " + text
+            c.create_text(left*scale+ox, y*scale+oy, anchor="w", text=text, fill="#111", font=("", max(8, int(10*scale))))
+
+            # badges for branches/tags
+            badge_x = left
+            if show_br:
+                for br in n.get("branches", []):
+                    badge_x = self._draw_badge(c, badge_x, y+12, br, color="#2d7d2d", scale=scale, ox=ox, oy=oy)
+            if show_tag:
+                for tg in n.get("tags", []):
+                    badge_x = self._draw_badge(c, badge_x, y+12, tg, color="#9c27b0", scale=scale, ox=ox, oy=oy)
+
+            # hit bbox (unscaled)
+            bbox = (x-10, y-10, x+500, y+22)
+            meta = dict(n)
+            meta["bbox"] = bbox
+            self._graph_nodes.append(meta)
+
+        # scroll region
+        width = 1600
+        height = (margin_top + y_step * (len(nodes)+1))
+        c.configure(scrollregion=(0, 0, width*scale, height*scale))
+
+    def _draw_badge(self, canvas: tk.Canvas, x: float, y: float, text: str, color: str, scale: float, ox: float, oy: float):
+        pad_x = 6
+        pad_y = 2
+        tw = max(1, len(text)) * 6
+        w = (tw + pad_x*2)
+        h = (12 + pad_y*2)
+        x0 = (x)*scale+ox
+        y0 = (y)*scale+oy
+        x1 = (x+w)*scale+ox
+        y1 = (y+h)*scale+oy
+        canvas.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
+        canvas.create_text((x+pad_x)*scale+ox, (y+pad_y-1)*scale+oy, anchor="nw", text=text, fill="#ffffff", font=("", max(6, int(8*scale))))
+        return x + w + 6
 
     def _load_saved_or_default_prompt(self):
         """优先加载保存的自定义prompt，如果不存在则加载默认模板"""

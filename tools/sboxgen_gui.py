@@ -3404,15 +3404,7 @@ class SboxgenGUI:
         toolbar = ttk.Frame(tab)
         toolbar.grid(row=0, column=0, sticky="ew")
 
-        ttk.Button(toolbar, text="刷新", command=self._graph_refresh_threaded).pack(side=tk.LEFT)
-        ttk.Button(toolbar, text="用Rust生成", command=self._graph_render_via_rust_threaded).pack(side=tk.LEFT, padx=(8, 0))
-        ttk.Button(toolbar, text="放大", command=lambda: self._graph_zoom(1.1)).pack(side=tk.LEFT, padx=(8, 0))
-        ttk.Button(toolbar, text="缩小", command=lambda: self._graph_zoom(1/1.1)).pack(side=tk.LEFT)
-        ttk.Button(toolbar, text="适配", command=self._graph_fit).pack(side=tk.LEFT)
-        self.graph_show_tags = tk.BooleanVar(value=True)
-        self.graph_show_branches = tk.BooleanVar(value=True)
-        ttk.Checkbutton(toolbar, text="显示分支", variable=self.graph_show_branches, command=self._graph_refresh_threaded).pack(side=tk.LEFT, padx=(12, 0))
-        ttk.Checkbutton(toolbar, text="显示标签", variable=self.graph_show_tags, command=self._graph_refresh_threaded).pack(side=tk.LEFT)
+        ttk.Button(toolbar, text="用Rust生成", command=self._graph_render_via_rust_threaded).pack(side=tk.LEFT)
 
         container = ttk.Frame(tab)
         container.grid(row=1, column=0, sticky="nsew")
@@ -3427,20 +3419,11 @@ class SboxgenGUI:
         xscroll.grid(row=1, column=0, sticky="ew")
         self.graph_canvas.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
 
-        # basic zoom/pan state
-        self._graph_scale = 1.0
-        self._graph_origin = (0, 0)
-        self._graph_nodes = []  # list of dicts with coords+metadata
-        self._graph_selected_sha = None
+        # 用 Rust 生成的是位图，不需要原生绘制的缩放/拖拽逻辑
+        self._graph_imgtk = None
 
-        self.graph_canvas.bind("<Button-1>", self._graph_on_click)
-        self.graph_canvas.bind("<ButtonPress-2>", self._graph_on_pan_start)
-        self.graph_canvas.bind("<B2-Motion>", self._graph_on_pan_move)
-        # wheel zoom
-        self.graph_canvas.bind("<MouseWheel>", self._graph_on_wheel)
-
-        # initial draw a bit later
-        self.root.after(300, self._graph_refresh_threaded)
+        # 初次自动用 Rust 生成
+        self.root.after(300, self._graph_render_via_rust_threaded)
 
     def _graph_render_via_rust_threaded(self):
         threading.Thread(target=self._graph_render_via_rust, daemon=True).start()

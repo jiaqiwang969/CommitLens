@@ -1529,6 +1529,11 @@ class SboxgenGUI:
         if not work_dir.is_dir():
             work_dir = work_dir.parent
 
+        # 记录当前命令与工作目录，以支持错误重试
+        self._current_codex_command = command
+        self._current_codex_work_dir = work_dir
+        self._codex_error_prompt_active = False
+
         # 启动监控（如果还没有）
         output_file = work_dir / "codex_output.txt"
         if not self.codex_monitoring:
@@ -1812,6 +1817,12 @@ class SboxgenGUI:
                 # 同时检查 status 和 error 文件
                 self._check_status_and_error_files(work_dir)
 
+                # 统一错误检测（尾部）
+                try:
+                    self._maybe_prompt_codex_api_error(work_dir)
+                except Exception:
+                    pass
+
             except Exception as e:
                 print(f"监控文件出错: {e}")
 
@@ -1878,6 +1889,94 @@ class SboxgenGUI:
     def _update_status_display(self, status_text):
         """更新状态显示"""
         self.codex_status_label.config(text=f"状态: {status_text}")
+
+    def _maybe_prompt_codex_api_error(self, work_dir: Path):
+        """检查 Codex 输出/错误文件尾部是否出现 API/网络错误，若检测到则弹框询问。"""
+        if getattr(self, '_codex_error_prompt_active', False):
+            return
+        # 读取 error 文件优先；否则读取 output 尾部
+        try:
+            error_file = work_dir / 'codex_error.txt'
+            output_file = work_dir / 'codex_output.txt'
+            tail_text = ''
+            if error_file.exists():
+                tail_text = error_file.read_text(encoding='utf-8', errors='ignore')
+            elif output_file.exists():
+                txt = output_file.read_text(encoding='utf-8', errors='ignore')
+                tail_text = '\n'.join(txt.splitlines()[-30:])
+        except Exception:
+            tail_text = ''
+        if not tail_text:
+            return
+        hay = tail_text.lower()
+        patterns = [
+            'stream error', 'service unavailable', 'temporarily unavailable',
+            'rate limit', 'too many requests', 'deadline exceeded', 'timed out', 'timeout',
+            'network is unreachable', 'connection reset', 'connection refused', 'bad gateway',
+            'temporary failure in name resolution', 'invalid api key', 'unauthorized', 'tls',
+        ]
+        # 排除一些非致命提示
+        excludes = ['no such file or directory', 'exec error', 'os error', 'not found']
+        if any(p in hay for p in patterns) and not any(x in hay for x in excludes):
+            self._codex_error_prompt_active = True
+            self.root.after(0, lambda txt=tail_text: self._prompt_codex_error_decision(txt))
+
+    def _prompt_codex_error_decision(self, tail_text: str):
+        from tkinter import messagebox
+        msg = (
+            "检测到疑似网络/API 错误。\n\n"
+            "是否要重试当前命令？\n\n"
+            "Yes = 重试当前命令\nNo = 继续监控（忽略本次错误）\nCancel = 停止执行\n\n"
+            "最近输出: \n" + tail_text[-500:]
+        )
+        ans = messagebox.askyesnocancel("检测到错误", msg)
+        self._codex_error_prompt_active = False
+        if ans is True:
+            # 重试当前 codex 命令
+            try:
+                self._stop_codex_execution()
+            except Exception:
+                pass
+            self.root.after(500, self._rerun_codex_command)
+        elif ans is False:
+            try:
+                self._append_log("用户选择：继续监控",)
+            except Exception:
+                pass
+        else:
+            try:
+                self._stop_codex_execution()
+            except Exception:
+                pass
+
+    def _rerun_codex_command(self):
+        """重跑最近一次 Codex 命令（在相同工作目录）。"""
+        try:
+            cmd = getattr(self, '_current_codex_command', '') or ''
+            work_dir = getattr(self, '_current_codex_work_dir', None)
+            if (not cmd) or (work_dir is None):
+                return
+            # 更新输入框显示（可选）
+            try:
+                self.codex_command_var.set(cmd)
+            except Exception:
+                pass
+            # 重新执行（沿用相同的工作目录与环境）
+            self.codex_exec_button.config(state="disabled")
+            self.codex_stop_button.config(state="normal")
+            self.codex_is_executing = True
+            if not self.codex_monitoring:
+                self._start_codex_monitoring()
+            self.codex_exec_thread = threading.Thread(
+                target=self._run_codex_command,
+                args=(f'codex exec --skip-git-repo-check --sandbox workspace-write --model gpt-5-codex-high "{cmd}"', work_dir),
+                daemon=True
+            )
+            self.codex_exec_thread.start()
+            self.codex_status_label.config(text="状态: 重新执行中...")
+            self._append_log("正在重试 Codex 命令...")
+        except Exception:
+            pass
 
     def _update_codex_from_monitor(self, content):
         """从监控线程更新显示"""

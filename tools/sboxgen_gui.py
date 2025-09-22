@@ -3588,15 +3588,16 @@ class SboxgenGUI:
             y1 = y_offset + (n-1-a['idx'])*y_step
             x2 = x_offset + b.get('column',0)*lane_dx
             y2 = y_offset + (n-1-b['idx'])*y_step
-            canvas.create_line(x1, y1, x2, y2, fill='#999999')
+            color = e.get('color') or '#999999'
+            canvas.create_line(x1, y1, x2, y2, fill=color)
         # Draw nodes and texts
         self._igraph_hitboxes = []
         for nd in nodes:
             x = x_offset + nd.get('column',0)*lane_dx
             y = y_offset + (n-1-nd['idx'])*y_step
             r = 5
-            fill = '#007acc' if not nd.get('is_merge') else '#ffffff'
-            outline = '#007acc'
+            fill = nd.get('fill') or (nd.get('color') or '#007acc')
+            outline = nd.get('outline') or (nd.get('color') or '#007acc')
             canvas.create_oval(x-r, y-r, x+r, y+r, fill=fill, outline=outline)
             subj = (nd.get('subject','') or '').split('\n')[0]
             if len(subj) > 60:

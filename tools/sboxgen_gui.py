@@ -3290,7 +3290,9 @@ class SboxgenGUI:
 
     # ---------------- Graph generation ----------------
     def _ensure_git_graph_bin(self) -> str:
-        """Locate or build git-graph; return executable path."""
+        """Locate or build git-graph; return executable path.
+        Order: env -> PATH -> workspace targets -> build workspace crates.
+        """
         import shutil, subprocess
         if getattr(self, '_git_graph_bin', None):
             return self._git_graph_bin
@@ -3304,22 +3306,43 @@ class SboxgenGUI:
         if exe:
             self._git_graph_bin = exe
             return exe
-        # 3) local build target
-        repo = Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")
-        cand = repo / "target/release/git-graph"
-        if cand.exists():
-            self._git_graph_bin = str(cand)
-            return str(cand)
-        # 4) attempt to build
-        try:
-            self._task_log("开始构建 git-graph（二进制不存在）", "info")
-            subprocess.run(["cargo", "build", "--release"], cwd=str(repo), check=True)
+        # 3) workspace candidates
+        ws = Path('.workspace').resolve()
+        candidates = [
+            ws / 'rust-project' / 'target' / 'release' / 'git-graph',
+            ws / 'rust-project' / 'target' / 'debug' / 'git-graph',
+            ws / 'rust-project' / 'rust-project-01' / 'target' / 'release' / 'git-graph',
+            ws / 'rust-project' / 'rust-project-01' / 'target' / 'debug' / 'git-graph',
+        ]
+        for cand in candidates:
             if cand.exists():
                 self._git_graph_bin = str(cand)
                 return str(cand)
+        # 4) try build top-level crate first
+        repo_top = ws / 'rust-project'
+        try:
+            if (repo_top / 'Cargo.toml').exists():
+                self._task_log("开始构建 git-graph（.workspace/rust-project）", "info")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(repo_top), check=True)
+                cand = repo_top / 'target' / 'release' / 'git-graph'
+                if cand.exists():
+                    self._git_graph_bin = str(cand)
+                    return str(cand)
         except Exception as e:
-            self._task_log(f"构建 git-graph 失败: {e}", "error")
-        raise RuntimeError("未找到 git-graph 可执行文件，且构建失败。请安装或修复 rust-project-01。")
+            self._task_log(f"构建 .workspace/rust-project 失败: {e}", "error")
+        # 5) fallback build rust-project-01
+        repo_legacy = ws / 'rust-project' / 'rust-project-01'
+        try:
+            if (repo_legacy / 'Cargo.toml').exists():
+                self._task_log("开始构建 git-graph（legacy rust-project-01）", "info")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(repo_legacy), check=True)
+                cand = repo_legacy / 'target' / 'release' / 'git-graph'
+                if cand.exists():
+                    self._git_graph_bin = str(cand)
+                    return str(cand)
+        except Exception as e:
+            self._task_log(f"构建 legacy 失败: {e}", "error")
+        raise RuntimeError("未找到 git-graph 可执行文件，且构建失败。请设置 SBOXGEN_GIT_GRAPH 或修复工作区。")
 
     def _parse_seq_from_id(self, task_id: str) -> int:
         try:
@@ -3622,6 +3645,9 @@ class SboxgenGUI:
         threading.Thread(target=self._interactive_graph_render, daemon=True).start()
 
     def _interactive_graph_render(self):
+        """在任务执行页渲染交互式 commit 图。
+        优先走 Rust FFI(JSON 布局)；失败则自动降级到 git-graph --json。
+        """
         # Fetch layout JSON via FFI
         workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
         project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
@@ -3631,6 +3657,7 @@ class SboxgenGUI:
             return
         import ctypes as C, json
         dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        use_cli_fallback = False
         if not Path(dylib).exists():
             try:
                 self._append_log("[igraph] 构建 Rust FFI…")
@@ -3638,32 +3665,92 @@ class SboxgenGUI:
             except Exception as e:
                 self._append_log(f"[igraph] 构建失败: {e}")
         if not Path(dylib).exists():
-            self._append_log(f"[igraph] 未找到动态库: {dylib}")
-            return
+            use_cli_fallback = True
+        else:
+            try:
+                lib = C.CDLL(dylib)
+                lib.gg_layout_json.argtypes = [C.c_char_p, C.c_size_t, C.c_bool]
+                lib.gg_layout_json.restype = C.c_void_p
+                lib.gg_free_string.argtypes = [C.c_void_p]
+                lib.gg_free_string.restype = None
+                ptr = lib.gg_layout_json(str(repo).encode('utf-8'), C.c_size_t(0), C.c_bool(False))
+                if not ptr:
+                    self._append_log('[igraph] FFI 返回空 JSON')
+                    use_cli_fallback = True
+                else:
+                    try:
+                        s = C.string_at(ptr).decode('utf-8')
+                    finally:
+                        lib.gg_free_string(ptr)
+                    try:
+                        data = json.loads(s)
+                        # Draw into exec_graph_canvas
+                        self._draw_interactive_graph(self.exec_graph_canvas, data)
+                        return
+                    except Exception as e:
+                        self._append_log(f"[igraph] JSON 解析失败: {e}")
+                        use_cli_fallback = True
+            except Exception as e:
+                self._append_log(f"[igraph] 加载 FFI 失败: {e}")
+                use_cli_fallback = True
+
+        # 降级：git-graph --json
         try:
-            lib = C.CDLL(dylib)
-            lib.gg_layout_json.argtypes = [C.c_char_p, C.c_size_t, C.c_bool]
-            lib.gg_layout_json.restype = C.c_void_p
-            lib.gg_free_string.argtypes = [C.c_void_p]
-            lib.gg_free_string.restype = None
+            bin_path = self._ensure_git_graph_bin()
         except Exception as e:
-            self._append_log(f"[igraph] 加载 FFI 失败: {e}")
-            return
-        ptr = lib.gg_layout_json(str(repo).encode('utf-8'), C.c_size_t(0), C.c_bool(False))
-        if not ptr:
-            self._append_log('[igraph] FFI 返回空 JSON')
+            self._append_log(f"[igraph] FFI 不可用且未找到 git-graph 可执行文件: {e}")
             return
         try:
-            s = C.string_at(ptr).decode('utf-8')
-        finally:
-            lib.gg_free_string(ptr)
-        try:
-            data = json.loads(s)
+            proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
         except Exception as e:
-            self._append_log(f"[igraph] JSON 解析失败: {e}")
+            self._append_log(f"[igraph] 运行 git-graph --json 失败: {e}")
             return
-        # Draw into exec_graph_canvas
-        self._draw_interactive_graph(self.exec_graph_canvas, data)
+        out = proc.stdout or ""
+        if not out.strip():
+            self._append_log("[igraph] git-graph --json 输出为空")
+            return
+        try:
+            raw = json.loads(out)
+        except Exception as e:
+            self._append_log(f"[igraph] 解析 git-graph JSON 失败: {e}")
+            return
+        # 适配成 _draw_interactive_graph 需要的结构
+        try:
+            br_colors = {}
+            for br in raw.get("branches", []):
+                name = br.get("name")
+                if name:
+                    br_colors[name] = br.get("color") or "#90a4ae"
+            nodes = []
+            for nd in raw.get("nodes", []):
+                idx = int(nd.get("index", 0))
+                short = nd.get("short") or (nd.get("oid") or "")[:7]
+                subject = nd.get("summary") or ""
+                date = nd.get("date") or ""
+                br_name = nd.get("branch_name") or (nd.get("branches", [None])[0])
+                color = br_colors.get(br_name, "#007acc") if br_name else "#007acc"
+                nodes.append({
+                    "idx": idx,
+                    "column": nd.get("column") or 0,
+                    "short": short,
+                    "subject": subject,
+                    "date": date,
+                    "branch": br_name or "",
+                    "color": color,
+                })
+            edges = []
+            for ln in raw.get("links", []):
+                edges.append({
+                    "from": int(ln.get("source", 0)),
+                    "to": int(ln.get("target", 0)),
+                    "color": ln.get("color") or "#90a4ae",
+                })
+            data = {"nodes": nodes, "edges": edges}
+            self._append_log("[igraph] 使用 git-graph --json 渲染（FFI 不可用）")
+            self._draw_interactive_graph(self.exec_graph_canvas, data)
+        except Exception as e:
+            self._append_log(f"[igraph] 适配 JSON 渲染失败: {e}")
+            return
 
     def _draw_interactive_graph(self, canvas: tk.Canvas, data: dict):
         canvas.delete('all')
@@ -3889,6 +3976,9 @@ class SboxgenGUI:
         threading.Thread(target=self._interactive_graph_render_tab, daemon=True).start()
 
     def _interactive_graph_render_tab(self):
+        """Render interactive commit graph in Graph tab.
+        Prefer Rust FFI layout JSON; gracefully fall back to calling git-graph --json.
+        """
         import ctypes as C, json
         workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
         project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
@@ -3896,7 +3986,10 @@ class SboxgenGUI:
         if not (repo / ".git").exists():
             self._append_log(f"[graph-tab] 未找到项目仓库: {repo}")
             return
+
+        # 1) Try FFI first
         dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        use_cli_fallback = False
         if not Path(dylib).exists():
             try:
                 self._append_log("[graph-tab] 构建 Rust FFI…")
@@ -3904,31 +3997,91 @@ class SboxgenGUI:
             except Exception as e:
                 self._append_log(f"[graph-tab] 构建失败: {e}")
         if not Path(dylib).exists():
-            self._append_log(f"[graph-tab] 未找到动态库: {dylib}")
-            return
+            use_cli_fallback = True
+        else:
+            try:
+                lib = C.CDLL(dylib)
+                lib.gg_layout_json.argtypes = [C.c_char_p, C.c_size_t, C.c_bool]
+                lib.gg_layout_json.restype = C.c_void_p
+                lib.gg_free_string.argtypes = [C.c_void_p]
+                lib.gg_free_string.restype = None
+                ptr = lib.gg_layout_json(str(repo).encode('utf-8'), C.c_size_t(0), C.c_bool(False))
+                if not ptr:
+                    self._append_log('[graph-tab] FFI 返回空 JSON')
+                    use_cli_fallback = True
+                else:
+                    try:
+                        s = C.string_at(ptr).decode('utf-8')
+                    finally:
+                        lib.gg_free_string(ptr)
+                    try:
+                        data = json.loads(s)
+                        self._draw_interactive_graph(self.graph_canvas, data)
+                        return
+                    except Exception as e:
+                        self._append_log(f"[graph-tab] JSON 解析失败: {e}")
+                        use_cli_fallback = True
+            except Exception as e:
+                self._append_log(f"[graph-tab] 加载 FFI 失败: {e}")
+                use_cli_fallback = True
+
+        # 2) Fallback: use git-graph --json and adapt structure
         try:
-            lib = C.CDLL(dylib)
-            lib.gg_layout_json.argtypes = [C.c_char_p, C.c_size_t, C.c_bool]
-            lib.gg_layout_json.restype = C.c_void_p
-            lib.gg_free_string.argtypes = [C.c_void_p]
-            lib.gg_free_string.restype = None
+            bin_path = self._ensure_git_graph_bin()
         except Exception as e:
-            self._append_log(f"[graph-tab] 加载 FFI 失败: {e}")
-            return
-        ptr = lib.gg_layout_json(str(repo).encode('utf-8'), C.c_size_t(0), C.c_bool(False))
-        if not ptr:
-            self._append_log('[graph-tab] FFI 返回空 JSON')
+            self._append_log(f"[graph-tab] FFI 不可用且未找到 git-graph 可执行文件: {e}")
             return
         try:
-            s = C.string_at(ptr).decode('utf-8')
-        finally:
-            lib.gg_free_string(ptr)
-        try:
-            data = json.loads(s)
+            proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
         except Exception as e:
-            self._append_log(f"[graph-tab] JSON 解析失败: {e}")
+            self._append_log(f"[graph-tab] 运行 git-graph --json 失败: {e}")
             return
-        self._draw_interactive_graph(self.graph_canvas, data)
+        out = proc.stdout or ""
+        if not out.strip():
+            self._append_log("[graph-tab] git-graph --json 输出为空")
+            return
+        try:
+            raw = json.loads(out)
+        except Exception as e:
+            self._append_log(f"[graph-tab] 解析 git-graph JSON 失败: {e}")
+            return
+        # adapt to _draw_interactive_graph schema: nodes[idx/column/subject/date/short/branch/color], edges[from/to/color]
+        try:
+            br_colors = {}
+            for br in raw.get("branches", []):
+                name = br.get("name")
+                if name:
+                    br_colors[name] = br.get("color") or "#90a4ae"
+            nodes = []
+            for nd in raw.get("nodes", []):
+                idx = int(nd.get("index", 0))
+                short = nd.get("short") or (nd.get("oid") or "")[:7]
+                subject = nd.get("summary") or ""
+                date = nd.get("date") or ""
+                br_name = nd.get("branch_name") or (nd.get("branches", [None])[0])
+                color = br_colors.get(br_name, "#007acc") if br_name else "#007acc"
+                nodes.append({
+                    "idx": idx,
+                    "column": nd.get("column") or 0,
+                    "short": short,
+                    "subject": subject,
+                    "date": date,
+                    "branch": br_name or "",
+                    "color": color,
+                })
+            edges = []
+            for ln in raw.get("links", []):
+                edges.append({
+                    "from": int(ln.get("source", 0)),
+                    "to": int(ln.get("target", 0)),
+                    "color": ln.get("color") or "#90a4ae",
+                })
+            data = {"nodes": nodes, "edges": edges}
+            self._append_log("[graph-tab] 使用 git-graph --json 渲染（FFI 不可用）")
+            self._draw_interactive_graph(self.graph_canvas, data)
+        except Exception as e:
+            self._append_log(f"[graph-tab] 适配 JSON 渲染失败: {e}")
+            return
 
     def _graph_render_via_rust_threaded(self):
         threading.Thread(target=self._graph_render_via_rust, daemon=True).start()
@@ -4072,6 +4225,54 @@ class SboxgenGUI:
                 branch = b
         except Exception:
             pass
+
+        # Prefer git-graph JSON for full graph
+        graph = self._graph_fetch_via_json(repo)
+        if graph:
+            nodes = []
+            lanes = []
+            # map JSON nodes
+            tasks = self.task_executor.get_all_tasks()
+            id_set = {t["id"] for t in tasks}
+            pat = re.compile(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?")
+            for n in graph.get("nodes", []):
+                idx = int(n.get("index", 0)) + 1  # 1-based for UI display
+                sha = n.get("oid", "")
+                short = n.get("short", sha[:7])
+                date = n.get("date", "")
+                subject = n.get("summary", "") or ""
+                task_id = None
+                m = pat.match(subject)
+                if m:
+                    tid = m.group(1)
+                    if tid in id_set:
+                        task_id = tid
+                nodes.append({
+                    "sha": sha,
+                    "short": short,
+                    "date": date,
+                    "subject": subject,
+                    "branches": n.get("branches", []) or ([] if n.get("branch_name") is None else [n.get("branch_name")]),
+                    "tags": n.get("tags", []),
+                    "task_id": task_id,
+                    "index": idx,
+                })
+            # map JSON branches to lanes
+            for br in graph.get("branches", []):
+                name = br.get("name", "")
+                col = int(br.get("column", 0) or 0)
+                rng = br.get("range") or {}
+                s_idx = rng.get("start")
+                e_idx = rng.get("end")
+                # JSON indices are 0-based; convert to 1-based rows like UI
+                if s_idx is not None:
+                    s_idx = int(s_idx) + 1
+                if e_idx is not None:
+                    e_idx = int(e_idx) + 1
+                lanes.append({"name": name, "col": col, "start": s_idx or 1, "end": e_idx or len(nodes)})
+            self._graph_data = {"repo": str(repo), "branch": branch, "nodes": nodes, "lanes": lanes}
+            self.root.after(0, self._graph_redraw)
+            return
 
         # Get list of commits first-parent reversed (oldest->newest)
         try:
@@ -4283,6 +4484,27 @@ class SboxgenGUI:
                 s_idx, e_idx = 1, 1
             lanes.append({"name": name, "col": col, "start": s_idx, "end": e_idx})
         return lanes
+
+    def _graph_fetch_via_json(self, repo: Path) -> Optional[dict]:
+        """Prefer JSON graph from git-graph for full nodes+links+branches.
+        Returns parsed dict on success, None on failure.
+        """
+        import json, subprocess
+        try:
+            bin_path = self._ensure_git_graph_bin()
+        except Exception:
+            return None
+        try:
+            # oldest->newest for GUI: use --reverse, no max-count to include all
+            proc = subprocess.run(
+                [bin_path, "--json", "--reverse", "--no-pager"],
+                cwd=str(repo), capture_output=True, text=True, check=True
+            )
+            out = proc.stdout or ""
+            return json.loads(out) if out.strip() else None
+        except Exception as e:
+            self._append_log(f"[graph] JSON 获取失败: {e}")
+            return None
 
     def _load_saved_or_default_prompt(self):
         """优先加载保存的自定义prompt，如果不存在则加载默认模板"""

@@ -1,2 +1,0 @@
-Error: Command not found
-Please check your installation

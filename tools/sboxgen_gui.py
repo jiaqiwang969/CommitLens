@@ -4083,7 +4083,7 @@ class SboxgenGUI:
         - 通过 `git show -s --format=%H%x01%P%x01%as%x01%an%x01%s` 获取全 SHA、父列表、日期、作者、标题
         - 根据全 SHA → 索引映射，生成 edges（from=当前 idx，to=父 idx）
         """
-        import subprocess, re
+        import subprocess, re, hashlib
         # resolve binary first
         bin_path = self._ensure_git_graph_bin()
         # derive limit
@@ -4125,7 +4125,63 @@ class SboxgenGUI:
             short = m.group(0).lower()
             commits.append({"short": short, "column": col})
 
-        # pass 2: enrich with full data
+        # pass 1.5: HEAD name (meta)
+        try:
+            head_name = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True, check=True).stdout.strip()
+        except Exception:
+            head_name = "HEAD"
+
+        # pass 2: Build mapping via rev-list --parents (one shot)
+        parents_map: dict[str, list[str]] = {}
+        try:
+            rlp = subprocess.run(["git", "rev-list", "--parents", "--topo-order", f"-n", str(lim), head_name], cwd=str(repo), capture_output=True, text=True, check=True)
+            for ln in rlp.stdout.splitlines():
+                parts = [x.strip().lower() for x in ln.split() if x.strip()]
+                if not parts:
+                    continue
+                child = parts[0]
+                parents_map[child] = parts[1:]
+        except Exception:
+            parents_map = {}
+
+        # show-ref to mark tips (heads/tags)
+        heads_map: dict[str, list[str]] = {}
+        tags_map: dict[str, list[str]] = {}
+        try:
+            cp = subprocess.run(["git", "show-ref", "--heads", "--tags"], cwd=str(repo), capture_output=True, text=True, check=True)
+            for ln in cp.stdout.splitlines():
+                sp = ln.strip().split()
+                if len(sp) != 2:
+                    continue
+                sha, ref = sp[0].lower(), sp[1]
+                if ref.startswith("refs/heads/"):
+                    heads_map.setdefault(sha, []).append(ref[len("refs/heads/"):])
+                elif ref.startswith("refs/tags/"):
+                    tags_map.setdefault(sha, []).append(ref[len("refs/tags/"):])
+        except Exception:
+            pass
+
+        # lanes via git-graph --debug (authoritative columns)
+        lanes = []
+        try:
+            lanes = self._graph_fetch_branch_lanes(repo) or []
+        except Exception:
+            lanes = []
+
+        # palette and deterministic color mapping
+        palette = [
+            "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
+            "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf",
+            "#00acc1", "#ef6c00", "#43a047", "#c2185b", "#5e35b1",
+        ]
+        def color_for_branch(name: str) -> str:
+            try:
+                h = int(hashlib.sha1(name.encode("utf-8")).hexdigest(), 16)
+                return palette[h % len(palette)]
+            except Exception:
+                return "#007acc"
+
+        # pass 2: enrich nodes using show info (to get subject/author/date) and map parents from parents_map
         nodes: list[dict] = []
         parent_lists: list[list[str]] = []
         for idx, it in enumerate(commits):
@@ -4136,26 +4192,46 @@ class SboxgenGUI:
                         "git",
                         "show",
                         "-s",
-                        "--format=%H%x01%P%x01%as%x01%an%x01%s",
+                        "--format=%H%x01%as%x01%an%x01%s",
                         short,
                     ],
                     cwd=str(repo), capture_output=True, text=True, check=True,
                 )
-                parts = (cp.stdout.strip().split("\x01", 4) + [""] * 5)[:5]
-                full, parents_str, date, author, subject = parts
+                parts = (cp.stdout.strip().split("\x01", 3) + [""] * 4)[:4]
+                full, date, author, subject = [x.strip() for x in parts]
             except Exception:
-                full, parents_str, date, author, subject = short, "", "", "", ""
-            parents = [p.lower() for p in parents_str.split() if p.strip()]
+                full, date, author, subject = short, "", "", ""
+            full = full.lower()
+            parents = [p for p in parents_map.get(full, []) if p]
+
+            # assign branch by lane (match same column and range covering idx)
+            col = int(it.get("column", 0))
+            lane_name = ""
+            for ln in lanes:
+                try:
+                    if int(ln.get("col", -1)) != col:
+                        continue
+                    s = int(ln.get("start", 0))
+                    e = int(ln.get("end", 0))
+                    if s <= idx <= e:
+                        lane_name = ln.get("name", "")
+                        break
+                except Exception:
+                    continue
+            node_color = color_for_branch(lane_name) if lane_name else "#007acc"
+
             node = {
                 "idx": idx,
-                "id": full.lower(),
-                "column": int(it["column"] or 0),
-                "short": full[:7].lower(),
-                "subject": subject or "",
-                "date": date or "",
-                "author": author or "",
-                "branch": "",
-                "color": "#007acc",
+                "id": full,
+                "column": col,
+                "short": full[:7],
+                "subject": subject,
+                "date": date,
+                "author": author,
+                "branch": lane_name,
+                "branches": heads_map.get(full, []) + ([lane_name] if lane_name else []),
+                "tags": tags_map.get(full, []),
+                "color": node_color,
             }
             nodes.append(node)
             parent_lists.append(parents)
@@ -4167,9 +4243,16 @@ class SboxgenGUI:
             for p in parents:
                 j = id_to_idx.get(p)
                 if j is not None:
-                    edges.append({"from": i, "to": j, "color": "#90a4ae"})
-
-        return {"nodes": nodes, "edges": edges}
+                    # color: merge edge use parent's branch color; single-parent use child's color
+                    edge_color = nodes[j].get("color") if len(parents) > 1 else nodes[i].get("color")
+                    edges.append({"from": i, "to": j, "color": edge_color or "#90a4ae"})
+        meta = {
+            "produced_by": "ascii",
+            "repo": str(repo),
+            "limit": lim,
+            "head": head_name,
+        }
+        return {"nodes": nodes, "edges": edges, "lanes": lanes, "meta": meta}
 
     def _igraph_clear_label(self, canvas: tk.Canvas):
         try:

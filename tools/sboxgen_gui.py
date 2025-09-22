@@ -2891,7 +2891,7 @@ class SboxgenGUI:
         gp_container.grid(row=1, column=0, sticky="nsew")
         gp_container.rowconfigure(0, weight=1)
         gp_container.columnconfigure(0, weight=1)
-        self.exec_graph_canvas = tk.Canvas(gp_container, background="#ffffff")
+        self.exec_graph_canvas = tk.Canvas(gp_container, background="#f8f9fa", highlightthickness=0)
         self.exec_graph_canvas.grid(row=0, column=0, sticky="nsew")
         gp_ys = ttk.Scrollbar(gp_container, orient="vertical", command=self.exec_graph_canvas.yview)
         gp_xs = ttk.Scrollbar(gp_container, orient="horizontal", command=self.exec_graph_canvas.xview)
@@ -3563,14 +3563,20 @@ class SboxgenGUI:
         if n == 0:
             return
         # Layout params
-        y_step = 26
-        lane_dx = 80
-        x_offset = 60
-        y_offset = 20
+        y_step = 28
+        lane_dx = 90
+        x_offset = 80
+        y_offset = 24
+        text_color = '#212529'
+        grid_color = '#e9ecef'
         # Build dict idx->node
         idx_map = {nd['idx']: nd for nd in nodes}
         # compute max column
         max_col = max((nd.get('column',0) for nd in nodes), default=0)
+        # faint row guides
+        for i in range(n):
+            y = y_offset + (n-1-i)*y_step
+            canvas.create_line(0, y, x_offset + (max_col+1)*lane_dx + 800, y, fill=grid_color)
         # Draw edges (001 at top): invert y so that idx 0 (HEAD) at bottom => 001 at top if indices are HEAD-first
         # We assume indices are HEAD-first; so y = (n-1-idx)*y_step
         for e in edges:
@@ -3582,10 +3588,18 @@ class SboxgenGUI:
             y1 = y_offset + (n-1-a['idx'])*y_step
             x2 = x_offset + b.get('column',0)*lane_dx
             y2 = y_offset + (n-1-b['idx'])*y_step
-            color = e.get('color') or '#999999'
+            color = e.get('color') or '#b0bec5'
             canvas.create_line(x1, y1, x2, y2, fill=color)
         # Draw nodes and texts
         self._igraph_hitboxes = []
+        self._igraph_nodes_xy = []  # [(x,y,r,nd)]
+        # Clear hover mark
+        try:
+            if hasattr(self, '_igraph_hover_item') and self._igraph_hover_item:
+                canvas.delete(self._igraph_hover_item)
+                self._igraph_hover_item = None
+        except Exception:
+            pass
         for nd in nodes:
             x = x_offset + nd.get('column',0)*lane_dx
             y = y_offset + (n-1-nd['idx'])*y_step
@@ -3597,10 +3611,11 @@ class SboxgenGUI:
             if len(subj) > 60:
                 subj = subj[:60] + '…'
             label = f"{nd.get('short','') } {subj} {nd.get('date','')}"
-            canvas.create_text(x+10, y, anchor='w', text=label, fill='#111111', font=('',10))
+            canvas.create_text(x+10, y, anchor='w', text=label, fill=text_color, font=('Helvetica',10))
             # hitbox for click
             bbox = (x-8, y-8, x+300, y+12)
             self._igraph_hitboxes.append((bbox, nd))
+            self._igraph_nodes_xy.append((x, y, r, nd))
         # scrollregion
         width = x_offset + (max_col+1)*lane_dx + 800
         height = y_offset + n*y_step + 100
@@ -3617,6 +3632,27 @@ class SboxgenGUI:
                         self._select_task_in_list(m.group(1))
                     break
         canvas.bind('<Button-1>', _on_click)
+        # hover ring
+        def _on_motion(ev):
+            try:
+                hx, hy = ev.x, ev.y
+                hit = None
+                for (bx0,by0,bx1,by1), nd in self._igraph_hitboxes:
+                    if bx0 <= hx <= bx1 and by0 <= hy <= by1:
+                        hit = nd
+                        break
+                # update hover ring
+                if hasattr(self, '_igraph_hover_item') and self._igraph_hover_item:
+                    canvas.delete(self._igraph_hover_item)
+                    self._igraph_hover_item = None
+                if hit:
+                    for x,y,r,nd2 in self._igraph_nodes_xy:
+                        if nd2 is hit:
+                            self._igraph_hover_item = canvas.create_oval(x-(r+4), y-(r+4), x+(r+4), y+(r+4), outline='#2196f3', width=2)
+                            break
+            except Exception:
+                pass
+        canvas.bind('<Motion>', _on_motion)
 
     # ---------------- Graph Tab (Native Tk Canvas) ----------------
     def _build_graph_tab(self, tab):
@@ -3633,7 +3669,7 @@ class SboxgenGUI:
         container.rowconfigure(0, weight=1)
         container.columnconfigure(0, weight=1)
 
-        self.graph_canvas = tk.Canvas(container, background="#ffffff")
+        self.graph_canvas = tk.Canvas(container, background="#f8f9fa", highlightthickness=0)
         self.graph_canvas.grid(row=0, column=0, sticky="nsew")
         yscroll = ttk.Scrollbar(container, orient="vertical", command=self.graph_canvas.yview)
         yscroll.grid(row=0, column=1, sticky="ns")
@@ -3643,6 +3679,51 @@ class SboxgenGUI:
 
         # 初次自动渲染交互图
         self.root.after(300, self._interactive_graph_render_tab_threaded)
+
+    def _interactive_graph_render_tab_threaded(self):
+        threading.Thread(target=self._interactive_graph_render_tab, daemon=True).start()
+
+    def _interactive_graph_render_tab(self):
+        import ctypes as C, json
+        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+        repo = workspace / project
+        if not (repo / ".git").exists():
+            self._append_log(f"[graph-tab] 未找到项目仓库: {repo}")
+            return
+        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        if not Path(dylib).exists():
+            try:
+                self._append_log("[graph-tab] 构建 Rust FFI…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+            except Exception as e:
+                self._append_log(f"[graph-tab] 构建失败: {e}")
+        if not Path(dylib).exists():
+            self._append_log(f"[graph-tab] 未找到动态库: {dylib}")
+            return
+        try:
+            lib = C.CDLL(dylib)
+            lib.gg_layout_json.argtypes = [C.c_char_p, C.c_size_t, C.c_bool]
+            lib.gg_layout_json.restype = C.c_void_p
+            lib.gg_free_string.argtypes = [C.c_void_p]
+            lib.gg_free_string.restype = None
+        except Exception as e:
+            self._append_log(f"[graph-tab] 加载 FFI 失败: {e}")
+            return
+        ptr = lib.gg_layout_json(str(repo).encode('utf-8'), C.c_size_t(0), C.c_bool(False))
+        if not ptr:
+            self._append_log('[graph-tab] FFI 返回空 JSON')
+            return
+        try:
+            s = C.string_at(ptr).decode('utf-8')
+        finally:
+            lib.gg_free_string(ptr)
+        try:
+            data = json.loads(s)
+        except Exception as e:
+            self._append_log(f"[graph-tab] JSON 解析失败: {e}")
+            return
+        self._draw_interactive_graph(self.graph_canvas, data)
 
     def _graph_render_via_rust_threaded(self):
         threading.Thread(target=self._graph_render_via_rust, daemon=True).start()

@@ -2884,6 +2884,35 @@ class SboxgenGUI:
         self.task_tree.pack(side=tk.LEFT, fill="both", expand=True)
         task_scroll.pack(side=tk.RIGHT, fill="y")
 
+        # 中间：Graph 预览（Rust 生成，嵌入在任务列表与消息列表之间）
+        graph_pane = ttk.LabelFrame(main_frame, text="Graph (Rust)", padding=6)
+        main_frame.add(graph_pane, weight=1)
+        graph_pane.rowconfigure(1, weight=1)
+        graph_pane.columnconfigure(0, weight=1)
+        gp_toolbar = ttk.Frame(graph_pane)
+        gp_toolbar.grid(row=0, column=0, sticky="ew")
+        ttk.Button(gp_toolbar, text="刷新 Graph", command=self._embed_repo_graph_rust_threaded).pack(side=tk.LEFT)
+        gp_container = ttk.Frame(graph_pane)
+        gp_container.grid(row=1, column=0, sticky="nsew")
+        gp_container.rowconfigure(0, weight=1)
+        gp_container.columnconfigure(0, weight=1)
+        self.exec_graph_canvas = tk.Canvas(gp_container, background="#ffffff")
+        self.exec_graph_canvas.grid(row=0, column=0, sticky="nsew")
+        gp_ys = ttk.Scrollbar(gp_container, orient="vertical", command=self.exec_graph_canvas.yview)
+        gp_xs = ttk.Scrollbar(gp_container, orient="horizontal", command=self.exec_graph_canvas.xview)
+        self.exec_graph_canvas.configure(yscrollcommand=gp_ys.set, xscrollcommand=gp_xs.set)
+        gp_ys.grid(row=0, column=1, sticky="ns")
+        gp_xs.grid(row=1, column=0, sticky="ew")
+        # 鼠标滚轮滚动
+        def _gp_wheel(ev):
+            try:
+                delta = -1 if ev.delta > 0 else 1
+                self.exec_graph_canvas.yview_scroll(delta * 3, 'units')
+            except Exception:
+                pass
+        self.exec_graph_canvas.bind('<MouseWheel>', _gp_wheel)
+        self._exec_graph_imgtk = None
+
         # 中间：消息列表（类似Codex Output）
         middle_frame = ttk.LabelFrame(main_frame, text="消息列表", padding=10)
         main_frame.add(middle_frame, weight=1)
@@ -2938,29 +2967,7 @@ class SboxgenGUI:
         # 初始加载任务列表
         self.root.after(100, self._refresh_task_list)
 
-        # 嵌入式 Graph 预览（基于 Rust FFI 生成整库图）
-        graph_embed = ttk.LabelFrame(tab, text="仓库 Graph 预览 (Rust)", padding=6)
-        graph_embed.grid(row=3, column=0, columnspan=2, sticky="nsew", pady=(6, 0))
-        tab.rowconfigure(3, weight=1)
-        graph_embed.rowconfigure(0, weight=1)
-        graph_embed.columnconfigure(0, weight=1)
-        # toolbar
-        ge_toolbar = ttk.Frame(graph_embed)
-        ge_toolbar.grid(row=0, column=0, sticky="ew")
-        ttk.Button(ge_toolbar, text="刷新仓库 Graph", command=self._embed_repo_graph_rust_threaded).pack(side=tk.LEFT)
-        # canvas with scrollbars
-        ge_container = ttk.Frame(graph_embed)
-        ge_container.grid(row=1, column=0, sticky="nsew")
-        ge_container.rowconfigure(0, weight=1)
-        ge_container.columnconfigure(0, weight=1)
-        self.exec_graph_canvas = tk.Canvas(ge_container, background="#ffffff")
-        self.exec_graph_canvas.grid(row=0, column=0, sticky="nsew")
-        ge_ys = ttk.Scrollbar(ge_container, orient="vertical", command=self.exec_graph_canvas.yview)
-        ge_xs = ttk.Scrollbar(ge_container, orient="horizontal", command=self.exec_graph_canvas.xview)
-        ge_ys.grid(row=0, column=1, sticky="ns")
-        ge_xs.grid(row=1, column=0, sticky="ew")
-        self.exec_graph_canvas.configure(yscrollcommand=ge_ys.set, xscrollcommand=ge_xs.set)
-        self._exec_graph_imgtk = None
+        # 取消底部嵌入 Graph（已改为插入在任务列表与消息列表之间）
 
     def _fill_rerun_id_from_selection(self):
         try:

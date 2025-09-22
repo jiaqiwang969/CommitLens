@@ -3706,16 +3706,44 @@ class SboxgenGUI:
             pass
         pad_x = 8
         pad_y = 4
-        # measure text approximately (6px per char)
-        width = max(60, int(len(text) * 6 + pad_x*2))
-        height = 20
         # clear previous label
         self._igraph_clear_label(canvas)
-        # draw bubble
+        # draw text first to measure bbox
+        txt = canvas.create_text(x+pad_x, y+pad_y, anchor='nw', text=text, fill=text_color, font=('Helvetica',10))
+        try:
+            x1, y1, x2, y2 = canvas.bbox(txt)
+        except Exception:
+            # fallback approximate bbox
+            x1, y1 = x+pad_x, y+pad_y
+            x2, y2 = x1 + max(60, int(len(text)*6)), y1 + 16
+        # compute rect with padding
+        rx1 = x1 - pad_x
+        ry1 = y1 - pad_y
+        rx2 = x2 + pad_x
+        ry2 = y2 + pad_y
+        # clamp into scrollregion if available
+        try:
+            sr = canvas.cget('scrollregion')
+            if sr:
+                sx1, sy1, sx2, sy2 = [float(v) for v in sr.split()]
+                dx = max(0, rx2 - sx2 + 4)
+                if dx > 0:
+                    canvas.move(txt, -dx, 0)
+                    x1, y1, x2, y2 = canvas.bbox(txt)
+                    rx1, rx2 = x1 - pad_x, x2 + pad_x
+                dy = max(0, ry2 - sy2 + 4)
+                if dy > 0:
+                    canvas.move(txt, 0, -dy)
+                    x1, y1, x2, y2 = canvas.bbox(txt)
+                    ry1, ry2 = y1 - pad_y, y2 + pad_y
+        except Exception:
+            pass
+        # draw bubble under text
         bg = '#343a40'      # dark bubble
         border = '#6c757d'  # muted gray
-        rect = canvas.create_rectangle(x, y, x+width, y+height, fill=bg, outline=border)
-        txt = canvas.create_text(x+pad_x, y+pad_y, anchor='nw', text=text, fill=text_color, font=('Helvetica',10))
+        rect = canvas.create_rectangle(rx1, ry1, rx2, ry2, fill=bg, outline=border)
+        # ensure text above rectangle
+        canvas.tag_raise(txt, rect)
         setattr(canvas, '_igraph_label_items', [rect, txt])
 
     # ---------------- Graph Tab (Native Tk Canvas) ----------------

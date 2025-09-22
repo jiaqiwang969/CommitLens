@@ -2912,6 +2912,8 @@ class SboxgenGUI:
                 pass
         self.exec_graph_canvas.bind('<MouseWheel>', _gp_wheel)
         self._exec_graph_imgtk = None
+        # 首次自动刷新一次以显示当前 HEAD 的完整时间线
+        self.root.after(500, self._embed_repo_graph_rust_threaded)
 
         # 中间：消息列表（类似Codex Output）
         middle_frame = ttk.LabelFrame(main_frame, text="消息列表", padding=10)

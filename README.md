@@ -173,27 +173,47 @@ Codex 密钥
 - 当前实现聚焦 timeline 产物、模板与执行编排，不包含任何与业务强绑定的后处理；可按 README 的学习提示进行自定义解读与报告生成。
 
 图形界面（可选）
-- 界面预览：见文首“界面预览”两图
-- 使用提示：一键执行全部或逐步执行；每步提供状态与滚动日志。
-- 设置面板（参数与风格）：见文首“界面预览”第二图
-
-- 说明：在“基本设置/Codex 与参数/README 模板/执行与日志”页签中配置参数与模板；各字段与下方“可配置项”对应，保存后用于“一键执行全部”。
+- 界面预览：见文首“界面预览”两图；启动命令：`python tools/sboxgen_gui.py`
+- 核心定位：一键执行/分步执行全流程；多标签分工明确；每步有状态与滚动日志。
 - 位置：`tools/sboxgen_gui.py`
-- 作用：提供与“103-gpt4o-扫描”相似的可视化界面，一键按新版 7 步执行：mirror → gen → verify → codex batch → collect-tex → tex-fix → collect+fixbug；并支持“风格（模板）”管理。
+
+标签与功能总览
+- `基本设置`：仓库/分支/提交数/风格与各目录（mirror/sboxes/sboxes_tex/artifacts）；可自动推断镜像路径、刷新分支、统计分支提交总数。
+- `Codex 与参数`：可视化编辑三类提示词（运行/PUML+LaTeX 并行修复/最终 LaTeX 修复），一键保存到 `.cache`；支持占位符（如 `{dir}` `{tex}` `{runs}`）。
+- `README 模板`：按“风格=模板”的思路管理 README 文本；内置默认模板；支持导入/删除/保存，运行时应用到每个提交目录（支持占位符）。
+- `执行与日志`：流水线面板（mirror → gen → verify → codex batch → collect-tex → tex-fix → collect+fixbug → overwrite），可一键执行或逐步执行；显示步骤状态与实时日志；支持最大并行、超时等参数。
+- `Codex Output`：可浏览/加载/监控某个提交目录下的 `codex_output.txt`；内置简单执行器（直接触发 `codex exec ...`），解析消息（header/user/thinking/codex/exec/separator），并自动高亮、跳转消息。
+- `任务执行`：任务列表 + 消息列表 + 右侧日志详情；支持一键执行全量提交、自动追踪最新输出、进度统计、从指定任务 ID 重新开始等；中部嵌入 Graph 预览工具栏已移除，采用新的“commit info”页签统一交互渲染。
+- `commit info`：交互式提交图与详情面板（左侧 Canvas 交互图；右侧为提交详情+文件树+Diff/File 视图切换）。点击节点显示标签气泡、自动在任务列表中定位关联任务（若名称匹配），并在右侧加载该提交的文件变更与内容。
+
+交互式提交图（commit info）
+- 渲染来源：优先使用 Rust FFI（布局 JSON）；若不可用，自动回退到执行 `git-graph --json`。
+- 依赖要求：
+  - JSON 路径：推荐在 `.workspace/rust-project` 下准备 `git-graph` 工程（GUI 会优先使用此处构建的可执行文件），或设置环境变量 `SBOXGEN_GIT_GRAPH` 指向系统已安装的 `git-graph`。
+  - FFI 路径：可通过 `SBOXGEN_GG_DIR` 指定 `git-graph` 源码目录（默认 `<repo>/src/git-graph`），`SBOXGEN_GG_FFI` 指定动态库路径；若未提供或未构建成功，GUI 会自动降级为 JSON 路径。
+- 使用提示：
+  - 进入 `commit info` 页签后，点击“交互渲染”；左侧可滚动与缩放（鼠标滚轮/拖拽）；点击节点显示标签气泡并在右侧加载详情；右侧可在 “Diff View / File View” 间切换。
+  - 默认仓库路径为 `.workspace/rust-project`（可在“任务执行”页更改 Workspace 与项目名）。
+
+设置项速览（“基本设置”页）
+- `Git 仓库 URL`：如 `https://github.com/Formlabs/foxtrot.git`
+- `分支`：`master` 或 `main`（支持刷新）；显示“分支提交总数”。
+- `提交数 limit`：如 `10`
+- `风格 (模板)`：默认 `timeline`；可导入 `.md` 作为新风格；生成结构固定采用 timeline
+- `镜像路径 mirror`：默认 `.cache/mirrors/<name>.git`
+- `时间线根目录 out`：默认 `.sboxes`
+- `TEX 时间线根目录 (收集输出)`：默认 `.sboxes_tex`
+- `产物目录 artifacts`：默认 `.artifacts`
+- `超时 timeout`/`LaTeX runs`/`OpenAI/Codex API Key` 等
+
+启动与反馈
 - 启动：`python tools/sboxgen_gui.py`
-- 可配置项：
-  - `Git 仓库 URL`：如 `https://github.com/Formlabs/foxtrot.git`
-  - `分支`：`master` 或 `main`
-  - `提交数 limit`：如 `10`
-  - `风格 (模板)`：默认 `timeline`，可在“基本设置”中选择或导入 `.md` 模板；根据风格自动选择输出目录 `.sboxes_<style>`；生成结构固定采用 timeline
-  - `镜像路径 mirror`：默认根据仓库推断 `.cache/mirrors/<name>.git`
-  - `时间线根目录 out`：默认 `.sboxes`
-  - `TEX 时间线根目录 (收集输出)`：默认 `.sboxes_tex`
-  - `产物目录 artifacts`：默认 `.artifacts`
-  - `超时 timeout`：如 `6000`
-  - `LaTeX runs`：如 `3`
-  - `OpenAI/Codex API Key`：可保存到 `.cache/codex_api_key`
-- 界面反馈：每一步均显示状态（待执行/执行中/成功/失败）与滚动日志，可单步执行或“一键执行全部”。
+- 反馈：每一步均显示状态（待执行/执行中/成功/失败）与滚动日志，可单步执行或“一键执行全部”。
+
+环境变量（可选）
+- `SBOXGEN_GIT_GRAPH`：显式指定 `git-graph` 可执行文件路径（优先级最高）。
+- `SBOXGEN_GG_DIR`：指定 FFI 源码目录（默认 `<repo>/src/git-graph`）。
+- `SBOXGEN_GG_FFI`：指定 FFI 动态库路径（默认 `<SBOXGEN_GG_DIR>/target/release/libgit_graph.{dylib|so|dll}`）。
 
 可编辑 Prompt 与 README（GUI）
 - Codex 提示词：在“Codex 与参数”页可直接编辑两类提示词并保存（支持占位符）：

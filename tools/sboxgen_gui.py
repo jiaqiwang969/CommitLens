@@ -2691,12 +2691,7 @@ class SboxgenGUI:
         ttk.Button(rerun_frame, text="开始重放", command=self._rerun_from_commit_gui).grid(row=0, column=3, padx=(6, 0))
         ttk.Label(rerun_frame, text="示例: 016-f620960", foreground="#666").grid(row=1, column=1, sticky="w", pady=(4,0))
 
-        # Graph 工具栏（不破坏现有流程）
-        graph_frame = ttk.LabelFrame(control_frame, text="Graph (Rust)", padding=6)
-        graph_frame.grid(row=6, column=0, columnspan=4, sticky="ew", pady=(10, 0))
-        ttk.Button(graph_frame, text="生成选中", command=self._gen_selected_graphs).pack(side=tk.LEFT)
-        ttk.Button(graph_frame, text="生成全部", command=self._gen_all_graphs).pack(side=tk.LEFT, padx=(8, 0))
-        ttk.Button(graph_frame, text="预览选中", command=self._preview_selected_graph_rust).pack(side=tk.LEFT, padx=(8, 0))
+        # 去除静态 Graph 工具栏（仅保留交互渲染）
 
         # 顶部右侧：Prompt编辑框
         prompt_frame = ttk.LabelFrame(tab, text="任务Prompt（可编辑）", padding=10)
@@ -2891,8 +2886,7 @@ class SboxgenGUI:
         graph_pane.columnconfigure(0, weight=1)
         gp_toolbar = ttk.Frame(graph_pane)
         gp_toolbar.grid(row=0, column=0, sticky="ew")
-        ttk.Button(gp_toolbar, text="刷新 Graph", command=self._embed_repo_graph_rust_threaded).pack(side=tk.LEFT)
-        ttk.Button(gp_toolbar, text="交互渲染 (Beta)", command=self._interactive_graph_render_threaded).pack(side=tk.LEFT, padx=(8,0))
+        ttk.Button(gp_toolbar, text="交互渲染", command=self._interactive_graph_render_threaded).pack(side=tk.LEFT)
         gp_container = ttk.Frame(graph_pane)
         gp_container.grid(row=1, column=0, sticky="nsew")
         gp_container.rowconfigure(0, weight=1)
@@ -2913,8 +2907,8 @@ class SboxgenGUI:
                 pass
         self.exec_graph_canvas.bind('<MouseWheel>', _gp_wheel)
         self._exec_graph_imgtk = None
-        # 首次自动刷新一次以显示当前 HEAD 的完整时间线
-        self.root.after(500, self._embed_repo_graph_rust_threaded)
+        # 首次自动渲染交互图
+        self.root.after(500, self._interactive_graph_render_threaded)
 
         # 中间：消息列表（类似Codex Output）
         middle_frame = ttk.LabelFrame(main_frame, text="消息列表", padding=10)
@@ -3632,7 +3626,7 @@ class SboxgenGUI:
         toolbar = ttk.Frame(tab)
         toolbar.grid(row=0, column=0, sticky="ew")
 
-        ttk.Button(toolbar, text="用Rust生成", command=self._graph_render_via_rust_threaded).pack(side=tk.LEFT)
+        ttk.Button(toolbar, text="交互渲染", command=self._interactive_graph_render_tab_threaded).pack(side=tk.LEFT)
 
         container = ttk.Frame(tab)
         container.grid(row=1, column=0, sticky="nsew")
@@ -3647,11 +3641,8 @@ class SboxgenGUI:
         xscroll.grid(row=1, column=0, sticky="ew")
         self.graph_canvas.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
 
-        # 用 Rust 生成的是位图，不需要原生绘制的缩放/拖拽逻辑
-        self._graph_imgtk = None
-
-        # 初次自动用 Rust 生成
-        self.root.after(300, self._graph_render_via_rust_threaded)
+        # 初次自动渲染交互图
+        self.root.after(300, self._interactive_graph_render_tab_threaded)
 
     def _graph_render_via_rust_threaded(self):
         threading.Thread(target=self._graph_render_via_rust, daemon=True).start()

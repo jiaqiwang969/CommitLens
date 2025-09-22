@@ -3510,7 +3510,10 @@ class SboxgenGUI:
                 "index": idx,
             })
 
-        self._graph_data = {"repo": str(repo), "branch": branch, "nodes": nodes}
+        # Fetch branch lanes from git-graph --debug (authoritative)
+        lanes = self._graph_fetch_branch_lanes(repo)
+
+        self._graph_data = {"repo": str(repo), "branch": branch, "nodes": nodes, "lanes": lanes}
         self.root.after(0, self._graph_redraw)
 
     def _graph_redraw(self):
@@ -3521,6 +3524,7 @@ class SboxgenGUI:
             c.create_text(20, 20, anchor="nw", text="未加载图（点击刷新）", fill="#666")
             return
         nodes = data["nodes"]
+        lanes = data.get("lanes", [])
         show_br = bool(self.graph_show_branches.get())
         show_tag = bool(self.graph_show_tags.get())
 
@@ -3538,6 +3542,20 @@ class SboxgenGUI:
         y0 = margin_top
         y1 = margin_top + y_step * max(0, len(nodes)-1)
         c.create_line(x_line*scale+ox, y0*scale+oy, x_line*scale+ox, y1*scale+oy, fill="#999", width=max(1, int(2*scale)))
+
+        # draw branch lanes from git-graph (authoritative)
+        lane_dx = 90
+        for lane in lanes:
+            col = int(lane.get("col", 0))
+            name = lane.get("name", "")
+            s_idx = int(lane.get("start", 1))
+            e_idx = int(lane.get("end", len(nodes)))
+            x = (x_line + col * lane_dx)
+            y_start = margin_top + (max(1, s_idx) - 1) * y_step
+            y_end = margin_top + (max(1, min(e_idx, len(nodes))) - 1) * y_step
+            c.create_line(x*scale+ox, y_start*scale+oy, x*scale+ox, y_end*scale+oy, fill="#c0c0c0", dash=(4, 3), width=max(1, int(1*scale)))
+            # label at start
+            self._draw_badge(c, x + 10, y_start - 10, name, color="#455a64", scale=scale, ox=ox, oy=oy)
 
         # nodes
         self._graph_nodes = []
@@ -3595,6 +3613,58 @@ class SboxgenGUI:
         canvas.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
         canvas.create_text((x+pad_x)*scale+ox, (y+pad_y-1)*scale+oy, anchor="nw", text=text, fill="#ffffff", font=("", max(6, int(8*scale))))
         return x + w + 6
+
+    def _graph_fetch_branch_lanes(self, repo: Path) -> list:
+        """Use git-graph --debug to read branch lanes (name, column, range)."""
+        lanes: list[dict] = []
+        # Try resolve git-graph binary, but graceful degradation if not found
+        bin_path: Optional[str] = None
+        try:
+            bin_path = self._ensure_git_graph_bin()
+        except Exception:
+            # Not fatal for native graph: just return empty lanes
+            return lanes
+        try:
+            proc = subprocess.run([bin_path, "--debug", "--no-pager"], cwd=str(repo), capture_output=True, text=True)
+        except Exception:
+            return lanes
+        err = proc.stderr or ""
+        # Parse lines like: "<name> (col <N>) (<range>) m s:<...> t:<...>"
+        for ln in err.splitlines():
+            ln = ln.strip()
+            # fast filter
+            if "(col" not in ln or ") (" not in ln:
+                continue
+            # name is before first ' (col'
+            try:
+                name, rest = ln.split(" (col ", 1)
+            except ValueError:
+                continue
+            name = name.strip()
+            # column
+            try:
+                col_str, rest2 = rest.split(") (", 1)
+                col = int(re.findall(r"\d+", col_str)[0]) if re.findall(r"\d+", col_str) else 0
+            except Exception:
+                col = 0
+                rest2 = rest
+            # range inside next ')'
+            rng_str = ""
+            try:
+                rng_part, _tail = rest2.split(")", 1)
+                rng_str = rng_part.strip()
+            except Exception:
+                rng_str = rest2
+            # extract first two integers as start/end
+            nums = re.findall(r"\d+", rng_str)
+            if len(nums) >= 2:
+                s_idx, e_idx = int(nums[0]), int(nums[1])
+            elif len(nums) == 1:
+                s_idx, e_idx = int(nums[0]), int(nums[0])
+            else:
+                s_idx, e_idx = 1, 1
+            lanes.append({"name": name, "col": col, "start": s_idx, "end": e_idx})
+        return lanes
 
     def _load_saved_or_default_prompt(self):
         """优先加载保存的自定义prompt，如果不存在则加载默认模板"""

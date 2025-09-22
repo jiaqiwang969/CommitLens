@@ -57,7 +57,7 @@ pub fn print_svg(graph: &GitGraph, settings: &Settings) -> Result<String, String
                                 color,
                             ));
                         } else {
-                            let split_index = super::get_deviate_index(&graph, idx, *par_idx);
+                            let split_index = super::get_deviate_index(graph, idx, *par_idx);
                             document = document.add(path(
                                 idx,
                                 branch.visual.column.unwrap(),
@@ -87,7 +87,7 @@ pub fn print_svg(graph: &GitGraph, settings: &Settings) -> Result<String, String
 
     let mut out: Vec<u8> = vec![];
     svg::write(&mut out, &document).map_err(|err| err.to_string())?;
-    String::from_utf8(out).map_err(|err| err.to_string())
+    Ok(String::from_utf8(out).unwrap_or_else(|_| "Invalid UTF8 character.".to_string()))
 }
 
 fn commit_dot(index: usize, column: usize, color: &str, filled: bool) -> Circle {

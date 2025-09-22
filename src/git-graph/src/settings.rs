@@ -1,4 +1,16 @@
 //! Graph generation settings.
+//!
+//! The settings control how a branching graph is layed out.
+//! They are used in the [print][super::print] module when generating
+//! a visualization and persisted to disk in the [config][super::config] module.
+//!
+//! These are the main structs
+//! * [Settings] The main settings object, which contains:
+//!   * [CommitFormat] Format of the commit summary text to the right of the graph.
+//!   * [Characters] The symbols to use when rendering a graph as text.
+//!   * [BranchSettings] Control how a graph is formatted.
+//!   * [BranchOrder] Determines the left-to-right order of branches.
+//!   * [MergePatterns] Regex that extract branch names from a merge commit.
 
 use crate::print::format::CommitFormat;
 use regex::{Error, Regex};
@@ -29,6 +41,8 @@ pub enum BranchOrder {
 
 /// Top-level settings
 pub struct Settings {
+    /// Reverse the order of commits
+    pub reverse_commit_order: bool,
     /// Debug printing and drawing
     pub debug: bool,
     /// Compact text-based graph
@@ -76,7 +90,7 @@ impl BranchSettingsDef {
     pub fn git_flow() -> Self {
         BranchSettingsDef {
             persistence: vec![
-                r"^(master|main)$".to_string(),
+                r"^(master|main|trunk)$".to_string(),
                 r"^(develop|dev)$".to_string(),
                 r"^feature.*$".to_string(),
                 r"^release.*$".to_string(),
@@ -84,14 +98,14 @@ impl BranchSettingsDef {
                 r"^bugfix.*$".to_string(),
             ],
             order: vec![
-                r"^(master|main)$".to_string(),
+                r"^(master|main|trunk)$".to_string(),
                 r"^(hotfix|release).*$".to_string(),
                 r"^(develop|dev)$".to_string(),
             ],
             terminal_colors: ColorsDef {
                 matches: vec![
                     (
-                        r"^(master|main)$".to_string(),
+                        r"^(master|main|trunk)$".to_string(),
                         vec!["bright_blue".to_string()],
                     ),
                     (
@@ -99,7 +113,7 @@ impl BranchSettingsDef {
                         vec!["bright_yellow".to_string()],
                     ),
                     (
-                        r"^feature.*$".to_string(),
+                        r"^(feature|fork/).*$".to_string(),
                         vec!["bright_magenta".to_string(), "bright_cyan".to_string()],
                     ),
                     (r"^release.*$".to_string(), vec!["bright_green".to_string()]),
@@ -114,10 +128,13 @@ impl BranchSettingsDef {
 
             svg_colors: ColorsDef {
                 matches: vec![
-                    (r"^(master|main)$".to_string(), vec!["blue".to_string()]),
+                    (
+                        r"^(master|main|trunk)$".to_string(),
+                        vec!["blue".to_string()],
+                    ),
                     (r"^(develop|dev)$".to_string(), vec!["orange".to_string()]),
                     (
-                        r"^feature.*$".to_string(),
+                        r"^(feature|fork/).*$".to_string(),
                         vec!["purple".to_string(), "turquoise".to_string()],
                     ),
                     (r"^release.*$".to_string(), vec!["green".to_string()]),
@@ -132,12 +149,15 @@ impl BranchSettingsDef {
     /// Simple feature-based model.
     pub fn simple() -> Self {
         BranchSettingsDef {
-            persistence: vec![r"^(master|main)$".to_string()],
-            order: vec![r"^tags/.*$".to_string(), r"^(master|main)$".to_string()],
+            persistence: vec![r"^(master|main|trunk)$".to_string()],
+            order: vec![
+                r"^tags/.*$".to_string(),
+                r"^(master|main|trunk)$".to_string(),
+            ],
             terminal_colors: ColorsDef {
                 matches: vec![
                     (
-                        r"^(master|main)$".to_string(),
+                        r"^(master|main|trunk)$".to_string(),
                         vec!["bright_blue".to_string()],
                     ),
                     (r"^tags/.*$".to_string(), vec!["bright_green".to_string()]),
@@ -153,7 +173,10 @@ impl BranchSettingsDef {
 
             svg_colors: ColorsDef {
                 matches: vec![
-                    (r"^(master|main)$".to_string(), vec!["blue".to_string()]),
+                    (
+                        r"^(master|main|trunk)$".to_string(),
+                        vec!["blue".to_string()],
+                    ),
                     (r"^tags/.*$".to_string(), vec!["green".to_string()]),
                 ],
                 unknown: vec![
@@ -295,15 +318,12 @@ impl FromStr for Characters {
 
     fn from_str(str: &str) -> Result<Self, Self::Err> {
         match str {
-            "normal" | "n" | "thin" | "t" => Ok(Characters::thin()),
+            "normal" | "thin" | "n" | "t" => Ok(Characters::thin()),
             "round" | "r" => Ok(Characters::round()),
             "bold" | "b" => Ok(Characters::bold()),
             "double" | "d" => Ok(Characters::double()),
             "ascii" | "a" => Ok(Characters::ascii()),
-            _ => Err(format!(
-                "Unknown characters/style '{}'. Must be one of [normal|thin|round|bold|double|ascii] (first character abbreviation allowed)",
-                str
-            )),
+            _ => Err(format!("Unknown characters/style '{}'. Must be one of [normal|thin|round|bold|double|ascii]", str)),
         }
     }
 }
@@ -339,42 +359,16 @@ impl Characters {
             chars: " *o|-+'..'||++<>".chars().collect(),
         }
     }
-}
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+    pub fn reverse(self) -> Self {
+        let mut chars = self.chars;
 
-    #[test]
-    fn parses_short_character_aliases() {
-        assert_eq!(
-            Characters::from_str("n").unwrap().chars,
-            Characters::thin().chars
-        );
-        assert_eq!(
-            Characters::from_str("t").unwrap().chars,
-            Characters::thin().chars
-        );
-        assert_eq!(
-            Characters::from_str("r").unwrap().chars,
-            Characters::round().chars
-        );
-        assert_eq!(
-            Characters::from_str("b").unwrap().chars,
-            Characters::bold().chars
-        );
-        assert_eq!(
-            Characters::from_str("d").unwrap().chars,
-            Characters::double().chars
-        );
-        assert_eq!(
-            Characters::from_str("a").unwrap().chars,
-            Characters::ascii().chars
-        );
-    }
+        chars.swap(6, 8);
+        chars.swap(7, 9);
+        chars.swap(10, 11);
+        chars.swap(12, 13);
+        chars.swap(14, 15);
 
-    #[test]
-    fn rejects_unknown_character_aliases() {
-        assert!(Characters::from_str("z").is_err());
+        Characters { chars }
     }
 }

@@ -173,7 +173,7 @@ Date:   <author date>
 <full commit message>
 ```
 
-**Custom formatting**
+### Custom formatting
 
 Formatting strings use a subset of the placeholders available in `git log --format="..."`:
 
@@ -192,10 +192,12 @@ Formatting strings use a subset of the placeholders available in `git log --form
 | %ae         | author email                                |
 | %ad         | author date                                 |
 | %as         | author date in short format `YYYY-MM-DD`    |
+| %ar         | author date, relative format (e.g., "21 hours ago") |
 | %cn         | committer name                              |
 | %ce         | committer email                             |
 | %cd         | committer date                              |
 | %cs         | committer date in short format `YYYY-MM-DD` |
+| %cr         | committer date, relative format (e.g., "4 days ago") |
 
 If you add a '+' (plus sign) after % of a placeholder, a line-feed is inserted immediately before the expansion if and only if the placeholder expands to a non-empty string.
 
@@ -242,7 +244,7 @@ git-graph --model my-model
 # to most short-leved branches. This is used to back-trace branches.
 # Branches not matching any pattern are assumed least persistent.
 persistence = [
-    '^(master|main)$', # Matches exactly `master` or `main`
+    '^(master|main|trunk)$', # Matches exactly `master` or `main`  or `trunk`
     '^(develop|dev)$',
     '^feature.*$',     # Matches everything starting with `feature`
     '^release.*$',
@@ -251,12 +253,12 @@ persistence = [
 ]
 
 # RegEx patterns for visual ordering of branches, from left to right.
-# Here, `master` or `main` are shown left-most, followed by branches
+# Here, `master`, `main` or `trunk` are shown left-most, followed by branches
 # starting with `hotfix` or `release`, followed by `develop` or `dev`.
 # Branches not matching any pattern (e.g. starting with `feature`)
 # are displayed further to the right.
 order = [
-    '^(master|main)$',      # Matches exactly `master` or `main`
+    '^(master|main|trunk)$',      # Matches exactly `master` or `main` or `trunk`
     '^(hotfix|release).*$', # Matches everything starting with `hotfix` or `release`
     '^(develop|dev)$',      # Matches exactly `develop` or `dev`
 ]
@@ -268,15 +270,16 @@ order = [
 # will be used alternating (see e.g. `feature...`).
 matches = [
     [
-        '^(master|main)$',
+        '^(master|main|trunk)$',
         ['bright_blue'],
     ],
     [
         '^(develop|dev)$',
         ['bright_yellow'],
     ],
-    [
-        '^feature.*$',
+    [   # Branches obviously merged in from forks are prefixed with 'fork/'. 
+        # The 'fork/' prefix is only available in order and colors, but not in persistence!
+        '^(feature|fork/).*$',
         ['bright_magenta', 'bright_cyan'], # Multiple colors for alternating use
     ],
         [
@@ -302,7 +305,7 @@ unknown = ['white']
 [svg_colors]
 matches = [
     [
-        '^(master|main)$',
+        '^(master|main|trunk)$',
         ['blue'],
     ],
     [ 

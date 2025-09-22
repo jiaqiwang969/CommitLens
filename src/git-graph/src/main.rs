@@ -1,8 +1,10 @@
-use clap::{crate_version, App, Arg, SubCommand};
-use crossterm::cursor::MoveToColumn;
+//! Command line tool to show clear git graphs arranged for your branching model.
+
+use clap::{crate_version, Arg, Command};
+use crossterm::cursor::MoveToRow;
 use crossterm::event::{Event, KeyCode, KeyModifiers};
 use crossterm::style::Print;
-use crossterm::terminal::{Clear, ClearType};
+use crossterm::terminal::{disable_raw_mode, enable_raw_mode, Clear, ClearType};
 use crossterm::{ErrorKind, ExecutableCommand};
 use git2::Repository;
 use git_graph::config::{
@@ -32,12 +34,13 @@ fn main() {
 }
 
 fn from_args() -> Result<(), String> {
-    let mut app_model_path = AppDirs::new(Some("git-graph"), false).unwrap().config_dir;
-    app_model_path.push("models");
+    let app_dir = AppDirs::new(Some("git-graph"), false).unwrap().config_dir;
+    let mut models_dir = app_dir;
+    models_dir.push("models");
 
-    create_config(&app_model_path)?;
+    create_config(&models_dir)?;
 
-    let app = App::new("git-graph")
+    let app = Command::new("git-graph")
         .version(crate_version!())
         .about(
             "Structured Git graphs for your branching model.\n    \
@@ -52,128 +55,136 @@ fn from_args() -> Result<(), String> {
                  git-graph model <model>     -> Permanently set model <model> for this repo",
         )
         .arg(
-            Arg::with_name("path")
-                .long("path")
-                .short("p")
-                .help("Open repository from this path or above. Default: '.'")
+            Arg::new("reverse")
+                .long("reverse")
+                .short('r')
+                .help("Reverse the order of commits.")
                 .required(false)
-                .takes_value(true),
+                .num_args(0),
         )
         .arg(
-            Arg::with_name("max-count")
+            Arg::new("path")
+                .long("path")
+                .short('p')
+                .help("Open repository from this path or above. Default '.'")
+                .required(false)
+                .num_args(1),
+        )
+        .arg(
+            Arg::new("max-count")
                 .long("max-count")
-                .short("n")
+                .short('n')
                 .help("Maximum number of commits")
                 .required(false)
-                .takes_value(true)
+                .num_args(1)
                 .value_name("n"),
         )
         .arg(
-            Arg::with_name("model")
+            Arg::new("model")
                 .long("model")
-                .short("m")
+                .short('m')
                 .help("Branching model. Available presets are [simple|git-flow|none].\n\
-                       Default: 'git-flow'.\n\
+                       Default: git-flow. \n\
                        Permanently set the model for a repository with\n\
                          > git-graph model <model>")
                 .required(false)
-                .takes_value(true),
+                .num_args(1),
         )
         .arg(
-            Arg::with_name("local")
+            Arg::new("local")
                 .long("local")
-                .short("l")
+                .short('l')
                 .help("Show only local branches, no remotes.")
                 .required(false)
-                .takes_value(false),
+                .num_args(0),
         )
         .arg(
-            Arg::with_name("svg")
+            Arg::new("svg")
                 .long("svg")
                 .help("Render graph as SVG instead of text-based.")
                 .required(false)
-                .takes_value(false),
+                .num_args(0),
         )
         .arg(
-            Arg::with_name("debug")
+            Arg::new("debug")
                 .long("debug")
-                .short("d")
+                .short('d')
                 .help("Additional debug output and graphics.")
                 .required(false)
-                .takes_value(false),
+                .num_args(0),
         )
         .arg(
-            Arg::with_name("sparse")
+            Arg::new("sparse")
                 .long("sparse")
-                .short("S")
+                .short('S')
                 .help("Print a less compact graph: merge lines point to target lines\n\
                        rather than merge commits.")
                 .required(false)
-                .takes_value(false),
+                .num_args(0),
         )
         .arg(
-            Arg::with_name("color")
+            Arg::new("color")
                 .long("color")
                 .help("Specify when colors should be used. One of [auto|always|never].\n\
-                       Default: 'auto'.")
+                       Default: auto.")
                 .required(false)
-                .takes_value(true),
+                .num_args(1),
         )
         .arg(
-            Arg::with_name("no-color")
+            Arg::new("no-color")
                 .long("no-color")
                 .help("Print without colors. Missing color support should be detected\n\
                        automatically (e.g. when piping to a file).\n\
                        Overrides option '--color'")
                 .required(false)
-                .takes_value(false),
+                .num_args(0),
         )
         .arg(
-            Arg::with_name("no-pager")
+            Arg::new("no-pager")
                 .long("no-pager")
                 .help("Use no pager (print everything at once without prompt).")
                 .required(false)
-                .takes_value(false),
+                .num_args(0),
         )
         .arg(
-            Arg::with_name("style")
+            Arg::new("style")
                 .long("style")
-                .short("s")
-                .help("Output style. One of [normal|thin|round|bold|double|ascii]. First character can be used as abbreviation (e.g. '-s r').")
+                .short('s')
+                .help("Output style. One of [normal/thin|round|bold|double|ascii].\n  \
+                         (First character can be used as abbreviation, e.g. '-s r')")
                 .required(false)
-                .takes_value(true),
+                .num_args(1),
         )
         .arg(
-            Arg::with_name("wrap")
+            Arg::new("wrap")
                 .long("wrap")
-                .short("w")
+                .short('w')
                 .help("Line wrapping for formatted commit text. Default: 'auto 0 8'\n\
                        Argument format: [<width>|auto|none[ <indent1>[ <indent2>]]]\n\
                        For examples, consult 'git-graph --help'")
                 .long_help("Line wrapping for formatted commit text. Default: 'auto 0 8'\n\
-                        Argument format: [<width>|auto|none[ <indent1>[ <indent2>]]]\n\
-                        Examples:\n    \
-                            git-graph --wrap auto\n    \
+                       Argument format: [<width>|auto|none[ <indent1>[ <indent2>]]]\n\
+                       Examples:\n    \
+                           git-graph --wrap auto\n    \
                            git-graph --wrap auto 0 8\n    \
                            git-graph --wrap none\n    \
                            git-graph --wrap 80\n    \
                            git-graph --wrap 80 0 8\n\
                        'auto' uses the terminal's width if on a terminal.")
                 .required(false)
-                .min_values(0)
-                .max_values(3),
+                .num_args(0..=3),
         )
         .arg(
-            Arg::with_name("format")
+            Arg::new("format")
                 .long("format")
-                .short("f")
-                .help("Commit format. One of [oneline|short|medium|full|'<string>'].\n\
-                       Default: 'oneline'.\n\
-                       First character can be used as abbreviation (e.g. '-f m').\n\
-                       For placeholders supported in '<string>', consult 'git-graph --help'")
-                .long_help("Commit format. One of [oneline|short|medium|full|'<string>'].\n\
-                            First character can be used as abbreviation (e.g. '-f m').\n\
-                            Formatting placeholders for '<string>':\n    \
+                .short('f')
+                .help("Commit format. One of [oneline|short|medium|full|\"<string>\"].\n  \
+                         (First character can be used as abbreviation, e.g. '-f m')\n\
+                       Default: oneline.\n\
+                       For placeholders supported in \"<string>\", consult 'git-graph --help'")
+                .long_help("Commit format. One of [oneline|short|medium|full|\"<string>\"].\n  \
+                              (First character can be used as abbreviation, e.g. '-f m')\n\
+                            Formatting placeholders for \"<string>\":\n    \
                                 %n    newline\n    \
                                 %H    commit hash\n    \
                                 %h    abbreviated commit hash\n    \
@@ -204,44 +215,59 @@ fn from_args() -> Result<(), String> {
                             \n    \
                                 See also the respective git help: https://git-scm.com/docs/pretty-formats\n")
                 .required(false)
-                .takes_value(true),
+                .num_args(1),
         )
-        .subcommand(SubCommand::with_name("model")
+        .arg(
+            Arg::new("skip-repo-owner-validation")
+                .long("skip-repo-owner-validation")
+                .help("Skip owner validation for the repository.\n\
+                       This will turn off libgit2's owner validation, which may increase security risks.\n\
+                       Please do not disable this validation for repositories you do not trust.")
+                .required(false)
+                .num_args(0)
+        )
+        .subcommand(Command::new("model")
             .about("Prints or permanently sets the branching model for a repository.")
             .arg(
-                Arg::with_name("model")
+                Arg::new("model")
                     .help("The branching model to be used. Available presets are [simple|git-flow|none].\n\
                            When not given, prints the currently set model.")
                     .value_name("model")
-                    .takes_value(true)
+                    .num_args(1)
                     .required(false)
                     .index(1))
             .arg(
-                Arg::with_name("list")
+                Arg::new("list")
                     .long("list")
-                    .short("l")
+                    .short('l')
                     .help("List all available branching models.")
                     .required(false)
-                    .takes_value(false),
+                    .num_args(0),
         ));
 
-    let matches = app.clone().get_matches();
+    let matches = app.get_matches();
 
     if let Some(matches) = matches.subcommand_matches("model") {
-        if matches.is_present("list") {
+        if matches.get_flag("list") {
             println!(
                 "{}",
-                itertools::join(get_available_models(&app_model_path)?, "\n")
+                itertools::join(get_available_models(&models_dir)?, "\n")
             );
             return Ok(());
         }
     }
 
-    let path = matches.value_of("path").unwrap_or(".");
-    let repository = get_repo(path)?;
+    let skip_repo_owner_validation = matches.get_flag("skip-repo-owner-validation");
+    if skip_repo_owner_validation {
+        println!("Warning: skip-repo-owner-validation is set! ");
+    }
+    let dot = ".".to_string();
+    let path = matches.get_one::<String>("path").unwrap_or(&dot);
+    let repository = get_repo(path, skip_repo_owner_validation)
+        .map_err(|err| format!("ERROR: {}\n       Navigate into a repository before running git-graph, or use option --path", err.message()))?;
 
     if let Some(matches) = matches.subcommand_matches("model") {
-        match matches.value_of("model") {
+        match matches.get_one::<String>("model") {
             None => {
                 let curr_model = get_model_name(&repository, REPO_CONFIG_FILE)?;
                 match curr_model {
@@ -249,12 +275,15 @@ fn from_args() -> Result<(), String> {
                     Some(model) => print!("{}", model),
                 }
             }
-            Some(model) => set_model(&repository, model, REPO_CONFIG_FILE, &app_model_path)?,
+            Some(model) => {
+                set_model(&repository, model, REPO_CONFIG_FILE, &models_dir)?;
+                eprint!("Branching model set to '{}'", model);
+            }
         };
         return Ok(());
     }
 
-    let commit_limit = match matches.value_of("max-count") {
+    let commit_limit = match matches.get_one::<String>("max-count") {
         None => None,
         Some(str) => match str.parse::<usize>() {
             Ok(val) => Some(val),
@@ -267,33 +296,41 @@ fn from_args() -> Result<(), String> {
         },
     };
 
-    let include_remote = !matches.is_present("local");
+    let include_remote = !matches.get_flag("local");
 
-    let svg = matches.is_present("svg");
-    let pager = !matches.is_present("no-pager");
-    let compact = !matches.is_present("sparse");
-    let debug = matches.is_present("debug");
+    let reverse_commit_order = matches.get_flag("reverse");
+
+    let svg = matches.get_flag("svg");
+    let pager = !matches.get_flag("no-pager");
+    let compact = !matches.get_flag("sparse");
+    let debug = matches.get_flag("debug");
     let style = matches
-        .value_of("style")
+        .get_one::<String>("style")
         .map(|s| Characters::from_str(s))
         .unwrap_or_else(|| Ok(Characters::thin()))?;
 
+    let style = if reverse_commit_order {
+        style.reverse()
+    } else {
+        style
+    };
+
     let model = get_model(
         &repository,
-        matches.value_of("model"),
+        matches.get_one::<String>("model").map(|s| &s[..]),
         REPO_CONFIG_FILE,
-        &app_model_path,
+        &models_dir,
     )?;
 
-    let format = match matches.value_of("format") {
+    let format = match matches.get_one::<String>("format") {
         None => CommitFormat::OneLine,
         Some(str) => CommitFormat::from_str(str)?,
     };
 
-    let colored = if matches.is_present("no-color") {
+    let colored = if matches.get_flag("no-color") {
         false
-    } else if let Some(mode) = matches.value_of("color") {
-        match mode {
+    } else if let Some(mode) = matches.get_one::<String>("color") {
+        match &mode[..] {
             "auto" => {
                 atty::is(atty::Stream::Stdout)
                     && (!cfg!(windows) || yansi::Paint::enable_windows_ascii())
@@ -316,8 +353,8 @@ fn from_args() -> Result<(), String> {
         atty::is(atty::Stream::Stdout) && (!cfg!(windows) || yansi::Paint::enable_windows_ascii())
     };
 
-    let wrapping = if let Some(wrap_values) = matches.values_of("wrap") {
-        let strings = wrap_values.collect::<Vec<_>>();
+    let wrapping = if let Some(wrap_values) = matches.get_many::<String>("wrap") {
+        let strings = wrap_values.map(|s| s.as_str()).collect::<Vec<_>>();
         if strings.is_empty() {
             Some((None, Some(0), Some(8)))
         } else {
@@ -335,7 +372,7 @@ fn from_args() -> Result<(), String> {
                                 strings.join(" ")
                             )
                         })?;
-                    Some((None, wrap.get(0).cloned(), wrap.get(1).cloned()))
+                    Some((None, wrap.first().cloned(), wrap.get(1).cloned()))
                 }
                 _ => {
                     let wrap = strings
@@ -349,7 +386,7 @@ fn from_args() -> Result<(), String> {
                             )
                         })?;
                     Some((
-                        wrap.get(0).cloned(),
+                        wrap.first().cloned(),
                         wrap.get(1).cloned(),
                         wrap.get(2).cloned(),
                     ))
@@ -361,6 +398,7 @@ fn from_args() -> Result<(), String> {
     };
 
     let settings = Settings {
+        reverse_commit_order,
         debug,
         colored,
         compact,
@@ -390,24 +428,14 @@ fn run(
 
     if settings.debug {
         for branch in &graph.all_branches {
-            let source_hint = branch
-                .visual
-                .source_order_group
-                .map(|group| group.to_string())
-                .unwrap_or_else(|| "-".to_string());
-            let target_hint = branch
-                .visual
-                .target_order_group
-                .map(|group| group.to_string())
-                .unwrap_or_else(|| "-".to_string());
             eprintln!(
-                "{} (col {}) ({:?}) {} s:{} t:{}",
+                "{} (col {}) ({:?}) {} s: {:?}, t: {:?}",
                 branch.name,
                 branch.visual.column.unwrap_or(99),
                 branch.range,
                 if branch.is_merged { "m" } else { "" },
-                source_hint,
-                target_hint,
+                branch.visual.source_order_group,
+                branch.visual.target_order_group
             );
         }
     }
@@ -415,13 +443,13 @@ fn run(
     let now = Instant::now();
 
     if svg {
-        println!("{}", print_svg(&graph, &settings)?);
+        println!("{}", print_svg(&graph, settings)?);
     } else {
-        let (lines, _indices) = print_unicode(&graph, &settings)?;
+        let (g_lines, t_lines, _indices) = print_unicode(&graph, settings)?;
         if pager && atty::is(atty::Stream::Stdout) {
-            print_paged(&lines).map_err(|err| err.to_string())?;
+            print_paged(&g_lines, &t_lines).map_err(|err| err.to_string())?;
         } else {
-            print_unpaged(&lines);
+            print_unpaged(&g_lines, &t_lines);
         }
     };
 
@@ -439,88 +467,85 @@ fn run(
 }
 
 /// Print the graph, paged (i.e. wait for user input once the terminal is filled).
-fn print_paged(lines: &[String]) -> Result<(), ErrorKind> {
+fn print_paged(graph_lines: &[String], text_lines: &[String]) -> Result<(), ErrorKind> {
     let (width, height) = crossterm::terminal::size()?;
-    let width = width as usize;
-
-    let mut line_idx = 0;
-    let mut print_lines = height - 2;
-    let mut clear = false;
-    let mut abort = false;
-
-    let help = " >>> Down: line, PgDown/Enter: page, End: all, Esc/Q/^C: quit";
-    let help = if help.len() > width {
-        &help[0..width]
+    let mut start_idx: usize = 0;
+    let mut should_update: bool = true;
+    let visible_lines: usize = height as usize - 1;
+    let help = "\r >>> Down/Up: line, PgDown/Enter: page, End: all, Esc/Q/^C: quit\r";
+    let help = if help.len() > width as usize {
+        &help[0..width as usize]
     } else {
         help
     };
 
-    while line_idx < lines.len() {
-        if print_lines > 0 {
-            if clear {
+    enable_raw_mode()?;
+    while start_idx + visible_lines < graph_lines.len() {
+        // Print commits
+        if should_update {
+            should_update = false;
+            stdout()
+                .execute(MoveToRow(0))?
+                .execute(Clear(ClearType::CurrentLine))?;
+            for curr_idx in 0..visible_lines {
                 stdout()
                     .execute(Clear(ClearType::CurrentLine))?
-                    .execute(MoveToColumn(0))?;
+                    .execute(Print(format!(
+                        " {}  {}\r\n",
+                        graph_lines[start_idx + curr_idx],
+                        text_lines[start_idx + curr_idx]
+                    )))?;
             }
-
-            stdout().execute(Print(format!("{}\n", lines[line_idx])))?;
-
-            if print_lines == 1 && line_idx < lines.len() - 1 {
-                stdout().execute(Print(help))?;
-            }
-            print_lines -= 1;
-            line_idx += 1;
+            // Print help at the end
+            stdout().execute(Print(help))?;
         } else {
             let input = crossterm::event::read()?;
-            match input {
-                Event::Key(evt) => match evt.code {
+            if let Event::Key(evt) = input {
+                match evt.code {
                     KeyCode::Down => {
-                        clear = true;
-                        print_lines = 1;
+                        start_idx += 1;
+                        should_update = true;
+                    }
+                    KeyCode::Up => {
+                        if start_idx > 0 {
+                            start_idx -= 1;
+                            should_update = true;
+                        }
                     }
                     KeyCode::Enter | KeyCode::PageDown => {
-                        clear = true;
-                        print_lines = height - 2;
+                        start_idx += height as usize - 2;
+                        should_update = true;
                     }
                     KeyCode::End => {
-                        clear = true;
-                        print_lines = lines.len() as u16;
+                        start_idx = graph_lines.len() - height as usize - 2;
+                        should_update = true;
+                        // TODO: maybe make this better
                     }
                     KeyCode::Char(c) => match c {
                         'q' => {
-                            abort = true;
                             break;
                         }
                         'c' if evt.modifiers == KeyModifiers::CONTROL => {
-                            abort = true;
                             break;
                         }
                         _ => {}
                     },
                     KeyCode::Esc => {
-                        abort = true;
                         break;
                     }
                     _ => {}
-                },
-                Event::Mouse(_) => {}
-                Event::Resize(_, _) => {}
+                }
             }
         }
     }
-    if abort {
-        stdout()
-            .execute(Clear(ClearType::CurrentLine))?
-            .execute(MoveToColumn(0))?
-            .execute(Print(" ...\n"))?;
-    }
 
+    disable_raw_mode()?;
     Ok(())
 }
 
 /// Print the graph, un-paged.
-fn print_unpaged(lines: &[String]) {
-    for line in lines {
-        println!("{}", line);
+fn print_unpaged(graph_lines: &[String], text_lines: &[String]) {
+    for (g_line, t_line) in graph_lines.iter().zip(text_lines.iter()) {
+        println!(" {}  {}", g_line, t_line);
     }
 }

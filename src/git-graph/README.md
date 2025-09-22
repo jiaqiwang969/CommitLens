@@ -1,6 +1,9 @@
 # git-graph
 
-[![Build Status](https://travis-ci.com/mlange-42/git-graph.svg?branch=master)](https://travis-ci.com/mlange-42/git-graph)
+[![Tests](https://github.com/mlange-42/git-graph/actions/workflows/tests.yml/badge.svg)](https://github.com/mlange-42/git-graph/actions/workflows/tests.yml)
+[![GitHub](https://img.shields.io/badge/github-repo-blue?logo=github)](https://github.com/mlange-42/git-graph)
+[![Crate](https://img.shields.io/crates/v/git-graph.svg)](https://crates.io/crates/git-graph)
+[![MIT license](https://img.shields.io/github/license/mlange-42/git-graph)](https://github.com/mlange-42/git-graph/blob/master/LICENSE)
 
 A command line tool to visualize Git history graphs in a comprehensible way, following different branching models.
 
@@ -12,7 +15,7 @@ The image below shows an example using the [GitFlow](https://nvie.com/posts/a-su
 
 Decide for yourself which graph is the most comprehensible. :sunglasses:
 
-For an interactive terminal application based on git-graph, check out [git-igitt](https://github.com/mlange-42/git-igitt).
+If you want an **interactive Git terminal application**, see [**git-igitt**](https://github.com/mlange-42/git-igitt), which is based on git-graph.
 
 ## Features
 
@@ -34,7 +37,7 @@ For an interactive terminal application based on git-graph, check out [git-igitt
 In case you have [Rust](https://www.rust-lang.org/) installed, you can install with `cargo`:
 
 ```
-cargo install --git https://github.com/mlange-42/git-graph
+cargo install git-graph
 ```
 
 ## Usage

@@ -1909,15 +1909,25 @@ class SboxgenGUI:
         if not tail_text:
             return
         hay = tail_text.lower()
-        patterns = [
+        api_patterns = [
             'stream error', 'service unavailable', 'temporarily unavailable',
             'rate limit', 'too many requests', 'deadline exceeded', 'timed out', 'timeout',
             'network is unreachable', 'connection reset', 'connection refused', 'bad gateway',
             'temporary failure in name resolution', 'invalid api key', 'unauthorized', 'tls',
         ]
-        # 排除一些非致命提示
-        excludes = ['no such file or directory', 'exec error', 'os error', 'not found']
-        if any(p in hay for p in patterns) and not any(x in hay for x in excludes):
+        generic_patterns = [
+            ' error ', 'error:', 'exception', 'fatal', 'panic', 'build failed',
+            'no such file or directory', 'command not found', 'permission denied',
+            'undefined reference', 'xelatex: fatal', 'latex error', 'plantuml', 'syntax error',
+            'traceback (most recent call last)', 'raise ', 'exit status 1', 'failed to', 'could not', 'cannot',
+        ]
+        excludes = ['warning:', 'note:']
+        api_hit = any(p in hay for p in api_patterns)
+        if any(ex in hay for ex in excludes):
+            generic_hit = any(p in hay for p in generic_patterns if p not in (' error ', 'error:'))
+        else:
+            generic_hit = any(p in hay for p in generic_patterns)
+        if api_hit or generic_hit:
             self._codex_error_prompt_active = True
             self.root.after(0, lambda txt=tail_text: self._prompt_codex_error_decision(txt))
 
@@ -5606,16 +5616,27 @@ class SboxgenGUI:
                                 # 实时错误检测：API/网络错误模式（小写匹配）
                                 try:
                                     hay = "\n".join(list(tail_lines)[-20:]).lower()
-                                    patterns = [
+                                    api_patterns = [
                                         'stream error', 'service unavailable', 'temporarily unavailable',
                                         'rate limit', 'too many requests', 'deadline exceeded', 'timed out', 'timeout',
                                         'network is unreachable', 'connection reset', 'connection refused', 'bad gateway',
                                         'temporary failure in name resolution', 'invalid api key', 'unauthorized', 'tls',
                                     ]
-                                    hit = any(p in hay for p in patterns)
+                                    generic_patterns = [
+                                        ' error ', 'error:', 'exception', 'fatal', 'panic', 'build failed',
+                                        'no such file or directory', 'command not found', 'permission denied',
+                                        'undefined reference', 'xelatex: fatal', 'latex error', 'plantuml', 'syntax error',
+                                        'traceback (most recent call last)', 'raise ', 'exit status 1', 'failed to', 'could not', 'cannot',
+                                    ]
+                                    excludes = ['warning:', 'note:']
+                                    if any(ex in hay for ex in excludes):
+                                        generic_hit = any(p in hay for p in generic_patterns if p not in (' error ', 'error:'))
+                                    else:
+                                        generic_hit = any(p in hay for p in generic_patterns)
+                                    api_hit = any(p in hay for p in api_patterns)
                                 except Exception:
-                                    hit = False
-                                if hit and (not getattr(self, '_error_prompt_active', False)):
+                                    api_hit = generic_hit = False
+                                if (api_hit or generic_hit) and (not getattr(self, '_error_prompt_active', False)):
                                     # 触发一次性的错误对话框
                                     self._error_prompt_active = True
                                     last20 = "\n".join(list(tail_lines)[-20:])
@@ -5724,10 +5745,10 @@ class SboxgenGUI:
             print(f"解析消息错误: {e}")
 
     def _prompt_api_error_decision(self, tail_text: str):
-        """弹出对话框：检测到疑似 API/网络错误，询问是否重试/继续/停止。"""
+        """弹出对话框：检测到疑似错误/网络异常，询问是否重试/继续/停止。"""
         from tkinter import messagebox
         msg = (
-            "检测到疑似网络/API 错误。\n\n"
+            "检测到疑似错误/网络异常。\n\n"
             "是否要重试当前步骤？\n\n"
             "Yes = 重试当前步骤\nNo = 继续执行（忽略本次错误）\nCancel = 停止执行\n\n"
             "最近输出: \n" + tail_text[-500:]

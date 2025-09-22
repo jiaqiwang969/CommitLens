@@ -2687,6 +2687,13 @@ class SboxgenGUI:
         ttk.Button(rerun_frame, text="开始重放", command=self._rerun_from_commit_gui).grid(row=0, column=3, padx=(6, 0))
         ttk.Label(rerun_frame, text="示例: 016-f620960", foreground="#666").grid(row=1, column=1, sticky="w", pady=(4,0))
 
+        # Graph 工具栏（不破坏现有流程）
+        graph_frame = ttk.LabelFrame(control_frame, text="Graph", padding=6)
+        graph_frame.grid(row=6, column=0, columnspan=4, sticky="ew", pady=(10, 0))
+        ttk.Button(graph_frame, text="生成选中 Graph", command=self._gen_selected_graphs).pack(side=tk.LEFT)
+        ttk.Button(graph_frame, text="生成全部 Graph", command=self._gen_all_graphs).pack(side=tk.LEFT, padx=(8, 0))
+        ttk.Button(graph_frame, text="打开选中 Graph", command=self._open_selected_graph).pack(side=tk.LEFT, padx=(8, 0))
+
         # 顶部右侧：Prompt编辑框
         prompt_frame = ttk.LabelFrame(tab, text="任务Prompt（可编辑）", padding=10)
         prompt_frame.grid(row=0, column=1, sticky="nsew", pady=(0, 5))
@@ -2854,17 +2861,19 @@ class SboxgenGUI:
         main_frame.add(left_frame, weight=1)
 
         # 任务列表树形控件
-        columns = ("状态", "报告", "图片")
+        columns = ("状态", "报告", "图片", "graph")
         self.task_tree = ttk.Treeview(left_frame, columns=columns, show="tree headings", height=15)
         self.task_tree.heading("#0", text="任务ID")
         self.task_tree.heading("状态", text="状态")
         self.task_tree.heading("报告", text="报告")
         self.task_tree.heading("图片", text="图片")
+        self.task_tree.heading("graph", text="graph")
 
         self.task_tree.column("#0", width=120)
         self.task_tree.column("状态", width=80)
         self.task_tree.column("报告", width=50)
         self.task_tree.column("图片", width=50)
+        self.task_tree.column("graph", width=60)
 
         # 滚动条
         task_scroll = ttk.Scrollbar(left_frame, orient="vertical", command=self.task_tree.yview)
@@ -3109,9 +3118,10 @@ class SboxgenGUI:
             # 检查文件存在
             report_exists = "✓" if task["report"].exists() else "✗"
             figs_exists = "✓" if task["figs"].exists() else "✗"
+            graph_exists = "✓" if (task["figs"] / "graph.svg").exists() else "—"
 
             # 添加到树形控件
-            self.task_tree.insert("", "end", text=task_id, values=(status_text, report_exists, figs_exists), tags=tags)
+            self.task_tree.insert("", "end", text=task_id, values=(status_text, report_exists, figs_exists, graph_exists), tags=tags)
 
         # 配置标签颜色（增强配色）
         self.task_tree.tag_configure("completed", foreground="#00b050")  # 深绿色
@@ -3136,6 +3146,187 @@ class SboxgenGUI:
         if hasattr(self, 'task_executor_running') and self.task_executor_running:
             # 每2秒刷新一次任务列表以显示最新状态
             self.root.after(2000, self._refresh_task_list)
+
+    # ---------------- Graph generation ----------------
+    def _ensure_git_graph_bin(self) -> str:
+        """Locate or build git-graph; return executable path."""
+        import shutil, subprocess
+        if getattr(self, '_git_graph_bin', None):
+            return self._git_graph_bin
+        # 1) env override
+        p = os.environ.get("SBOXGEN_GIT_GRAPH")
+        if p and Path(p).exists():
+            self._git_graph_bin = p
+            return p
+        # 2) PATH lookup
+        exe = shutil.which("git-graph")
+        if exe:
+            self._git_graph_bin = exe
+            return exe
+        # 3) local build target
+        repo = Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")
+        cand = repo / "target/release/git-graph"
+        if cand.exists():
+            self._git_graph_bin = str(cand)
+            return str(cand)
+        # 4) attempt to build
+        try:
+            self._task_log("开始构建 git-graph（二进制不存在）", "info")
+            subprocess.run(["cargo", "build", "--release"], cwd=str(repo), check=True)
+            if cand.exists():
+                self._git_graph_bin = str(cand)
+                return str(cand)
+        except Exception as e:
+            self._task_log(f"构建 git-graph 失败: {e}", "error")
+        raise RuntimeError("未找到 git-graph 可执行文件，且构建失败。请安装或修复 rust-project-01。")
+
+    def _parse_seq_from_id(self, task_id: str) -> int:
+        try:
+            return int(task_id.split('-', 1)[0])
+        except Exception:
+            return 0
+
+    def _find_sha_for_task(self, project_dir: Path, task_id: str) -> Optional[str]:
+        try:
+            # 复用执行器的查找逻辑（基于提交信息前缀）
+            return self.task_executor._find_commit_by_task_id(task_id)
+        except Exception:
+            return None
+
+    def _gen_graph_for_task(self, task: dict) -> bool:
+        """为单个任务生成 graph.svg（截至该任务的提交）。不阻塞 UI。"""
+        try:
+            git_graph = self._ensure_git_graph_bin()
+        except Exception as e:
+            self._task_log(str(e), "error")
+            return False
+
+        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        project_name = self.task_project_name_var.get().strip() or "rust-project"
+        repo_dir = workspace / project_name
+        if not (repo_dir / ".git").exists():
+            self._task_log(f"未找到项目仓库: {repo_dir}", "error")
+            return False
+
+        task_id = task["id"]
+        sha = self._find_sha_for_task(repo_dir, task_id)
+        if not sha:
+            self._task_log(f"未在项目提交中找到任务 {task_id} 的提交", "error")
+            return False
+
+        # 准备目标路径
+        figs_dir = task["figs"]
+        try:
+            figs_dir.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            pass
+        out_svg = figs_dir / "graph.svg"
+
+        # 使用临时 worktree 在指定提交生成图，避免影响主工作区
+        wt_root = workspace / ".graph_worktrees"
+        wt_path = wt_root / f"{task_id}"
+        try:
+            wt_root.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            pass
+
+        import subprocess
+        try:
+            # 清理可能的残留 worktree
+            if wt_path.exists():
+                subprocess.run(["git", "worktree", "remove", "--force", str(wt_path)], cwd=str(repo_dir), check=False)
+            # 新增 worktree（detached）到指定提交
+            subprocess.run(["git", "worktree", "add", "--detach", str(wt_path), sha], cwd=str(repo_dir), check=True)
+
+            # 运行 git-graph 输出 SVG
+            proc = subprocess.run([git_graph, "--svg"], cwd=str(wt_path), capture_output=True, text=True)
+            if proc.returncode != 0 or not proc.stdout.strip():
+                self._task_log(f"git-graph 失败: rc={proc.returncode} err={proc.stderr.strip()[:120]}", "error")
+                return False
+            out_svg.write_text(proc.stdout, encoding="utf-8")
+            self._task_log(f"✓ 生成 graph: {out_svg}", "success")
+            return True
+        except Exception as e:
+            self._task_log(f"生成 graph 失败: {e}", "error")
+            return False
+        finally:
+            # 尝试移除 worktree
+            try:
+                subprocess.run(["git", "worktree", "remove", "--force", str(wt_path)], cwd=str(repo_dir), check=False)
+            except Exception:
+                pass
+
+    def _selected_task_ids(self) -> list[str]:
+        sels = self.task_tree.selection()
+        ids: list[str] = []
+        for it in sels:
+            tid = self.task_tree.item(it, "text")
+            if tid:
+                ids.append(tid)
+        return ids
+
+    def _gen_selected_graphs(self):
+        ids = self._selected_task_ids()
+        if not ids:
+            messagebox.showinfo("提示", "请先在任务列表选择一个或多个任务")
+            return
+        self._gen_graphs_for_ids(ids)
+
+    def _gen_all_graphs(self):
+        tasks = self.task_executor.get_all_tasks()
+        ids = [t["id"] for t in tasks]
+        if not ids:
+            messagebox.showinfo("提示", "未发现任务")
+            return
+        self._gen_graphs_for_ids(ids)
+
+    def _gen_graphs_for_ids(self, ids: list[str]):
+        if getattr(self, 'task_executor_running', False):
+            self._task_log("当前有任务执行中，暂不生成 Graph", "warning")
+            return
+        self._task_log(f"开始批量生成 Graph：{len(ids)} 条", "info")
+        def _run():
+            ok = 0
+            tasks_map = {t["id"]: t for t in self.task_executor.get_all_tasks()}
+            for tid in ids:
+                t = tasks_map.get(tid)
+                if not t:
+                    continue
+                if self._gen_graph_for_task(t):
+                    ok += 1
+                # 刷新列表中该行的 graph 列显示
+                try:
+                    self.root.after(0, self._refresh_task_list)
+                except Exception:
+                    pass
+            self._task_log(f"Graph 生成完成：成功 {ok}/{len(ids)}", "info")
+        threading.Thread(target=_run, daemon=True).start()
+
+    def _open_selected_graph(self):
+        ids = self._selected_task_ids()
+        if not ids:
+            messagebox.showinfo("提示", "请先选择任务")
+            return
+        tid = ids[0]
+        tasks_map = {t["id"]: t for t in self.task_executor.get_all_tasks()}
+        t = tasks_map.get(tid)
+        if not t:
+            messagebox.showerror("错误", "未找到所选任务")
+            return
+        svg = t["figs"] / "graph.svg"
+        if not svg.exists():
+            messagebox.showwarning("未找到", f"未找到: {svg}")
+            return
+        # 打开文件（跨平台）
+        try:
+            if sys.platform == "darwin":
+                subprocess.run(["open", str(svg)])
+            elif os.name == "nt":
+                os.startfile(str(svg))  # type: ignore
+            else:
+                subprocess.run(["xdg-open", str(svg)])
+        except Exception as e:
+            messagebox.showerror("错误", f"无法打开: {e}")
 
     def _load_saved_or_default_prompt(self):
         """优先加载保存的自定义prompt，如果不存在则加载默认模板"""

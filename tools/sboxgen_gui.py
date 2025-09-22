@@ -2715,7 +2715,23 @@ class SboxgenGUI:
 
         # 设置默认路径变量
         self.task_artifacts_var = tk.StringVar(value=str(Path(".artifacts")))
-        self.task_workspace_var = tk.StringVar(value=str(Path(".workspace")))
+        # Prefer an existing workspace dir: .workspace or workspace
+        try:
+            def _default_workspace_dir():
+                cands = [Path('.workspace'), Path('workspace')]
+                for c in cands:
+                    try:
+                        if c.exists():
+                            return str(c.resolve())
+                    except Exception:
+                        pass
+                try:
+                    return str(Path('.workspace').resolve())
+                except Exception:
+                    return '.workspace'
+            self.task_workspace_var = tk.StringVar(value=_default_workspace_dir())
+        except Exception:
+            self.task_workspace_var = tk.StringVar(value=str(Path(".workspace")))
         self.task_timeout_var = tk.IntVar(value=6000)  # 默认超时时间6000秒（100分钟）
 
         # 初始化任务执行器，传递路径参数
@@ -3405,7 +3421,8 @@ class SboxgenGUI:
 
     def _gen_graph_for_task(self, task: dict) -> bool:
         """为单个任务生成 graph.svg（Rust FFI，max_count=任务序号）。"""
-        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        # Resolve workspace directory with fallback to .workspace/workspace
+        workspace = self._resolve_workspace_dir()
         project_name = self.task_project_name_var.get().strip() or "rust-project"
         repo_dir = workspace / project_name
         if not (repo_dir / ".git").exists():
@@ -3560,7 +3577,7 @@ class SboxgenGUI:
                 messagebox.showerror("错误", "生成 SVG 失败")
                 return
         # 转 PNG 到缓存
-        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        workspace = self._resolve_workspace_dir()
         cache = workspace / ".graph_cache"
         cache.mkdir(parents=True, exist_ok=True)
         png_path = cache / f"{tid}.png"
@@ -3631,7 +3648,7 @@ class SboxgenGUI:
 
     def _embed_repo_graph_rust(self):
         """生成整库 SVG→PNG 并嵌入到任务执行页下方的画布中。"""
-        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        workspace = self._resolve_workspace_dir()
         project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
         repo = workspace / project
         if not (repo / ".git").exists():
@@ -3695,7 +3712,7 @@ class SboxgenGUI:
         优先走 Rust FFI(JSON 布局)；失败则自动降级到 git-graph --json。
         """
         # Fetch layout JSON via FFI
-        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        workspace = self._resolve_workspace_dir()
         project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
         repo = workspace / project
         if not (repo / ".git").exists():
@@ -4078,7 +4095,7 @@ class SboxgenGUI:
         # Clear content
         self.graph_content_text.delete('1.0', tk.END)
 
-        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        workspace = self._resolve_workspace_dir()
         project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
         repo_path = workspace / project
 
@@ -4530,7 +4547,7 @@ class SboxgenGUI:
         Prefer Rust FFI layout JSON; gracefully fall back to calling git-graph --json.
         """
         import ctypes as C, json
-        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        workspace = self._resolve_workspace_dir()
         project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
         repo = workspace / project
         if not (repo / ".git").exists():
@@ -7162,3 +7179,22 @@ def main():
 
 if __name__ == "__main__":
     main()
+    def _resolve_workspace_dir(self) -> Path:
+        """Resolve workspace directory with graceful fallbacks.
+        Order: user-provided -> .workspace -> workspace.
+        """
+        try:
+            candidates = []
+            raw = (self.task_workspace_var.get() if hasattr(self, 'task_workspace_var') else '') or ''
+            if raw.strip():
+                candidates.append(Path(raw.strip()))
+            candidates.extend([Path('.workspace'), Path('workspace')])
+            for c in candidates:
+                try:
+                    if c.exists():
+                        return c.resolve()
+                except Exception:
+                    pass
+            return Path('.workspace').resolve()
+        except Exception:
+            return Path('.workspace')

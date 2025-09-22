@@ -4282,29 +4282,43 @@ class SboxgenGUI:
 
             # 检查输出中是否包含API错误或其他已知错误模式
             api_error_detected = False
+            # 更精确的 API/服务错误模式（大小写不敏感），仅检查末尾若干行，避免早期无害报错误伤
             error_patterns = [
-                "ERROR: We're currently experiencing high demand",
-                "ERROR: Rate limit exceeded",
-                "ERROR: API key is invalid",
-                "ERROR: Unauthorized",
-                "ERROR: Service unavailable",
-                "ERROR:",  # 通用ERROR模式
-                "stream error: We're currently experiencing high demand",
-                "Authentication failed",
-                "Permission denied"
+                "we're currently experiencing high demand",
+                "rate limit exceeded",
+                "too many requests",
+                "api key is invalid",
+                "invalid api key",
+                "unauthorized",
+                "service unavailable",
+                "503 service unavailable",
+                "bad gateway",
+                "502 bad gateway",
+                "authentication failed",
+                "certificate verify failed",
+            ]
+            exclude_patterns = [
+                # 常见无害/过程性报错，不视为 API 错误
+                "no such file or directory",
+                "os error",
+                "exec error",
+                "not found",
             ]
 
-            # 检查输出中是否有错误模式
-            for pattern in error_patterns:
-                if pattern in full_output:
+            # 仅扫描输出末尾 15 行，且大小写不敏感
+            try:
+                tail = "\n".join(full_output.splitlines()[-15:])
+            except Exception:
+                tail = full_output
+            hay = tail.lower()
+            if return_code == 0:
+                hit = any(pat in hay for pat in error_patterns)
+                excl = any(pat in hay for pat in exclude_patterns)
+                if hit and not excl:
                     api_error_detected = True
-                    self._task_log(f"⚠️ 检测到API错误: {pattern[:50]}...", "error")
-                    # 如果检测到API错误，覆盖return_code
-                    if return_code == 0:
-                        return_code = 503  # Service Unavailable
-                        # 更新状态文件
-                        status_file.write_text("503", encoding="utf-8")
-                    break
+                    self._task_log("⚠️ 检测到可能的 API/服务错误（尾部日志）", "error")
+                    return_code = 503
+                    status_file.write_text("503", encoding="utf-8")
 
             # 根据返回码判断成功/失败，返回(success, error_code)
             if return_code == 0:

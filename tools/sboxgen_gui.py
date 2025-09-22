@@ -769,6 +769,15 @@ class SboxgenGUI:
         # 不再单独注入 PUML/LaTeX shards 提示词（已合并）
         return env
 
+    def _spawn_env(self) -> dict:
+        """Environment for child processes to avoid macOS CoreFoundation fork warnings.
+        Sets OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES only for spawned children.
+        """
+        env = os.environ.copy()
+        # Silence CoreFoundation fork safety warnings in child processes on macOS
+        env.setdefault("OBJC_DISABLE_INITIALIZE_FORK_SAFETY", "YES")
+        return env
+
     def _popen_stream(self, cmd: list[str], cwd: Optional[Path] = None) -> int:
         self._append_log("$ " + " ".join(shlex.quote(x) for x in cmd))
         self._set_status("运行中…")
@@ -3793,7 +3802,7 @@ class SboxgenGUI:
             return
         try:
             self._append_log(f"[graph-tab] 使用 {bin_path} 执行 --json 渲染")
-            proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
+            proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
         except Exception as e:
             self._append_log(f"[igraph] 运行 git-graph --json 失败: {e}")
             # 回退：尝试解析 ASCII 输出
@@ -4097,7 +4106,7 @@ class SboxgenGUI:
         # run ascii output
         proc = subprocess.run(
             [bin_path, "--style", "ascii", "--no-color", "--no-pager", "-n", str(lim)],
-            cwd=str(repo), capture_output=True, text=True, check=True
+            cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env()
         )
         out = proc.stdout or ""
         lines = out.splitlines()
@@ -4127,14 +4136,14 @@ class SboxgenGUI:
 
         # pass 1.5: HEAD name (meta)
         try:
-            head_name = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True, check=True).stdout.strip()
+            head_name = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env()).stdout.strip()
         except Exception:
             head_name = "HEAD"
 
         # pass 2: Build mapping via rev-list --parents (one shot)
         parents_map: dict[str, list[str]] = {}
         try:
-            rlp = subprocess.run(["git", "rev-list", "--parents", "--topo-order", f"-n", str(lim), head_name], cwd=str(repo), capture_output=True, text=True, check=True)
+            rlp = subprocess.run(["git", "rev-list", "--parents", "--topo-order", f"-n", str(lim), head_name], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
             for ln in rlp.stdout.splitlines():
                 parts = [x.strip().lower() for x in ln.split() if x.strip()]
                 if not parts:
@@ -4148,7 +4157,7 @@ class SboxgenGUI:
         heads_map: dict[str, list[str]] = {}
         tags_map: dict[str, list[str]] = {}
         try:
-            cp = subprocess.run(["git", "show-ref", "--heads", "--tags"], cwd=str(repo), capture_output=True, text=True, check=True)
+            cp = subprocess.run(["git", "show-ref", "--heads", "--tags"], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
             for ln in cp.stdout.splitlines():
                 sp = ln.strip().split()
                 if len(sp) != 2:
@@ -4195,7 +4204,7 @@ class SboxgenGUI:
                         "--format=%H%x01%as%x01%an%x01%s",
                         short,
                     ],
-                    cwd=str(repo), capture_output=True, text=True, check=True,
+                    cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env()
                 )
                 parts = (cp.stdout.strip().split("\x01", 3) + [""] * 4)[:4]
                 full, date, author, subject = [x.strip() for x in parts]
@@ -4924,7 +4933,7 @@ class SboxgenGUI:
                 self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
             return
         try:
-            proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
+            proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
         except Exception as e:
             self._append_log(f"[graph-tab] 运行 git-graph --json 失败: {e}")
             # 回退：尝试解析 ASCII 输出
@@ -5158,9 +5167,9 @@ class SboxgenGUI:
         # branch prefer main
         branch = "main"
         try:
-            rc = subprocess.run(["git", "show-ref", "--verify", "refs/heads/main"], cwd=str(repo))
+            rc = subprocess.run(["git", "show-ref", "--verify", "refs/heads/main"], cwd=str(repo), env=self._spawn_env())
             if rc.returncode != 0:
-                cp = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True)
+                cp = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True, env=self._spawn_env())
                 b = (cp.stdout or "").strip() or "HEAD"
                 branch = b
         except Exception:
@@ -5216,7 +5225,7 @@ class SboxgenGUI:
 
         # Get list of commits first-parent reversed (oldest->newest)
         try:
-            cp = subprocess.run(["git", "rev-list", "--first-parent", "--reverse", branch], cwd=str(repo), capture_output=True, text=True, check=True)
+            cp = subprocess.run(["git", "rev-list", "--first-parent", "--reverse", branch], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
             shas = [ln.strip() for ln in cp.stdout.splitlines() if ln.strip()]
         except subprocess.CalledProcessError as e:
             self._append_log(f"[graph] 获取提交失败: {e}")
@@ -5226,7 +5235,7 @@ class SboxgenGUI:
         heads_map = {}
         tags_map = {}
         try:
-            cp = subprocess.run(["git", "show-ref", "--heads", "--tags"], cwd=str(repo), capture_output=True, text=True, check=True)
+            cp = subprocess.run(["git", "show-ref", "--heads", "--tags"], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
             for ln in cp.stdout.splitlines():
                 parts = ln.strip().split()
                 if len(parts) != 2:
@@ -5246,7 +5255,7 @@ class SboxgenGUI:
         pat = re.compile(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?")
         for idx, sha in enumerate(shas, start=1):
             try:
-                cp = subprocess.run(["git", "show", "-s", f"--format=%h%x01%H%x01%as%x01%s", sha], cwd=str(repo), capture_output=True, text=True, check=True)
+                cp = subprocess.run(["git", "show", "-s", f"--format=%h%x01%H%x01%as%x01%s", sha], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
                 short, full, date, subject = (cp.stdout.strip().split("\x01", 3) + [""]*4)[:4]
             except Exception:
                 short, full, date, subject = sha[:7], sha, "", ""

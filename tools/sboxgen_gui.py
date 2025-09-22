@@ -3782,7 +3782,7 @@ class SboxgenGUI:
             bin_path = self._ensure_git_graph_bin()
         except Exception as e:
             self._append_log(f"[igraph] FFI 不可用且未找到 git-graph 可执行文件: {e}")
-            # 最后兜底：使用 git 构建简化布局（单列，无连线）
+            # 回退：简化 ASCII 解析不可行（缺可执行），使用最简布局
             try:
                 data = self._igraph_build_simple_layout(repo)
                 if data.get("nodes"):
@@ -3796,7 +3796,16 @@ class SboxgenGUI:
             proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
         except Exception as e:
             self._append_log(f"[igraph] 运行 git-graph --json 失败: {e}")
-            # 回退到简化布局
+            # 回退：尝试解析 ASCII 输出
+            try:
+                data = self._igraph_build_layout_from_ascii(repo)
+                if data.get("nodes"):
+                    self._append_log("[igraph] 使用 ASCII 解析渲染（无 JSON）")
+                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    return
+            except Exception as e2:
+                self._append_log(f"[igraph] ASCII 解析失败: {e2}")
+            # 最后兜底
             try:
                 data = self._igraph_build_simple_layout(repo)
                 if data.get("nodes"):
@@ -3808,12 +3817,30 @@ class SboxgenGUI:
         out = proc.stdout or ""
         if not out.strip():
             self._append_log("[igraph] git-graph --json 输出为空")
+            # 回退 ASCII
+            try:
+                data = self._igraph_build_layout_from_ascii(repo)
+                if data.get("nodes"):
+                    self._append_log("[igraph] 使用 ASCII 解析渲染（无 JSON）")
+                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    return
+            except Exception as e2:
+                self._append_log(f"[igraph] ASCII 解析失败: {e2}")
             return
         try:
             raw = json.loads(out)
         except Exception as e:
             self._append_log(f"[igraph] 解析 git-graph JSON 失败: {e}")
-            # 回退到简化布局
+            # 回退 ASCII
+            try:
+                data = self._igraph_build_layout_from_ascii(repo)
+                if data.get("nodes"):
+                    self._append_log("[igraph] 使用 ASCII 解析渲染（无 JSON）")
+                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    return
+            except Exception as e2:
+                self._append_log(f"[igraph] ASCII 解析失败: {e2}")
+            # 最后兜底
             try:
                 data = self._igraph_build_simple_layout(repo)
                 if data.get("nodes"):
@@ -3862,7 +3889,16 @@ class SboxgenGUI:
             self._draw_interactive_graph(self.exec_graph_canvas, data)
         except Exception as e:
             self._append_log(f"[igraph] 适配 JSON 渲染失败: {e}")
-            # 回退到简化布局
+            # 回退 ASCII
+            try:
+                data = self._igraph_build_layout_from_ascii(repo)
+                if data.get("nodes"):
+                    self._append_log("[igraph] 使用 ASCII 解析渲染（无 JSON）")
+                    self._draw_interactive_graph(self.exec_graph_canvas, data)
+                    return
+            except Exception as e2:
+                self._append_log(f"[igraph] ASCII 解析失败: {e2}")
+            # 最后兜底
             try:
                 data = self._igraph_build_simple_layout(repo)
                 if data.get("nodes"):
@@ -4038,6 +4074,102 @@ class SboxgenGUI:
                 "color": "#007acc",
             })
         return {"nodes": nodes, "edges": []}
+
+    def _igraph_build_layout_from_ascii(self, repo: Path, max_commits: Optional[int] = None) -> dict:
+        """使用 git-graph 文本（ASCII）输出解析出 lanes 与父子关系，构造交互布局。
+        要求可执行的 git-graph；无需 JSON/FFI。
+        - 解析每一行的图形区，取最右侧的提交标记字符（*, o, ●, ○）的字符位置 pos
+        - 列号 column ~= pos // 2（与 upstream 网格实现一致）
+        - 通过 `git show -s --format=%H%x01%P%x01%as%x01%an%x01%s` 获取全 SHA、父列表、日期、作者、标题
+        - 根据全 SHA → 索引映射，生成 edges（from=当前 idx，to=父 idx）
+        """
+        import subprocess, re
+        # resolve binary first
+        bin_path = self._ensure_git_graph_bin()
+        # derive limit
+        try:
+            lim = int(self.limit_var.get()) if hasattr(self, 'limit_var') else 150
+        except Exception:
+            lim = 150
+        if max_commits is not None:
+            lim = min(lim, int(max_commits))
+
+        # run ascii output
+        proc = subprocess.run(
+            [bin_path, "--style", "ascii", "--no-color", "--no-pager", "-n", str(lim)],
+            cwd=str(repo), capture_output=True, text=True, check=True
+        )
+        out = proc.stdout or ""
+        lines = out.splitlines()
+
+        # pass 1: collect (short, column)
+        commits: list[dict] = []
+        for ln in lines:
+            m = re.search(r"\b[0-9a-fA-F]{7}\b", ln)
+            if not m:
+                continue
+            graph_part = ln[: m.start()]
+            # rightmost commit marker in graph area
+            pos = -1
+            for i in range(len(graph_part) - 1, -1, -1):
+                ch = graph_part[i]
+                if ch in ('*', 'o', '●', '○'):
+                    pos = i
+                    break
+            if pos < 0:
+                # fallback: try last star
+                pos = graph_part.rfind('*')
+                if pos < 0:
+                    pos = 0
+            col = max(0, pos // 2)
+            short = m.group(0).lower()
+            commits.append({"short": short, "column": col})
+
+        # pass 2: enrich with full data
+        nodes: list[dict] = []
+        parent_lists: list[list[str]] = []
+        for idx, it in enumerate(commits):
+            short = it["short"]
+            try:
+                cp = subprocess.run(
+                    [
+                        "git",
+                        "show",
+                        "-s",
+                        "--format=%H%x01%P%x01%as%x01%an%x01%s",
+                        short,
+                    ],
+                    cwd=str(repo), capture_output=True, text=True, check=True,
+                )
+                parts = (cp.stdout.strip().split("\x01", 4) + [""] * 5)[:5]
+                full, parents_str, date, author, subject = parts
+            except Exception:
+                full, parents_str, date, author, subject = short, "", "", "", ""
+            parents = [p.lower() for p in parents_str.split() if p.strip()]
+            node = {
+                "idx": idx,
+                "id": full.lower(),
+                "column": int(it["column"] or 0),
+                "short": full[:7].lower(),
+                "subject": subject or "",
+                "date": date or "",
+                "author": author or "",
+                "branch": "",
+                "color": "#007acc",
+            }
+            nodes.append(node)
+            parent_lists.append(parents)
+
+        # pass 3: edges by parent indices
+        id_to_idx = {nd["id"]: i for i, nd in enumerate(nodes)}
+        edges: list[dict] = []
+        for i, parents in enumerate(parent_lists):
+            for p in parents:
+                j = id_to_idx.get(p)
+                if j is not None:
+                    edges.append({"from": i, "to": j, "color": "#90a4ae"})
+
+        return {"nodes": nodes, "edges": edges}
 
     def _igraph_clear_label(self, canvas: tk.Canvas):
         try:
@@ -4712,7 +4844,16 @@ class SboxgenGUI:
             proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True)
         except Exception as e:
             self._append_log(f"[graph-tab] 运行 git-graph --json 失败: {e}")
-            # 回退到简化布局
+            # 回退：尝试解析 ASCII 输出
+            try:
+                data = self._igraph_build_layout_from_ascii(repo)
+                if data.get("nodes"):
+                    self._append_log("[graph-tab] 使用 ASCII 解析渲染（无 JSON）")
+                    self._draw_interactive_graph(self.graph_canvas, data)
+                    return
+            except Exception as e2:
+                self._append_log(f"[graph-tab] ASCII 解析失败: {e2}")
+            # 最后兜底
             try:
                 data = self._igraph_build_simple_layout(repo)
                 if data.get("nodes"):
@@ -4724,19 +4865,29 @@ class SboxgenGUI:
         out = proc.stdout or ""
         if not out.strip():
             self._append_log("[graph-tab] git-graph --json 输出为空")
+            # 回退 ASCII
+            try:
+                data = self._igraph_build_layout_from_ascii(repo)
+                if data.get("nodes"):
+                    self._append_log("[graph-tab] 使用 ASCII 解析渲染（无 JSON）")
+                    self._draw_interactive_graph(self.graph_canvas, data)
+                    return
+            except Exception as e2:
+                self._append_log(f"[graph-tab] ASCII 解析失败: {e2}")
             return
         try:
             raw = json.loads(out)
         except Exception as e:
             self._append_log(f"[graph-tab] 解析 git-graph JSON 失败: {e}")
-            # 回退到简化布局
+            # 回退 ASCII
             try:
-                data = self._igraph_build_simple_layout(repo)
+                data = self._igraph_build_layout_from_ascii(repo)
                 if data.get("nodes"):
-                    self._append_log("[graph-tab] 使用简化布局渲染（无 FFI/JSON）")
+                    self._append_log("[graph-tab] 使用 ASCII 解析渲染（无 JSON）")
                     self._draw_interactive_graph(self.graph_canvas, data)
+                    return
             except Exception as e2:
-                self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
+                self._append_log(f"[graph-tab] ASCII 解析失败: {e2}")
             return
         # adapt to _draw_interactive_graph schema: nodes[idx/column/subject/date/short/branch/color], edges[from/to/color]
         try:
@@ -4778,14 +4929,15 @@ class SboxgenGUI:
             self._draw_interactive_graph(self.graph_canvas, data)
         except Exception as e:
             self._append_log(f"[graph-tab] 适配 JSON 渲染失败: {e}")
-            # 回退到简化布局
+            # 回退 ASCII
             try:
-                data = self._igraph_build_simple_layout(repo)
+                data = self._igraph_build_layout_from_ascii(repo)
                 if data.get("nodes"):
-                    self._append_log("[graph-tab] 使用简化布局渲染（无 FFI/JSON）")
+                    self._append_log("[graph-tab] 使用 ASCII 解析渲染（无 JSON）")
                     self._draw_interactive_graph(self.graph_canvas, data)
+                    return
             except Exception as e2:
-                self._append_log(f"[graph-tab] 简化布局渲染失败: {e2}")
+                self._append_log(f"[graph-tab] ASCII 解析失败: {e2}")
             return
 
     def _graph_render_via_rust_threaded(self):

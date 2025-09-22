@@ -2865,19 +2865,21 @@ class SboxgenGUI:
         main_frame.add(left_frame, weight=1)
 
         # 任务列表树形控件
-        columns = ("状态", "报告", "图片", "graph")
+        columns = ("状态", "报告", "图片", "graph", "branch")
         self.task_tree = ttk.Treeview(left_frame, columns=columns, show="tree headings", height=15)
         self.task_tree.heading("#0", text="任务ID")
         self.task_tree.heading("状态", text="状态")
         self.task_tree.heading("报告", text="报告")
         self.task_tree.heading("图片", text="图片")
         self.task_tree.heading("graph", text="graph")
+        self.task_tree.heading("branch", text="branch")
 
         self.task_tree.column("#0", width=120)
         self.task_tree.column("状态", width=80)
         self.task_tree.column("报告", width=50)
         self.task_tree.column("图片", width=50)
         self.task_tree.column("graph", width=60)
+        self.task_tree.column("branch", width=120)
 
         # 滚动条
         task_scroll = ttk.Scrollbar(left_frame, orient="vertical", command=self.task_tree.yview)
@@ -3066,6 +3068,11 @@ class SboxgenGUI:
 
         # 获取任务列表
         tasks = self.task_executor.get_all_tasks()
+        # 构建任务 -> 分支 映射（基于 git-graph lanes）
+        try:
+            branch_map = self._build_branch_assignment_map()
+        except Exception:
+            branch_map = {}
         status = self.task_executor.status
 
         # 检查是否有任务正在执行（通过状态文件判断）
@@ -3123,9 +3130,10 @@ class SboxgenGUI:
             report_exists = "✓" if task["report"].exists() else "✗"
             figs_exists = "✓" if task["figs"].exists() else "✗"
             graph_exists = "✓" if (task["figs"] / "graph.svg").exists() else "—"
+            branch_names = branch_map.get(task_id, "")
 
             # 添加到树形控件
-            self.task_tree.insert("", "end", text=task_id, values=(status_text, report_exists, figs_exists, graph_exists), tags=tags)
+            self.task_tree.insert("", "end", text=task_id, values=(status_text, report_exists, figs_exists, graph_exists, branch_names), tags=tags)
 
         # 配置标签颜色（增强配色）
         self.task_tree.tag_configure("completed", foreground="#00b050")  # 深绿色
@@ -3150,6 +3158,62 @@ class SboxgenGUI:
         if hasattr(self, 'task_executor_running') and self.task_executor_running:
             # 每2秒刷新一次任务列表以显示最新状态
             self.root.after(2000, self._refresh_task_list)
+
+    def _build_branch_assignment_map(self) -> dict:
+        """基于 git-graph --debug 的 lanes，把每个任务ID映射到其所在分支名称（可能多个，以逗号连接）。"""
+        mapping: dict[str, str] = {}
+        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+        repo = workspace / project
+        if not (repo / ".git").exists():
+            return mapping
+        # 1) 构建 first-parent 提交序列（与任务顺序一致）
+        try:
+            cp = subprocess.run(["git", "rev-list", "--first-parent", "--reverse", "main"], cwd=str(repo), capture_output=True, text=True)
+            if cp.returncode != 0 or not cp.stdout.strip():
+                # fallback: 当前分支
+                br = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True)
+                branch = (br.stdout or "").strip() or "HEAD"
+                cp = subprocess.run(["git", "rev-list", "--first-parent", "--reverse", branch], cwd=str(repo), capture_output=True, text=True)
+            shas = [ln.strip() for ln in (cp.stdout or "").splitlines() if ln.strip()]
+        except Exception:
+            return mapping
+        # 2) 生成 index -> sha 和 task_id -> index
+        idx_by_sha = {sha: i+1 for i, sha in enumerate(shas)}
+        idx_by_task: dict[str, int] = {}
+        pat = re.compile(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?")
+        for sha in shas:
+            try:
+                sp = subprocess.run(["git", "show", "-s", f"--format=%s", sha], cwd=str(repo), capture_output=True, text=True)
+                subj = (sp.stdout or "").strip()
+            except Exception:
+                subj = ""
+            m = pat.match(subj)
+            if m:
+                tid = m.group(1)
+                idx_by_task.setdefault(tid, idx_by_sha.get(sha, 0))
+        # 3) 获取 lanes
+        lanes = self._graph_fetch_branch_lanes(repo)
+        if not lanes:
+            return mapping
+        # 4) 建立 index -> branches 列表
+        branches_by_index: dict[int, list[str]] = {}
+        for lane in lanes:
+            name = lane.get("name") or ""
+            s = int(lane.get("start", 1) or 1)
+            e = int(lane.get("end", s) or s)
+            if s > e:
+                s, e = e, s
+            for i in range(s, e+1):
+                branches_by_index.setdefault(i, [])
+                if name and name not in branches_by_index[i]:
+                    branches_by_index[i].append(name)
+        # 5) 映射 task -> branches
+        for tid, idx in idx_by_task.items():
+            names = branches_by_index.get(idx, [])
+            if names:
+                mapping[tid] = ", ".join(names)
+        return mapping
 
     # ---------------- Graph generation ----------------
     def _ensure_git_graph_bin(self) -> str:

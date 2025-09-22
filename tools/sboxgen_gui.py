@@ -2891,7 +2891,8 @@ class SboxgenGUI:
         gp_container.grid(row=1, column=0, sticky="nsew")
         gp_container.rowconfigure(0, weight=1)
         gp_container.columnconfigure(0, weight=1)
-        self.exec_graph_canvas = tk.Canvas(gp_container, background="#f8f9fa", highlightthickness=0)
+        # Dark mode canvas background to match existing palette
+        self.exec_graph_canvas = tk.Canvas(gp_container, background="#2a2a2a", highlightthickness=0)
         self.exec_graph_canvas.grid(row=0, column=0, sticky="nsew")
         gp_ys = ttk.Scrollbar(gp_container, orient="vertical", command=self.exec_graph_canvas.yview)
         gp_xs = ttk.Scrollbar(gp_container, orient="horizontal", command=self.exec_graph_canvas.xview)
@@ -3567,8 +3568,9 @@ class SboxgenGUI:
         lane_dx = 90
         x_offset = 80
         y_offset = 24
-        text_color = '#212529'
-        grid_color = '#e9ecef'
+        # Dark theme colors (aligned with existing palette)
+        text_color = '#E0E0E0'
+        grid_color = '#3a3f44'
         # Build dict idx->node
         idx_map = {nd['idx']: nd for nd in nodes}
         # compute max column
@@ -3588,18 +3590,21 @@ class SboxgenGUI:
             y1 = y_offset + (n-1-a['idx'])*y_step
             x2 = x_offset + b.get('column',0)*lane_dx
             y2 = y_offset + (n-1-b['idx'])*y_step
-            color = e.get('color') or '#b0bec5'
+            color = e.get('color') or '#90a4ae'
             canvas.create_line(x1, y1, x2, y2, fill=color)
-        # Draw nodes and texts
+        # Draw nodes (labels按需显示，点击时才绘制)
         self._igraph_hitboxes = []
         self._igraph_nodes_xy = []  # [(x,y,r,nd)]
-        # Clear hover mark
+        # Clear hover mark for this canvas
         try:
-            if hasattr(self, '_igraph_hover_item') and self._igraph_hover_item:
-                canvas.delete(self._igraph_hover_item)
-                self._igraph_hover_item = None
+            hov = getattr(canvas, '_igraph_hover_item', None)
+            if hov:
+                canvas.delete(hov)
+                setattr(canvas, '_igraph_hover_item', None)
         except Exception:
             pass
+        # Clear any previous label overlay for this canvas
+        self._igraph_clear_label(canvas)
         for nd in nodes:
             x = x_offset + nd.get('column',0)*lane_dx
             y = y_offset + (n-1-nd['idx'])*y_step
@@ -3607,11 +3612,6 @@ class SboxgenGUI:
             fill = nd.get('fill') or (nd.get('color') or '#007acc')
             outline = nd.get('outline') or (nd.get('color') or '#007acc')
             canvas.create_oval(x-r, y-r, x+r, y+r, fill=fill, outline=outline)
-            subj = (nd.get('subject','') or '').split('\n')[0]
-            if len(subj) > 60:
-                subj = subj[:60] + '…'
-            label = f"{nd.get('short','') } {subj} {nd.get('date','')}"
-            canvas.create_text(x+10, y, anchor='w', text=label, fill=text_color, font=('Helvetica',10))
             # hitbox for click
             bbox = (x-8, y-8, x+300, y+12)
             self._igraph_hitboxes.append((bbox, nd))
@@ -3623,14 +3623,21 @@ class SboxgenGUI:
         # bind click
         def _on_click(ev):
             x,y = ev.x, ev.y
+            clicked = False
             for (bx0,by0,bx1,by1), nd in self._igraph_hitboxes:
                 if bx0 <= x <= bx1 and by0 <= y <= by1:
+                    # show on-demand label near node
+                    self._igraph_show_label(canvas, nd, x, y, text_color)
                     # try map to task id in subject, select in list
                     import re
                     m = re.match(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?", nd.get('subject',''))
                     if m:
                         self._select_task_in_list(m.group(1))
+                    clicked = True
                     break
+            if not clicked:
+                # click blank: clear label
+                self._igraph_clear_label(canvas)
         canvas.bind('<Button-1>', _on_click)
         # hover ring
         def _on_motion(ev):
@@ -3642,17 +3649,74 @@ class SboxgenGUI:
                         hit = nd
                         break
                 # update hover ring
-                if hasattr(self, '_igraph_hover_item') and self._igraph_hover_item:
-                    canvas.delete(self._igraph_hover_item)
-                    self._igraph_hover_item = None
+                hov = getattr(canvas, '_igraph_hover_item', None)
+                if hov:
+                    canvas.delete(hov)
+                    setattr(canvas, '_igraph_hover_item', None)
                 if hit:
                     for x,y,r,nd2 in self._igraph_nodes_xy:
                         if nd2 is hit:
-                            self._igraph_hover_item = canvas.create_oval(x-(r+4), y-(r+4), x+(r+4), y+(r+4), outline='#2196f3', width=2)
+                            hov_item = canvas.create_oval(x-(r+4), y-(r+4), x+(r+4), y+(r+4), outline='#2196f3', width=2)
+                            setattr(canvas, '_igraph_hover_item', hov_item)
                             break
             except Exception:
                 pass
         canvas.bind('<Motion>', _on_motion)
+
+    def _igraph_clear_label(self, canvas: tk.Canvas):
+        try:
+            items = getattr(canvas, '_igraph_label_items', None)
+            if items:
+                for it in items:
+                    try:
+                        canvas.delete(it)
+                    except Exception:
+                        pass
+            setattr(canvas, '_igraph_label_items', [])
+        except Exception:
+            pass
+
+    def _igraph_show_label(self, canvas: tk.Canvas, nd: dict, click_x: int, click_y: int, text_color: str):
+        # compute label text
+        subj = (nd.get('subject','') or '').split('\n')[0]
+        if len(subj) > 80:
+            subj = subj[:80] + '…'
+        short = nd.get('short','')
+        date = nd.get('date','')
+        branch = nd.get('branch','')
+        parts = [short]
+        if branch:
+            parts.append(f"[{branch}]")
+        if subj:
+            parts.append(subj)
+        if date:
+            parts.append(date)
+        text = ' '.join(parts)
+        # position near the node coordinate (prefer right side)
+        # find actual node xy for this nd
+        x = click_x
+        y = click_y
+        try:
+            for nx, ny, r, nd2 in self._igraph_nodes_xy:
+                if nd2 is nd:
+                    x = nx + 10
+                    y = ny - 18
+                    break
+        except Exception:
+            pass
+        pad_x = 8
+        pad_y = 4
+        # measure text approximately (6px per char)
+        width = max(60, int(len(text) * 6 + pad_x*2))
+        height = 20
+        # clear previous label
+        self._igraph_clear_label(canvas)
+        # draw bubble
+        bg = '#343a40'      # dark bubble
+        border = '#6c757d'  # muted gray
+        rect = canvas.create_rectangle(x, y, x+width, y+height, fill=bg, outline=border)
+        txt = canvas.create_text(x+pad_x, y+pad_y, anchor='nw', text=text, fill=text_color, font=('Helvetica',10))
+        setattr(canvas, '_igraph_label_items', [rect, txt])
 
     # ---------------- Graph Tab (Native Tk Canvas) ----------------
     def _build_graph_tab(self, tab):
@@ -3669,7 +3733,7 @@ class SboxgenGUI:
         container.rowconfigure(0, weight=1)
         container.columnconfigure(0, weight=1)
 
-        self.graph_canvas = tk.Canvas(container, background="#f8f9fa", highlightthickness=0)
+        self.graph_canvas = tk.Canvas(container, background="#2a2a2a", highlightthickness=0)
         self.graph_canvas.grid(row=0, column=0, sticky="nsew")
         yscroll = ttk.Scrollbar(container, orient="vertical", command=self.graph_canvas.yview)
         yscroll.grid(row=0, column=1, sticky="ns")

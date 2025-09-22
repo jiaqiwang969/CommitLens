@@ -2864,22 +2864,18 @@ class SboxgenGUI:
         left_frame = ttk.LabelFrame(main_frame, text="任务列表", padding=10)
         main_frame.add(left_frame, weight=1)
 
-        # 任务列表树形控件
-        columns = ("状态", "报告", "图片", "graph", "branch")
+        # 任务列表树形控件（去掉 graph/branch 列）
+        columns = ("状态", "报告", "图片")
         self.task_tree = ttk.Treeview(left_frame, columns=columns, show="tree headings", height=15)
         self.task_tree.heading("#0", text="任务ID")
         self.task_tree.heading("状态", text="状态")
         self.task_tree.heading("报告", text="报告")
         self.task_tree.heading("图片", text="图片")
-        self.task_tree.heading("graph", text="graph")
-        self.task_tree.heading("branch", text="branch")
 
         self.task_tree.column("#0", width=120)
         self.task_tree.column("状态", width=80)
         self.task_tree.column("报告", width=50)
         self.task_tree.column("图片", width=50)
-        self.task_tree.column("graph", width=60)
-        self.task_tree.column("branch", width=120)
 
         # 滚动条
         task_scroll = ttk.Scrollbar(left_frame, orient="vertical", command=self.task_tree.yview)
@@ -2941,6 +2937,30 @@ class SboxgenGUI:
 
         # 初始加载任务列表
         self.root.after(100, self._refresh_task_list)
+
+        # 嵌入式 Graph 预览（基于 Rust FFI 生成整库图）
+        graph_embed = ttk.LabelFrame(tab, text="仓库 Graph 预览 (Rust)", padding=6)
+        graph_embed.grid(row=3, column=0, columnspan=2, sticky="nsew", pady=(6, 0))
+        tab.rowconfigure(3, weight=1)
+        graph_embed.rowconfigure(0, weight=1)
+        graph_embed.columnconfigure(0, weight=1)
+        # toolbar
+        ge_toolbar = ttk.Frame(graph_embed)
+        ge_toolbar.grid(row=0, column=0, sticky="ew")
+        ttk.Button(ge_toolbar, text="刷新仓库 Graph", command=self._embed_repo_graph_rust_threaded).pack(side=tk.LEFT)
+        # canvas with scrollbars
+        ge_container = ttk.Frame(graph_embed)
+        ge_container.grid(row=1, column=0, sticky="nsew")
+        ge_container.rowconfigure(0, weight=1)
+        ge_container.columnconfigure(0, weight=1)
+        self.exec_graph_canvas = tk.Canvas(ge_container, background="#ffffff")
+        self.exec_graph_canvas.grid(row=0, column=0, sticky="nsew")
+        ge_ys = ttk.Scrollbar(ge_container, orient="vertical", command=self.exec_graph_canvas.yview)
+        ge_xs = ttk.Scrollbar(ge_container, orient="horizontal", command=self.exec_graph_canvas.xview)
+        ge_ys.grid(row=0, column=1, sticky="ns")
+        ge_xs.grid(row=1, column=0, sticky="ew")
+        self.exec_graph_canvas.configure(yscrollcommand=ge_ys.set, xscrollcommand=ge_xs.set)
+        self._exec_graph_imgtk = None
 
     def _fill_rerun_id_from_selection(self):
         try:
@@ -3068,11 +3088,6 @@ class SboxgenGUI:
 
         # 获取任务列表
         tasks = self.task_executor.get_all_tasks()
-        # 构建任务 -> 分支 映射（基于 git-graph lanes）
-        try:
-            branch_map = self._build_branch_assignment_map()
-        except Exception:
-            branch_map = {}
         status = self.task_executor.status
 
         # 检查是否有任务正在执行（通过状态文件判断）
@@ -3129,11 +3144,10 @@ class SboxgenGUI:
             # 检查文件存在
             report_exists = "✓" if task["report"].exists() else "✗"
             figs_exists = "✓" if task["figs"].exists() else "✗"
-            graph_exists = "✓" if (task["figs"] / "graph.svg").exists() else "—"
-            branch_names = branch_map.get(task_id, "")
+            # 已去除 graph/branch 列，不再显示
 
             # 添加到树形控件
-            self.task_tree.insert("", "end", text=task_id, values=(status_text, report_exists, figs_exists, graph_exists, branch_names), tags=tags)
+            self.task_tree.insert("", "end", text=task_id, values=(status_text, report_exists, figs_exists), tags=tags)
 
         # 配置标签颜色（增强配色）
         self.task_tree.tag_configure("completed", foreground="#00b050")  # 深绿色
@@ -3159,61 +3173,6 @@ class SboxgenGUI:
             # 每2秒刷新一次任务列表以显示最新状态
             self.root.after(2000, self._refresh_task_list)
 
-    def _build_branch_assignment_map(self) -> dict:
-        """基于 git-graph --debug 的 lanes，把每个任务ID映射到其所在分支名称（可能多个，以逗号连接）。"""
-        mapping: dict[str, str] = {}
-        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
-        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
-        repo = workspace / project
-        if not (repo / ".git").exists():
-            return mapping
-        # 1) 构建 first-parent 提交序列（与任务顺序一致）
-        try:
-            cp = subprocess.run(["git", "rev-list", "--first-parent", "--reverse", "main"], cwd=str(repo), capture_output=True, text=True)
-            if cp.returncode != 0 or not cp.stdout.strip():
-                # fallback: 当前分支
-                br = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo), capture_output=True, text=True)
-                branch = (br.stdout or "").strip() or "HEAD"
-                cp = subprocess.run(["git", "rev-list", "--first-parent", "--reverse", branch], cwd=str(repo), capture_output=True, text=True)
-            shas = [ln.strip() for ln in (cp.stdout or "").splitlines() if ln.strip()]
-        except Exception:
-            return mapping
-        # 2) 生成 index -> sha 和 task_id -> index
-        idx_by_sha = {sha: i+1 for i, sha in enumerate(shas)}
-        idx_by_task: dict[str, int] = {}
-        pat = re.compile(r"^(\d{3}-[0-9a-fA-F]{7})[：:]?")
-        for sha in shas:
-            try:
-                sp = subprocess.run(["git", "show", "-s", f"--format=%s", sha], cwd=str(repo), capture_output=True, text=True)
-                subj = (sp.stdout or "").strip()
-            except Exception:
-                subj = ""
-            m = pat.match(subj)
-            if m:
-                tid = m.group(1)
-                idx_by_task.setdefault(tid, idx_by_sha.get(sha, 0))
-        # 3) 获取 lanes
-        lanes = self._graph_fetch_branch_lanes(repo)
-        if not lanes:
-            return mapping
-        # 4) 建立 index -> branches 列表
-        branches_by_index: dict[int, list[str]] = {}
-        for lane in lanes:
-            name = lane.get("name") or ""
-            s = int(lane.get("start", 1) or 1)
-            e = int(lane.get("end", s) or s)
-            if s > e:
-                s, e = e, s
-            for i in range(s, e+1):
-                branches_by_index.setdefault(i, [])
-                if name and name not in branches_by_index[i]:
-                    branches_by_index[i].append(name)
-        # 5) 映射 task -> branches
-        for tid, idx in idx_by_task.items():
-            names = branches_by_index.get(idx, [])
-            if names:
-                mapping[tid] = ", ".join(names)
-        return mapping
 
     # ---------------- Graph generation ----------------
     def _ensure_git_graph_bin(self) -> str:
@@ -3445,18 +3404,10 @@ class SboxgenGUI:
             xscroll.grid(row=1, column=0, sticky="ew")
             frm.rowconfigure(0, weight=1)
             frm.columnconfigure(0, weight=1)
-            try:
-                from PIL import Image, ImageTk
-                img = Image.open(png_path)
-                imgtk = ImageTk.PhotoImage(img)
-            except Exception:
-                imgtk = tk.PhotoImage(file=str(png_path))
-            # 保存引用，避免被回收
-            win._imgtk = imgtk  # type: ignore
-            canvas.create_image(0, 0, image=imgtk, anchor="nw")
-            w = imgtk.width() if hasattr(imgtk, 'width') else 1200
-            h = imgtk.height() if hasattr(imgtk, 'height') else 800
-            canvas.configure(scrollregion=(0, 0, w, h))
+            # 显示图片
+            def _display():
+                self._display_png_on_canvas(canvas, png_path, attr_name='_preview_imgtk', log_prefix='[graph-preview]')
+            _display()
             # 鼠标滚动
             def _on_wheel(ev):
                 try:
@@ -3467,6 +3418,90 @@ class SboxgenGUI:
             canvas.bind('<MouseWheel>', _on_wheel)
         except Exception as e:
             messagebox.showerror("错误", f"预览失败: {e}")
+
+    def _display_png_on_canvas(self, canvas: tk.Canvas, png_path: Path, attr_name: str, log_prefix: str = ""):
+        try:
+            from PIL import Image, ImageTk
+            img = Image.open(png_path)
+            imgtk = ImageTk.PhotoImage(img)
+            setattr(self, attr_name, imgtk)
+            canvas.delete("all")
+            canvas.create_image(0, 0, image=imgtk, anchor="nw")
+            canvas.configure(scrollregion=(0, 0, img.width, img.height))
+            if log_prefix:
+                self._append_log(f"{log_prefix} 显示 {png_path}")
+        except Exception:
+            try:
+                imgtk = tk.PhotoImage(file=str(png_path))
+                setattr(self, attr_name, imgtk)
+                canvas.delete("all")
+                canvas.create_image(0, 0, image=imgtk, anchor="nw")
+                canvas.configure(scrollregion=(0, 0, imgtk.width(), imgtk.height()))
+                if log_prefix:
+                    self._append_log(f"{log_prefix} 显示 {png_path}")
+            except Exception as e2:
+                if log_prefix:
+                    self._append_log(f"{log_prefix} 显示 PNG 失败: {e2}")
+
+    def _embed_repo_graph_rust_threaded(self):
+        threading.Thread(target=self._embed_repo_graph_rust, daemon=True).start()
+
+    def _embed_repo_graph_rust(self):
+        """生成整库 SVG→PNG 并嵌入到任务执行页下方的画布中。"""
+        workspace = Path(self.task_workspace_var.get() or ".workspace").resolve()
+        project = (self.task_project_name_var.get() or "rust-project").strip() or "rust-project"
+        repo = workspace / project
+        if not (repo / ".git").exists():
+            self._append_log(f"[exec-graph] 未找到项目仓库: {repo}")
+            return
+        # FFI 调用
+        import ctypes as C
+        dylib = os.environ.get("SBOXGEN_GG_FFI") or str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01/target/release/libgit_graph.dylib"))
+        if not Path(dylib).exists():
+            try:
+                self._append_log("[exec-graph] 构建 Rust FFI…")
+                subprocess.run(["cargo", "build", "--release"], cwd=str(Path("/Users/jqwang/104-CommitLens-codex/rust-project-01")), check=True)
+            except Exception as e:
+                self._append_log(f"[exec-graph] 构建失败: {e}")
+        if not Path(dylib).exists():
+            self._append_log(f"[exec-graph] 未找到动态库: {dylib}")
+            return
+        try:
+            lib = C.CDLL(dylib)
+            lib.gg_render_svg.argtypes = [C.c_char_p, C.c_size_t, C.c_bool]
+            lib.gg_render_svg.restype = C.c_void_p
+            lib.gg_free_string.argtypes = [C.c_void_p]
+            lib.gg_free_string.restype = None
+        except Exception as e:
+            self._append_log(f"[exec-graph] 加载 FFI 失败: {e}")
+            return
+        ptr = lib.gg_render_svg(str(repo).encode("utf-8"), C.c_size_t(0), C.c_bool(False))
+        if not ptr:
+            self._append_log("[exec-graph] FFI 返回空 SVG（失败）")
+            return
+        try:
+            svg_bytes = C.string_at(ptr)
+        finally:
+            lib.gg_free_string(ptr)
+        cache = workspace / ".graph_cache"
+        cache.mkdir(parents=True, exist_ok=True)
+        svg_path = cache / "exec_graph.svg"
+        png_path = cache / "exec_graph.png"
+        try:
+            svg_path.write_bytes(svg_bytes)
+        except Exception as e:
+            self._append_log(f"[exec-graph] 写入 SVG 失败: {e}")
+            return
+        try:
+            if sys.platform == "darwin":
+                subprocess.run(["sips", "-s", "format", "png", str(svg_path), "--out", str(png_path)], check=True)
+            else:
+                subprocess.run(["rsvg-convert", "-f", "png", "-o", str(png_path), str(svg_path)], check=True)
+        except Exception as e:
+            self._append_log(f"[exec-graph] SVG 转 PNG 失败: {e}")
+            return
+        # 显示到任务执行页嵌入画布
+        self._display_png_on_canvas(self.exec_graph_canvas, png_path, attr_name='_exec_graph_imgtk', log_prefix='[exec-graph]')
 
     # ---------------- Graph Tab (Native Tk Canvas) ----------------
     def _build_graph_tab(self, tab):
@@ -3560,23 +3595,7 @@ class SboxgenGUI:
             self._append_log(f"[graph] SVG 转 PNG 失败: {e}")
             return
         # Display on canvas
-        try:
-            from PIL import Image, ImageTk  # optional; fallback to tk.PhotoImage if not present
-            img = Image.open(png_path)
-            self._graph_imgtk = ImageTk.PhotoImage(img)
-            self.graph_canvas.delete("all")
-            self.graph_canvas.create_image(0, 0, image=self._graph_imgtk, anchor="nw")
-            self.graph_canvas.configure(scrollregion=(0, 0, img.width, img.height))
-            self._append_log(f"[graph] 已生成并显示 Rust 图：{png_path}")
-        except Exception:
-            try:
-                self._graph_imgtk = tk.PhotoImage(file=str(png_path))
-                self.graph_canvas.delete("all")
-                self.graph_canvas.create_image(0, 0, image=self._graph_imgtk, anchor="nw")
-                self.graph_canvas.configure(scrollregion=(0, 0, self._graph_imgtk.width(), self._graph_imgtk.height()))
-                self._append_log(f"[graph] 已显示 Rust 图：{png_path}")
-            except Exception as e2:
-                self._append_log(f"[graph] 显示 PNG 失败: {e2}")
+        self._display_png_on_canvas(self.graph_canvas, png_path, attr_name='_graph_imgtk', log_prefix='[graph]')
 
     def _graph_zoom(self, factor: float):
         self._graph_scale = max(0.2, min(3.0, self._graph_scale * factor))

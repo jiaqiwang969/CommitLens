@@ -4412,6 +4412,7 @@ class SboxgenGUI:
             canvas.create_line(0, y, x_offset + (max_col+1)*lane_dx + 800, y, fill=grid_color)
 
         # Draw edges with curves for branch/merge
+        curve_endpoints = []  # Store curve endpoints for later marking
         for e in edges:
             a = idx_map.get(e['from'])
             b = idx_map.get(e['to'])
@@ -4484,6 +4485,8 @@ class SboxgenGUI:
                         capstyle=tk.ROUND,
                         tags="curve"
                     )
+                    # Save endpoints for later marking
+                    curve_endpoints.append((x1, y1, x2, y2, color))
         # Draw nodes
         self._igraph_hitboxes = []
         self._igraph_nodes_xy = []
@@ -4509,6 +4512,27 @@ class SboxgenGUI:
             bbox = (x-8, y-8, x+300, y+12)
             self._igraph_hitboxes.append((bbox, nd))
             self._igraph_nodes_xy.append((x, y, r, nd))
+
+        # Draw curve endpoint markers (after nodes to avoid being covered)
+        for x1, y1, x2, y2, color in curve_endpoints:
+            # Draw asterisks at curve endpoints
+            # Start point - with white border
+            canvas.create_oval(
+                x1-4, y1-4, x1+4, y1+4,
+                fill=color,
+                outline="white",
+                width=2,
+                tags="curve_marker"
+            )
+            # End point - with white border
+            canvas.create_oval(
+                x2-4, y2-4, x2+4, y2+4,
+                fill=color,
+                outline="white",
+                width=2,
+                tags="curve_marker"
+            )
+
         # scrollregion
         width = x_offset + (max_col+1)*lane_dx + 800
         height = y_offset + n*y_step + 100

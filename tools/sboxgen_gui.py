@@ -4526,9 +4526,11 @@ class SboxgenGUI:
                     )
                     # Save endpoints for later marking
                     curve_endpoints.append((x1, y1, x2, y2, color))
-        # Draw nodes
+        # Draw nodes and collect branch tips
         self._igraph_hitboxes = []
         self._igraph_nodes_xy = []
+        branch_tips = {}  # Store the latest commit for each branch
+
         # Clear hover mark
         try:
             hov = getattr(canvas, '_igraph_hover_item', None)
@@ -4538,6 +4540,7 @@ class SboxgenGUI:
         except Exception:
             pass
         self._igraph_clear_label(canvas)
+
         for nd in nodes:
             x = x_offset + nd.get('column',0)*lane_dx
             # 正向时间线：直接使用索引
@@ -4551,6 +4554,24 @@ class SboxgenGUI:
             bbox = (x-8, y-8, x+300, y+12)
             self._igraph_hitboxes.append((bbox, nd))
             self._igraph_nodes_xy.append((x, y, r, nd))
+
+            # Collect branch tips (latest commit for each branch)
+            branches = nd.get('branches', [])
+            tags = nd.get('tags', [])
+
+            # Add branch labels
+            for branch in branches:
+                if branch and branch not in ['HEAD', 'origin/HEAD']:
+                    # Store or update the branch tip (keep the one with largest idx, i.e., latest in timeline for reverse order)
+                    if branch not in branch_tips or nd['idx'] > branch_tips[branch]['idx']:
+                        branch_tips[branch] = {'x': x, 'y': y, 'idx': nd['idx'], 'color': branch_color, 'node': nd}
+
+            # Also check tags if needed (optional)
+            for tag in tags:
+                if tag:
+                    tag_name = f"tag: {tag}"
+                    if tag_name not in branch_tips or nd['idx'] > branch_tips[tag_name]['idx']:
+                        branch_tips[tag_name] = {'x': x, 'y': y, 'idx': nd['idx'], 'color': '#FFD700', 'node': nd}  # Gold color for tags
 
         # Draw curve endpoint markers (after nodes to avoid being covered)
         for x1, y1, x2, y2, color in curve_endpoints:
@@ -4571,6 +4592,57 @@ class SboxgenGUI:
                 width=2,
                 tags="curve_marker"
             )
+
+        # Draw branch labels (after everything else)
+        for branch_name, tip_info in branch_tips.items():
+            x = tip_info['x']
+            y = tip_info['y']
+            color = tip_info['color']
+
+            # Draw a line from the node to the label position
+            label_x = x + 100  # Position label to the right
+            label_y = y
+
+            # Draw connecting line
+            canvas.create_line(
+                x + 8, y,  # Start from right edge of node
+                label_x - 5, label_y,
+                fill=color,
+                width=1,
+                dash=(2, 2),  # Dashed line
+                tags="branch_label"
+            )
+
+            # Draw branch label background (rounded rectangle)
+            # Format branch name for display
+            display_name = branch_name
+            # Remove tag: prefix for display
+            if display_name.startswith('tag: '):
+                display_name = display_name[5:]
+
+            text_id = canvas.create_text(
+                label_x, label_y,
+                text=f" {display_name} ",
+                font=("Monaco", 10, "bold"),
+                fill="white",
+                anchor="w",
+                tags="branch_label"
+            )
+
+            # Get text bounds for background
+            bbox = canvas.bbox(text_id)
+            if bbox:
+                # Draw rounded rectangle background
+                rect_id = canvas.create_rectangle(
+                    bbox[0] - 4, bbox[1] - 2,
+                    bbox[2] + 4, bbox[3] + 2,
+                    fill=color,
+                    outline=color,
+                    width=0,
+                    tags="branch_label"
+                )
+                # Raise text above rectangle
+                canvas.tag_raise(text_id, rect_id)
 
         # scrollregion
         width = x_offset + (max_col+1)*lane_dx + 800
@@ -4674,13 +4746,40 @@ class SboxgenGUI:
         out = proc.stdout or ""
         lines = out.splitlines()
 
-        # pass 1: collect (short, column)
+        # pass 1: collect (short, column) and parse branch/tag info from git-graph output
         commits: list[dict] = []
+        commit_refs: dict[str, list[str]] = {}  # Map commit SHA to its refs
+
         for ln in lines:
             m = re.search(r"\b[0-9a-fA-F]{7}\b", ln)
             if not m:
                 continue
+
+            short = m.group(0).lower()
             graph_part = ln[: m.start()]
+
+            # Parse refs from git-graph output (e.g., "(HEAD -> main, origin/main)")
+            # Look for refs immediately after the commit SHA
+            after_sha = ln[m.end():]
+            # Only parse if there's a parenthesis immediately after the SHA (with optional space)
+            refs_match = re.match(r'^\s*\(([^)]+)\)', after_sha)
+            if refs_match:
+                refs_str = refs_match.group(1)
+                refs = []
+                for ref in refs_str.split(','):
+                    ref = ref.strip()
+                    # Skip HEAD indicator
+                    if ref.startswith('HEAD'):
+                        if ' -> ' in ref:
+                            # Extract the branch name from "HEAD -> branch"
+                            ref = ref.split(' -> ')[1]
+                        else:
+                            continue
+                    # Remove origin/ prefix but keep the rest
+                    if ref.startswith('origin/'):
+                        ref = ref[7:]  # Remove 'origin/' prefix
+                    refs.append(ref)
+                commit_refs[short] = refs
 
             # Find ALL commit markers and their positions in graph area
             marker_positions = []
@@ -4709,7 +4808,6 @@ class SboxgenGUI:
             else:
                 col = (pos - 1) // 2
 
-            short = m.group(0).lower()
             commits.append({"short": short, "column": col})
 
         # pass 1.5: HEAD name (meta)
@@ -4744,9 +4842,26 @@ class SboxgenGUI:
                     continue
                 sha, ref = sp[0].lower(), sp[1]
                 if ref.startswith("refs/heads/"):
-                    heads_map.setdefault(sha, []).append(ref[len("refs/heads/"):])
+                    branch_name = ref[len("refs/heads/"):]
+                    heads_map.setdefault(sha, []).append(branch_name)
                 elif ref.startswith("refs/tags/"):
-                    tags_map.setdefault(sha, []).append(ref[len("refs/tags/"):])
+                    tag_name = ref[len("refs/tags/"):]
+                    tags_map.setdefault(sha, []).append(tag_name)
+        except Exception:
+            pass
+
+        # Also get remote branches
+        try:
+            cp = subprocess.run(["git", "for-each-ref", "--format=%(objectname) %(refname:short)", "refs/remotes"], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
+            for ln in cp.stdout.splitlines():
+                parts = ln.strip().split(None, 1)
+                if len(parts) == 2:
+                    sha, ref = parts[0].lower(), parts[1]
+                    if ref.startswith('origin/'):
+                        branch_name = ref[7:]  # Remove 'origin/' prefix
+                        if branch_name not in ['HEAD']:
+                            # Store without origin/ prefix
+                            heads_map.setdefault(sha, []).append(branch_name)
         except Exception:
             pass
 
@@ -4809,6 +4924,19 @@ class SboxgenGUI:
                     continue
             node_color = color_for_branch(lane_name) if lane_name else "#007acc"
 
+            # Merge branch/tag info from multiple sources
+            # 1. From git-graph output parsing (already cleaned)
+            parsed_refs = commit_refs.get(full[:7], [])
+
+            # 2. From git show-ref (already contains local and remote branches without origin/)
+            git_branches = heads_map.get(full, [])
+            git_tags = tags_map.get(full, [])
+
+            # 3. Combine all branch information (no duplicates)
+            all_branches = list(set(parsed_refs + git_branches))
+            # Remove empty strings and filter
+            all_branches = [b for b in all_branches if b and b != 'HEAD']
+
             node = {
                 "idx": idx,
                 "id": full,
@@ -4818,8 +4946,8 @@ class SboxgenGUI:
                 "date": date,
                 "author": author,
                 "branch": lane_name,
-                "branches": heads_map.get(full, []) + ([lane_name] if lane_name else []),
-                "tags": tags_map.get(full, []),
+                "branches": all_branches,  # All branch names pointing to this commit
+                "tags": git_tags,
                 "color": node_color,
             }
             nodes.append(node)

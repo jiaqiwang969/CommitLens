@@ -3078,14 +3078,35 @@ class SboxgenGUI:
         self.exec_graph_canvas.configure(yscrollcommand=gp_ys.set, xscrollcommand=gp_xs.set)
         gp_ys.grid(row=0, column=1, sticky="ns")
         gp_xs.grid(row=1, column=0, sticky="ew")
-        # 鼠标滚轮滚动
+        # 鼠标滚轮滚动 - Enhanced for macOS trackpad
         def _gp_wheel(ev):
+            """Handle mouse wheel and trackpad scrolling"""
             try:
-                delta = -1 if ev.delta > 0 else 1
-                self.exec_graph_canvas.yview_scroll(delta * 3, 'units')
+                # macOS trackpad provides smooth scrolling with fractional delta
+                if ev.delta:
+                    # Normalize delta for smoother scrolling
+                    scroll_amount = -ev.delta / 120.0
+                    self.exec_graph_canvas.yview_scroll(int(scroll_amount * 3), 'units')
             except Exception:
                 pass
+
+        def _gp_shift_wheel(ev):
+            """Handle horizontal scrolling with Shift+wheel"""
+            try:
+                if ev.delta:
+                    scroll_amount = -ev.delta / 120.0
+                    self.exec_graph_canvas.xview_scroll(int(scroll_amount * 3), 'units')
+            except Exception:
+                pass
+
         self.exec_graph_canvas.bind('<MouseWheel>', _gp_wheel)
+        self.exec_graph_canvas.bind('<Shift-MouseWheel>', _gp_shift_wheel)
+
+        # For Linux compatibility
+        self.exec_graph_canvas.bind('<Button-4>', lambda e: self.exec_graph_canvas.yview_scroll(-3, 'units'))
+        self.exec_graph_canvas.bind('<Button-5>', lambda e: self.exec_graph_canvas.yview_scroll(3, 'units'))
+        self.exec_graph_canvas.bind('<Shift-Button-4>', lambda e: self.exec_graph_canvas.xview_scroll(-3, 'units'))
+        self.exec_graph_canvas.bind('<Shift-Button-5>', lambda e: self.exec_graph_canvas.xview_scroll(3, 'units'))
         self._exec_graph_imgtk = None
         # 首次自动渲染交互图
         self.root.after(500, self._interactive_graph_render_threaded)
@@ -3661,14 +3682,32 @@ class SboxgenGUI:
             def _display():
                 self._display_png_on_canvas(canvas, png_path, attr_name='_preview_imgtk', log_prefix='[graph-preview]')
             _display()
-            # 鼠标滚动
+            # 鼠标滚动 - Enhanced for macOS trackpad
             def _on_wheel(ev):
                 try:
-                    delta = -1 if ev.delta > 0 else 1
-                    canvas.yview_scroll(delta * 3, 'units')
+                    # macOS trackpad smooth scrolling
+                    if ev.delta:
+                        scroll_amount = -ev.delta / 120.0
+                        canvas.yview_scroll(int(scroll_amount * 3), 'units')
                 except Exception:
                     pass
+
+            def _on_shift_wheel(ev):
+                try:
+                    if ev.delta:
+                        scroll_amount = -ev.delta / 120.0
+                        canvas.xview_scroll(int(scroll_amount * 3), 'units')
+                except Exception:
+                    pass
+
             canvas.bind('<MouseWheel>', _on_wheel)
+            canvas.bind('<Shift-MouseWheel>', _on_shift_wheel)
+
+            # Linux compatibility
+            canvas.bind('<Button-4>', lambda e: canvas.yview_scroll(-3, 'units'))
+            canvas.bind('<Button-5>', lambda e: canvas.yview_scroll(3, 'units'))
+            canvas.bind('<Shift-Button-4>', lambda e: canvas.xview_scroll(-3, 'units'))
+            canvas.bind('<Shift-Button-5>', lambda e: canvas.xview_scroll(3, 'units'))
         except Exception as e:
             messagebox.showerror("错误", f"预览失败: {e}")
 
@@ -5354,6 +5393,34 @@ class SboxgenGUI:
         xscroll = ttk.Scrollbar(left_frame, orient="horizontal", command=self.graph_canvas.xview)
         xscroll.grid(row=1, column=0, sticky="ew")
         self.graph_canvas.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
+
+        # Add mouse wheel/trackpad scrolling support for macOS
+        def _on_mousewheel(event):
+            """Handle mouse wheel and trackpad scrolling"""
+            # macOS uses delta values differently
+            if event.delta:
+                # For mouse wheel
+                self.graph_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+            else:
+                # For trackpad two-finger scroll (if delta is 0)
+                self.graph_canvas.yview_scroll(-1 if event.num == 4 else 1, "units")
+
+        def _on_shift_mousewheel(event):
+            """Handle horizontal scrolling with Shift+wheel"""
+            if event.delta:
+                self.graph_canvas.xview_scroll(int(-1 * (event.delta / 120)), "units")
+            else:
+                self.graph_canvas.xview_scroll(-1 if event.num == 4 else 1, "units")
+
+        # Bind mouse wheel events for both vertical and horizontal scrolling
+        self.graph_canvas.bind("<MouseWheel>", _on_mousewheel)
+        self.graph_canvas.bind("<Shift-MouseWheel>", _on_shift_mousewheel)
+
+        # For Linux compatibility
+        self.graph_canvas.bind("<Button-4>", lambda e: self.graph_canvas.yview_scroll(-1, "units"))
+        self.graph_canvas.bind("<Button-5>", lambda e: self.graph_canvas.yview_scroll(1, "units"))
+        self.graph_canvas.bind("<Shift-Button-4>", lambda e: self.graph_canvas.xview_scroll(-1, "units"))
+        self.graph_canvas.bind("<Shift-Button-5>", lambda e: self.graph_canvas.xview_scroll(1, "units"))
 
         # Right side - Commit details panel
         right_paned = ttk.PanedWindow(main_paned, orient=tk.VERTICAL)

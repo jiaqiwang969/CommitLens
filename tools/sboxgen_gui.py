@@ -4465,6 +4465,12 @@ class SboxgenGUI:
             '#FFC107',  # Amber
         ]
 
+        # Check reverse timeline setting
+        try:
+            is_reversed = bool(self.graph_reverse_var.get())
+        except:
+            is_reversed = False
+
         # Build dict idx->node and assign colors by column
         idx_map = {}
         column_colors = {}  # 记录每列的颜色

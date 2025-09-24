@@ -102,6 +102,12 @@ class SboxgenGUI:
         self.show_key_var = tk.BooleanVar(value=False)
         self.overwrite_reports_var = tk.BooleanVar(value=True)
         self.overwrite_figs_var = tk.BooleanVar(value=True)
+        # Graph/commit graph controls (shared across both graph views)
+        # - graph_reverse_var: False = first->HEAD (oldest→newest), True = HEAD->first (newest→oldest)
+        # - graph_show_branches/tags: badges in the simple list graph
+        self.graph_reverse_var = tk.BooleanVar(value=False)
+        self.graph_show_branches = tk.BooleanVar(value=True)
+        self.graph_show_tags = tk.BooleanVar(value=True)
         # UI: commit count display (for selected URL + branch)
         self.commit_count_var = tk.StringVar(value="分支提交总数：—")
 
@@ -3066,6 +3072,12 @@ class SboxgenGUI:
         gp_toolbar = ttk.Frame(graph_pane)
         gp_toolbar.grid(row=0, column=0, sticky="ew")
         ttk.Button(gp_toolbar, text="交互渲染", command=self._interactive_graph_render_threaded).pack(side=tk.LEFT)
+        ttk.Checkbutton(
+            gp_toolbar,
+            text="Reverse",
+            variable=self.graph_reverse_var,
+            command=self._on_graph_reverse_toggle,
+        ).pack(side=tk.LEFT, padx=(8, 0))
         gp_container = ttk.Frame(graph_pane)
         gp_container.grid(row=1, column=0, sticky="nsew")
         gp_container.rowconfigure(0, weight=1)
@@ -3833,7 +3845,9 @@ class SboxgenGUI:
                 lib.gg_layout_json.restype = C.c_void_p
                 lib.gg_free_string.argtypes = [C.c_void_p]
                 lib.gg_free_string.restype = None
-                ptr = lib.gg_layout_json(str(repo).encode('utf-8'), C.c_size_t(0), C.c_bool(False))
+                # Pass reverse preference: False (default) -> oldest→newest
+                rev_toggle = bool(self.graph_reverse_var.get())
+                ptr = lib.gg_layout_json(str(repo).encode('utf-8'), C.c_size_t(0), C.c_bool(not rev_toggle))
                 if not ptr:
                     self._append_log('[igraph] FFI 返回空 JSON')
                     use_cli_fallback = True
@@ -3870,7 +3884,10 @@ class SboxgenGUI:
             return
         try:
             self._append_log(f"[graph-tab] 使用 {bin_path} 执行 --json 渲染")
-            proc = subprocess.run([bin_path, "--json", "--no-pager"], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
+            args = [bin_path, "--json", "--no-pager"]
+            if not bool(self.graph_reverse_var.get()):
+                args.insert(1, "--reverse")
+            proc = subprocess.run(args, cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
         except Exception as e:
             self._append_log(f"[igraph] 运行 git-graph --json 失败: {e}")
             # 回退：尝试解析 ASCII 输出
@@ -4060,6 +4077,11 @@ class SboxgenGUI:
         n = len(nodes_data)
         y_offset = 24
         y_step = 28
+        # Visual order toggle
+        try:
+            is_reversed = bool(self.graph_reverse_var.get())
+        except Exception:
+            is_reversed = False
 
         # 先绘制所有边（line 和 path），再绘制节点
         # 这样节点会在边的上层
@@ -4077,9 +4099,13 @@ class SboxgenGUI:
                 stroke = element.get("stroke", "black")
                 width = float(element.get("stroke-width", 1))
 
-                # 转换 y 坐标为倒序显示
-                y1_inv = y_offset + (n - 1 - int((y1 - 15) / 15)) * y_step
-                y2_inv = y_offset + (n - 1 - int((y2 - 15) / 15)) * y_step
+                # 转换 y 坐标（根据 Reverse 切换上下倒置）
+                y1_idx = int((y1 - 15) / 15)
+                y2_idx = int((y2 - 15) / 15)
+                y1_vis = (n - 1 - y1_idx) if is_reversed else y1_idx
+                y2_vis = (n - 1 - y2_idx) if is_reversed else y2_idx
+                y1_inv = y_offset + y1_vis * y_step
+                y2_inv = y_offset + y2_vis * y_step
 
                 color = color_map.get(stroke, stroke)
                 canvas.create_line(
@@ -4098,7 +4124,7 @@ class SboxgenGUI:
                 color = color_map.get(stroke, stroke)
 
                 # 解析并转换路径
-                coords = self._parse_svg_path_inverted(d, n, y_offset, y_step)
+                coords = self._parse_svg_path_inverted(d, n, y_offset, y_step, is_reversed)
                 if len(coords) >= 4:
                     canvas.create_line(
                         coords,
@@ -4137,7 +4163,8 @@ class SboxgenGUI:
         for i, circle in enumerate(sorted(circle_elements, key=lambda c: c["y_idx"])):
             # 转换坐标
             x = circle["cx"]
-            y = y_offset + (n - 1 - circle["y_idx"]) * y_step
+            row = (n - 1 - circle["y_idx"]) if is_reversed else circle["y_idx"]
+            y = y_offset + row * y_step
             r = 5
 
             # 获取节点数据
@@ -4179,8 +4206,8 @@ class SboxgenGUI:
         height = y_offset + n * y_step + 100
         canvas.configure(scrollregion=(0, 0, width, height))
 
-    def _parse_svg_path_inverted(self, path: str, n: int, y_offset: int, y_step: int) -> list:
-        """解析 SVG 路径并转换为倒序 Canvas 坐标"""
+    def _parse_svg_path_inverted(self, path: str, n: int, y_offset: int, y_step: int, is_reversed: bool = True) -> list:
+        """解析 SVG 路径并转换为 Canvas 坐标；可选倒序"""
         import re
 
         coords = []
@@ -4198,7 +4225,8 @@ class SboxgenGUI:
                     y_svg = float(match.group(2))
                     # 转换 y 坐标
                     y_idx = int((y_svg - 15) / 15)
-                    y = y_offset + (n - 1 - y_idx) * y_step
+                    row = (n - 1 - y_idx) if is_reversed else y_idx
+                    y = y_offset + row * y_step
                     coords.extend([x, y])
 
             elif cmd_type == 'Q':
@@ -4209,7 +4237,8 @@ class SboxgenGUI:
                     y_svg = float(match[1])
                     # 转换 y 坐标
                     y_idx = int((y_svg - 15) / 15)
-                    y = y_offset + (n - 1 - y_idx) * y_step
+                    row = (n - 1 - y_idx) if is_reversed else y_idx
+                    y = y_offset + row * y_step
                     coords.extend([x, y])
 
         return coords
@@ -4228,6 +4257,11 @@ class SboxgenGUI:
         lane_dx = 90
         x_offset = 80
         y_offset = 24
+        # Visual order toggle
+        try:
+            is_reversed = bool(self.graph_reverse_var.get())
+        except Exception:
+            is_reversed = False
 
         # Build dict idx->node
         idx_map = {nd['idx']: nd for nd in nodes}
@@ -4240,9 +4274,11 @@ class SboxgenGUI:
                 continue
 
             x1 = x_offset + a.get('column', 0) * lane_dx
-            y1 = y_offset + (n - 1 - a['idx']) * y_step
+            a_draw_idx = (n - 1 - a['idx']) if is_reversed else a['idx']
+            y1 = y_offset + a_draw_idx * y_step
             x2 = x_offset + b.get('column', 0) * lane_dx
-            y2 = y_offset + (n - 1 - b['idx']) * y_step
+            b_draw_idx = (n - 1 - b['idx']) if is_reversed else b['idx']
+            y2 = y_offset + b_draw_idx * y_step
             color = e.get('color') or '#2196F3'
 
             # 如果是跨列连接，绘制曲线
@@ -4271,7 +4307,8 @@ class SboxgenGUI:
 
         for nd in nodes:
             x = x_offset + nd.get('column', 0) * lane_dx
-            y = y_offset + (n - 1 - nd['idx']) * y_step
+            draw_idx = (n - 1 - nd['idx']) if is_reversed else nd['idx']
+            y = y_offset + draw_idx * y_step
             r = 5
 
             # Check if merge commit
@@ -4450,6 +4487,28 @@ class SboxgenGUI:
             y = y_offset + i * y_step
             canvas.create_line(0, y, x_offset + (max_col+1)*lane_dx + 800, y, fill=grid_color)
 
+        # Count in-degree and out-degree for each node to identify branch/merge points
+        node_in_degree = {}  # How many parents (edges coming in)
+        node_out_degree = {}  # How many children (edges going out)
+
+        for e in edges:
+            from_idx = e['from']
+            to_idx = e['to']
+            # Edge goes from child (from) to parent (to)
+            # So 'from' has parent 'to', and 'to' has child 'from'
+            node_in_degree[from_idx] = node_in_degree.get(from_idx, 0) + 1  # Parent count
+            node_out_degree[to_idx] = node_out_degree.get(to_idx, 0) + 1  # Child count
+
+        # Identify branch and merge points
+        branch_points = set()  # Nodes with multiple children (out-degree > 1)
+        merge_points = set()   # Nodes with multiple parents (in-degree > 1)
+
+        for idx in idx_map:
+            if node_out_degree.get(idx, 0) > 1:
+                branch_points.add(idx)
+            if node_in_degree.get(idx, 0) > 1:
+                merge_points.add(idx)
+
         # Draw edges with curves for branch/merge
         curve_endpoints = []  # Store curve endpoints for later marking
         for e in edges:
@@ -4459,10 +4518,12 @@ class SboxgenGUI:
                 continue
 
             x1 = x_offset + a.get('column',0)*lane_dx
-            # 正向时间线：直接使用索引
-            y1 = y_offset + a['idx']*y_step
+            # Map y by toggle
+            a_draw_idx = (n - 1 - a['idx']) if is_reversed else a['idx']
+            y1 = y_offset + a_draw_idx*y_step
             x2 = x_offset + b.get('column',0)*lane_dx
-            y2 = y_offset + b['idx']*y_step
+            b_draw_idx = (n - 1 - b['idx']) if is_reversed else b['idx']
+            y2 = y_offset + b_draw_idx*y_step
 
             # 使用源节点的分支颜色
             color = a.get('branch_color', '#90a4ae')
@@ -4525,7 +4586,20 @@ class SboxgenGUI:
                         tags="curve"
                     )
                     # Save endpoints for later marking
-                    curve_endpoints.append((x1, y1, x2, y2, color))
+                    # Use degree-counting algorithm to identify true branch/merge points
+                    # Branch points: nodes with out-degree > 1 (multiple children)
+                    # Merge points: nodes with in-degree > 1 (multiple parents)
+
+                    from_idx = e['from']
+                    to_idx = e['to']
+
+                    # Check if either endpoint is a branch or merge point
+                    if to_idx in branch_points:
+                        # Parent node has multiple children - it's a branch point
+                        curve_endpoints.append((x2, y2, color, 'branch'))
+                    if from_idx in merge_points:
+                        # Child node has multiple parents - it's a merge point
+                        curve_endpoints.append((x1, y1, color, 'merge'))
         # Draw nodes and collect branch tips
         self._igraph_hitboxes = []
         self._igraph_nodes_xy = []
@@ -4543,8 +4617,9 @@ class SboxgenGUI:
 
         for nd in nodes:
             x = x_offset + nd.get('column',0)*lane_dx
-            # 正向时间线：直接使用索引
-            y = y_offset + nd['idx']*y_step
+            # Visual y by toggle
+            draw_idx = (n - 1 - nd['idx']) if is_reversed else nd['idx']
+            y = y_offset + draw_idx*y_step
             r = 5
             # 使用分支颜色
             branch_color = nd.get('branch_color', '#007acc')
@@ -4562,31 +4637,43 @@ class SboxgenGUI:
             # Add branch labels
             for branch in branches:
                 if branch and branch not in ['HEAD', 'origin/HEAD']:
-                    # Store or update the branch tip (keep the one with largest idx, i.e., latest in timeline for reverse order)
-                    if branch not in branch_tips or nd['idx'] > branch_tips[branch]['idx']:
-                        branch_tips[branch] = {'x': x, 'y': y, 'idx': nd['idx'], 'color': branch_color, 'node': nd}
+                    # Keep the one closest to HEAD on screen:
+                    # - Reverse OFF (oldest→newest): keep largest draw_idx (lower on screen)
+                    # - Reverse ON  (newest→oldest): keep smallest draw_idx (higher on screen)
+                    keep = False
+                    rank = draw_idx
+                    if branch not in branch_tips:
+                        keep = True
+                    else:
+                        if not is_reversed and rank > branch_tips[branch]['rank']:
+                            keep = True
+                        if is_reversed and rank < branch_tips[branch]['rank']:
+                            keep = True
+                    if keep:
+                        branch_tips[branch] = {'x': x, 'y': y, 'rank': rank, 'color': branch_color, 'node': nd}
 
             # Also check tags if needed (optional)
             for tag in tags:
                 if tag:
                     tag_name = f"tag: {tag}"
-                    if tag_name not in branch_tips or nd['idx'] > branch_tips[tag_name]['idx']:
-                        branch_tips[tag_name] = {'x': x, 'y': y, 'idx': nd['idx'], 'color': '#FFD700', 'node': nd}  # Gold color for tags
+                    keep = False
+                    rank = draw_idx
+                    if tag_name not in branch_tips:
+                        keep = True
+                    else:
+                        if not is_reversed and rank > branch_tips[tag_name]['rank']:
+                            keep = True
+                        if is_reversed and rank < branch_tips[tag_name]['rank']:
+                            keep = True
+                    if keep:
+                        branch_tips[tag_name] = {'x': x, 'y': y, 'rank': rank, 'color': '#FFD700', 'node': nd}
 
         # Draw curve endpoint markers (after nodes to avoid being covered)
-        for x1, y1, x2, y2, color in curve_endpoints:
-            # Draw asterisks at curve endpoints
-            # Start point - with white border
+        for marker_info in curve_endpoints:
+            x, y, color, marker_type = marker_info
+            # Draw a small circle marker with white border
             canvas.create_oval(
-                x1-4, y1-4, x1+4, y1+4,
-                fill=color,
-                outline="white",
-                width=2,
-                tags="curve_marker"
-            )
-            # End point - with white border
-            canvas.create_oval(
-                x2-4, y2-4, x2+4, y2+4,
+                x-4, y-4, x+4, y+4,
                 fill=color,
                 outline="white",
                 width=2,
@@ -5503,6 +5590,16 @@ class SboxgenGUI:
         toolbar.grid(row=0, column=0, sticky="ew")
 
         ttk.Button(toolbar, text="交互渲染", command=self._interactive_graph_render_tab_threaded).pack(side=tk.LEFT)
+        # Reverse toggle: first→HEAD vs HEAD→first
+        ttk.Checkbutton(
+            toolbar,
+            text="Reverse",
+            variable=self.graph_reverse_var,
+            command=self._on_graph_reverse_toggle,
+        ).pack(side=tk.LEFT, padx=(8, 0))
+        # Badges toggles for simple list graph
+        ttk.Checkbutton(toolbar, text="Branches", variable=self.graph_show_branches, command=self._graph_redraw).pack(side=tk.LEFT, padx=(6, 0))
+        ttk.Checkbutton(toolbar, text="Tags", variable=self.graph_show_tags, command=self._graph_redraw).pack(side=tk.LEFT, padx=(6, 0))
 
         # Main container with horizontal paned window
         main_paned = ttk.PanedWindow(tab, orient=tk.HORIZONTAL)
@@ -6013,9 +6110,15 @@ class SboxgenGUI:
             self.root.after(0, self._graph_redraw)
             return
 
-        # Get list of commits first-parent reversed (oldest->newest)
+        # Get list of commits first-parent (order depends on Reverse toggle)
         try:
-            cp = subprocess.run(["git", "rev-list", "--first-parent", "--reverse", branch], cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
+            args = ["git", "rev-list", "--first-parent", branch]
+            try:
+                if not bool(self.graph_reverse_var.get()):
+                    args.insert(2, "--reverse")
+            except Exception:
+                args.insert(2, "--reverse")
+            cp = subprocess.run(args, cwd=str(repo), capture_output=True, text=True, check=True, env=self._spawn_env())
             shas = [ln.strip() for ln in cp.stdout.splitlines() if ln.strip()]
         except subprocess.CalledProcessError as e:
             self._append_log(f"[graph] 获取提交失败: {e}")
@@ -6083,8 +6186,17 @@ class SboxgenGUI:
             return
         nodes = data["nodes"]
         lanes = data.get("lanes", [])
-        show_br = bool(self.graph_show_branches.get())
-        show_tag = bool(self.graph_show_tags.get())
+        # Safe-get toggles (ensure defined even if toolbar not built yet)
+        try:
+            show_br = bool(self.graph_show_branches.get())
+            show_tag = bool(self.graph_show_tags.get())
+        except Exception:
+            show_br = True
+            show_tag = True
+        try:
+            is_reversed = bool(self.graph_reverse_var.get())
+        except Exception:
+            is_reversed = False
 
         margin_top = 30
         x_line = 120
@@ -6103,14 +6215,20 @@ class SboxgenGUI:
 
         # draw branch lanes from git-graph (authoritative)
         lane_dx = 90
+        n = len(nodes)
         for lane in lanes:
             col = int(lane.get("col", 0))
             name = lane.get("name", "")
             s_idx = int(lane.get("start", 1))
             e_idx = int(lane.get("end", len(nodes)))
             x = (x_line + col * lane_dx)
-            y_start = margin_top + (max(1, s_idx) - 1) * y_step
-            y_end = margin_top + (max(1, min(e_idx, len(nodes))) - 1) * y_step
+            # Convert 1-based indices to 0-based, map to visual order if reversed
+            s0 = max(0, min(n-1, (s_idx - 1)))
+            e0 = max(0, min(n-1, (e_idx - 1)))
+            vs = (n - 1 - s0) if is_reversed else s0
+            ve = (n - 1 - e0) if is_reversed else e0
+            y_start = margin_top + min(vs, ve) * y_step
+            y_end = margin_top + max(vs, ve) * y_step
             c.create_line(x*scale+ox, y_start*scale+oy, x*scale+ox, y_end*scale+oy, fill="#c0c0c0", dash=(4, 3), width=max(1, int(1*scale)))
             # label at start
             self._draw_badge(c, x + 10, y_start - 10, name, color="#455a64", scale=scale, ox=ox, oy=oy)
@@ -6119,19 +6237,21 @@ class SboxgenGUI:
         self._graph_nodes = []
         sel_sha = getattr(self, '_graph_selected_sha', None)
 
-        for i, n in enumerate(nodes):
-            y = margin_top + i * y_step
+        for i, nd in enumerate(nodes):
+            # Visual row index depends on reverse toggle
+            row = (len(nodes) - 1 - i) if is_reversed else i
+            y = margin_top + row * y_step
             x = x_line
-            fill = "#007acc" if n.get("sha") == sel_sha else "#222222"
+            fill = "#007acc" if nd.get("sha") == sel_sha else "#222222"
             c.create_oval((x-r)*scale+ox, (y-r)*scale+oy, (x+r)*scale+ox, (y+r)*scale+oy, fill=fill, outline="")
 
             # text line
-            idx = n.get("index")
-            short = n.get("short", "")
-            subj = (n.get("subject", "") or "").splitlines()[0]
+            idx = nd.get("index")
+            short = nd.get("short", "")
+            subj = (nd.get("subject", "") or "").splitlines()[0]
             subj = (subj[:80] + "…") if len(subj) > 80 else subj
-            date = n.get("date", "")
-            tid = n.get("task_id") or ""
+            date = nd.get("date", "")
+            tid = nd.get("task_id") or ""
             left = x + 16
             text = f"[{idx:03d}] {short} {subj} {date}"
             if tid:
@@ -6141,15 +6261,15 @@ class SboxgenGUI:
             # badges for branches/tags
             badge_x = left
             if show_br:
-                for br in n.get("branches", []):
+                for br in nd.get("branches", []):
                     badge_x = self._draw_badge(c, badge_x, y+12, br, color="#2d7d2d", scale=scale, ox=ox, oy=oy)
             if show_tag:
-                for tg in n.get("tags", []):
+                for tg in nd.get("tags", []):
                     badge_x = self._draw_badge(c, badge_x, y+12, tg, color="#9c27b0", scale=scale, ox=ox, oy=oy)
 
             # hit bbox (unscaled)
             bbox = (x-10, y-10, x+500, y+22)
-            meta = dict(n)
+            meta = dict(nd)
             meta["bbox"] = bbox
             self._graph_nodes.append(meta)
 
@@ -6234,9 +6354,15 @@ class SboxgenGUI:
         except Exception:
             return None
         try:
-            # oldest->newest for GUI: use --reverse, no max-count to include all
+            # Order depends on Reverse toggle. Default OFF uses --reverse (oldest→newest)
+            args = [bin_path, "--json", "--no-pager"]
+            try:
+                if not bool(self.graph_reverse_var.get()):
+                    args.insert(1, "--reverse")
+            except Exception:
+                args.insert(1, "--reverse")
             proc = subprocess.run(
-                [bin_path, "--json", "--reverse", "--no-pager"],
+                args,
                 cwd=str(repo), capture_output=True, text=True, check=True
             )
             out = proc.stdout or ""
@@ -6244,6 +6370,21 @@ class SboxgenGUI:
         except Exception as e:
             self._append_log(f"[graph] JSON 获取失败: {e}")
             return None
+
+    def _on_graph_reverse_toggle(self):
+        """Reverse 按钮回调：刷新两个交互图并重绘列表式图。"""
+        try:
+            self._interactive_graph_render_threaded()  # 任务执行页中的交互图
+        except Exception:
+            pass
+        try:
+            self._interactive_graph_render_tab_threaded()  # Graph 标签页交互图
+        except Exception:
+            pass
+        try:
+            self._graph_redraw()  # 左侧列表式图
+        except Exception:
+            pass
 
     def _load_saved_or_default_prompt(self):
         """优先加载保存的自定义prompt，如果不存在则加载默认模板"""
